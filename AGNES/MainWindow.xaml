@@ -9,7 +9,8 @@
     <Window.Background>
         <ImageBrush ImageSource="Resources/Portal.png"/>
     </Window.Background>
-    <Grid Opacity="0">
-        
+    <Grid>
+        <Button Content="WCR" HorizontalAlignment="Left" Margin="526,256,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+
     </Grid>
 </Window>

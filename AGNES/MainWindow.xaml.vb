@@ -1,3 +1,12 @@
 ﻿Class MainWindow
+    Public Sub New()
+        InitializeComponent()
+        MySettings.Default.UserName = Environment.UserName
+    End Sub
 
+    Private Sub Button_Click(sender As Object, e As RoutedEventArgs)
+        Dim wcr As New WCRHello
+        Hide()
+        wcr.ShowDialog()
+    End Sub
 End Class
