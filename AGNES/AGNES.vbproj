@@ -49,6 +49,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System" />
@@ -129,6 +130,32 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\AdminTools.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\AgnesIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\BIGLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Full Agnes Image.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Policies.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Portal.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PowerBI.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Small Agnes Image.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
