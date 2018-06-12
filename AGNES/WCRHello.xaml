@@ -9,10 +9,14 @@
     <Viewbox>
         <Grid>
             <Image x:Name="imgAGNES" HorizontalAlignment="Left" Height="432" VerticalAlignment="Top" Width="261" Source="Resources/Full Agnes Image.png" Margin="0,10,0,0"/>
-            <TextBlock x:Name="tbHello" HorizontalAlignment="Left" Margin="274,20,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" FontSize="30" Height="320" Width="499" TextAlignment="Center"/>
+            <TextBlock x:Name="tbHello" HorizontalAlignment="Left" Margin="274,20,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" FontSize="24" Height="320" Width="499" TextAlignment="Center"/>
             <Button x:Name="btnViewWCR" Content="I want to view a saved WCR" HorizontalAlignment="Left" Margin="305,359,0,0" VerticalAlignment="Top" Width="181" Height="37" TabIndex="0"/>
             <Button x:Name="btnCreateWCR" Content="I want to create a new WCR" HorizontalAlignment="Left" Margin="557,359,0,0" VerticalAlignment="Top" Width="181" Height="37" TabIndex="1"/>
             <Button x:Name="btnLoadTenders" Content="Select Tender Summary file" HorizontalAlignment="Left" Margin="434,359,0,0" VerticalAlignment="Top" Width="181" Height="37" TabIndex="1" Visibility="Hidden"/>
+            <Button x:Name="btnYes" Content="Yes, that's correct!" HorizontalAlignment="Left" Margin="305,359,0,0" VerticalAlignment="Top" Width="181" Height="37" TabIndex="0" Visibility="Hidden"/>
+            <Button x:Name="btnNo" Content="No, that's wrong." HorizontalAlignment="Left" Margin="557,359,0,0" VerticalAlignment="Top" Width="181" Height="37" TabIndex="0" Visibility="Hidden"/>
+            <Button x:Name="btnAnother" Content="Load another file" HorizontalAlignment="Left" Margin="305,359,0,0" VerticalAlignment="Top" Width="181" Height="37" TabIndex="0" Visibility="Hidden"/>
+            <Button x:Name="btnDone" Content="I'm all done." HorizontalAlignment="Left" Margin="557,359,0,0" VerticalAlignment="Top" Width="181" Height="37" TabIndex="0" Visibility="Hidden"/>
         </Grid>
     </Viewbox>
 </Window>
