@@ -5,8 +5,8 @@
     End Sub
 
     Private Sub Button_Click(sender As Object, e As RoutedEventArgs)
-        Dim wcr As New WCRHello
+        Dim WCRStartPage As New WCRHello
         Hide()
-        wcr.ShowDialog()
+        WCRStartPage.ShowDialog()
     End Sub
 End Class

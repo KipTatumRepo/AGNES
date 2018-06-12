@@ -12,6 +12,7 @@
             <TextBlock x:Name="tbHello" HorizontalAlignment="Left" Margin="274,20,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" FontSize="30" Height="320" Width="499" TextAlignment="Center"/>
             <Button x:Name="btnViewWCR" Content="I want to view a saved WCR" HorizontalAlignment="Left" Margin="305,359,0,0" VerticalAlignment="Top" Width="181" Height="37" TabIndex="0"/>
             <Button x:Name="btnCreateWCR" Content="I want to create a new WCR" HorizontalAlignment="Left" Margin="557,359,0,0" VerticalAlignment="Top" Width="181" Height="37" TabIndex="1"/>
+            <Button x:Name="btnLoadTenders" Content="Select Tender Summary file" HorizontalAlignment="Left" Margin="434,359,0,0" VerticalAlignment="Top" Width="181" Height="37" TabIndex="1" Visibility="Hidden"/>
         </Grid>
     </Viewbox>
 </Window>
