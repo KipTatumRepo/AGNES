@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGNES"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="AGNESPortal" Height="600" Width="1024" AllowsTransparency="True" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None" Icon="Resources/AgnesIcon.ico">
+    <Window.Background>
+        <ImageBrush ImageSource="Resources/Portal.png"/>
+    </Window.Background>
     <Grid>
-        
+        <Button Content="WCR" HorizontalAlignment="Left" Margin="526,256,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+
     </Grid>
 </Window>
