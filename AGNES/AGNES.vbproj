@@ -68,11 +68,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="TenderObject.vb" />
+    <Compile Include="WCR Objects\TenderObject.vb" />
     <Compile Include="WCRHello.xaml.vb">
       <DependentUpon>WCRHello.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WCRObject.vb" />
+    <Compile Include="WCR Objects\WCRObject.vb" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -170,7 +170,7 @@
     <Resource Include="Resources\speechleft.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="rijKkeX7T.png" />
+    <Resource Include="Resources\rijKkeX7T.png" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Core">
