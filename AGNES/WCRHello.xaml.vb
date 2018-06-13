@@ -29,13 +29,13 @@
         btnDone.Visibility = Visibility.Visible
     End Sub
 
-    Public Sub PrintToScreen(ByRef t As TenderObject)
-        Dim amt As Double, ttl As Double
+    Public Sub PrintToScreen(ByRef v As VendorObject)
+        Dim t As Tender, ttl As Double
         tbHello.FontSize = 12
-        For Each amt In t.TenderAmt
-            ttl += amt
+        For Each t In v.Tenders
+            ttl += t.TenderAmt
         Next
-        tbHello.Text = "It looks like " & t.VendorName & " has a total of " & FormatCurrency(ttl, 2) & ".  Is this correct?"
+        tbHello.Text = "It looks like " & v.VendorName & " has a total of " & FormatCurrency(ttl, 2) & ".  Is this correct?"
         btnLoadTenders.Visibility = Visibility.Hidden
         btnYes.Visibility = Visibility.Visible
         btnNo.Visibility = Visibility.Visible
