@@ -2,6 +2,7 @@
 Imports Microsoft.Office.Interop
 Public Class WCRObject
     Public Vendors As New List(Of VendorObject)
+    Public CamChecks As New List(Of CamCheck)
     Public Sub New()
         Dim ph As String = ""
     End Sub
@@ -38,6 +39,12 @@ Public Class WCRObject
         End If
 
     End Sub
+
+    Public Sub AddCamCheck(Num As String, Amt As Double, Dte As Date, Nts As String)
+        Dim c As New CamCheck With {.CheckNumber = Num, .CheckAmt = Amt, .DepositDate = Dte, .Notes = Nts}
+        CamChecks.Add(c)
+    End Sub
+
     Private Function GetVendorNameFromString(st)
         Dim vn As String = st
         Dim si As Integer = vn.IndexOf("(")
@@ -52,6 +59,7 @@ Public Class WCRObject
         End Select
         Return vn
     End Function
+
     Private Sub releaseObject(ByVal obj As Object)
         Try
             System.Runtime.InteropServices.Marshal.ReleaseComObject(obj)
@@ -60,4 +68,5 @@ Public Class WCRObject
             obj = Nothing
         End Try
     End Sub
+
 End Class

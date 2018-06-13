@@ -5,6 +5,7 @@ Public Class WCRCam
     Dim dt2 As DispatcherTimer = New DispatcherTimer()
     Public Sub New()
         InitializeComponent()
+        ToggleEntryVisibility(0)
         Dim a As New Animation.DoubleAnimation
         a.From = 432
         a.To = 120
@@ -31,7 +32,93 @@ Public Class WCRCam
     End Sub
 
     Private Sub CamComplete(sender As Object, e As RoutedEventArgs) Handles btnDone.Click, btnNo.Click
-        Close()
-        MsgBox("All done")
+        If ConfirmAndSave() = False Then
+            Close()
+            MsgBox("All done")
+            'TODO: Confirm all objects are being released - program is staying open after this point.
+        Else
+            MsgBox("Not saved")
+        End If
+
     End Sub
+
+    Private Sub AddCamCheck(sender As Object, e As RoutedEventArgs) Handles btnYesCam.Click, btnMoreCam.Click
+        If ConfirmAndSave() = False Then
+            With tbCheckNumber
+                .Text = ""
+                .Focus()
+            End With
+            With dtpDepositDate
+                .DisplayDateStart = Now().AddDays(-14)
+                .DisplayDateEnd = Now()
+                .SelectedDate = Now()
+            End With
+            tbCheckAmount.Text = ""
+            tbCheckNotes.Text = ""
+        End If
+        ToggleEntryVisibility(1)
+        btnDone.Visibility = Visibility.Visible
+        btnMoreCam.Visibility = Visibility.Visible
+        btnYesCam.Visibility = Visibility.Hidden
+        btnNo.Visibility = Visibility.Hidden
+    End Sub
+    Private Sub ToggleEntryVisibility(onoff As Boolean)
+        Select Case onoff
+            Case True
+                txtCheckAmount.Visibility = Visibility.Visible
+                txtCheckNotes.Visibility = Visibility.Visible
+                txtCheckNumber.Visibility = Visibility.Visible
+                txtDepositDate.Visibility = Visibility.Visible
+                tbCheckNumber.Visibility = Visibility.Visible
+                dtpDepositDate.Visibility = Visibility.Visible
+                tbCheckAmount.Visibility = Visibility.Visible
+                tbCheckNotes.Visibility = Visibility.Visible
+            Case False
+                txtCheckAmount.Visibility = Visibility.Hidden
+                txtCheckNotes.Visibility = Visibility.Hidden
+                txtCheckNumber.Visibility = Visibility.Hidden
+                txtDepositDate.Visibility = Visibility.Hidden
+                tbCheckNumber.Visibility = Visibility.Hidden
+                dtpDepositDate.Visibility = Visibility.Hidden
+                tbCheckAmount.Visibility = Visibility.Hidden
+                tbCheckNotes.Visibility = Visibility.Hidden
+        End Select
+
+    End Sub
+
+    Private Function ConfirmAndSave() As Boolean
+        '// Check for data in each field and validate format.  If all are valid, save.
+        Dim CheckNumValid As Boolean, CheckAmtValid As Boolean, DepDateValid As Boolean, ReturnVal As Boolean
+        If tbCheckNumber.Text <> "" Then CheckNumValid = True
+        If tbCheckAmount.Text <> "" Then
+            Try
+                Dim amtvalid As Double = FormatNumber(tbCheckAmount.Text, 2)
+                CheckAmtValid = True
+            Catch ex As Exception
+                CheckAmtValid = False
+                tbCheckAmount.SelectAll()
+                tbCheckAmount.Focus()
+            End Try
+        End If
+        If dtpDepositDate.Text <> "" Then
+            Try
+                Dim dtvalid As Date = FormatDateTime(dtpDepositDate.SelectedDate, DateFormat.ShortDate)
+                DepDateValid = True
+            Catch ex As Exception
+                DepDateValid = False
+                dtpDepositDate.Focus()
+            End Try
+        End If
+        If tbCheckAmount.Text <> "" Or tbCheckNumber.Text <> "" Then
+            If CheckAmtValid = True And CheckNumValid = True And DepDateValid = True Then
+                ReturnVal = False
+                MainWindow.WCR.AddCamCheck(tbCheckNumber.Text, FormatNumber(tbCheckAmount.Text, 2), dtpDepositDate.SelectedDate, tbCheckNotes.Text)
+                tbCam.Text = ""
+            Else
+                tbCam.Text = "It looks like the check information isn't quite right.  Can you double check it and try again?"
+                ReturnVal = True
+            End If
+        End If
+        Return ReturnVal
+    End Function
 End Class

@@ -12,10 +12,18 @@
         <Grid Width="824" Height="449">
             <Image x:Name="imgAGNES" HorizontalAlignment="Left" Height="432" VerticalAlignment="Bottom" Width="261" Source="Resources/Full Agnes Image.png" Margin="0,0,0,7"/>
             <TextBlock x:Name="tbCam" HorizontalAlignment="Left" Margin="89,312,0,-9" TextWrapping="Wrap"  VerticalAlignment="Top" FontSize="16" Height="139" Width="725" TextAlignment="Center"/>
-            <Button x:Name="btnYesCam" Content ="Yes" Width="75" Height="33" Margin="243,409,506,0" VerticalAlignment="Top" Visibility="Hidden"/>
-            <Button x:Name="btnNo" Content ="No" Width="75" Height="33" VerticalAlignment="Top" Margin="583,409,166,0" Visibility="Hidden"/>
+            <Button x:Name="btnYesCam" Content ="Yes" Width="75" Height="33" Margin="243,409,506,0" VerticalAlignment="Top" Visibility="Hidden" TabIndex="4"/>
+            <Button x:Name="btnNo" Content ="No" Width="75" Height="33" VerticalAlignment="Top" Margin="583,409,166,0" Visibility="Hidden" TabIndex="6"/>
             <Button x:Name="btnMoreCam" Content="Add Another" Width="75" Height="33" VerticalAlignment="Top" Visibility="Hidden" Margin="243,409,506,0"/>
-            <Button x:Name="btnDone" Content="Done" Width="75" Height="33" VerticalAlignment="Top" Visibility="Hidden" Margin="583,409,166,0"/>
+            <Button x:Name="btnDone" Content="Done" Width="75" Height="33" VerticalAlignment="Top" Visibility="Hidden" Margin="583,409,166,0" TabIndex="7"/>
+            <TextBlock x:Name="txtCheckNumber" HorizontalAlignment="Left" Margin="261,77,0,0" TextWrapping="Wrap" Text="Check Number" VerticalAlignment="Top" FontSize="18"/>
+            <TextBlock x:Name="txtDepositDate" HorizontalAlignment="Left" Margin="261,113,0,0" TextWrapping="Wrap" Text="Deposit Date" VerticalAlignment="Top" FontSize="18"/>
+            <TextBlock x:Name="txtCheckAmount" HorizontalAlignment="Left" Margin="261,149,0,0" TextWrapping="Wrap" Text="Check Amount" VerticalAlignment="Top" FontSize="18"/>
+            <TextBlock x:Name="txtCheckNotes" HorizontalAlignment="Left" Margin="261,185,0,0" TextWrapping="Wrap" Text="Notes" VerticalAlignment="Top" FontSize="18"/>
+            <TextBox x:Name="tbCheckNumber" HorizontalAlignment="Left" Height="31" Margin="384,76,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="224" FontSize="18" TabIndex="0"/>
+            <DatePicker x:Name="dtpDepositDate" HorizontalAlignment="Left" Margin="384,112,0,0" VerticalAlignment="Top" Height="31" Width="224" FontSize="18" FirstDayOfWeek="Friday" IsTabStop="True" TabIndex="1"/>
+            <TextBox x:Name="tbCheckAmount" HorizontalAlignment="Left" Height="31" Margin="384,148,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="224" FontSize="18" TabIndex="2"/>
+            <TextBox x:Name="tbCheckNotes" HorizontalAlignment="Left" Height="113" Margin="384,184,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="224" FontSize="18" AcceptsReturn="True" MaxLines="6" TabIndex="3"/>
         </Grid>
     </Viewbox>
 </Window>
