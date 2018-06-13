@@ -3,7 +3,6 @@
     Public Sub New()
         InitializeComponent()
         MySettings.Default.UserName = Environment.UserName
-
     End Sub
 
     Private Sub Button_Click(sender As Object, e As RoutedEventArgs)
@@ -12,6 +11,5 @@
         WCRStartPage.ShowDialog()
         Dim WCRCamPage As New WCRCam
         WCRCamPage.ShowDialog()
-
     End Sub
 End Class

@@ -68,6 +68,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="VendorObject.vb" />
+    <Compile Include="WCR Objects\Tender.vb" />
     <Compile Include="WCR Objects\TenderObject.vb" />
     <Compile Include="WCRCam.xaml.vb">
       <DependentUpon>WCRCam.xaml</DependentUpon>
