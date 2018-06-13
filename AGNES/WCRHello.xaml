@@ -15,7 +15,7 @@
             <Button x:Name="btnLoadTenders" Content="Select Tender Summary file" HorizontalAlignment="Left" Margin="434,359,0,0" VerticalAlignment="Top" Width="181" Height="37" TabIndex="1" Visibility="Hidden"/>
             <Button x:Name="btnYes" Content="Yes, that's correct!" HorizontalAlignment="Left" Margin="305,359,0,0" VerticalAlignment="Top" Width="181" Height="37" TabIndex="0" Visibility="Hidden"/>
             <Button x:Name="btnNo" Content="No, that's wrong." HorizontalAlignment="Left" Margin="557,359,0,0" VerticalAlignment="Top" Width="181" Height="37" TabIndex="0" Visibility="Hidden"/>
-            <Button x:Name="btnAnother" Content="Load another file" HorizontalAlignment="Left" Margin="305,359,0,0" VerticalAlignment="Top" Width="181" Height="37" TabIndex="0" Visibility="Hidden"/>
+            <Button x:Name="btnAnother" Content="Load another vendor file" HorizontalAlignment="Left" Margin="305,359,0,0" VerticalAlignment="Top" Width="181" Height="37" TabIndex="0" Visibility="Hidden"/>
             <Button x:Name="btnDone" Content="I'm all done." HorizontalAlignment="Left" Margin="557,359,0,0" VerticalAlignment="Top" Width="181" Height="37" TabIndex="0" Visibility="Hidden"/>
         </Grid>
     </Viewbox>
