@@ -68,7 +68,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="WCR Objects\TenderObject.vb" />
+    <Compile Include="WCR Objects\CamCheck.vb" />
+    <Compile Include="WCR Objects\VendorObject.vb" />
+    <Compile Include="WCR Objects\Tender.vb" />
+    <Compile Include="WCRCam.xaml.vb">
+      <DependentUpon>WCRCam.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WCRHello.xaml.vb">
       <DependentUpon>WCRHello.xaml</DependentUpon>
     </Compile>
@@ -85,6 +90,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="WCRCam.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WCRHello.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -1,0 +1,21 @@
+﻿<Window x:Class="WCRCam"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AGNES"
+        mc:Ignorable="d"
+        Title="WCRCam" Height="450" Width="800" WindowStyle="None" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+
+    <Viewbox>
+
+        <Grid Width="824" Height="449">
+            <Image x:Name="imgAGNES" HorizontalAlignment="Left" Height="432" VerticalAlignment="Bottom" Width="261" Source="Resources/Full Agnes Image.png" Margin="0,0,0,7"/>
+            <TextBlock x:Name="tbCam" HorizontalAlignment="Left" Margin="89,312,0,-9" TextWrapping="Wrap"  VerticalAlignment="Top" FontSize="16" Height="139" Width="725" TextAlignment="Center"/>
+            <Button x:Name="btnYesCam" Content ="Yes" Width="75" Height="33" Margin="243,409,506,0" VerticalAlignment="Top" Visibility="Hidden"/>
+            <Button x:Name="btnNo" Content ="No" Width="75" Height="33" VerticalAlignment="Top" Margin="583,409,166,0" Visibility="Hidden"/>
+            <Button x:Name="btnMoreCam" Content="Add Another" Width="75" Height="33" VerticalAlignment="Top" Visibility="Hidden" Margin="243,409,506,0"/>
+            <Button x:Name="btnDone" Content="Done" Width="75" Height="33" VerticalAlignment="Top" Visibility="Hidden" Margin="583,409,166,0"/>
+        </Grid>
+    </Viewbox>
+</Window>
