@@ -12,7 +12,7 @@ Public Class WCRCam
         a.Duration = New Duration(TimeSpan.FromSeconds(1))
         imgAGNES.BeginAnimation(Image.HeightProperty, a)
         AddHandler dt.Tick, AddressOf PauseForMinimizing
-        dt.Interval = New TimeSpan(0, 0, 2)
+        dt.Interval = New TimeSpan(0, 0, 1)
         dt.Start()
     End Sub
     Public Sub PauseForMinimizing(ByVal sender As Object, ByVal e As EventArgs)
@@ -62,6 +62,7 @@ Public Class WCRCam
         btnYesCam.Visibility = Visibility.Hidden
         btnNo.Visibility = Visibility.Hidden
     End Sub
+
     Private Sub ToggleEntryVisibility(onoff As Boolean)
         Select Case onoff
             Case True
@@ -121,4 +122,5 @@ Public Class WCRCam
         End If
         Return ReturnVal
     End Function
+
 End Class

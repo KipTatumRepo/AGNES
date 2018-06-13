@@ -1,7 +1,6 @@
 ﻿Public Class WCRHello
     Private Property _currentstate As Integer
 
-
     Private Sub WCRHello_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
         tbHello.Text = "Hi, " & MySettings.Default.UserName & "!  It's me, Agnes, and I'll be guiding you through your WCR entry today." & Chr(13) & Chr(13) & "Let's get started by choosing whether we want to look at a past WCR or create a new one!"
     End Sub
@@ -15,8 +14,7 @@
         Do Until Weekday(wkst, FirstDayOfWeek.Friday) = 1
             wkst = wkst.AddDays(-1)
         Loop
-
-        tbHello.Text = "Sounds good, " & MySettings.Default.UserName & ".  Let's get started on the WCR for the week starting " & wkst & "." & Chr(13) & Chr(13) & "First things first, choose your Sales Tender Summary file and I'll pull in the information."
+        tbHello.Text = "Sounds good, " & MySettings.Default.UserName & ".  Let's get started on the WCR for the week starting " & wkst & "." & Chr(13) & Chr(13) & "First things first, choose a vendor's Sales Tender Summary file and I'll pull in the information."
     End Sub
 
     Private Sub LoadTenderFile(sender As Object, e As RoutedEventArgs) Handles btnLoadTenders.Click, btnAnother.Click
