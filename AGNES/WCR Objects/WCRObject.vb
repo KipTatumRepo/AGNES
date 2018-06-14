@@ -37,7 +37,6 @@ Public Class WCRObject
             releaseObject(xlApp)
             disp.PrintToScreen(v)
         End If
-
     End Sub
 
     Public Sub AddCamCheck(Num As String, Amt As Double, Dte As Date, Nts As String)
@@ -45,6 +44,10 @@ Public Class WCRObject
         CamChecks.Add(c)
     End Sub
 
+    Public Sub PrintWCR()
+        Dim ph As String = ""
+        'TODO: Create print WCR routine
+    End Sub
     Private Function GetVendorNameFromString(st)
         Dim vn As String = st
         Dim si As Integer = vn.IndexOf("(")
