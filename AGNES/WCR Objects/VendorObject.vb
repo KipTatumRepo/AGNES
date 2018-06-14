@@ -33,7 +33,6 @@
     Public Property VendorPayment As Double
     Public Property DueFromVendor As Double
 
-
     Public Sub New()
         'TODO: Add function to populate CAM and KPI values for the vendor from a table.  Hard coding for development use only
         CAM = 0.075
@@ -43,6 +42,11 @@
         Dim t As New Tender With {.TenderID = id, .TenderName = nm, .TenderQty = qty, .TenderAmt = amt}
         Tenders.Add(t)
         Recalculate()
+    End Sub
+
+    Public Sub PrintInvoice()
+        Dim ph As String = ""
+        'TODO: Add invoice printing routine
     End Sub
 
     Private Sub Recalculate()
@@ -77,5 +81,6 @@
             DueFromVendor = CompassPayment - VendorPayment
         Next
     End Sub
+
 
 End Class
