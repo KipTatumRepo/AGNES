@@ -1,0 +1,16 @@
+﻿<Window x:Class="WCRFinal"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AGNES"
+        mc:Ignorable="d"
+        Title="WCRFinal" Height="450" Width="800" WindowStyle="None" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+    <Viewbox>
+
+        <Grid Width="824" Height="449">
+            <Image x:Name="imgAGNES" HorizontalAlignment="Left" Height="120" VerticalAlignment="Bottom" Width="84" Source="Resources/Full Agnes Image.png" Margin="0,0,0,7"/>
+            <TextBlock x:Name="tbFinal" HorizontalAlignment="Left" Margin="89,312,0,-9" TextWrapping="Wrap"  VerticalAlignment="Top" FontSize="16" Height="139" Width="725" TextAlignment="Center" Text="This is the last page!"/>
+  </Grid>
+    </Viewbox>
+</Window>

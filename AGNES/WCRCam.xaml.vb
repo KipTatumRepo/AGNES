@@ -32,10 +32,9 @@ Public Class WCRCam
     End Sub
 
     Private Sub CamComplete(sender As Object, e As RoutedEventArgs) Handles btnDone.Click, btnNo.Click
+        'TODO: Confirm all objects are being released - program is staying open after this point.
         If ConfirmAndSave() = False Then
             Close()
-            MsgBox("All done")
-            'TODO: Confirm all objects are being released - program is staying open after this point.
         Else
             MsgBox("Not saved")
         End If
