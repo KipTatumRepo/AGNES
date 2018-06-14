@@ -21,6 +21,18 @@
     Public Property KPIAmt As Double
     Public Property CAM As Double
     Public Property KPI As Double
+    Public Property MealCard As Double
+    Public Property MealCardCredit As Double
+    Public Property ECoupons As Double
+    Public Property ECash As Double
+    Public Property ScratchCoupons As Double
+    Public Property ExpiredCard As Double
+    Public Property IOCharges As Double
+    Public Property Suspend As Double
+    Public Property CompassPayment As Double
+    Public Property VendorPayment As Double
+    Public Property DueFromVendor As Double
+
 
     Public Sub New()
         'TODO: Add function to populate CAM and KPI values for the vendor from a table.  Hard coding for development use only
@@ -37,6 +49,7 @@
         Dim gs As Double = 0
         For Each t As Tender In Tenders
             gs += t.TenderAmt
+            'TODO: Handle suspend and all other tender-specific properties and Compass Owes/Vendor Owes/Total Owed
         Next
         GrossSales = gs
     End Sub
