@@ -44,13 +44,38 @@
         Tenders.Add(t)
         Recalculate()
     End Sub
+
     Private Sub Recalculate()
         '// Calculate Gross Sales, Tax, and Net Sales
         Dim gs As Double = 0
         For Each t As Tender In Tenders
             gs += t.TenderAmt
+            GrossSales = gs
             'TODO: Handle suspend and all other tender-specific properties and Compass Owes/Vendor Owes/Total Owed
+            'TODO: Map property association to Tender ID in table.  Hard coding for development use only
+            Select Case t.TenderID
+                Case 9
+                    MealCard = t.TenderAmt
+                Case 10
+                    MealCardCredit = t.TenderAmt
+                Case 11
+                    ECash = t.TenderAmt
+                Case 12
+                    ECoupons = t.TenderAmt
+                Case 35, 55, 81
+                    IOCharges = t.TenderAmt
+                Case 37
+                    'TODO: Deal with Suspend items
+                    Suspend = t.TenderAmt
+                Case 45
+                    ExpiredCard = t.TenderAmt
+                Case 52
+                    ScratchCoupons = t.TenderAmt
+            End Select
+            CompassPayment = MealCard + ECoupons + ECash + ScratchCoupons + ExpiredCard + IOCharges
+            VendorPayment = MealCardCredit + CAMAmt + KPIAmt
+            DueFromVendor = CompassPayment - VendorPayment
         Next
-        GrossSales = gs
     End Sub
+
 End Class
