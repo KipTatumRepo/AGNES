@@ -76,6 +76,15 @@ Partial Friend NotInheritable Class MySettings
             Me("UserName") = value
         End Set
     End Property
+    
+    <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("0.1")>  _
+    Public ReadOnly Property WASalesTax() As Double
+        Get
+            Return CType(Me("WASalesTax"),Double)
+        End Get
+    End Property
 End Class
 
 Namespace My
