@@ -7,12 +7,13 @@
     End Sub
 
     Public Sub Button_Click(sender As Object, e As RoutedEventArgs)
-        Close()
+        Hide()
         Dim WCRStartPage As New WCRHello
-        Dim WCRCamPage As New WCRCam
-        Dim WCRFinalPage As New WCRFinal
         WCRStartPage.ShowDialog()
+        Dim WCRCamPage As New WCRCam
         WCRCamPage.ShowDialog()
+        Dim WCRFinalPage As New WCRFinal
         WCRFinalPage.ShowDialog()
+        Show()
     End Sub
 End Class

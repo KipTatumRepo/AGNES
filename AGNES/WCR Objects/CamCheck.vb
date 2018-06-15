@@ -1,4 +1,5 @@
 ﻿Public Class CamCheck
+    Public Property VendorName As String
     Public Property CheckNumber As String
     Public Property DepositDate As Date
     Public Property CheckAmt As Double
