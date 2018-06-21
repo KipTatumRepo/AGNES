@@ -1,6 +1,6 @@
 ﻿Public Class Tender
     Private _tenderid As Integer
-    Public Property TenderID As Integer
+    Public Property TenderId As Integer
         Get
             Return _tenderid
         End Get
@@ -13,6 +13,10 @@
     Public Property TenderQty As Integer
     Public Property TenderAmt As Double
     Public Property GL As Long
+
+    Public Sub New()
+        Dim ph As String = ""
+    End Sub
 
     Private Sub GetGLCode(tid)
         'TODO: Connect to mapping table and look up associated GL; the below is hard coding for development only

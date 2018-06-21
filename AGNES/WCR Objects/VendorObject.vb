@@ -1,6 +1,5 @@
 ﻿Public Class VendorObject
     Public Property VendorName As String
-    Public Tenders As New List(Of Tender)
     Private _grosssales As Double
     Public Property GrossSales As Double
         Get
@@ -32,14 +31,16 @@
     Public Property CompassPayment As Double
     Public Property VendorPayment As Double
     Public Property DueFromVendor As Double
+    Public Tenders As New List(Of Tender)
 
     Public Sub New()
         'TODO: Add function to populate CAM and KPI values for the vendor from a table.  Hard coding for development use only
         CAM = 0.075
         KPI = 0.075
     End Sub
+
     Public Sub AddTender(id, nm, qty, amt)
-        Dim t As New Tender With {.TenderID = id, .TenderName = nm, .TenderQty = qty, .TenderAmt = amt}
+        Dim t As New Tender With {.TenderId = id, .TenderName = nm, .TenderQty = qty, .TenderAmt = amt}
         Tenders.Add(t)
         Recalculate()
     End Sub
@@ -57,7 +58,7 @@
             GrossSales = gs
             'TODO: Handle suspend and all other tender-specific properties and Compass Owes/Vendor Owes/Total Owed
             'TODO: Map property association to Tender ID in table.  Hard coding for development use only
-            Select Case t.TenderID
+            Select Case t.TenderId
                 Case 9
                     MealCard = t.TenderAmt
                 Case 10
@@ -81,6 +82,5 @@
             DueFromVendor = CompassPayment - VendorPayment
         Next
     End Sub
-
 
 End Class
