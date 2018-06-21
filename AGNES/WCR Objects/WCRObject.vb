@@ -23,7 +23,6 @@ Public Class WCRObject
             Dim v As New VendorObject With {.VendorName = vn}
             Vendors.Add(v)
             ct += 3
-
             Do Until valz = "Subtotal"
                 '// Check for Suspend and Dept Charges
                 Select Case CType(ws.Cells(ct, 1), Excel.Range).Value
