@@ -1,11 +1,16 @@
 ﻿Imports Microsoft.Win32
 Imports Microsoft.Office.Interop
 Public Class WCRObject
+    Public WeekStart As Date
+    Public Author As String
+    Public ShortName As String
     Public Vendors As New List(Of VendorObject)
     Public CamChecks As New List(Of CamCheck)
+
     Public Sub New()
         Dim ph As String = ""
     End Sub
+
     Public Sub LoadTenders(ByRef disp As WCRHello)
         Dim vn As String, fd As New OpenFileDialog()
         fd.DefaultExt = ".xls"
@@ -49,8 +54,7 @@ Public Class WCRObject
                         BadFile = True
                         Exit Do
                     Case Else
-                        v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, CType(ws.Cells(ct, 2), Excel.Range).Value,
-                            FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                        v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, CType(ws.Cells(ct, 2), Excel.Range).Value,FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
                 End Select
                 ct += 1
                 valz = CType(ws.Cells(ct, 1), Excel.Range).Value
@@ -64,8 +68,8 @@ Public Class WCRObject
         End If
     End Sub
 
-    Public Sub AddCamCheck(Num As String, Amt As Double, Dte As Date, Nts As String)
-        Dim c As New CamCheck With {.CheckNumber = Num, .CheckAmt = Amt, .DepositDate = Dte, .Notes = Nts}
+    Public Sub AddCamCheck(Vnm As String, Num As String, Amt As Double, Dte As Date, Nts As String)
+        Dim c As New CamCheck With {.VendorName = Vnm, .CheckNumber = Num, .CheckAmt = Amt, .DepositDate = Dte, .Notes = Nts}
         CamChecks.Add(c)
     End Sub
 
@@ -89,7 +93,7 @@ Public Class WCRObject
         Return vn
     End Function
 
-    Private Sub releaseObject(ByVal obj As Object)
+    Private Sub ReleaseObject(ByVal obj As Object)
         Try
             System.Runtime.InteropServices.Marshal.ReleaseComObject(obj)
             obj = Nothing

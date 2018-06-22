@@ -1,5 +1,6 @@
 ﻿Public Class MainWindow
     Public Shared WCR As New WCRObject
+
     Public Sub New()
         InitializeComponent()
         MySettings.Default.UserName = Environment.UserName
@@ -13,5 +14,6 @@
         WCRCamPage.ShowDialog()
         Dim WCRFinalPage As New WCRFinal
         WCRFinalPage.ShowDialog()
+        Show()
     End Sub
 End Class
