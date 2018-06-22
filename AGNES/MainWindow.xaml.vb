@@ -1,5 +1,6 @@
 ﻿Public Class MainWindow
     Public Shared WCR As New WCRObject
+
     Public Sub New()
         InitializeComponent()
         MySettings.Default.UserName = Environment.UserName
