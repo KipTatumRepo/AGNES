@@ -6,7 +6,7 @@
         MySettings.Default.UserName = Environment.UserName
     End Sub
 
-    Public Sub Button_Click(sender As Object, e As RoutedEventArgs)
+    Private Sub Button_Click(sender As Object, e As RoutedEventArgs)
         Hide()
         Dim WCRStartPage As New WCRHello
         WCRStartPage.ShowDialog()
