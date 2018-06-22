@@ -48,6 +48,7 @@ Public Class WCRObject
         Dim ph As String = ""
         'TODO: Create print WCR routine
     End Sub
+
     Private Function GetVendorNameFromString(st)
         Dim vn As String = st
         Dim si As Integer = vn.IndexOf("(")

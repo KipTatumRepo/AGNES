@@ -5,13 +5,9 @@
         MySettings.Default.UserName = Environment.UserName
     End Sub
 
-    Private Sub Button_Click(sender As Object, e As RoutedEventArgs)
-        Dim WCRStartPage As New WCRHello
-        Dim WCRCamPage As New WCRCam
-        Dim WCRFinalPage As New WCRFinal
+    Private Sub RunWCR(sender As Object, e As RoutedEventArgs) Handles btnWCR.Click
         Hide()
-        WCRStartPage.ShowDialog()
-        WCRCamPage.ShowDialog()
-        WCRFinalPage.ShowDialog()
+        WCRModule.Runmodule()
+        Show()
     End Sub
 End Class

@@ -96,6 +96,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Module Orchestrators\WCRModule.vb" />
     <Compile Include="WCR Objects\CamCheck.vb" />
     <Compile Include="WCR Objects\VendorObject.vb" />
     <Compile Include="WCR Objects\Tender.vb" />
@@ -258,5 +259,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
