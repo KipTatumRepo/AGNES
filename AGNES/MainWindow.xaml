@@ -10,7 +10,7 @@
         <ImageBrush ImageSource="Resources/Portal.png"/>
     </Window.Background>
     <Grid>
-        <Button Content="WCR" HorizontalAlignment="Left" Margin="526,256,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <Button x:Name="btnWCR" Content="WCR" HorizontalAlignment="Left" Margin="526,256,0,0" VerticalAlignment="Top" Width="75" Click="RunWCR"/>
 
     </Grid>
 </Window>
