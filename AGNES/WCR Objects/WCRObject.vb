@@ -5,7 +5,6 @@ Public Class WCRObject
     Public CamChecks As New List(Of CamCheck)
     Public Sub New()
         Dim ph As String = ""
-        Dim ph1 As String = ""
     End Sub
     Public Sub LoadTenders(ByRef disp As WCRHello)
         Dim vn As String, fd As New OpenFileDialog()
