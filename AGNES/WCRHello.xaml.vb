@@ -23,6 +23,10 @@
 
     Private Sub LoadTenderFile(sender As Object, e As RoutedEventArgs) Handles btnLoadTenders.Click, btnAnother.Click
         MainWindow.WCR.LoadTenders(Me)
+        btnYes.Visibility = Visibility.Visible
+        btnNo.Visibility = Visibility.Visible
+        btnAnother.Visibility = Visibility.Hidden
+        btnDone.Visibility = Visibility.Hidden
     End Sub
 
     Private Sub LoadAnotherTenderFile(sender As Object, e As RoutedEventArgs) Handles btnYes.Click

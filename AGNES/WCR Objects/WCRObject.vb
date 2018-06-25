@@ -1,5 +1,8 @@
 ﻿Imports Microsoft.Win32
 Imports Microsoft.Office.Interop
+Imports System.Printing
+Imports System.Windows.Xps
+
 Public Class WCRObject
     Public WeekStart As Date
     Public Author As String
@@ -53,6 +56,12 @@ Public Class WCRObject
                         disp.tbHello.Text = "I've terminated the tender import for " & v.VendorName & ".  Please edit the file, if needed, and reload."
                         BadFile = True
                         Exit Do
+                    Case 2, 3, 91, 93, 94       '// Visa/Mastercard/Discover
+                        v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "VisaMastercard", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                    Case 83                     '// Freedompay [pass-through]
+                        v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "FreedomPay", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                    Case 92                     '// AMEX
+                        v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "AMEX", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
                     Case Else
                         v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, CType(ws.Cells(ct, 2), Excel.Range).Value,FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
                 End Select
@@ -78,17 +87,55 @@ Public Class WCRObject
         'TODO: Create print WCR routine
     End Sub
 
+    Public Sub PrintInvoices()
+        Dim pd As New PrintDialog
+        pd.ShowDialog()
+
+
+        'TODO: Add error trap for dialog box
+        Dim fd As New FlowDocument With {.ColumnGap = 0, .ColumnWidth = pd.PrintableAreaWidth}
+        Dim v As VendorObject, ct As Integer = Vendors.Count
+
+        For Each v In Vendors
+            ct -= 1
+            v.PrintInvoice(pd, fd)
+            Dim s As New Section() With {.BreakPageBefore = True}
+            If ct > 0 Then fd.Blocks.Add(s)
+        Next
+
+        Dim xps_writer As XpsDocumentWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue)
+        Dim idps As IDocumentPaginatorSource = CType(fd, IDocumentPaginatorSource)
+        xps_writer.Write(idps.DocumentPaginator)
+
+    End Sub
+
     Private Function GetVendorNameFromString(st)
         Dim vn As String = st
         Dim si As Integer = vn.IndexOf("(")
         Dim li As Integer = vn.IndexOf(")")
         Dim vnum As Integer = FormatNumber(vn.Substring(si + 1, (li - si) - 1))
         'TODO: Replace hard code with db table lookup for store num -> vendor name
-        Select Case vnum
+        Select Case vnum 'This is the STORE number, NOT the profit center ID
+            Case 27
+                vn = "Concierge"
+                'TODO: Handle Concierge file use for Meal Card charge-ups
+            Case 44
+                vn = "Acapulco Fresh"
+            Case 46
+                vn = "Chandys"
+            Case 48
+                vn = "Jewel"
             Case 49
                 vn = "Typhoon"
+            Case 77
+                vn = "Lunchbox Laboratory"
+            Case 85
+                vn = "Yonanas"
+            Case 86
+                vn = "MOD Pizza"
             Case Else
                 vn = "Nada"
+                'TODO: Handle unrecognized vendor tender files
         End Select
         Return vn
     End Function
