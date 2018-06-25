@@ -1,5 +1,8 @@
 ﻿Imports Microsoft.Win32
 Imports Microsoft.Office.Interop
+Imports System.Printing
+Imports System.Windows.Xps
+
 Public Class WCRObject
     Public WeekStart As Date
     Public Author As String
@@ -76,6 +79,25 @@ Public Class WCRObject
     Public Sub PrintWCR()
         Dim ph As String = ""
         'TODO: Create print WCR routine
+    End Sub
+
+    Public Sub PrintInvoices()
+        Dim pd As New PrintDialog
+        pd.ShowDialog()
+        'TODO: Add error trap for dialog box
+        Dim fd As New FlowDocument With {.ColumnGap = 0, .ColumnWidth = pd.PrintableAreaWidth}
+        Dim s As New Section() With {.BreakPageBefore = True}
+
+        Dim v As VendorObject
+        For Each v In Vendors
+            v.PrintInvoice(pd, fd)
+            fd.Blocks.Add(s)
+        Next
+
+        Dim xps_writer As XpsDocumentWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue)
+        Dim idps As IDocumentPaginatorSource = CType(fd, IDocumentPaginatorSource)
+        xps_writer.Write(idps.DocumentPaginator)
+
     End Sub
 
     Private Function GetVendorNameFromString(st)

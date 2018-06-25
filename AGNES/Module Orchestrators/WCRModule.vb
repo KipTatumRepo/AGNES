@@ -1,10 +1,10 @@
 ﻿Module WCRModule
     Public Sub Runmodule()
         Dim WCRStartPage As New WCRHello
-        Dim WCRCamPage As New WCRCam
-        Dim WCRFinalPage As New WCRFinal
         WCRStartPage.ShowDialog()
+        Dim WCRCamPage As New WCRCam
         WCRCamPage.ShowDialog()
+        Dim WCRFinalPage As New WCRFinal
         WCRFinalPage.ShowDialog()
     End Sub
 End Module
