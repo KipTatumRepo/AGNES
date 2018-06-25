@@ -22,6 +22,9 @@
     Public Property KPI As Double
     Public Property Cash As Double
     Public Property CreditCards As Double
+    Public Property VisaMastercard As Double
+    Public Property FreedomPay As Double
+    Public Property AMEX As Double
     Public Property MealCard As Double
     Public Property MealCardCredit As Double
     Public Property ECoupons As Double
@@ -247,12 +250,15 @@
     Private Sub Recalculate()
         '// Calculate Gross Sales, Tax, and Net Sales
         Dim gs As Double = 0
+        CreditCards = 0
         For Each t As Tender In Tenders
             gs += t.TenderAmt
             GrossSales = gs
             'TODO: Handle suspend and all other tender-specific properties and Compass Owes/Vendor Owes/Total Owed
             'TODO: Map property association to Tender ID in table.  Hard coding for development use only
             Select Case t.TenderId
+                Case 1
+                    Cash = t.TenderAmt
                 Case 9
                     MealCard = t.TenderAmt
                 Case 10
@@ -270,6 +276,8 @@
                     ExpiredCard = t.TenderAmt
                 Case 52
                     ScratchCoupons = t.TenderAmt
+                Case 2, 3, 83, 91, 92, 93, 94
+                    CreditCards += t.TenderAmt
             End Select
             CompassPayment = MealCard + ECoupons + ECash + ScratchCoupons + ExpiredCard + IOCharges
             VendorPayment = MealCardCredit + CAMAmt + KPIAmt
