@@ -52,7 +52,7 @@
         '// Create Commons logo object
         Dim bimg As New BitmapImage
         bimg.BeginInit()
-        bimg.UriSource = (New Uri("pack://application:,,,/Images/Commons.jpg"))
+        bimg.UriSource = (New Uri("pack://application:,,,/Resources/Commons.jpg"))
         bimg.EndInit()
         Dim img As New Image With {.Source = bimg, .Stretch = Stretch.None}
         Dim buic As New BlockUIContainer(img)
@@ -169,7 +169,7 @@
         cr = t.RowGroups(0).Rows(18)
         cr.Cells.Add(New TableCell(New Paragraph(New Run(" ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
         cr.Cells.Add(New TableCell(New Paragraph(New Run("% of Sales to Remit to Compass:")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontWeight = FontWeights.Normal, .FontSize = 12}))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(CAMAmt, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontWeight = FontWeights.Normal, .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency((CAMAmt + KPIAmt), 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontWeight = FontWeights.Normal, .FontSize = 12}))
         cr.Cells.Add(New TableCell(New Paragraph(New Run(" ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
         cr = t.RowGroups(0).Rows(19)
         cr.Cells.Add(New TableCell(New Paragraph(New Run(" ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))

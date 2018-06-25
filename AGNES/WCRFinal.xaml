@@ -11,6 +11,7 @@
         <Grid Width="824" Height="449">
             <Image x:Name="imgAGNES" HorizontalAlignment="Left" Height="120" VerticalAlignment="Bottom" Width="84" Source="Resources/Full Agnes Image.png" Margin="0,0,0,7"/>
             <TextBlock x:Name="tbFinal" HorizontalAlignment="Left" Margin="89,312,0,-9" TextWrapping="Wrap"  VerticalAlignment="Top" FontSize="16" Height="139" Width="725" TextAlignment="Center" Text="This is the last page!"/>
+            <Button x:Name="btnPrintInvoices" Content="Print Invoices" HorizontalAlignment="Left" Margin="413,154,0,0" VerticalAlignment="Top" Width="104"/>
         </Grid>
     </Viewbox>
 </Window>

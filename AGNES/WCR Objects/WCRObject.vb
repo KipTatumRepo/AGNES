@@ -84,14 +84,17 @@ Public Class WCRObject
     Public Sub PrintInvoices()
         Dim pd As New PrintDialog
         pd.ShowDialog()
+
+
         'TODO: Add error trap for dialog box
         Dim fd As New FlowDocument With {.ColumnGap = 0, .ColumnWidth = pd.PrintableAreaWidth}
-        Dim s As New Section() With {.BreakPageBefore = True}
+        Dim v As VendorObject, ct As Integer = Vendors.Count
 
-        Dim v As VendorObject
         For Each v In Vendors
+            ct -= 1
             v.PrintInvoice(pd, fd)
-            fd.Blocks.Add(s)
+            Dim s As New Section() With {.BreakPageBefore = True}
+            If ct > 0 Then fd.Blocks.Add(s)
         Next
 
         Dim xps_writer As XpsDocumentWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue)
@@ -106,11 +109,27 @@ Public Class WCRObject
         Dim li As Integer = vn.IndexOf(")")
         Dim vnum As Integer = FormatNumber(vn.Substring(si + 1, (li - si) - 1))
         'TODO: Replace hard code with db table lookup for store num -> vendor name
-        Select Case vnum
+        Select Case vnum 'This is the STORE number, NOT the profit center ID
+            Case 27
+                vn = "Concierge"
+                'TODO: Handle Concierge file use for Meal Card charge-ups
+            Case 44
+                vn = "Acapulco Fresh"
+            Case 46
+                vn = "Chandys"
+            Case 48
+                vn = "Jewel"
             Case 49
                 vn = "Typhoon"
+            Case 77
+                vn = "Lunchbox Laboratory"
+            Case 85
+                vn = "Yonanas"
+            Case 86
+                vn = "MOD Pizza"
             Case Else
                 vn = "Nada"
+                'TODO: Handle unrecognized vendor tender files
         End Select
         Return vn
     End Function
