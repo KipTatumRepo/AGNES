@@ -101,7 +101,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AGNESDataSet.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AGNESDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Module Orchestrators\WCRModule.vb" />
+    <Compile Include="Resources\DataSets.vb" />
     <Compile Include="WCR Objects\CamCheck.vb" />
     <Compile Include="WCR Objects\VendorObject.vb" />
     <Compile Include="WCR Objects\Tender.vb" />
@@ -182,6 +188,17 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
     </EmbeddedResource>
+    <None Include="AGNESDataSet.xsc">
+      <DependentUpon>AGNESDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="AGNESDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>AGNESDataSet.Designer.vb</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="AGNESDataSet.xss">
+      <DependentUpon>AGNESDataSet.xsd</DependentUpon>
+    </None>
     <None Include="AGNES_TemporaryKey.pfx" />
     <None Include="My Project\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
