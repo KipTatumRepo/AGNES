@@ -106,6 +106,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AGNESDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="BusinessGroupObjects\BusinessGroup.vb" />
+    <Compile Include="BusinessGroupObjects\CRBuilding.vb" />
+    <Compile Include="BusinessGroupObjects\RefreshEvent.vb" />
     <Compile Include="Module Orchestrators\WCRModule.vb" />
     <Compile Include="Resources\DataSets.vb" />
     <Compile Include="WCR Objects\CamCheck.vb" />
