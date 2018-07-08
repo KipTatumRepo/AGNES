@@ -35,6 +35,18 @@
             _worktimes = value
         End Set
     End Property
+    Private _onrem As Byte
+    Public Property OnsiteRemote As Byte
+        Get
+            Return _onrem
+        End Get
+        Set(value As Byte)
+            _onrem = value
+        End Set
+    End Property
+    Public Property Communications As List(Of Byte)
+    Public Property Culture As List(Of Byte)
+    Public Property Locations As List(Of CRBuilding)
     Private _orgleader As Byte
     Public Property OrgLeader As Byte
         Get
@@ -53,6 +65,8 @@
             _relmanager = value
         End Set
     End Property
+    Public Property Leadership As List(Of Byte)
+    Public Property FrequentCustomers As List(Of Byte)
     Private _totalrev As Double
     Public Property TotalRevenue As Double
         Get
@@ -98,8 +112,27 @@
             _offsitespend = value
         End Set
     End Property
-
+    Public Property TopOffsiteLocations As List(Of Byte)    '// Could be expanded to a list of objects with more detailed info
+    Public Property EmbeddedPlanners As List(Of Byte)       '// Could be expanded to a list of objects with more detailed info
+    Public Property TopBookedSpaces As List(Of Byte)        '// Could be expanded to a list of objects with more detailed info
+    Public Property TopEventTypes As List(Of Byte)
+    Public Property NotableEvents As List(Of Byte)          '// Could be expanded to a list of objects with more detailed info
+    Public Property EventionsInvolvement As List(Of Byte)
     Public Property CREvents As List(Of RefreshEvent)
 
+    Public Sub New()
+        Dim ph As String = ""
+    End Sub
 
+    Public Sub Load()
+        Dim ph As String = ""
+    End Sub
+
+    Public Sub Save()
+        Dim ph As String = ""
+    End Sub
+
+    Public Sub Delete()
+        Dim ph As String = ""
+    End Sub
 End Class
