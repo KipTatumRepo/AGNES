@@ -20,58 +20,73 @@
                         </LinearGradientBrush>
                     </TabItem.Background>
                     <Grid x:Name="grdGroup" Background="#FFE5E5E5" Margin="0,-1,0,1">
-                        <TextBlock Margin="10,27,0,0" TextWrapping="Wrap" Text="Business group name" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="243"/>
-                        <TextBlock Margin="10,64,0,0" TextWrapping="Wrap" Text="Group Overview" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="243"/>
-                        <TextBlock Margin="10,146,0,0" TextWrapping="Wrap" Text="Headcount" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="130"/>
-                        <TextBlock Margin="279,146,0,0" TextWrapping="Wrap" Text="Work Times" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="135"/>
-                        <TextBlock Margin="633,147,0,0" TextWrapping="Wrap" Text="Workspace Type" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="184"/>
-                        <TextBlock HorizontalAlignment="Left" Margin="10,257,0,0" TextWrapping="Wrap" Text="Communications" VerticalAlignment="Top" FontSize="24" Width="352" TextAlignment="Center"/>
-                        <TextBlock Margin="414,257,0,0" TextWrapping="Wrap" Text="Culture" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="253" TextAlignment="Center"/>
-                        <TextBlock Margin="718,257,0,0" TextWrapping="Wrap" Text="Locations" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="282" TextAlignment="Center"/>
-                        <ComboBox x:Name="cboGroup" Margin="264,30,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="1" HorizontalAlignment="Left" Width="700"/>
-                        <Button x:Name="btnAddGroup" Content="+" Margin="969,29,0,0" VerticalAlignment="Top" FontSize="20" HorizontalAlignment="Left" Width="31">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="109*"/>
+                            <ColumnDefinition Width="8*"/>
+                            <ColumnDefinition Width="893*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Margin="10,27,0,0" TextWrapping="Wrap" Text="Business group name" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="243" Grid.ColumnSpan="3"/>
+                        <TextBlock Margin="10,64,0,0" TextWrapping="Wrap" Text="Group Overview" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="243" Grid.ColumnSpan="3"/>
+                        <TextBlock Margin="10,146,0,0" TextWrapping="Wrap" Text="Headcount" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="130" Grid.ColumnSpan="3"/>
+                        <TextBlock Margin="161.512,146,0,0" TextWrapping="Wrap" Text="Work Times" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="135" Grid.Column="2"/>
+                        <TextBlock Margin="515.512,147,0,0" TextWrapping="Wrap" Text="Workspace Type" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="184" Grid.Column="2"/>
+                        <TextBlock HorizontalAlignment="Left" Margin="10,237,0,0" TextWrapping="Wrap" Text="Communications" VerticalAlignment="Top" FontSize="24" Width="352" TextAlignment="Center" Grid.ColumnSpan="3"/>
+                        <TextBlock Margin="296.512,237,0,0" TextWrapping="Wrap" Text="Culture" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="253" TextAlignment="Center" Grid.Column="2"/>
+                        <TextBlock Margin="600.512,237,0,0" TextWrapping="Wrap" Text="Locations" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="282" TextAlignment="Center" Grid.Column="2"/>
+                        <ComboBox x:Name="cboGroup" Margin="146.512,30,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="1" HorizontalAlignment="Left" Width="700" Grid.Column="2"/>
+                        <Button x:Name="btnAddGroup" Content="+" Margin="851.512,29,0,0" VerticalAlignment="Top" FontSize="20" HorizontalAlignment="Left" Width="31" Grid.Column="2">
                             <Button.Effect>
                                 <DropShadowEffect ShadowDepth="3" Color="#FFBBB2B2"/>
                             </Button.Effect>
                         </Button>
-                        <ComboBox x:Name="cboWorkTimes" Margin="419,148,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="4" HorizontalAlignment="Left" Width="192"/>
-                        <ComboBox x:Name="cboWorkspace" Margin="822,149,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="5" HorizontalAlignment="Left" Width="142"/>
-                        <TextBox x:Name="txtOverview" Height="68" Margin="264,73,0,0" TextWrapping="Wrap" VerticalAlignment="Top" MaxLines="6" MaxLength="4000" IsUndoEnabled="True" TabIndex="2" HorizontalAlignment="Left" Width="700"/>
-                        <TextBox x:Name="txtHeadcount" Height="31" Margin="145,147,0,0" VerticalAlignment="Top" MaxLines="1" MaxLength="8" TabIndex="3" HorizontalAlignment="Left" Width="108"/>
-                        <Separator Height="39" Margin="0,193,0,0" VerticalAlignment="Top"/>
-                        <ListView x:Name="lbxCommSelect" Height="94" Margin="10,294,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="352" TabIndex="6">
+                        <ComboBox x:Name="cboWorkTimes" Margin="301.512,148,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="4" HorizontalAlignment="Left" Width="192" Grid.Column="2"/>
+                        <ComboBox x:Name="cboWorkspace" Margin="704.512,149,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="5" HorizontalAlignment="Left" Width="142" Grid.Column="2"/>
+                        <TextBox x:Name="txtOverview" Height="68" Margin="146.512,73,0,0" TextWrapping="Wrap" VerticalAlignment="Top" MaxLines="6" MaxLength="4000" IsUndoEnabled="True" TabIndex="2" HorizontalAlignment="Left" Width="700" Grid.Column="2"/>
+                        <TextBox x:Name="txtHeadcount" Height="31" Margin="27.512,147,0,0" VerticalAlignment="Top" MaxLines="1" MaxLength="8" TabIndex="3" HorizontalAlignment="Left" Width="108" Grid.Column="2"/>
+                        <Separator Height="39" Margin="0,193,0,0" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
+                        <ListView x:Name="lbxCommSelect" Height="114" Margin="10,274,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="352" TabIndex="6" Grid.ColumnSpan="3">
                             <ListView.View>
                                 <GridView>
                                 </GridView>
                             </ListView.View>
                         </ListView>
-                        <ListView x:Name="lbxCommsChosen" Height="138" Margin="10,393,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="352">
+                        <ListView x:Name="lbxCommsChosen" Height="138" Margin="10,393,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="352" Grid.ColumnSpan="3">
                             <ListView.View>
                                 <GridView>
                                 </GridView>
                             </ListView.View>
                         </ListView>
-                        <ListView x:Name="lbxCultureSelect" Height="94" Margin="414,294,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="253" TabIndex="7">
+                        <ListView x:Name="lbxCultureSelect" Height="114" Margin="296.512,274,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="253" TabIndex="7" Grid.Column="2">
                             <ListView.View>
                                 <GridView/>
                             </ListView.View>
                         </ListView>
-                        <ListView x:Name="lbxCultureChosen" Height="138" Margin="414,393,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="253">
+                        <ListView x:Name="lbxCultureChosen" Height="138" Margin="296.512,393,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="253" Grid.Column="2">
                             <ListView.View>
                                 <GridView/>
                             </ListView.View>
                         </ListView>
-                        <ListView x:Name="lbxLocationsSelect" Height="94" Margin="718,294,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="282" TabIndex="8">
+                        <ListView x:Name="lbxLocationsSelect" Height="114" Margin="600.512,274,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="282" TabIndex="8" Grid.Column="2">
                             <ListView.View>
                                 <GridView/>
                             </ListView.View>
                         </ListView>
-                        <ListView x:Name="lbxLocationsChosen" Height="138" Margin="718,393,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="282">
+                        <ListView x:Name="lbxLocationsChosen" Height="138" Margin="600.512,393,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="282" Grid.Column="2">
                             <ListView.View>
                                 <GridView/>
                             </ListView.View>
                         </ListView>
-                        <Button x:Name="btnSaveNext" Content="Save" HorizontalAlignment="Left" Margin="491,571,0,0" VerticalAlignment="Top" Width="75" FontSize="24">
+                        <Button x:Name="btnSaveNextGroup" Content="Save" HorizontalAlignment="Left" Margin="372.512,566,0,10" Width="75" FontSize="24" Grid.Column="2">
+                            <Button.Effect>
+                                <DropShadowEffect ShadowDepth="3" Color="#FFBBB2B2"/>
+                            </Button.Effect>
+                        </Button>
+                        <Button x:Name="btnAddComms" Content="+" Margin="222.512,241,0,0" VerticalAlignment="Top" FontSize="14" HorizontalAlignment="Left" Width="22" Height="28" Grid.Column="2">
+                            <Button.Effect>
+                                <DropShadowEffect ShadowDepth="3" Color="#FFBBB2B2"/>
+                            </Button.Effect>
+                        </Button>
+                        <Button x:Name="btnAddCulture" Content="+" Margin="527.512,241,0,0" VerticalAlignment="Top" FontSize="14" HorizontalAlignment="Left" Width="22" Height="28" Grid.Column="2">
                             <Button.Effect>
                                 <DropShadowEffect ShadowDepth="3" Color="#FFBBB2B2"/>
                             </Button.Effect>
@@ -86,6 +101,57 @@
                         </LinearGradientBrush>
                     </TabItem.Background>
                     <Grid x:Name="grdPeople" Background="#FFE5E5E5">
+                        <TextBlock Margin="10,27,0,0" TextWrapping="Wrap" Text="Business group leader" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="243" Grid.ColumnSpan="2"/>
+                        <TextBlock Margin="10,114,0,0" TextWrapping="Wrap" Text="Relationship manager" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="243" Grid.ColumnSpan="2"/>
+                        <TextBlock Margin="19,181,0,0" TextWrapping="Wrap" Text="Leadership team" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="417" TextAlignment="Center"/>
+                        <TextBlock Margin="564,181,0,0" TextWrapping="Wrap" Text="Frequent customers" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="417" TextAlignment="Center"/>
+                        <ComboBox x:Name="cboLeader" Margin="258,29,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="4" HorizontalAlignment="Left" Width="712"/>
+                        <ComboBox x:Name="cboCustomers" Margin="258,116,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="5" HorizontalAlignment="Left" Width="712"/>
+                        <Button x:Name="btnAddLeader" Content="+" Margin="975,29,0,0" VerticalAlignment="Top" FontSize="20" HorizontalAlignment="Left" Width="31">
+                            <Button.Effect>
+                                <DropShadowEffect ShadowDepth="3" Color="#FFBBB2B2"/>
+                            </Button.Effect>
+                        </Button>
+                        <Button x:Name="btnAddMgr" Content="+" Margin="975,114,0,0" VerticalAlignment="Top" FontSize="20" HorizontalAlignment="Left" Width="31">
+                            <Button.Effect>
+                                <DropShadowEffect ShadowDepth="3" Color="#FFBBB2B2"/>
+                            </Button.Effect>
+                        </Button>
+                        <ListView x:Name="lbxLeadersSelect" Height="138" Margin="19,218,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="417">
+                            <ListView.View>
+                                <GridView/>
+                            </ListView.View>
+                        </ListView>
+                        <ListView x:Name="lbxCustomerSelect" Height="138" Margin="564,218,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="417">
+                            <ListView.View>
+                                <GridView/>
+                            </ListView.View>
+                        </ListView>
+                        <ListView x:Name="lbxLeadersChosen" Height="138" Margin="19,361,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="417">
+                            <ListView.View>
+                                <GridView/>
+                            </ListView.View>
+                        </ListView>
+                        <ListView x:Name="lbxCustomerChosen" Height="138" Margin="564,361,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="417">
+                            <ListView.View>
+                                <GridView/>
+                            </ListView.View>
+                        </ListView>
+                        <Button x:Name="btnAddLeaders" Content="+" Margin="414,185,0,0" VerticalAlignment="Top" FontSize="14" HorizontalAlignment="Left" Width="22" Height="28">
+                            <Button.Effect>
+                                <DropShadowEffect ShadowDepth="3" Color="#FFBBB2B2"/>
+                            </Button.Effect>
+                        </Button>
+                        <Button x:Name="btnAddCustomer" Content="+" Margin="959,185,0,0" VerticalAlignment="Top" FontSize="14" HorizontalAlignment="Left" Width="22" Height="28">
+                            <Button.Effect>
+                                <DropShadowEffect ShadowDepth="3" Color="#FFBBB2B2"/>
+                            </Button.Effect>
+                        </Button>
+                        <Button x:Name="btnSaveNextPeople" Content="Save" HorizontalAlignment="Left" Margin="463,566,0,10" Width="75" FontSize="24">
+                            <Button.Effect>
+                                <DropShadowEffect ShadowDepth="3" Color="#FFBBB2B2"/>
+                            </Button.Effect>
+                        </Button>
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="tiFinances" Header="Financials">
