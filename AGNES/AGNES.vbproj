@@ -106,6 +106,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AGNESDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="BGCRM.xaml.vb">
+      <DependentUpon>BGCRM.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BusinessGroupObjects\BusinessGroup.vb" />
     <Compile Include="BusinessGroupObjects\CRBuilding.vb" />
     <Compile Include="BusinessGroupObjects\RefreshEvent.vb" />
@@ -124,6 +127,10 @@
       <DependentUpon>WCRHello.xaml</DependentUpon>
     </Compile>
     <Compile Include="WCR Objects\WCRObject.vb" />
+    <Page Include="BGCRM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
