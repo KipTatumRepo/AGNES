@@ -9,7 +9,59 @@
     <Window.Effect>
         <DropShadowEffect Opacity="0.75"/>
     </Window.Effect>
-    <Grid>
-        
+    <Grid >
+        <DockPanel>
+            <TabControl>
+                <TabItem x:Name="tiGroup" Header="Group Details">
+                    <TabItem.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                            <GradientStop Color="#FFF0F0F0" Offset="0"/>
+                            <GradientStop Color="#FFBBA2A2" Offset="1"/>
+                        </LinearGradientBrush>
+                    </TabItem.Background>
+                    <Grid x:Name="grdGroup" Background="#FFE5E5E5"/>
+                </TabItem>
+                <TabItem x:Name="tiPeople" Header="People">
+                    <TabItem.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                            <GradientStop Color="#FFF0F0F0" Offset="0"/>
+                            <GradientStop Color="#FFBBA2A2" Offset="1"/>
+                        </LinearGradientBrush>
+                    </TabItem.Background>
+                    <Grid x:Name="grdPeople" Background="#FFE5E5E5">
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="tiFinances" Header="Financials">
+                    <TabItem.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                            <GradientStop Color="#FFF0F0F0" Offset="0"/>
+                            <GradientStop Color="#FFBBA2A2" Offset="1"/>
+                        </LinearGradientBrush>
+                    </TabItem.Background>
+                    <Grid x:Name="grdFinances" Background="#FFE5E5E5">
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="tiEvents" Header="Events">
+                    <TabItem.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                            <GradientStop Color="#FFF0F0F0" Offset="0"/>
+                            <GradientStop Color="#FFBBA2A2" Offset="1"/>
+                        </LinearGradientBrush>
+                    </TabItem.Background>
+                    <Grid x:Name="grdEvents" Background="#FFE5E5E5">
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="tiCampusRefresh" Header="Campus Refresh">
+                    <TabItem.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                            <GradientStop Color="#FFF0F0F0" Offset="0"/>
+                            <GradientStop Color="#FFBBA2A2" Offset="1"/>
+                        </LinearGradientBrush>
+                    </TabItem.Background>
+                    <Grid x:Name="grdCampusRefresh" Background="#FFE5E5E5">
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </DockPanel>
     </Grid>
 </Window>
