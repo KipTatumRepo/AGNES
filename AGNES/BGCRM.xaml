@@ -120,12 +120,8 @@
                         </LinearGradientBrush>
                     </TabItem.Background>
                     <Grid x:Name="grdEvents" Background="#FFE5E5E5">
-                        <ListView x:Name="lbxOffsiteLocsSelect_Copy" Height="127" Margin="10,47,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
-                        </ListView>
-                        <ListView x:Name="lbxOffsiteLocsChosen_Copy" Height="127" Margin="520,47,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
-                        </ListView>
                         <TextBlock Margin="0,10,0,0" TextWrapping="Wrap" Text="Notable Events" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1010" TextAlignment="Center"/>
-                        <ListView x:Name="lbxOffsiteLocsSelect_Copy1" Height="127" Margin="10,216,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                        <ListView x:Name="lbxOffsiteLocsSelect_Copy1" Height="78" Margin="10,167,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                             <ListBoxItem Content="This"/>
                             <ListBoxItem Content="That"/>
                             <ListBoxItem Content="The Other"/>
@@ -138,12 +134,92 @@
                             <ListBoxItem Content="Friggin'"/>
                             <ListBoxItem Content="Choices?`"/>
                         </ListView>
-                        <ListView x:Name="lbxOffsiteLocsChosen_Copy1" Height="127" Margin="520,216,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                        <ListView x:Name="lbxOffsiteLocsChosen_Copy1" Height="78" Margin="520,167,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                             <ListView.View>
                                 <GridView/>
                             </ListView.View>
                         </ListView>
-                        <TextBlock Margin="0,179,-10,0" TextWrapping="Wrap" Text="Notable Events" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1020" TextAlignment="Center"/>
+                        <TextBlock Margin="0,130,-10,0" TextWrapping="Wrap" Text="Top Event Types" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1020" TextAlignment="Center"/>
+                        <ListView x:Name="lbxOffsiteLocsSelect_Copy2" Height="78" Margin="10,287,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                            <ListBoxItem Content="This"/>
+                            <ListBoxItem Content="That"/>
+                            <ListBoxItem Content="The Other"/>
+                            <ListBoxItem Content="Something else"/>
+                            <ListBoxItem Content="Another thing"/>
+                            <ListBoxItem Content="So Many Things"/>
+                            <ListBoxItem Content="How can you choose"/>
+                            <ListBoxItem Content="When there are"/>
+                            <ListBoxItem Content="This Many"/>
+                            <ListBoxItem Content="Friggin'"/>
+                            <ListBoxItem Content="Choices?`"/>
+                        </ListView>
+                        <ListView x:Name="lbxOffsiteLocsChosen_Copy2" Height="78" Margin="520,287,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                            <ListView.View>
+                                <GridView/>
+                            </ListView.View>
+                        </ListView>
+                        <TextBlock Margin="0,250,-10,0" TextWrapping="Wrap" Text="Top Booked Spaces" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1020" TextAlignment="Center"/>
+                        <TextBlock Margin="0,370,-10,0" TextWrapping="Wrap" Text="Eventions Involvement" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1020" TextAlignment="Center"/>
+                        <ListView x:Name="lbxOffsiteLocsSelect_Copy3" Height="78" Margin="10,407,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                            <ListBoxItem Content="This"/>
+                            <ListBoxItem Content="That"/>
+                            <ListBoxItem Content="The Other"/>
+                            <ListBoxItem Content="Something else"/>
+                            <ListBoxItem Content="Another thing"/>
+                            <ListBoxItem Content="So Many Things"/>
+                            <ListBoxItem Content="How can you choose"/>
+                            <ListBoxItem Content="When there are"/>
+                            <ListBoxItem Content="This Many"/>
+                            <ListBoxItem Content="Friggin'"/>
+                            <ListBoxItem Content="Choices?`"/>
+                        </ListView>
+                        <ListView x:Name="lbxOffsiteLocsChosen_Copy3" Height="78" Margin="520,407,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                            <ListView.View>
+                                <GridView/>
+                            </ListView.View>
+                        </ListView>
+                        <TextBlock Margin="0,490,-10,0" TextWrapping="Wrap" Text="Embedded Planners" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1020" TextAlignment="Center"/>
+                        <ListView x:Name="lbxOffsiteLocsSelect_Copy" Height="78" Margin="10,47,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                            <ListBoxItem Content="This"/>
+                            <ListBoxItem Content="That"/>
+                            <ListBoxItem Content="The Other"/>
+                            <ListBoxItem Content="Something else"/>
+                            <ListBoxItem Content="Another thing"/>
+                            <ListBoxItem Content="So Many Things"/>
+                            <ListBoxItem Content="How can you choose"/>
+                            <ListBoxItem Content="When there are"/>
+                            <ListBoxItem Content="This Many"/>
+                            <ListBoxItem Content="Friggin'"/>
+                            <ListBoxItem Content="Choices?`"/>
+                        </ListView>
+                        <ListView x:Name="lbxOffsiteLocsChosen_Copy" Height="78" Margin="520,47,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                            <ListView.View>
+                                <GridView/>
+                            </ListView.View>
+                        </ListView>
+                        <ListView x:Name="lbxOffsiteLocsSelect_Copy4" Height="53" Margin="10,527,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                            <ListBoxItem Content="This"/>
+                            <ListBoxItem Content="That"/>
+                            <ListBoxItem Content="The Other"/>
+                            <ListBoxItem Content="Something else"/>
+                            <ListBoxItem Content="Another thing"/>
+                            <ListBoxItem Content="So Many Things"/>
+                            <ListBoxItem Content="How can you choose"/>
+                            <ListBoxItem Content="When there are"/>
+                            <ListBoxItem Content="This Many"/>
+                            <ListBoxItem Content="Friggin'"/>
+                            <ListBoxItem Content="Choices?`"/>
+                        </ListView>
+                        <ListView x:Name="lbxOffsiteLocsChosen_Copy4" Height="53" Margin="520,527,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                            <ListView.View>
+                                <GridView/>
+                            </ListView.View>
+                        </ListView>
+                        <Button x:Name="btnSaveNextEvents" Content="Save" HorizontalAlignment="Left" Margin="466,606,0,0" Width="75" FontSize="24" Height="45" VerticalAlignment="Top">
+                            <Button.Effect>
+                                <DropShadowEffect ShadowDepth="3" Color="#FFBBB2B2"/>
+                            </Button.Effect>
+                        </Button>
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="tiCampusRefresh" Header="Campus Refresh">
