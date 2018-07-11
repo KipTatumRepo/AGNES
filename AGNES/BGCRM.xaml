@@ -230,8 +230,49 @@
                         </LinearGradientBrush>
                     </TabItem.Background>
                     <Grid x:Name="grdCampusRefresh" Background="#FFE5E5E5">
-                        <TextBlock Margin="10,27,0,0" TextWrapping="Wrap" Text="Business group leader" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="243" Grid.ColumnSpan="2"/>
-
+                        <TextBlock Margin="254,436,0,0" TextWrapping="Wrap" Text="Total Population Moving" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="336"/>
+                        <TextBlock Margin="0,10,0,0" TextWrapping="Wrap" Text="Origin Buildings" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1010" TextAlignment="Center"/>
+                        <ListView x:Name="lbxOriginSelect" Height="150" Margin="10,47,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                            <ListBoxItem Content="This"/>
+                            <ListBoxItem Content="That"/>
+                            <ListBoxItem Content="The Other"/>
+                            <ListBoxItem Content="Something else"/>
+                            <ListBoxItem Content="Another thing"/>
+                            <ListBoxItem Content="So Many Things"/>
+                            <ListBoxItem Content="How can you choose"/>
+                            <ListBoxItem Content="When there are"/>
+                            <ListBoxItem Content="This Many"/>
+                            <ListBoxItem Content="Friggin'"/>
+                            <ListBoxItem Content="Choices?`"/>
+                        </ListView>
+                        <ListView x:Name="lbxOriginChosen" Height="150" Margin="520,47,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                            <ListBoxItem Content="Building 50 - 200 headcount"/>
+                            <ListBoxItem Content="Building 9 - 1,200 headcount"/>
+                        </ListView>
+                        <ListView x:Name="lbxDestination" Height="150" Margin="254,244,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                            <ListBoxItem Content="This"/>
+                            <ListBoxItem Content="That"/>
+                            <ListBoxItem Content="The Other"/>
+                            <ListBoxItem Content="Something else"/>
+                            <ListBoxItem Content="Another thing"/>
+                            <ListBoxItem Content="So Many Things"/>
+                            <ListBoxItem Content="How can you choose"/>
+                            <ListBoxItem Content="When there are"/>
+                            <ListBoxItem Content="This Many"/>
+                            <ListBoxItem Content="Friggin'"/>
+                            <ListBoxItem Content="Choices?`"/>
+                        </ListView>
+                        <TextBlock Margin="0,207,0,0" TextWrapping="Wrap" Text="Destination Building" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1010" TextAlignment="Center"/>
+                        <TextBlock Margin="34,511,0,0" TextWrapping="Wrap" Text="Move Start Date" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="210"/>
+                        <TextBlock Margin="570,509,0,0" TextWrapping="Wrap" Text="Move End Date" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="210"/>
+                        <TextBox HorizontalAlignment="Left" Height="32" Margin="608,436,0,0" TextWrapping="Wrap" Text="1,400" VerticalAlignment="Top" Width="126" FontSize="18" TextAlignment="Center"/>
+                        <DatePicker HorizontalAlignment="Left" Margin="254,511,0,0" VerticalAlignment="Top" Width="200" FirstDayOfWeek="Monday" FontSize="18"/>
+                        <DatePicker HorizontalAlignment="Left" Margin="784,511,0,0" VerticalAlignment="Top" Width="200" FontSize="18" FirstDayOfWeek="Monday"/>
+                        <Button x:Name="btnSaveFinish" Content="Save" HorizontalAlignment="Left" Margin="466,606,0,0" Width="75" FontSize="24" Height="45" VerticalAlignment="Top">
+                            <Button.Effect>
+                                <DropShadowEffect ShadowDepth="3" Color="#FFBBB2B2"/>
+                            </Button.Effect>
+                        </Button>
                     </Grid>
                 </TabItem>
             </TabControl>
