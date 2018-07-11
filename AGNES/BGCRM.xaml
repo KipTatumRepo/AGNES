@@ -27,19 +27,39 @@
                         <TextBlock Margin="627,148,0,0" TextWrapping="Wrap" Text="Workspace Type" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="184"/>
                         <TextBlock HorizontalAlignment="Left" Margin="10,225,0,0" TextWrapping="Wrap" Text="Communications" VerticalAlignment="Top" FontSize="24" Width="990" TextAlignment="Center"/>
                         <TextBlock Margin="10,464,0,0" TextWrapping="Wrap" Text="Locations" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="990" TextAlignment="Center"/>
-                        <ComboBox x:Name="cboGroup" Margin="258,29,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="1" HorizontalAlignment="Left" Width="742"/>
+                        <ComboBox x:Name="cboGroup" Margin="258,29,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="1" HorizontalAlignment="Left" Width="742">
+                            <ComboBox.ContextMenu>
+                                <ContextMenu>
+                                            <ComboBoxItem Content="Add new business group" IsSelected="True" />
+                                            <ComboBoxItem Content="Delete business group" />
+                                </ContextMenu>
+                            </ComboBox.ContextMenu>
+                        </ComboBox>
                         <ComboBox x:Name="cboWorkTimes" Margin="412,150,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="4" HorizontalAlignment="Left" Width="192"/>
                         <ComboBox x:Name="cboWorkspace" Margin="816,149,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="5" HorizontalAlignment="Left" Width="184"/>
                         <TextBox x:Name="txtOverview" Height="68" Margin="258,73,0,0" TextWrapping="Wrap" VerticalAlignment="Top" MaxLines="6" MaxLength="4000" IsUndoEnabled="True" TabIndex="2" HorizontalAlignment="Left" Width="742"/>
                         <TextBox x:Name="txtHeadcount" Height="31" Margin="145,149,0,0" VerticalAlignment="Top" MaxLines="1" MaxLength="8" TabIndex="3" HorizontalAlignment="Left" Width="108"/>
                         <Separator Height="39" Margin="0,186,0,0" VerticalAlignment="Top"/>
                         <ListView x:Name="lbxCommSelect" Height="80" Margin="10,257,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480" TabIndex="6">
+                            <ListView.ContextMenu>
+                                <ContextMenu>
+                                    <ComboBoxItem Content="Add new communication type" IsSelected="True" />
+                                    <ComboBoxItem Content="Delete selected communication type" />
+                                </ContextMenu>
+                            </ListView.ContextMenu>
                             <ListBoxItem Content="This"/>
                             <ListBoxItem Content="That"/>
                             <ListBoxItem Content="The Other"/>
                         </ListView>
                         <ListView x:Name="lbxCommsChosen" Height="80" Margin="520,257,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480"/>
-                        <ListView x:Name="lbxCultureSelect" Height="80" Margin="10,379,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480" TabIndex="7"/>
+                        <ListView x:Name="lbxCultureSelect" Height="80" Margin="10,379,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480" TabIndex="7">
+                            <ListView.ContextMenu>
+                                <ContextMenu>
+                                    <ComboBoxItem Content="Add new culture type" IsSelected="True" />
+                                    <ComboBoxItem Content="Delete selected culture type" />
+                                </ContextMenu>
+                            </ListView.ContextMenu>
+                        </ListView>
                         <ListView x:Name="lbxCultureChosen" Height="80  " Margin="520,379,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480"/>
                         <ListView x:Name="lbxLocationsSelect" Height="80" Margin="10,501,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480" TabIndex="8"/>
                         <ListView x:Name="lbxLocationsChosen" Height="80" Margin="529,501,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="471"/>
