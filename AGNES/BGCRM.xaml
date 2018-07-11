@@ -61,17 +61,17 @@
                     <Grid x:Name="grdPeople" Background="#FFE5E5E5">
                         <TextBlock Margin="10,27,0,0" TextWrapping="Wrap" Text="Business group leader" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="243" Grid.ColumnSpan="2"/>
                         <TextBlock Margin="10,114,0,0" TextWrapping="Wrap" Text="Relationship manager" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="243" Grid.ColumnSpan="2"/>
-                        <TextBlock Margin="19,181,0,0" TextWrapping="Wrap" Text="Leadership team" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="417" TextAlignment="Center"/>
-                        <TextBlock Margin="564,181,0,0" TextWrapping="Wrap" Text="Frequent customers" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="417" TextAlignment="Center"/>
+                        <TextBlock Margin="19,181,0,0" TextWrapping="Wrap" Text="Leadership team" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="975" TextAlignment="Center"/>
+                        <TextBlock Margin="19,380,0,0" TextWrapping="Wrap" Text="Frequent customers" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="975" TextAlignment="Center"/>
                         <ComboBox x:Name="cboLeader" Margin="258,29,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="4" HorizontalAlignment="Left" Width="712"/>
                         <ComboBox x:Name="cboCustomers" Margin="258,116,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="5" HorizontalAlignment="Left" Width="712"/>
-                        <ListView x:Name="lbxLeadersSelect" Height="138" Margin="19,218,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="417">
+                        <ListView x:Name="lbxLeadersSelect" Height="138" Margin="19,218,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                         </ListView>
-                        <ListView x:Name="lbxCustomerSelect" Height="138" Margin="564,218,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="417">
+                        <ListView x:Name="lbxCustomerSelect" Height="138" Margin="19,417,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                         </ListView>
-                        <ListView x:Name="lbxLeadersChosen" Height="138" Margin="19,361,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="417">
+                        <ListView x:Name="lbxLeadersChosen" Height="138" Margin="514,218,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                         </ListView>
-                        <ListView x:Name="lbxCustomerChosen" Height="138" Margin="564,361,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="417">
+                        <ListView x:Name="lbxCustomerChosen" Height="138" Margin="514,417,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
 
                         </ListView>
                         <Button x:Name="btnSaveNextPeople" Content="Save" HorizontalAlignment="Left" Margin="466,606,0,0" Width="75" FontSize="24" Height="45" VerticalAlignment="Top">
