@@ -1,4 +1,4 @@
-﻿Public Class BusinessGroup
+﻿Public Class objBusinessGroup
     Private _orgname As String
     Public Property OrgName As String
         Get

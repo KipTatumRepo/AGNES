@@ -1,0 +1,757 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BGCRMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BusinessGroups">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BusinessGroupName" Type="varchar" MaxLength="512" Nullable="false" />
+          <Property Name="GroupOverview" Type="varchar" MaxLength="512" />
+          <Property Name="Headcount" Type="int" />
+          <Property Name="WorkTimes" Type="int" />
+          <Property Name="OnsiteRemote" Type="int" />
+          <Property Name="OrgLeader" Type="int" Nullable="false" />
+          <Property Name="RelMgr" Type="int" />
+          <Property Name="Revenue" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Events" Type="int" />
+          <Property Name="Events500" Type="int" />
+          <Property Name="EventsCatered" Type="int" />
+          <Property Name="OffsiteSpend" Type="decimal" Precision="10" Scale="2" />
+        </EntityType>
+        <EntityType Name="Comm_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CommId" Type="bigint" Nullable="false" />
+          <Property Name="BGId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Communications">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CommType" Type="varchar" MaxLength="512" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Culture_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CultureId" Type="bigint" Nullable="false" />
+          <Property Name="BGId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EventSpaces">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SpaceName" Type="varchar" MaxLength="512" Nullable="false" />
+          <Property Name="BuildingId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EventTypes">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EventType" Type="varchar" MaxLength="512" Nullable="false" />
+          <Property Name="TypeDescription" Type="varchar" MaxLength="1024" />
+        </EntityType>
+        <EntityType Name="FreqCust_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustId" Type="bigint" Nullable="false" />
+          <Property Name="BGId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FrequentCustomers">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerName" Type="varchar" MaxLength="512" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GroupCulture">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Culture" Type="varchar" MaxLength="512" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Involvement">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Involvement" Type="varchar" MaxLength="512" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Involvement_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InvolveId" Type="bigint" Nullable="false" />
+          <Property Name="BGId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Leaders">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LeaderName" Type="varchar" MaxLength="512" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Leaders_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LeaderId" Type="bigint" Nullable="false" />
+          <Property Name="BGId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Locations">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BuildingName" Type="varchar" MaxLength="512" Nullable="false" />
+          <Property Name="Campus" Type="int" />
+          <Property Name="Population" Type="bigint" />
+        </EntityType>
+        <EntityType Name="Locations_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LocId" Type="bigint" Nullable="false" />
+          <Property Name="BGId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NotableEvents">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EventName" Type="varchar" MaxLength="512" Nullable="false" />
+          <Property Name="DateStart" Type="date" Nullable="false" />
+          <Property Name="DateEnd" Type="date" Nullable="false" />
+          <Property Name="RecurringEvent" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NotableEvents_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EventId" Type="bigint" Nullable="false" />
+          <Property Name="BGId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OffsiteLocations">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OffsiteLocName" Type="varchar" MaxLength="512" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Offsites_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OffsiteId" Type="bigint" Nullable="false" />
+          <Property Name="BGId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Planners">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PlannerName" Type="varchar" MaxLength="512" Nullable="false" />
+          <Property Name="PhoneNum" Type="varchar" MaxLength="16" />
+          <Property Name="Email" Type="varchar" MaxLength="512" />
+        </EntityType>
+        <EntityType Name="Planners_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PlannerId" Type="bigint" Nullable="false" />
+          <Property Name="BGId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Refresh_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EventId" Type="bigint" Nullable="false" />
+          <Property Name="BGId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RefreshEvents">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EventName" Type="varchar" MaxLength="512" />
+          <Property Name="BusinessGroupId" Type="bigint" Nullable="false" />
+          <Property Name="MoveStartDate" Type="date" Nullable="false" />
+          <Property Name="MoveEndDate" Type="date" Nullable="false" />
+          <Property Name="MovePopulation" Type="bigint" Nullable="false" />
+          <Property Name="Destination" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TopEventTypes_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TypeId" Type="bigint" Nullable="false" />
+          <Property Name="BGGroup" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TopSpaces_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EventTypeId" Type="bigint" Nullable="false" />
+          <Property Name="BGId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="BGCRMModelStoreContainer">
+          <EntitySet Name="BusinessGroups" EntityType="Self.BusinessGroups" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="Comm_Join" EntityType="Self.Comm_Join" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="Communications" EntityType="Self.Communications" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="Culture_Join" EntityType="Self.Culture_Join" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="EventSpaces" EntityType="Self.EventSpaces" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="EventTypes" EntityType="Self.EventTypes" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="FreqCust_Join" EntityType="Self.FreqCust_Join" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="FrequentCustomers" EntityType="Self.FrequentCustomers" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="GroupCulture" EntityType="Self.GroupCulture" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="Involvement" EntityType="Self.Involvement" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="Involvement_Join" EntityType="Self.Involvement_Join" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="Leaders" EntityType="Self.Leaders" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="Leaders_Join" EntityType="Self.Leaders_Join" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="Locations" EntityType="Self.Locations" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="Locations_Join" EntityType="Self.Locations_Join" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="NotableEvents" EntityType="Self.NotableEvents" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="NotableEvents_Join" EntityType="Self.NotableEvents_Join" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="OffsiteLocations" EntityType="Self.OffsiteLocations" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="Offsites_Join" EntityType="Self.Offsites_Join" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="Planners" EntityType="Self.Planners" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="Planners_Join" EntityType="Self.Planners_Join" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="Refresh_Join" EntityType="Self.Refresh_Join" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="RefreshEvents" EntityType="Self.RefreshEvents" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="TopEventTypes_Join" EntityType="Self.TopEventTypes_Join" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="TopSpaces_Join" EntityType="Self.TopSpaces_Join" Schema="BizGroupCRM" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BGCRMModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BusinessGroup">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BusinessGroupName" Type="String" MaxLength="512" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="GroupOverview" Type="String" MaxLength="512" FixedLength="false" Unicode="false" />
+          <Property Name="Headcount" Type="Int32" />
+          <Property Name="WorkTimes" Type="Int32" />
+          <Property Name="OnsiteRemote" Type="Int32" />
+          <Property Name="OrgLeader" Type="Int32" Nullable="false" />
+          <Property Name="RelMgr" Type="Int32" />
+          <Property Name="Revenue" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Events" Type="Int32" />
+          <Property Name="Events500" Type="Int32" />
+          <Property Name="EventsCatered" Type="Int32" />
+          <Property Name="OffsiteSpend" Type="Decimal" Precision="10" Scale="2" />
+        </EntityType>
+        <EntityType Name="Comm_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CommId" Type="Int64" Nullable="false" />
+          <Property Name="BGId" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Communication">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CommType" Type="String" MaxLength="512" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Culture_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CultureId" Type="Int64" Nullable="false" />
+          <Property Name="BGId" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EventSpace">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SpaceName" Type="String" MaxLength="512" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BuildingId" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EventType">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EventType1" Type="String" MaxLength="512" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TypeDescription" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="FreqCust_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustId" Type="Int64" Nullable="false" />
+          <Property Name="BGId" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FrequentCustomer">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerName" Type="String" MaxLength="512" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GroupCulture">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Culture" Type="String" MaxLength="512" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Involvement">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Involvement1" Type="String" MaxLength="512" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Involvement_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InvolveId" Type="Int64" Nullable="false" />
+          <Property Name="BGId" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Leader">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LeaderName" Type="String" MaxLength="512" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Leaders_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LeaderId" Type="Int64" Nullable="false" />
+          <Property Name="BGId" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BuildingName" Type="String" MaxLength="512" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Campus" Type="Int32" />
+          <Property Name="Population" Type="Int64" />
+        </EntityType>
+        <EntityType Name="Locations_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LocId" Type="Int64" Nullable="false" />
+          <Property Name="BGId" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NotableEvent">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EventName" Type="String" MaxLength="512" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateStart" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DateEnd" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="RecurringEvent" Type="Byte" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NotableEvents_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EventId" Type="Int64" Nullable="false" />
+          <Property Name="BGId" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OffsiteLocation">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OffsiteLocName" Type="String" MaxLength="512" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Offsites_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OffsiteId" Type="Int64" Nullable="false" />
+          <Property Name="BGId" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Planner">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlannerName" Type="String" MaxLength="512" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PhoneNum" Type="String" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="512" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Planners_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlannerId" Type="Int64" Nullable="false" />
+          <Property Name="BGId" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Refresh_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EventId" Type="Int64" Nullable="false" />
+          <Property Name="BGId" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RefreshEvent">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EventName" Type="String" MaxLength="512" FixedLength="false" Unicode="false" />
+          <Property Name="BusinessGroupId" Type="Int64" Nullable="false" />
+          <Property Name="MoveStartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="MoveEndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="MovePopulation" Type="Int64" Nullable="false" />
+          <Property Name="Destination" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TopEventTypes_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TypeId" Type="Int64" Nullable="false" />
+          <Property Name="BGGroup" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TopSpaces_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EventTypeId" Type="Int64" Nullable="false" />
+          <Property Name="BGId" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="BGCRMEntity" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BusinessGroups" EntityType="Self.BusinessGroup" />
+          <EntitySet Name="Comm_Join" EntityType="Self.Comm_Join" />
+          <EntitySet Name="Communications" EntityType="Self.Communication" />
+          <EntitySet Name="Culture_Join" EntityType="Self.Culture_Join" />
+          <EntitySet Name="EventSpaces" EntityType="Self.EventSpace" />
+          <EntitySet Name="EventTypes" EntityType="Self.EventType" />
+          <EntitySet Name="FreqCust_Join" EntityType="Self.FreqCust_Join" />
+          <EntitySet Name="FrequentCustomers" EntityType="Self.FrequentCustomer" />
+          <EntitySet Name="GroupCultures" EntityType="Self.GroupCulture" />
+          <EntitySet Name="Involvements" EntityType="Self.Involvement" />
+          <EntitySet Name="Involvement_Join" EntityType="Self.Involvement_Join" />
+          <EntitySet Name="Leaders" EntityType="Self.Leader" />
+          <EntitySet Name="Leaders_Join" EntityType="Self.Leaders_Join" />
+          <EntitySet Name="Locations" EntityType="Self.Location" />
+          <EntitySet Name="Locations_Join" EntityType="Self.Locations_Join" />
+          <EntitySet Name="NotableEvents" EntityType="Self.NotableEvent" />
+          <EntitySet Name="NotableEvents_Join" EntityType="Self.NotableEvents_Join" />
+          <EntitySet Name="OffsiteLocations" EntityType="Self.OffsiteLocation" />
+          <EntitySet Name="Offsites_Join" EntityType="Self.Offsites_Join" />
+          <EntitySet Name="Planners" EntityType="Self.Planner" />
+          <EntitySet Name="Planners_Join" EntityType="Self.Planners_Join" />
+          <EntitySet Name="Refresh_Join" EntityType="Self.Refresh_Join" />
+          <EntitySet Name="RefreshEvents" EntityType="Self.RefreshEvent" />
+          <EntitySet Name="TopEventTypes_Join" EntityType="Self.TopEventTypes_Join" />
+          <EntitySet Name="TopSpaces_Join" EntityType="Self.TopSpaces_Join" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BGCRMModelStoreContainer" CdmEntityContainer="BGCRMEntity">
+          <EntitySetMapping Name="BusinessGroups">
+            <EntityTypeMapping TypeName="BGCRMModel.BusinessGroup">
+              <MappingFragment StoreEntitySet="BusinessGroups">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="BusinessGroupName" ColumnName="BusinessGroupName" />
+                <ScalarProperty Name="GroupOverview" ColumnName="GroupOverview" />
+                <ScalarProperty Name="Headcount" ColumnName="Headcount" />
+                <ScalarProperty Name="WorkTimes" ColumnName="WorkTimes" />
+                <ScalarProperty Name="OnsiteRemote" ColumnName="OnsiteRemote" />
+                <ScalarProperty Name="OrgLeader" ColumnName="OrgLeader" />
+                <ScalarProperty Name="RelMgr" ColumnName="RelMgr" />
+                <ScalarProperty Name="Revenue" ColumnName="Revenue" />
+                <ScalarProperty Name="Events" ColumnName="Events" />
+                <ScalarProperty Name="Events500" ColumnName="Events500" />
+                <ScalarProperty Name="EventsCatered" ColumnName="EventsCatered" />
+                <ScalarProperty Name="OffsiteSpend" ColumnName="OffsiteSpend" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comm_Join">
+            <EntityTypeMapping TypeName="BGCRMModel.Comm_Join">
+              <MappingFragment StoreEntitySet="Comm_Join">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="CommId" ColumnName="CommId" />
+                <ScalarProperty Name="BGId" ColumnName="BGId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Communications">
+            <EntityTypeMapping TypeName="BGCRMModel.Communication">
+              <MappingFragment StoreEntitySet="Communications">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="CommType" ColumnName="CommType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Culture_Join">
+            <EntityTypeMapping TypeName="BGCRMModel.Culture_Join">
+              <MappingFragment StoreEntitySet="Culture_Join">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="CultureId" ColumnName="CultureId" />
+                <ScalarProperty Name="BGId" ColumnName="BGId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventSpaces">
+            <EntityTypeMapping TypeName="BGCRMModel.EventSpace">
+              <MappingFragment StoreEntitySet="EventSpaces">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="SpaceName" ColumnName="SpaceName" />
+                <ScalarProperty Name="BuildingId" ColumnName="BuildingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventTypes">
+            <EntityTypeMapping TypeName="BGCRMModel.EventType">
+              <MappingFragment StoreEntitySet="EventTypes">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="EventType1" ColumnName="EventType" />
+                <ScalarProperty Name="TypeDescription" ColumnName="TypeDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FreqCust_Join">
+            <EntityTypeMapping TypeName="BGCRMModel.FreqCust_Join">
+              <MappingFragment StoreEntitySet="FreqCust_Join">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="CustId" ColumnName="CustId" />
+                <ScalarProperty Name="BGId" ColumnName="BGId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FrequentCustomers">
+            <EntityTypeMapping TypeName="BGCRMModel.FrequentCustomer">
+              <MappingFragment StoreEntitySet="FrequentCustomers">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GroupCultures">
+            <EntityTypeMapping TypeName="BGCRMModel.GroupCulture">
+              <MappingFragment StoreEntitySet="GroupCulture">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="Culture" ColumnName="Culture" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Involvements">
+            <EntityTypeMapping TypeName="BGCRMModel.Involvement">
+              <MappingFragment StoreEntitySet="Involvement">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="Involvement1" ColumnName="Involvement" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Involvement_Join">
+            <EntityTypeMapping TypeName="BGCRMModel.Involvement_Join">
+              <MappingFragment StoreEntitySet="Involvement_Join">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="InvolveId" ColumnName="InvolveId" />
+                <ScalarProperty Name="BGId" ColumnName="BGId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Leaders">
+            <EntityTypeMapping TypeName="BGCRMModel.Leader">
+              <MappingFragment StoreEntitySet="Leaders">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="LeaderName" ColumnName="LeaderName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Leaders_Join">
+            <EntityTypeMapping TypeName="BGCRMModel.Leaders_Join">
+              <MappingFragment StoreEntitySet="Leaders_Join">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="LeaderId" ColumnName="LeaderId" />
+                <ScalarProperty Name="BGId" ColumnName="BGId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Locations">
+            <EntityTypeMapping TypeName="BGCRMModel.Location">
+              <MappingFragment StoreEntitySet="Locations">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="BuildingName" ColumnName="BuildingName" />
+                <ScalarProperty Name="Campus" ColumnName="Campus" />
+                <ScalarProperty Name="Population" ColumnName="Population" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Locations_Join">
+            <EntityTypeMapping TypeName="BGCRMModel.Locations_Join">
+              <MappingFragment StoreEntitySet="Locations_Join">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="LocId" ColumnName="LocId" />
+                <ScalarProperty Name="BGId" ColumnName="BGId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NotableEvents">
+            <EntityTypeMapping TypeName="BGCRMModel.NotableEvent">
+              <MappingFragment StoreEntitySet="NotableEvents">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="EventName" ColumnName="EventName" />
+                <ScalarProperty Name="DateStart" ColumnName="DateStart" />
+                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+                <ScalarProperty Name="RecurringEvent" ColumnName="RecurringEvent" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NotableEvents_Join">
+            <EntityTypeMapping TypeName="BGCRMModel.NotableEvents_Join">
+              <MappingFragment StoreEntitySet="NotableEvents_Join">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="EventId" ColumnName="EventId" />
+                <ScalarProperty Name="BGId" ColumnName="BGId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OffsiteLocations">
+            <EntityTypeMapping TypeName="BGCRMModel.OffsiteLocation">
+              <MappingFragment StoreEntitySet="OffsiteLocations">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="OffsiteLocName" ColumnName="OffsiteLocName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Offsites_Join">
+            <EntityTypeMapping TypeName="BGCRMModel.Offsites_Join">
+              <MappingFragment StoreEntitySet="Offsites_Join">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="OffsiteId" ColumnName="OffsiteId" />
+                <ScalarProperty Name="BGId" ColumnName="BGId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Planners">
+            <EntityTypeMapping TypeName="BGCRMModel.Planner">
+              <MappingFragment StoreEntitySet="Planners">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="PlannerName" ColumnName="PlannerName" />
+                <ScalarProperty Name="PhoneNum" ColumnName="PhoneNum" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Planners_Join">
+            <EntityTypeMapping TypeName="BGCRMModel.Planners_Join">
+              <MappingFragment StoreEntitySet="Planners_Join">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="PlannerId" ColumnName="PlannerId" />
+                <ScalarProperty Name="BGId" ColumnName="BGId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Refresh_Join">
+            <EntityTypeMapping TypeName="BGCRMModel.Refresh_Join">
+              <MappingFragment StoreEntitySet="Refresh_Join">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="EventId" ColumnName="EventId" />
+                <ScalarProperty Name="BGId" ColumnName="BGId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RefreshEvents">
+            <EntityTypeMapping TypeName="BGCRMModel.RefreshEvent">
+              <MappingFragment StoreEntitySet="RefreshEvents">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="EventName" ColumnName="EventName" />
+                <ScalarProperty Name="BusinessGroupId" ColumnName="BusinessGroupId" />
+                <ScalarProperty Name="MoveStartDate" ColumnName="MoveStartDate" />
+                <ScalarProperty Name="MoveEndDate" ColumnName="MoveEndDate" />
+                <ScalarProperty Name="MovePopulation" ColumnName="MovePopulation" />
+                <ScalarProperty Name="Destination" ColumnName="Destination" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TopEventTypes_Join">
+            <EntityTypeMapping TypeName="BGCRMModel.TopEventTypes_Join">
+              <MappingFragment StoreEntitySet="TopEventTypes_Join">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="BGGroup" ColumnName="BGGroup" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TopSpaces_Join">
+            <EntityTypeMapping TypeName="BGCRMModel.TopSpaces_Join">
+              <MappingFragment StoreEntitySet="TopSpaces_Join">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="EventTypeId" ColumnName="EventTypeId" />
+                <ScalarProperty Name="BGId" ColumnName="BGId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
