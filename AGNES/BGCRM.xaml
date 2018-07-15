@@ -84,7 +84,7 @@
                         <TextBlock Margin="19,181,0,0" TextWrapping="Wrap" Text="Leadership team" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="975" TextAlignment="Center"/>
                         <TextBlock Margin="19,380,0,0" TextWrapping="Wrap" Text="Frequent customers" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="975" TextAlignment="Center"/>
                         <ComboBox x:Name="cboLeader" Margin="258,29,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="4" HorizontalAlignment="Left" Width="712"/>
-                        <ComboBox x:Name="cboCustomers" Margin="258,116,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="5" HorizontalAlignment="Left" Width="712"/>
+                        <ComboBox x:Name="cboRelManager" Margin="258,116,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="5" HorizontalAlignment="Left" Width="712"/>
                         <ListView x:Name="lbxLeadersSelect" Height="138" Margin="19,218,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                         </ListView>
                         <ListView x:Name="lbxCustomerSelect" Height="138" Margin="19,417,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
