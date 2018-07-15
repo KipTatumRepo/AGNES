@@ -141,7 +141,7 @@
                     </TabItem.Background>
                     <Grid x:Name="grdEvents" Background="#FFE5E5E5">
                         <TextBlock Margin="0,10,0,0" TextWrapping="Wrap" Text="Notable Events" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1010" TextAlignment="Center"/>
-                        <ListView x:Name="lbxOffsiteLocsSelect_Copy1" Height="78" Margin="10,167,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                        <ListView x:Name="lbxTopETypesSelect" Height="78" Margin="10,167,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                             <ListBoxItem Content="This"/>
                             <ListBoxItem Content="That"/>
                             <ListBoxItem Content="The Other"/>
@@ -154,13 +154,13 @@
                             <ListBoxItem Content="Friggin'"/>
                             <ListBoxItem Content="Choices?`"/>
                         </ListView>
-                        <ListView x:Name="lbxOffsiteLocsChosen_Copy1" Height="78" Margin="520,167,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                        <ListView x:Name="lbxTopETypesChosen" Height="78" Margin="520,167,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                             <ListView.View>
                                 <GridView/>
                             </ListView.View>
                         </ListView>
                         <TextBlock Margin="0,130,-10,0" TextWrapping="Wrap" Text="Top Event Types" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1020" TextAlignment="Center"/>
-                        <ListView x:Name="lbxOffsiteLocsSelect_Copy2" Height="78" Margin="10,287,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                        <ListView x:Name="lbxTopSpacesSelect" Height="78" Margin="10,287,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                             <ListBoxItem Content="This"/>
                             <ListBoxItem Content="That"/>
                             <ListBoxItem Content="The Other"/>
@@ -173,14 +173,14 @@
                             <ListBoxItem Content="Friggin'"/>
                             <ListBoxItem Content="Choices?`"/>
                         </ListView>
-                        <ListView x:Name="lbxOffsiteLocsChosen_Copy2" Height="78" Margin="520,287,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                        <ListView x:Name="lbxTopSpacesChosen" Height="78" Margin="520,287,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                             <ListView.View>
                                 <GridView/>
                             </ListView.View>
                         </ListView>
                         <TextBlock Margin="0,250,-10,0" TextWrapping="Wrap" Text="Top Booked Spaces" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1020" TextAlignment="Center"/>
                         <TextBlock Margin="0,370,-10,0" TextWrapping="Wrap" Text="Eventions Involvement" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1020" TextAlignment="Center"/>
-                        <ListView x:Name="lbxOffsiteLocsSelect_Copy3" Height="78" Margin="10,407,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                        <ListView x:Name="lbxInvolveSelect" Height="78" Margin="10,407,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                             <ListBoxItem Content="This"/>
                             <ListBoxItem Content="That"/>
                             <ListBoxItem Content="The Other"/>
@@ -193,13 +193,13 @@
                             <ListBoxItem Content="Friggin'"/>
                             <ListBoxItem Content="Choices?`"/>
                         </ListView>
-                        <ListView x:Name="lbxOffsiteLocsChosen_Copy3" Height="78" Margin="520,407,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                        <ListView x:Name="lbxInvolveChosen" Height="78" Margin="520,407,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                             <ListView.View>
                                 <GridView/>
                             </ListView.View>
                         </ListView>
                         <TextBlock Margin="0,490,-10,0" TextWrapping="Wrap" Text="Embedded Planners" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1020" TextAlignment="Center"/>
-                        <ListView x:Name="lbxOffsiteLocsSelect_Copy" Height="78" Margin="10,47,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                        <ListView x:Name="lbxNotableSelect" Height="78" Margin="10,47,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                             <ListBoxItem Content="This"/>
                             <ListBoxItem Content="That"/>
                             <ListBoxItem Content="The Other"/>
@@ -212,12 +212,12 @@
                             <ListBoxItem Content="Friggin'"/>
                             <ListBoxItem Content="Choices?`"/>
                         </ListView>
-                        <ListView x:Name="lbxOffsiteLocsChosen_Copy" Height="78" Margin="520,47,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                        <ListView x:Name="lbxNotableChosen" Height="78" Margin="520,47,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                             <ListView.View>
                                 <GridView/>
                             </ListView.View>
                         </ListView>
-                        <ListView x:Name="lbxOffsiteLocsSelect_Copy4" Height="53" Margin="10,527,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                        <ListView x:Name="lbxPlannersSelect" Height="53" Margin="10,527,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                             <ListBoxItem Content="This"/>
                             <ListBoxItem Content="That"/>
                             <ListBoxItem Content="The Other"/>
@@ -230,7 +230,7 @@
                             <ListBoxItem Content="Friggin'"/>
                             <ListBoxItem Content="Choices?`"/>
                         </ListView>
-                        <ListView x:Name="lbxOffsiteLocsChosen_Copy4" Height="53" Margin="520,527,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                        <ListView x:Name="lbxPlannersChosen" Height="53" Margin="520,527,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                             <ListView.View>
                                 <GridView/>
                             </ListView.View>
@@ -285,9 +285,9 @@
                         <TextBlock Margin="0,207,0,0" TextWrapping="Wrap" Text="Destination Building" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1010" TextAlignment="Center"/>
                         <TextBlock Margin="34,511,0,0" TextWrapping="Wrap" Text="Move Start Date" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="210"/>
                         <TextBlock Margin="570,509,0,0" TextWrapping="Wrap" Text="Move End Date" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="210"/>
-                        <TextBox HorizontalAlignment="Left" Height="32" Margin="608,436,0,0" TextWrapping="Wrap" Text="1,400" VerticalAlignment="Top" Width="126" FontSize="18" TextAlignment="Center"/>
-                        <DatePicker HorizontalAlignment="Left" Margin="254,511,0,0" VerticalAlignment="Top" Width="200" FirstDayOfWeek="Monday" FontSize="18"/>
-                        <DatePicker HorizontalAlignment="Left" Margin="784,511,0,0" VerticalAlignment="Top" Width="200" FontSize="18" FirstDayOfWeek="Monday"/>
+                        <TextBox x:Name="txtPopMoving" HorizontalAlignment="Left" Height="32" Margin="608,436,0,0" TextWrapping="Wrap" Text="1,400" VerticalAlignment="Top" Width="126" FontSize="18" TextAlignment="Center"/>
+                        <DatePicker x:Name="dtpStartDate" HorizontalAlignment="Left" Margin="254,511,0,0" VerticalAlignment="Top" Width="200" FirstDayOfWeek="Monday" FontSize="18"/>
+                        <DatePicker x:Name="dtpEndDate" HorizontalAlignment="Left" Margin="784,511,0,0" VerticalAlignment="Top" Width="200" FontSize="18" FirstDayOfWeek="Monday"/>
                         <Button x:Name="btnSaveFinish" Content="Save" HorizontalAlignment="Left" Margin="466,606,0,0" Width="75" FontSize="24" Height="45" VerticalAlignment="Top">
                             <Button.Effect>
                                 <DropShadowEffect ShadowDepth="3" Color="#FFBBB2B2"/>
