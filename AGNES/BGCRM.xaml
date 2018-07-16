@@ -63,12 +63,12 @@
                         <ListView x:Name="lbxCultureChosen" Height="80  " Margin="520,379,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480" FontSize="14"/>
                         <ListView x:Name="lbxLocationsSelect" Height="80" Margin="10,501,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480" TabIndex="8" FontSize="14"/>
                         <ListView x:Name="lbxLocationsChosen" Height="80" Margin="529,501,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="471" FontSize="14"/>
-                        <Button x:Name="btnSaveNextGroup" Content="Save" HorizontalAlignment="Left" Margin="466,606,0,0" Width="75" FontSize="24" Height="45" VerticalAlignment="Top">
-                            <Button.Effect>
-                                <DropShadowEffect ShadowDepth="3" Color="#FFBBB2B2"/>
-                            </Button.Effect>
-                        </Button>
                         <TextBlock HorizontalAlignment="Left" Margin="10,342,0,0" TextWrapping="Wrap" Text="Culture" VerticalAlignment="Top" FontSize="24" Width="990" TextAlignment="Center"/>
+                        <Button x:Name="btnFwd1" Content="" HorizontalAlignment="Left" Margin="943,586,0,0" VerticalAlignment="Top" Width="57" Height="65" BorderThickness="0,0,0,1" IsTabStop="False" BorderBrush="#FFE5E5E5">
+                            <Button.Background>
+                                <ImageBrush ImageSource="Resources/glass_arrow_right.png" Stretch="Uniform"/>
+                            </Button.Background>
+                        </Button>
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="tiPeople" Header="People">
@@ -94,10 +94,15 @@
                         <ListView x:Name="lbxCustomerChosen" Height="138" Margin="514,417,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
 
                         </ListView>
-                        <Button x:Name="btnSaveNextPeople" Content="Save" HorizontalAlignment="Left" Margin="466,606,0,0" Width="75" FontSize="24" Height="45" VerticalAlignment="Top">
-                            <Button.Effect>
-                                <DropShadowEffect ShadowDepth="3" Color="#FFBBB2B2"/>
-                            </Button.Effect>
+                        <Button x:Name="btnFwd2" Content="" HorizontalAlignment="Left" Margin="943,586,0,0" VerticalAlignment="Top" Width="57" Height="65" BorderThickness="0,0,0,1" IsTabStop="False" BorderBrush="#FFE5E5E5">
+                            <Button.Background>
+                                <ImageBrush ImageSource="Resources/glass_arrow_right.png" Stretch="Uniform"/>
+                            </Button.Background>
+                        </Button>
+                        <Button x:Name="btnBack1" Content="" HorizontalAlignment="Left" Margin="10,586,0,0" VerticalAlignment="Top" Width="57" Height="65" BorderThickness="0,0,0,1" IsTabStop="False" BorderBrush="#FFE5E5E5">
+                            <Button.Background>
+                                <ImageBrush ImageSource="Resources/glass_arrow_left.png" Stretch="Uniform"/>
+                            </Button.Background>
                         </Button>
                     </Grid>
                 </TabItem>
@@ -119,17 +124,22 @@
                         </ListView>
                         <ListView x:Name="lbxOffsiteLocsChosen" Height="242" Margin="520,286,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                         </ListView>
-                        <Button x:Name="btnSaveNextFinances" Content="Save" HorizontalAlignment="Left" Margin="466,606,0,0" Width="75" FontSize="24" Height="45" VerticalAlignment="Top">
-                            <Button.Effect>
-                                <DropShadowEffect ShadowDepth="3" Color="#FFBBB2B2"/>
-                            </Button.Effect>
-                        </Button>
                         <Separator HorizontalAlignment="Left" Height="40" Margin="0,192,0,0" VerticalAlignment="Top" Width="1010"/>
                         <TextBox x:Name="txtRevenue_Copy" Height="31" Margin="269,88,0,0" VerticalAlignment="Top" MaxLines="1" MaxLength="8" TabIndex="3" HorizontalAlignment="Left" Width="189"/>
                         <TextBox x:Name="txtRevenue_Copy1" Height="31" Margin="269,156,0,0" VerticalAlignment="Top" MaxLines="1" MaxLength="8" TabIndex="3" HorizontalAlignment="Left" Width="189"/>
                         <TextBox x:Name="txtRevenue_Copy2" Height="31" Margin="807,28,0,0" VerticalAlignment="Top" MaxLines="1" MaxLength="8" TabIndex="3" HorizontalAlignment="Left" Width="189"/>
                         <TextBox x:Name="txtRevenue_Copy3" Height="31" Margin="807,88,0,0" VerticalAlignment="Top" MaxLines="1" MaxLength="8" TabIndex="3" HorizontalAlignment="Left" Width="189"/>
                         <TextBlock Margin="10,232,0,0" TextWrapping="Wrap" Text="Top Offsite Locations" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="990" TextAlignment="Center"/>
+                        <Button x:Name="btnFwd3" Content="" HorizontalAlignment="Left" Margin="943,586,0,0" VerticalAlignment="Top" Width="57" Height="65" BorderThickness="0,0,0,1" IsTabStop="False" BorderBrush="#FFE5E5E5">
+                            <Button.Background>
+                                <ImageBrush ImageSource="Resources/glass_arrow_right.png" Stretch="Uniform"/>
+                            </Button.Background>
+                        </Button>
+                        <Button x:Name="btnBack2" Content="" HorizontalAlignment="Left" Margin="10,586,0,0" VerticalAlignment="Top" Width="57" Height="65" BorderThickness="0,0,0,1" IsTabStop="False" BorderBrush="#FFE5E5E5">
+                            <Button.Background>
+                                <ImageBrush ImageSource="Resources/glass_arrow_left.png" Stretch="Uniform"/>
+                            </Button.Background>
+                        </Button>
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="tiEvents" Header="Events">
@@ -235,10 +245,15 @@
                                 <GridView/>
                             </ListView.View>
                         </ListView>
-                        <Button x:Name="btnSaveNextEvents" Content="Save" HorizontalAlignment="Left" Margin="466,606,0,0" Width="75" FontSize="24" Height="45" VerticalAlignment="Top">
-                            <Button.Effect>
-                                <DropShadowEffect ShadowDepth="3" Color="#FFBBB2B2"/>
-                            </Button.Effect>
+                        <Button x:Name="btnFwd4" Content="" HorizontalAlignment="Left" Margin="943,586,0,0" VerticalAlignment="Top" Width="57" Height="65" BorderThickness="0,0,0,1" IsTabStop="False" BorderBrush="#FFE5E5E5">
+                            <Button.Background>
+                                <ImageBrush ImageSource="Resources/glass_arrow_right.png" Stretch="Uniform"/>
+                            </Button.Background>
+                        </Button>
+                        <Button x:Name="btnBack3" Content="" HorizontalAlignment="Left" Margin="10,586,0,0" VerticalAlignment="Top" Width="57" Height="65" BorderThickness="0,0,0,1" IsTabStop="False" BorderBrush="#FFE5E5E5">
+                            <Button.Background>
+                                <ImageBrush ImageSource="Resources/glass_arrow_left.png" Stretch="Uniform"/>
+                            </Button.Background>
                         </Button>
                     </Grid>
                 </TabItem>
@@ -288,10 +303,15 @@
                         <TextBox x:Name="txtPopMoving" HorizontalAlignment="Left" Height="32" Margin="608,436,0,0" TextWrapping="Wrap" Text="1,400" VerticalAlignment="Top" Width="126" FontSize="18" TextAlignment="Center"/>
                         <DatePicker x:Name="dtpStartDate" HorizontalAlignment="Left" Margin="254,511,0,0" VerticalAlignment="Top" Width="200" FirstDayOfWeek="Monday" FontSize="18"/>
                         <DatePicker x:Name="dtpEndDate" HorizontalAlignment="Left" Margin="784,511,0,0" VerticalAlignment="Top" Width="200" FontSize="18" FirstDayOfWeek="Monday"/>
-                        <Button x:Name="btnSaveFinish" Content="Save" HorizontalAlignment="Left" Margin="466,606,0,0" Width="75" FontSize="24" Height="45" VerticalAlignment="Top">
+                        <Button x:Name="btnSaveFinish" Content="Save and Close" HorizontalAlignment="Left" Margin="813,606,0,0" Width="187" FontSize="24" Height="45" VerticalAlignment="Top">
                             <Button.Effect>
                                 <DropShadowEffect ShadowDepth="3" Color="#FFBBB2B2"/>
                             </Button.Effect>
+                        </Button>
+                        <Button x:Name="btnBack4" Content="" HorizontalAlignment="Left" Margin="10,586,0,0" VerticalAlignment="Top" Width="57" Height="65" BorderThickness="0,0,0,1" IsTabStop="False" BorderBrush="#FFE5E5E5">
+                            <Button.Background>
+                                <ImageBrush ImageSource="Resources/glass_arrow_left.png" Stretch="Uniform"/>
+                            </Button.Background>
                         </Button>
                     </Grid>
                 </TabItem>

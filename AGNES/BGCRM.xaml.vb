@@ -1,4 +1,6 @@
-﻿Public Class BGCRM
+﻿Imports System.ComponentModel
+
+Public Class BGCRM
     Dim BG As objBusinessGroup
     Dim BGC As BGCRMEntity
     Public Sub New()
@@ -8,97 +10,75 @@
         PopulateOptions()
         cboGroup.Focus()
     End Sub
+    Private Sub LastPage(sender As Object, e As RoutedEventArgs) Handles btnBack1.Click, btnBack2.Click, btnBack3.Click, btnBack4.Click
+        ValidatePage(tabPages.SelectedIndex)
+        SavePageToBGObj(tabPages.SelectedIndex)
+        tabPages.SelectedIndex -= 1
+    End Sub
+    Private Sub NextPage(sender As Object, e As RoutedEventArgs) Handles btnFwd1.Click, btnFwd2.Click, btnFwd3.Click, btnFwd4.Click
+        ValidatePage(tabPages.SelectedIndex)
+        SavePageToBGObj(tabPages.SelectedIndex)
+        tabPages.SelectedIndex += 1
+    End Sub
+    Private Sub SaveToEDM(sender As Object, e As RoutedEventArgs) Handles btnSaveFinish.Click
+        ValidatePage(tabPages.SelectedIndex)
+        SavePageToBGObj(tabPages.SelectedIndex)
+        BG.Save(BGC)
+        BGC.SaveChanges()
+    End Sub
+    Private Sub ValidatePage(p)
+        MsgBox("Validatation routine pending construction")
+    End Sub
+    Private Sub SavePageToBGObj(p)
+        Dim si As ListBoxItem
+        Select Case p
+            Case 0
+                With BG
+                    .OrgName = cboGroup.SelectedValue.ToString
+                    .Overview = txtOverview.Text
+                    .Headcount = FormatNumber(txtHeadcount.Text, 0)
+                    .WorkTimes = cboWorkTimes.SelectedIndex
+                    .OnsiteRemote = cboWorkspace.SelectedIndex
+                End With
 
-    Private Sub SaveAndNext(sender As Object, e As RoutedEventArgs) Handles btnSaveNextGroup.Click, btnSaveNextPeople.Click, btnSaveFinish.Click, btnSaveNextEvents.Click, btnSaveNextFinances.Click
-        Select Case tabPages.SelectedIndex
-            Case 0 '// Group page
-                ValidateGroupPage()
-                SaveGroupPage()
-                tabPages.SelectedIndex = 1
-            Case 1 '// People page
-                ValidatePeoplePage()
-                SavePeoplePage()
-                tabPages.SelectedIndex = 2
-            Case 2 '// Finance page
-                ValidateFinancePage()
-                SaveFinancePage()
-                tabPages.SelectedIndex = 3
-            Case 3 '// Events page
-                ValidateEventsPage()
-                SaveEventsPage()
-                tabPages.SelectedIndex = 4
-            Case 4 '// CR page
-                ValidateCRPage()
-                SaveCRPage()
+                '// Populate chosen communications into array
+                For Each si In lbxCommsChosen.Items
+                    Dim sc As String = si.Content
+                    Dim query = From comms In BGC.Communications
+                                Where comms.CommType.ToString = sc
+                                Select comms
+                    For Each comm In query
+                        BG.Communications.Add(comm.PID)
+                    Next
+                Next
+
+                '// Populate chosen culture into array
+                For Each si In lbxCultureChosen.Items
+                    Dim sc As String = si.Content
+                    Dim q = From c In BGC.GroupCultures
+                            Where c.Culture = sc
+                            Select c
+                    For Each c In q
+                        BG.Culture.Add(c.PID)
+                    Next
+                Next
+
+                '// Populate chosen locations into array
+                For Each si In lbxLocationsChosen.Items
+                    Dim sc As String = si.Content
+                    Dim q = From c In BGC.Locations
+                            Where c.BuildingName = sc
+                            Select c
+                    For Each c In q
+                        BG.Locations.Add(c.PID)
+                    Next
+                Next
+            Case 1
+            Case 2
+            Case 3
+            Case 4
         End Select
-
     End Sub
-    Private Sub ValidateGroupPage()
-        Dim ph As String = ""
-    End Sub
-    Private Sub ValidatePeoplePage()
-        Dim ph As String = ""
-    End Sub
-    Private Sub ValidateFinancePage()
-        Dim ph As String = ""
-    End Sub
-    Private Sub ValidateEventsPage()
-        Dim ph As String = ""
-    End Sub
-    Private Sub ValidateCRPage()
-        Dim ph As String = ""
-    End Sub
-    Private Sub SaveGroupPage()
-        'Dim bgnm As String = cboGroup.SelectedValue.ToString
-
-        'Try
-        '    Dim IsNew = BGC.BusinessGroups.Single(Function(p) p.BusinessGroupName = bgnm)
-
-        'Catch ex As InvalidOperationException
-        '    Try
-        '        Dim bg As New BusinessGroup
-        '        With bg
-        '            .BusinessGroupName = bgnm
-        '            .GroupOverview = txtOverview.Text
-        '            .Headcount = FormatNumber(txtHeadcount.Text, 0)
-        '            .WorkTimes = 1
-        '            .OnsiteRemote = 1
-        '            .OrgLeader = 1
-        '            .RelMgr = 1
-        '            .Revenue = 1234.56
-        '            .Events = 100
-        '            .Events500 = 20
-        '            .EventsCatered = 10
-        '            .OffsiteSpend = 123.45
-        '        End With
-        '        BGC.BusinessGroups.Add(bg)
-        '        BGC.SaveChanges()
-        '    Catch excep As Exception
-        '    End Try
-
-        'Catch ex As Exception
-        'End Try
-
-        '// SAVE DATA TO OBJECT, PASS EDM PARAMETER TO OBJECT AT END IN ORDER TO WRITE BACK TO THE DB
-
-    End Sub
-
-    Private Sub SavePeoplePage()
-        Dim ph As String = ""
-    End Sub
-
-    Private Sub SaveFinancePage()
-        Dim ph As String = ""
-    End Sub
-
-    Private Sub SaveEventsPage()
-        Dim ph As String = ""
-    End Sub
-
-    Private Sub SaveCRPage()
-        Dim ph As String = ""
-    End Sub
-
 
     Private Sub PopulateOptions()
 
@@ -125,12 +105,24 @@
         '// Populate communication options
         lbxCommSelect.Items.Clear()
         Dim cq = From bcomm In BGC.Communications Select bcomm Order By bcomm.CommType
-        For Each bcomm In cq : lbxCommSelect.Items.Add(bcomm.CommType) : Next
+        For Each bcomm In cq
+            Dim li As New ListBoxItem
+            li.Content = bcomm.CommType
+            li.Tag = "C"
+            AddHandler li.MouseDoubleClick, AddressOf CommItemMove
+            lbxCommSelect.Items.Add(li)
+        Next
 
         '// Populate culture options
         lbxCultureSelect.Items.Clear()
         Dim cuq = From bcult In BGC.GroupCultures Select bcult Order By bcult.Culture
-        For Each bcult In cuq : lbxCultureSelect.Items.Add(bcult.Culture) : Next
+        For Each bcult In cuq
+            Dim li As New ListBoxItem
+            li.Content = bcult.Culture
+            li.Tag = "C"
+            AddHandler li.MouseDoubleClick, AddressOf CultureItemMove
+            lbxCultureSelect.Items.Add(li)
+        Next
 
         '// Populate location, Origin building, and Destination building options - shared datasource
         lbxLocationsSelect.Items.Clear()
@@ -138,7 +130,13 @@
         lbxDestination.Items.Clear()
         Dim loq = From bloc In BGC.Locations Select bloc Order By bloc.BuildingName
         For Each bloc In loq
-            lbxLocationsSelect.Items.Add(bloc.BuildingName)
+            Dim li As New ListBoxItem
+            li.Content = bloc.BuildingName
+            li.Tag = "C"
+            AddHandler li.MouseDoubleClick, AddressOf LocationItemMove
+            lbxLocationsSelect.Items.Add(li)
+
+            'TODO: ADD HANDLERS FOR ORIGIN AND DESTINATION LOCATION BLOCKS
             lbxOriginSelect.Items.Add(bloc.BuildingName)
             lbxDestination.Items.Add(bloc.BuildingName)
         Next
@@ -195,4 +193,57 @@
 
     End Sub
 
+    Private Sub CommItemMove(sender, eventargs)
+        Dim li As New ListBoxItem
+        li = sender
+        Select Case li.Tag
+            Case "C"
+                lbxCommSelect.Items.Remove(li)
+                li.Tag = "S"
+                lbxCommsChosen.Items.Add(li)
+            Case "S"
+                lbxCommsChosen.Items.Remove(li)
+                li.Tag = "C"
+                lbxCommSelect.Items.Add(li)
+        End Select
+        lbxCommSelect.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        lbxCommsChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+
+    End Sub
+
+    Private Sub CultureItemMove(sender, eventargs)
+        Dim li As New ListBoxItem
+        li = sender
+        Select Case li.Tag
+            Case "C"
+                lbxCultureSelect.Items.Remove(li)
+                li.Tag = "S"
+                lbxCultureChosen.Items.Add(li)
+            Case "S"
+                lbxCultureChosen.Items.Remove(li)
+                li.Tag = "C"
+                lbxCultureSelect.Items.Add(li)
+        End Select
+        lbxCultureSelect.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        lbxCultureChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+
+    End Sub
+
+    Private Sub LocationItemMove(sender, eventargs)
+        Dim li As New ListBoxItem
+        li = sender
+        Select Case li.Tag
+            Case "C"
+                lbxLocationsSelect.Items.Remove(li)
+                li.Tag = "S"
+                lbxLocationsChosen.Items.Add(li)
+            Case "S"
+                lbxLocationsChosen.Items.Remove(li)
+                li.Tag = "C"
+                lbxLocationsSelect.Items.Add(li)
+        End Select
+        lbxLocationsSelect.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        lbxLocationsChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+
+    End Sub
 End Class

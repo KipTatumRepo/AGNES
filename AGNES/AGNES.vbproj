@@ -412,6 +412,9 @@
       <DependentUpon>BusinessGroupCRM.edmx</DependentUpon>
       <LastGenOutput>BusinessGroupCRM.vb</LastGenOutput>
     </Content>
+    <Resource Include="Resources\pill_button.png" />
+    <Resource Include="Resources\glass_arrow_right.png" />
+    <Resource Include="Resources\glass_arrow_left.png" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
