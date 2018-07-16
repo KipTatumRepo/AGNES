@@ -27,7 +27,7 @@
                         <TextBlock Margin="627,148,0,0" TextWrapping="Wrap" Text="Workspace Type" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="184"/>
                         <TextBlock HorizontalAlignment="Left" Margin="10,225,0,0" TextWrapping="Wrap" Text="Communications" VerticalAlignment="Top" FontSize="24" Width="990" TextAlignment="Center"/>
                         <TextBlock Margin="10,464,0,0" TextWrapping="Wrap" Text="Locations" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="990" TextAlignment="Center"/>
-                        <ComboBox x:Name="cboGroup" Margin="258,29,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="1" HorizontalAlignment="Left" Width="742">
+                        <ComboBox x:Name="cboGroup" Margin="258,29,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="1" HorizontalAlignment="Left" Width="742" SelectedValuePath="Content">
                             <ComboBox.ContextMenu>
                                 <ContextMenu>
                                     <ComboBoxItem Content="Add new business group"/>
@@ -83,8 +83,8 @@
                         <TextBlock Margin="10,114,0,0" TextWrapping="Wrap" Text="Relationship manager" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="243" Grid.ColumnSpan="2"/>
                         <TextBlock Margin="19,181,0,0" TextWrapping="Wrap" Text="Leadership team" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="975" TextAlignment="Center"/>
                         <TextBlock Margin="19,380,0,0" TextWrapping="Wrap" Text="Frequent customers" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="975" TextAlignment="Center"/>
-                        <ComboBox x:Name="cboLeader" Margin="258,29,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="4" HorizontalAlignment="Left" Width="712"/>
-                        <ComboBox x:Name="cboRelManager" Margin="258,116,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="5" HorizontalAlignment="Left" Width="712"/>
+                        <ComboBox x:Name="cboLeader" Margin="258,29,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="4" HorizontalAlignment="Left" Width="712" SelectedValuePath="Content"/>
+                        <ComboBox x:Name="cboRelManager" Margin="258,116,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="5" HorizontalAlignment="Left" Width="712" SelectedValuePath="Content"/>
                         <ListView x:Name="lbxLeadersSelect" Height="138" Margin="19,218,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                         </ListView>
                         <ListView x:Name="lbxCustomerSelect" Height="138" Margin="19,417,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
@@ -125,10 +125,10 @@
                         <ListView x:Name="lbxOffsiteLocsChosen" Height="242" Margin="520,286,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                         </ListView>
                         <Separator HorizontalAlignment="Left" Height="40" Margin="0,192,0,0" VerticalAlignment="Top" Width="1010"/>
-                        <TextBox x:Name="txtRevenue_Copy" Height="31" Margin="269,88,0,0" VerticalAlignment="Top" MaxLines="1" MaxLength="8" TabIndex="3" HorizontalAlignment="Left" Width="189"/>
-                        <TextBox x:Name="txtRevenue_Copy1" Height="31" Margin="269,156,0,0" VerticalAlignment="Top" MaxLines="1" MaxLength="8" TabIndex="3" HorizontalAlignment="Left" Width="189"/>
-                        <TextBox x:Name="txtRevenue_Copy2" Height="31" Margin="807,28,0,0" VerticalAlignment="Top" MaxLines="1" MaxLength="8" TabIndex="3" HorizontalAlignment="Left" Width="189"/>
-                        <TextBox x:Name="txtRevenue_Copy3" Height="31" Margin="807,88,0,0" VerticalAlignment="Top" MaxLines="1" MaxLength="8" TabIndex="3" HorizontalAlignment="Left" Width="189"/>
+                        <TextBox x:Name="txtOffsiteSpend" Height="31" Margin="269,88,0,0" VerticalAlignment="Top" MaxLines="1" MaxLength="8" TabIndex="3" HorizontalAlignment="Left" Width="189"/>
+                        <TextBox x:Name="txtEventCount" Height="31" Margin="269,156,0,0" VerticalAlignment="Top" MaxLines="1" MaxLength="8" TabIndex="3" HorizontalAlignment="Left" Width="189"/>
+                        <TextBox x:Name="txt500EventCount" Height="31" Margin="807,28,0,0" VerticalAlignment="Top" MaxLines="1" MaxLength="8" TabIndex="3" HorizontalAlignment="Left" Width="189"/>
+                        <TextBox x:Name="txtCateredEventCount" Height="31" Margin="807,88,0,0" VerticalAlignment="Top" MaxLines="1" MaxLength="8" TabIndex="3" HorizontalAlignment="Left" Width="189"/>
                         <TextBlock Margin="10,232,0,0" TextWrapping="Wrap" Text="Top Offsite Locations" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="990" TextAlignment="Center"/>
                         <Button x:Name="btnFwd3" Content="" HorizontalAlignment="Left" Margin="943,586,0,0" VerticalAlignment="Top" Width="57" Height="65" BorderThickness="0,0,0,1" IsTabStop="False" BorderBrush="#FFE5E5E5">
                             <Button.Background>
