@@ -8,6 +8,13 @@ Public Class BGCRM
         BG = New objBusinessGroup
         BGC = New BGCRMEntity
         PopulateOptions()
+
+        '//TEST
+        Dim cbi As New ComboBoxItem
+        cbi.Content = "Core Engineering"
+        cboGroup.Items.Add(cbi)
+        '//TEST
+
         cboGroup.Focus()
     End Sub
     Private Sub LastPage(sender As Object, e As RoutedEventArgs) Handles btnBack1.Click, btnBack2.Click, btnBack3.Click, btnBack4.Click
@@ -32,9 +39,9 @@ Public Class BGCRM
     Private Sub SavePageToBGObj(p)
         Dim si As ListBoxItem
         Select Case p
-            Case 0
+            Case 0          '====== GROUP PAGE
                 With BG
-                    .OrgName = cboGroup.SelectedValue.ToString
+                    .OrgName = cboGroup.SelectedValue
                     .Overview = txtOverview.Text
                     .Headcount = FormatNumber(txtHeadcount.Text, 0)
                     .WorkTimes = cboWorkTimes.SelectedIndex
@@ -42,13 +49,14 @@ Public Class BGCRM
                 End With
 
                 '// Populate chosen communications into array
+
                 For Each si In lbxCommsChosen.Items
                     Dim sc As String = si.Content
                     Dim query = From comms In BGC.Communications
                                 Where comms.CommType.ToString = sc
                                 Select comms
                     For Each comm In query
-                        BG.Communications.Add(comm.PID)
+                        BG.Communications.Add(FormatNumber(comm.PID, 0))
                     Next
                 Next
 
@@ -59,7 +67,7 @@ Public Class BGCRM
                             Where c.Culture = sc
                             Select c
                     For Each c In q
-                        BG.Culture.Add(c.PID)
+                        BG.Culture.Add(FormatNumber(c.PID, 0))
                     Next
                 Next
 
@@ -70,13 +78,130 @@ Public Class BGCRM
                             Where c.BuildingName = sc
                             Select c
                     For Each c In q
-                        BG.Locations.Add(c.PID)
+                        BG.Locations.Add(FormatNumber(c.PID, 0))
                     Next
                 Next
-            Case 1
-            Case 2
-            Case 3
-            Case 4
+
+            Case 1      '======PEOPLE PAGE
+                '// Populate Org leader
+                Dim sl As String = cboLeader.SelectedValue
+                Dim ql = From c In BGC.Leaders
+                         Where c.LeaderName = sl
+                         Select c
+                For Each c In ql
+                    BG.OrgLeader = FormatNumber(c.PID, 0)
+                Next
+
+                '// Populate relationship manager
+                Dim orm As String = cboRelManager.SelectedValue
+                Dim qr = From c In BGC.FrequentCustomers
+                         Where c.CustomerName = orm
+                         Select c
+                For Each c In ql
+                    BG.RelationshipMgr = FormatNumber(c.PID, 0)
+                Next
+
+                '// Populate chosen leaders into array
+                For Each si In lbxLeadersChosen.Items
+                    Dim slt As String = si.Content
+                    Dim q = From c In BGC.Leaders
+                            Where c.LeaderName = slt
+                            Select c
+                    For Each c In q
+                        BG.Leadership.Add(FormatNumber(c.PID, 0))
+                    Next
+                Next
+
+                '// Populate chosen customers into array
+                For Each si In lbxCustomerChosen.Items
+                    Dim sfc As String = si.Content
+                    Dim q = From c In BGC.FrequentCustomers
+                            Where c.CustomerName = sfc
+                            Select c
+                    For Each c In q
+                        BG.FrequentCustomers.Add(FormatNumber(c.PID, 0))
+                    Next
+                Next
+
+            Case 2          '======FINANCIAL PAGE
+                With BG
+                    .TotalRevenue = FormatNumber(txtRevenue.Text, 2)
+                    .OffSiteSpend = FormatNumber(txtOffsiteSpend.Text, 2)
+                    .TotalEvents = FormatNumber(txtEventCount.Text, 0)
+                    .Events500 = FormatNumber(txt500EventCount.Text, 0)
+                    .CateredEvents = FormatNumber(txtCateredEventCount.Text, 0)
+                End With
+
+                '// Populate top offsite locations into array
+                For Each si In lbxOffsiteLocsChosen.Items
+                    Dim slt As String = si.Content
+                    Dim q = From c In BGC.OffsiteLocations
+                            Where c.OffsiteLocName = slt
+                            Select c
+                    For Each c In q
+                        BG.TopOffsiteLocations.Add(FormatNumber(c.PID, 0))
+                    Next
+                Next
+
+            Case 3          '======EVENTS PAGE
+                '// Populate notable events into array
+                For Each si In lbxNotableChosen.Items
+                    Dim slt As String = si.Content
+                    Dim q = From c In BGC.NotableEvents
+                            Where c.EventName = slt
+                            Select c
+                    For Each c In q
+                        BG.NotableEvents.Add(FormatNumber(c.PID, 0))
+                    Next
+                Next
+
+                '// Populate top event types into array
+                For Each si In lbxTopETypesChosen.Items
+                    Dim slt As String = si.Content
+                    Dim q = From c In BGC.EventTypes
+                            Where c.EventType1 = slt
+                            Select c
+                    For Each c In q
+                        BG.TopEventTypes.Add(FormatNumber(c.PID, 0))
+                    Next
+                Next
+
+                '// Populate top event spaces into array
+                For Each si In lbxTopSpacesChosen.Items
+                    Dim slt As String = si.Content
+                    Dim q = From c In BGC.EventSpaces
+                            Where c.SpaceName = slt
+                            Select c
+                    For Each c In q
+                        BG.TopBookedSpaces.Add(FormatNumber(c.PID, 0))
+                    Next
+                Next
+
+                '// Populate top eventions involvements into array
+                For Each si In lbxInvolveChosen.Items
+                    Dim slt As String = si.Content
+                    Dim q = From c In BGC.Involvements
+                            Where c.Involvement1 = slt
+                            Select c
+                    For Each c In q
+                        BG.EventionsInvolvement.Add(FormatNumber(c.PID, 0))
+                    Next
+                Next
+
+                '// Populate embedded planners into array
+                For Each si In lbxPlannersChosen.Items
+                    Dim slt As String = si.Content
+                    Dim q = From c In BGC.Planners
+                            Where c.PlannerName = slt
+                            Select c
+                    For Each c In q
+                        BG.EmbeddedPlanners.Add(FormatNumber(c.PID, 0))
+                    Next
+                Next
+
+            Case 4          '======CAMPUS REFRESH PAGE
+                'TODO: Build out CR objects and populate into BG object
+
         End Select
     End Sub
 

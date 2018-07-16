@@ -45,9 +45,9 @@
             _onrem = value
         End Set
     End Property
-    Public Property Communications As List(Of Byte)
-    Public Property Culture As List(Of Byte)
-    Public Property Locations As List(Of Int32)
+    Public Property Communications As New List(Of Byte)
+    Public Property Culture As New List(Of Byte)
+    Public Property Locations As New List(Of Int32)
     Private _orgleader As Byte
     Public Property OrgLeader As Byte
         Get
@@ -66,8 +66,8 @@
             _relmanager = value
         End Set
     End Property
-    Public Property Leadership As List(Of Byte)
-    Public Property FrequentCustomers As List(Of Byte)
+    Public Property Leadership As New List(Of Byte)
+    Public Property FrequentCustomers As New List(Of Byte)
     Private _totalrev As Double
     Public Property TotalRevenue As Double
         Get
@@ -113,13 +113,13 @@
             _offsitespend = value
         End Set
     End Property
-    Public Property TopOffsiteLocations As List(Of Byte)    '// Could be expanded to a list of objects with more detailed info
-    Public Property EmbeddedPlanners As List(Of Byte)       '// Could be expanded to a list of objects with more detailed info
-    Public Property TopBookedSpaces As List(Of Byte)        '// Could be expanded to a list of objects with more detailed info
-    Public Property TopEventTypes As List(Of Byte)
-    Public Property NotableEvents As List(Of Byte)          '// Could be expanded to a list of objects with more detailed info
-    Public Property EventionsInvolvement As List(Of Byte)
-    Public Property CREvents As List(Of RefreshEvent)
+    Public Property TopOffsiteLocations As New List(Of Byte)    '// Could be expanded to a list of objects with more detailed info
+    Public Property EmbeddedPlanners As New List(Of Byte)       '// Could be expanded to a list of objects with more detailed info
+    Public Property TopBookedSpaces As New List(Of Byte)        '// Could be expanded to a list of objects with more detailed info
+    Public Property TopEventTypes As New List(Of Byte)
+    Public Property NotableEvents As New List(Of Byte)          '// Could be expanded to a list of objects with more detailed info
+    Public Property EventionsInvolvement As New List(Of Byte)
+    Public Property CREvents As New List(Of RefreshEvent)
 
     Public Sub New()
         Dim ph As String = ""
@@ -130,7 +130,7 @@
     End Sub
 
     Public Sub Save(ByRef EnFrModel)
-        Dim ef As BGCRMEntity = EnFrModel
+        ef = EnFrModel
         Try
             Dim IsNew = ef.BusinessGroups.Single(Function(p) p.BusinessGroupName = OrgName)
             UpdateExisting()
@@ -145,7 +145,41 @@
     End Sub
 
     Private Sub UpdateExisting()
-        Dim ph As String = ""
+        Dim BGPID As Long
+        Try
+            '// Handle all non-joined first, save, query for PID, and then handle writing to _join tables
+            Dim bg = ef.BusinessGroups.Single(Function(p) p.BusinessGroupName = OrgName)
+            With bg
+                .BusinessGroupName = OrgName
+                .GroupOverview = Overview
+                .Headcount = Headcount
+                .WorkTimes = WorkTimes
+                .OnsiteRemote = OnsiteRemote
+                .OrgLeader = OrgLeader
+                .RelMgr = RelationshipMgr
+                .Revenue = TotalRevenue
+                .Events = TotalEvents
+                .Events500 = Events500
+                .EventsCatered = CateredEvents
+                .OffsiteSpend = OffSiteSpend
+            End With
+
+            ef.SaveChanges()
+
+            SaveComms(bg.PID, 1)
+            SaveCulture(bg.PID, 1)
+            SaveLocations(bg.PID, 1)
+            SaveLeadership(bg.PID, 1)
+            SaveCustomers(bg.PID, 1)
+            SaveOffsites(bg.PID, 1)
+            SaveNotables(bg.PID, 1)
+            SaveTypes(bg.PID, 1)
+            SaveSpaces(bg.PID, 1)
+            SaveInvolvements(bg.PID, 1)
+            SavePlanners(bg.PID, 1)
+
+        Catch excep As Exception
+        End Try
     End Sub
 
     Private Sub SaveNew()
@@ -159,15 +193,17 @@
                 .Headcount = Headcount
                 .WorkTimes = WorkTimes
                 .OnsiteRemote = OnsiteRemote
-                .OrgLeader = 1
-                .RelMgr = 1
-                .Revenue = 1234.56
-                .Events = 100
-                .Events500 = 20
-                .EventsCatered = 10
-                .OffsiteSpend = 123.45
+                .OrgLeader = OrgLeader
+                .RelMgr = RelationshipMgr
+                .Revenue = TotalRevenue
+                .Events = TotalEvents
+                .Events500 = Events500
+                .EventsCatered = CateredEvents
+                .OffsiteSpend = OffSiteSpend
             End With
+
             ef.BusinessGroups.Add(bg)
+            ef.SaveChanges()
 
             Dim q = From c In ef.BusinessGroups
                     Where c.BusinessGroupName = OrgName
@@ -177,45 +213,124 @@
                 BGPID = c.PID
             Next
 
-            SaveComms(BGPID)
-            SaveCulture(BGPID)
-            SaveLocations(BGPID)
+            SaveComms(BGPID, 0)
+            SaveCulture(BGPID, 0)
+            SaveLocations(BGPID, 0)
+            SaveLeadership(BGPID, 0)
+            SaveCustomers(BGPID, 0)
+            SaveOffsites(BGPID, 0)
+            SaveNotables(BGPID, 0)
+            SaveTypes(BGPID, 0)
+            SaveSpaces(BGPID, 0)
+            SaveInvolvements(BGPID, 0)
+            SavePlanners(BGPID, 0)
 
         Catch excep As Exception
         End Try
     End Sub
 
-    Private Sub SaveComms(pid)
-        For Each i As Byte In Communications
-            Dim cj As New Comm_Join
-            With cj
-                .BGId = pid
-                .CommId = i
-            End With
-            ef.Comm_Join.Add(cj)
-        Next
+    Private Sub SaveComms(pid, isnew)
+        If isnew = 0 Then
+            For Each i As Byte In Communications
+                Dim cj As New Comm_Join
+                With cj
+                    .BGId = pid
+                    .CommId = i
+                End With
+                ef.Comm_Join.Add(cj)
+            Next
+        Else
+            Dim ph1 As String = ""
+        End If
+
     End Sub
 
-    Private Sub SaveCulture(pid)
-        For Each i As Byte In Culture
-            Dim cj As New Culture_Join
-            With cj
-                .BGId = pid
-                .CultureId = i
-            End With
-            ef.Culture_Join.Add(cj)
-        Next
+    Private Sub SaveCulture(pid, isnew)
+        If isnew = 0 Then
+            For Each i As Byte In Culture
+                Dim cj As New Culture_Join
+                With cj
+                    .BGId = pid
+                    .CultureId = i
+                End With
+                ef.Culture_Join.Add(cj)
+            Next
+        Else
+            Dim ph1 As String = ""
+        End If
     End Sub
 
-    Private Sub SaveLocations(pid)
-        For Each i As Byte In Locations
-            Dim lj As New Locations_Join
-            With lj
-                .BGId = pid
-                .LocId = i
-            End With
-            ef.Locations_Join.Add(lj)
-        Next
+    Private Sub SaveLocations(pid, isnew)
+        If isnew = 0 Then
+            For Each i As Byte In Locations
+                Dim lj As New Locations_Join
+                With lj
+                    .BGId = pid
+                    .LocId = i
+                End With
+                ef.Locations_Join.Add(lj)
+            Next
+        Else
+            Dim ph1 As String = ""
+        End If
+
+    End Sub
+
+    Private Sub SaveLeadership(pid, isnew)
+        If isnew = 0 Then
+            Dim ph As String = ""
+        Else
+            Dim ph1 As String = ""
+        End If
+    End Sub
+    Private Sub SaveOffsites(pid, isnew)
+        If isnew = 0 Then
+            Dim ph As String = ""
+        Else
+            Dim ph1 As String = ""
+        End If
+    End Sub
+    Private Sub SaveCustomers(pid, isnew)
+        If isnew = 0 Then
+            Dim ph As String = ""
+        Else
+            Dim ph1 As String = ""
+        End If
+    End Sub
+    Private Sub SaveNotables(pid, isnew)
+        If isnew = 0 Then
+            Dim ph As String = ""
+        Else
+            Dim ph1 As String = ""
+        End If
+    End Sub
+    Private Sub SaveTypes(pid, isnew)
+        If isnew = 0 Then
+            Dim ph As String = ""
+        Else
+            Dim ph1 As String = ""
+        End If
+    End Sub
+    Private Sub SaveSpaces(pid, isnew)
+        If isnew = 0 Then
+            Dim ph As String = ""
+        Else
+            Dim ph1 As String = ""
+        End If
+    End Sub
+    Private Sub SaveInvolvements(pid, isnew)
+        If isnew = 0 Then
+            Dim ph As String = ""
+        Else
+            Dim ph1 As String = ""
+        End If
+    End Sub
+    Private Sub SavePlanners(pid, isnew)
+        If isnew = 0 Then
+            Dim ph As String = ""
+        Else
+            Dim ph1 As String = ""
+        End If
     End Sub
 
     Public Sub Delete()
