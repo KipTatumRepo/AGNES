@@ -1,5 +1,6 @@
 ﻿Public Class objBusinessGroup
     Private _orgname As String
+    Private ef As BGCRMEntity
     Public Property OrgName As String
         Get
             Return _orgname
@@ -46,7 +47,7 @@
     End Property
     Public Property Communications As List(Of Byte)
     Public Property Culture As List(Of Byte)
-    Public Property Locations As List(Of CRBuilding)
+    Public Property Locations As List(Of Int32)
     Private _orgleader As Byte
     Public Property OrgLeader As Byte
         Get
@@ -128,8 +129,93 @@
         Dim ph As String = ""
     End Sub
 
-    Public Sub Save()
+    Public Sub Save(ByRef EnFrModel)
+        Dim ef As BGCRMEntity = EnFrModel
+        Try
+            Dim IsNew = ef.BusinessGroups.Single(Function(p) p.BusinessGroupName = OrgName)
+            UpdateExisting()
+        Catch ex As InvalidOperationException
+            SaveNew()
+            '// Item exists - add Update code here
+        Catch ex As Exception
+
+        End Try
+
+        '// SAVE DATA TO OBJECT, PASS EDM PARAMETER TO OBJECT AT END IN ORDER TO WRITE BACK TO THE DB
+    End Sub
+
+    Private Sub UpdateExisting()
         Dim ph As String = ""
+    End Sub
+
+    Private Sub SaveNew()
+        Dim BGPID As Long
+        Try
+            '// Handle all non-joined first, save, query for PID, and then handle writing to _join tables
+            Dim bg As New BusinessGroup
+            With bg
+                .BusinessGroupName = OrgName
+                .GroupOverview = Overview
+                .Headcount = Headcount
+                .WorkTimes = WorkTimes
+                .OnsiteRemote = OnsiteRemote
+                .OrgLeader = 1
+                .RelMgr = 1
+                .Revenue = 1234.56
+                .Events = 100
+                .Events500 = 20
+                .EventsCatered = 10
+                .OffsiteSpend = 123.45
+            End With
+            ef.BusinessGroups.Add(bg)
+
+            Dim q = From c In ef.BusinessGroups
+                    Where c.BusinessGroupName = OrgName
+                    Select c
+
+            For Each c In q
+                BGPID = c.PID
+            Next
+
+            SaveComms(BGPID)
+            SaveCulture(BGPID)
+            SaveLocations(BGPID)
+
+        Catch excep As Exception
+        End Try
+    End Sub
+
+    Private Sub SaveComms(pid)
+        For Each i As Byte In Communications
+            Dim cj As New Comm_Join
+            With cj
+                .BGId = pid
+                .CommId = i
+            End With
+            ef.Comm_Join.Add(cj)
+        Next
+    End Sub
+
+    Private Sub SaveCulture(pid)
+        For Each i As Byte In Culture
+            Dim cj As New Culture_Join
+            With cj
+                .BGId = pid
+                .CultureId = i
+            End With
+            ef.Culture_Join.Add(cj)
+        Next
+    End Sub
+
+    Private Sub SaveLocations(pid)
+        For Each i As Byte In Locations
+            Dim lj As New Locations_Join
+            With lj
+                .BGId = pid
+                .LocId = i
+            End With
+            ef.Locations_Join.Add(lj)
+        Next
     End Sub
 
     Public Sub Delete()
