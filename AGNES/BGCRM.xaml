@@ -31,7 +31,7 @@
                             <ComboBox.ContextMenu>
                                 <ContextMenu>
                                     <ComboBoxItem x:Name="cbiAddBG" Content="Add new business group" />
-                                    <ComboBoxItem Content="Delete business group" />
+                                    <ComboBoxItem Content="Delete business group" IsEnabled="False" />
                                 </ContextMenu>
                             </ComboBox.ContextMenu>
                         </ComboBox>
@@ -51,7 +51,7 @@
                             <ListView.ContextMenu>
                                 <ContextMenu>
                                     <ComboBoxItem x:Name ="cbiNewCommType" Content="Add new communication type" IsSelected="True" PreviewMouseLeftButtonDown="AddCommunicationType" />
-                                    <ComboBoxItem Content="Delete selected communication type" />
+                                    <ComboBoxItem Content="Delete selected communication type" IsEnabled="False" />
                                 </ContextMenu>
                             </ListView.ContextMenu>
                         </ListView>
@@ -60,7 +60,7 @@
                             <ListView.ContextMenu>
                                 <ContextMenu>
                                     <ComboBoxItem x:Name ="cbiNewCultureType" Content="Add new culture type" IsSelected="True" PreviewMouseLeftButtonDown="AddCulture"/>
-                                    <ComboBoxItem Content="Delete selected culture type" />
+                                    <ComboBoxItem Content="Delete selected culture type" IsEnabled="False"/>
                                 </ContextMenu>
                             </ListView.ContextMenu>
                         </ListView>
@@ -87,7 +87,7 @@
                             <ListView.ContextMenu>
                                 <ContextMenu>
                                     <ComboBoxItem x:Name ="lbiNewLeader" Content="Add new team member" IsSelected="True" PreviewMouseLeftButtonDown="AddLeadership"/>
-                                    <ComboBoxItem Content="Delete selected team member" />
+                                    <ComboBoxItem Content="Delete selected team member" IsEnabled="False" />
                                 </ContextMenu>
                             </ListView.ContextMenu>
                         </ListView>
@@ -95,7 +95,7 @@
                             <ListView.ContextMenu>
                                 <ContextMenu>
                                     <ComboBoxItem x:Name ="lbiNewCustomer" Content="Add new customer" IsSelected="True" PreviewMouseLeftButtonDown="AddNewCustomer"/>
-                                    <ComboBoxItem Content="Delete selected customer" />
+                                    <ComboBoxItem Content="Delete selected customer" IsEnabled="False"/>
                                 </ContextMenu>
                             </ListView.ContextMenu>
                         </ListView>
@@ -128,7 +128,7 @@
                             <ListView.ContextMenu>
                                 <ContextMenu>
                                     <ComboBoxItem x:Name ="lbiNewOffsite" Content="Add new offsite location" IsSelected="True"/>
-                                    <ComboBoxItem Content="Delete selected location" />
+                                    <ComboBoxItem Content="Delete selected location" IsEnabled="False" />
                                 </ContextMenu>
                             </ListView.ContextMenu>
                         </ListView>
@@ -159,7 +159,7 @@
                             <ListView.ContextMenu>
                                 <ContextMenu>
                                     <ComboBoxItem x:Name ="lbiNewType" Content="Add new event type" IsSelected="True" PreviewMouseLeftButtonDown="AddNewEventType"/>
-                                    <ComboBoxItem Content="Delete selected event type" />
+                                    <ComboBoxItem Content="Delete selected event type" IsEnabled="False"/>
                                 </ContextMenu>
                             </ListView.ContextMenu>
                         </ListView>
@@ -173,7 +173,7 @@
                             <ListView.ContextMenu>
                                 <ContextMenu>
                                     <ComboBoxItem x:Name ="lbiNewSpace" Content="Add new space" IsSelected="True" PreviewMouseLeftButtonDown="AddNewEventSpace"/>
-                                    <ComboBoxItem Content="Delete selected space" />
+                                    <ComboBoxItem Content="Delete selected space" IsEnabled="False"/>
                                 </ContextMenu>
                             </ListView.ContextMenu>
                         </ListView>
@@ -188,7 +188,7 @@
                             <ListView.ContextMenu>
                                 <ContextMenu>
                                     <ComboBoxItem x:Name ="lbiNewInvolvement" Content="Add new involvement" IsSelected="True" PreviewMouseLeftButtonDown="AddNewInvolvement"/>
-                                    <ComboBoxItem Content="Delete selected involvement" />
+                                    <ComboBoxItem Content="Delete selected involvement" IsEnabled="False"/>
                                 </ContextMenu>
                             </ListView.ContextMenu>
                         </ListView>
@@ -202,7 +202,7 @@
                             <ListView.ContextMenu>
                                 <ContextMenu>
                                     <ComboBoxItem x:Name ="lbiNewNotable" Content="Add new event" IsSelected="True" PreviewMouseLeftButtonDown="AddNewNotableEvent"/>
-                                    <ComboBoxItem Content="Delete selected event" />
+                                    <ComboBoxItem Content="Delete selected event" IsEnabled="False" />
                                 </ContextMenu>
                             </ListView.ContextMenu>
                         </ListView>
@@ -215,7 +215,7 @@
                             <ListView.ContextMenu>
                                 <ContextMenu>
                                     <ComboBoxItem x:Name ="lbiNewPlanner" Content="Add new planner" IsSelected="True" PreviewMouseLeftButtonDown="AddNewPlanner"/>
-                                    <ComboBoxItem Content="Delete selected planner" />
+                                    <ComboBoxItem Content="Delete selected planner" IsEnabled="False"/>
                                 </ContextMenu>
                             </ListView.ContextMenu>
                         </ListView>
