@@ -1,0 +1,15 @@
+﻿<Window x:Class="SingleUserInput"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AGNES"
+        mc:Ignorable="d"
+        Title="SingleUserInput" Height="127.152" Width="300" IsTabStop="False" WindowStyle="None" WindowStartupLocation="CenterScreen">
+    <Grid Margin="0,0,0,2">
+        <TextBox x:Name="txtUserInput" HorizontalAlignment="Left" Height="23" Margin="10,55,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="272" UndoLimit="32" MaxLines="1" MaxLength="64" IsUndoEnabled="True"/>
+        <TextBlock x:Name="lblInputDirection" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="272" TextAlignment="Center" Height="40"/>
+        <Button x:Name="btnOkay" Content="OK" HorizontalAlignment="Left" Margin="108,87,0,0" VerticalAlignment="Top" Width="76"/>
+
+    </Grid>
+</Window>

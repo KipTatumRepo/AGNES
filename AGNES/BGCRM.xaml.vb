@@ -382,8 +382,16 @@ Public Class BGCRM
 #End Region
 
 #Region "Context Menu Actions"
-    Private Sub AddBusinessGroup(sender As Object, e As MouseButtonEventArgs) Handles cbiAddBG.MouseDoubleClick
-        Dim ph As String = ""
+    Private Sub AddBusinessGroup(sender As Object, e As MouseButtonEventArgs) Handles cbiAddBG.PreviewMouseLeftButtonDown
+        Dim uni As New SingleUserInput
+        With uni
+            .InputType = 0
+            .lblInputDirection.Text = "Enter the business group name!"
+            .txtUserInput.Focus()
+            .ShowDialog()
+        End With
+        cboGroup.Items.Add(New ComboBoxItem With {.Content = uni.StringVal})
+        uni.Close()
 
     End Sub
 #End Region
