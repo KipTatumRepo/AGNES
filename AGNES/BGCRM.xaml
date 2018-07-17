@@ -30,7 +30,7 @@
                             </ComboBox.Background>
                             <ComboBox.ContextMenu>
                                 <ContextMenu>
-                                    <ComboBoxItem x:Name="cbiAddBG" Content="Add new business group" />
+                                    <ComboBoxItem x:Name="cbiAddBG" Content="Add new business group" PreviewMouseLeftButtonDown="AddBusinessGroup"/>
                                     <ComboBoxItem Content="Delete business group" IsEnabled="False" />
                                 </ContextMenu>
                             </ComboBox.ContextMenu>
@@ -164,9 +164,6 @@
                             </ListView.ContextMenu>
                         </ListView>
                         <ListView x:Name="lbxTopETypesChosen" Height="78" Margin="520,167,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
-                            <ListView.View>
-                                <GridView/>
-                            </ListView.View>
                         </ListView>
                         <TextBlock Margin="0,130,-10,0" TextWrapping="Wrap" Text="Top Event Types" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1020" TextAlignment="Center"/>
                         <ListView x:Name="lbxTopSpacesSelect" Height="78" Margin="10,287,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
@@ -178,9 +175,6 @@
                             </ListView.ContextMenu>
                         </ListView>
                         <ListView x:Name="lbxTopSpacesChosen" Height="78" Margin="520,287,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
-                            <ListView.View>
-                                <GridView/>
-                            </ListView.View>
                         </ListView>
                         <TextBlock Margin="0,250,-10,0" TextWrapping="Wrap" Text="Top Booked Spaces" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1020" TextAlignment="Center"/>
                         <TextBlock Margin="0,370,-10,0" TextWrapping="Wrap" Text="Eventions Involvement" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1020" TextAlignment="Center"/>
@@ -193,9 +187,6 @@
                             </ListView.ContextMenu>
                         </ListView>
                         <ListView x:Name="lbxInvolveChosen" Height="78" Margin="520,407,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
-                            <ListView.View>
-                                <GridView/>
-                            </ListView.View>
                         </ListView>
                         <TextBlock Margin="0,490,-10,0" TextWrapping="Wrap" Text="Embedded Planners" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1020" TextAlignment="Center"/>
                         <ListView x:Name="lbxNotableSelect" Height="78" Margin="10,47,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
@@ -207,9 +198,6 @@
                             </ListView.ContextMenu>
                         </ListView>
                         <ListView x:Name="lbxNotableChosen" Height="78" Margin="520,47,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
-                            <ListView.View>
-                                <GridView/>
-                            </ListView.View>
                         </ListView>
                         <ListView x:Name="lbxPlannersSelect" Height="53" Margin="10,527,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                             <ListView.ContextMenu>
@@ -220,9 +208,6 @@
                             </ListView.ContextMenu>
                         </ListView>
                         <ListView x:Name="lbxPlannersChosen" Height="53" Margin="520,527,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
-                            <ListView.View>
-                                <GridView/>
-                            </ListView.View>
                         </ListView>
                         <Button x:Name="btnFwd4" Content="" HorizontalAlignment="Left" Margin="943,586,0,0" VerticalAlignment="Top" Width="57" Height="65" BorderThickness="0,0,0,1" IsTabStop="False" BorderBrush="#FFE5E5E5">
                             <Button.Background>
