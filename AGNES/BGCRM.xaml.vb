@@ -391,8 +391,32 @@ Public Class BGCRM
             .ShowDialog()
         End With
         cboGroup.Items.Add(New ComboBoxItem With {.Content = uni.StringVal})
+        cboGroup.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
         uni.Close()
 
+    End Sub
+
+    Private Sub AddCommunicationType(sender As Object, e As MouseButtonEventArgs) Handles cbiNewCommType.PreviewMouseLeftButtonDown
+        Dim uni As New SingleUserInput
+        With uni
+            .InputType = 0
+            .lblInputDirection.Text = "Enter the new communication type!"
+            .txtUserInput.Focus()
+            .ShowDialog()
+        End With
+        Try
+            Dim check = BGC.Communications.Single(Function(p) p.CommType = uni.StringVal.ToString)
+            'TODO: New communication type already exists
+        Catch ex As InvalidOperationException
+            Dim comm As New Communication With {.CommType = uni.StringVal}
+            BGC.Communications.Add(comm)
+            BGC.SaveChanges()
+            Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
+            AddHandler li.MouseDoubleClick, AddressOf CommItemMove
+            lbxCommsChosen.Items.Add(li)
+            lbxCommsChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        End Try
+        uni.Close()
     End Sub
 #End Region
 End Class

@@ -43,7 +43,7 @@
                         <ListView x:Name="lbxCommSelect" Height="80" Margin="10,257,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480" TabIndex="6" FontSize="14">
                             <ListView.ContextMenu>
                                 <ContextMenu>
-                                    <ComboBoxItem Content="Add new communication type" IsSelected="True" />
+                                    <ComboBoxItem Content="Add new communication type" IsSelected="True" PreviewMouseLeftButtonDown="AddCommunicationType" />
                                     <ComboBoxItem Content="Delete selected communication type" />
                                 </ContextMenu>
                             </ListView.ContextMenu>
@@ -55,7 +55,7 @@
                         <ListView x:Name="lbxCultureSelect" Height="80" Margin="10,379,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480" TabIndex="7" FontSize="14">
                             <ListView.ContextMenu>
                                 <ContextMenu>
-                                    <ComboBoxItem Content="Add new culture type" IsSelected="True" />
+                                    <ComboBoxItem x:Name ="cbiNewCommType" Content="Add new culture type" IsSelected="True" />
                                     <ComboBoxItem Content="Delete selected culture type" />
                                 </ContextMenu>
                             </ListView.ContextMenu>
