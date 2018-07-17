@@ -121,6 +121,9 @@
     <Compile Include="BusinessGroupObjects\BusinessGroupObj.vb" />
     <Compile Include="BusinessGroupObjects\CRBuilding.vb" />
     <Compile Include="BusinessGroupObjects\RefreshEvent.vb" />
+    <Compile Include="BusinessGroupObjects\SingleUserInput.xaml.vb">
+      <DependentUpon>SingleUserInput.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Entities\BusinessGroup.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
@@ -227,6 +230,10 @@
     </Compile>
     <Compile Include="WCR Objects\WCRObject.vb" />
     <Page Include="BGCRM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BusinessGroupObjects\SingleUserInput.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

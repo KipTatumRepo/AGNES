@@ -30,7 +30,7 @@
                         <ComboBox x:Name="cboGroup" Margin="258,29,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="1" HorizontalAlignment="Left" Width="742" SelectedValuePath="Content">
                             <ComboBox.ContextMenu>
                                 <ContextMenu>
-                                    <ComboBoxItem Content="Add new business group"/>
+                                    <ComboBoxItem x:Name="cbiAddBG" Content="Add new business group" />
                                     <ComboBoxItem Content="Delete business group" />
                                 </ContextMenu>
                             </ComboBox.ContextMenu>
@@ -43,7 +43,7 @@
                         <ListView x:Name="lbxCommSelect" Height="80" Margin="10,257,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480" TabIndex="6" FontSize="14">
                             <ListView.ContextMenu>
                                 <ContextMenu>
-                                    <ComboBoxItem Content="Add new communication type" IsSelected="True" />
+                                    <ComboBoxItem x:Name ="cbiNewCommType" Content="Add new communication type" IsSelected="True" PreviewMouseLeftButtonDown="AddCommunicationType" />
                                     <ComboBoxItem Content="Delete selected communication type" />
                                 </ContextMenu>
                             </ListView.ContextMenu>
@@ -55,7 +55,7 @@
                         <ListView x:Name="lbxCultureSelect" Height="80" Margin="10,379,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480" TabIndex="7" FontSize="14">
                             <ListView.ContextMenu>
                                 <ContextMenu>
-                                    <ComboBoxItem Content="Add new culture type" IsSelected="True" />
+                                    <ComboBoxItem x:Name ="cbiNewCultureType" Content="Add new culture type" IsSelected="True" PreviewMouseLeftButtonDown="AddCulture"/>
                                     <ComboBoxItem Content="Delete selected culture type" />
                                 </ContextMenu>
                             </ListView.ContextMenu>
@@ -86,8 +86,20 @@
                         <ComboBox x:Name="cboLeader" Margin="258,29,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="4" HorizontalAlignment="Left" Width="712" SelectedValuePath="Content"/>
                         <ComboBox x:Name="cboRelManager" Margin="258,116,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="5" HorizontalAlignment="Left" Width="712" SelectedValuePath="Content"/>
                         <ListView x:Name="lbxLeadersSelect" Height="138" Margin="19,218,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                            <ListView.ContextMenu>
+                                <ContextMenu>
+                                    <ComboBoxItem x:Name ="lbiNewLeader" Content="Add new team member" IsSelected="True" PreviewMouseLeftButtonDown="AddLeadership"/>
+                                    <ComboBoxItem Content="Delete selected team member" />
+                                </ContextMenu>
+                            </ListView.ContextMenu>
                         </ListView>
                         <ListView x:Name="lbxCustomerSelect" Height="138" Margin="19,417,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                            <ListView.ContextMenu>
+                                <ContextMenu>
+                                    <ComboBoxItem x:Name ="lbiNewCustomer" Content="Add new customer" IsSelected="True"/>
+                                    <ComboBoxItem Content="Delete selected customer" />
+                                </ContextMenu>
+                            </ListView.ContextMenu>
                         </ListView>
                         <ListView x:Name="lbxLeadersChosen" Height="138" Margin="514,218,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                         </ListView>

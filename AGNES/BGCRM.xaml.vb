@@ -17,25 +17,24 @@ Public Class BGCRM
 
         cboGroup.Focus()
     End Sub
+#Region "Navigation"
     Private Sub LastPage(sender As Object, e As RoutedEventArgs) Handles btnBack1.Click, btnBack2.Click, btnBack3.Click, btnBack4.Click
-        ValidatePage(tabPages.SelectedIndex)
+        ValidatePage(tabPages.SelectedIndex, 0)
         SavePageToBGObj(tabPages.SelectedIndex)
         tabPages.SelectedIndex -= 1
     End Sub
     Private Sub NextPage(sender As Object, e As RoutedEventArgs) Handles btnFwd1.Click, btnFwd2.Click, btnFwd3.Click, btnFwd4.Click
-        ValidatePage(tabPages.SelectedIndex)
+        ValidatePage(tabPages.SelectedIndex, 1)
         SavePageToBGObj(tabPages.SelectedIndex)
         tabPages.SelectedIndex += 1
     End Sub
-    Private Sub SaveToEDM(sender As Object, e As RoutedEventArgs) Handles btnSaveFinish.Click
-        ValidatePage(tabPages.SelectedIndex)
-        SavePageToBGObj(tabPages.SelectedIndex)
-        BG.Save(BGC)
-        BGC.SaveChanges()
+#End Region
+
+#Region "Data Handling"
+    Private Sub ValidatePage(p, dir)
+        If dir = 1 Then MsgBox("Validatation routine pending construction") '// Direction 1 = forward, triggering validation
     End Sub
-    Private Sub ValidatePage(p)
-        MsgBox("Validatation routine pending construction")
-    End Sub
+
     Private Sub SavePageToBGObj(p)
         Dim si As ListBoxItem
         Select Case p
@@ -205,6 +204,16 @@ Public Class BGCRM
         End Select
     End Sub
 
+    Private Sub SaveToEDM(sender As Object, e As RoutedEventArgs) Handles btnSaveFinish.Click
+        ValidatePage(tabPages.SelectedIndex)
+        SavePageToBGObj(tabPages.SelectedIndex)
+        BG.Save(BGC)
+        BGC.SaveChanges()
+    End Sub
+
+#End Region
+
+#Region "Field Management"
     Private Sub PopulateOptions()
 
         '// Populate business group names
@@ -255,14 +264,17 @@ Public Class BGCRM
         lbxDestination.Items.Clear()
         Dim loq = From bloc In BGC.Locations Select bloc Order By bloc.BuildingName
         For Each bloc In loq
-            Dim li As New ListBoxItem
+            Dim li As New ListBoxItem, li1 As New ListBoxItem, li2 As New ListBoxItem
             li.Content = bloc.BuildingName
             li.Tag = "C"
             AddHandler li.MouseDoubleClick, AddressOf LocationItemMove
             lbxLocationsSelect.Items.Add(li)
 
-            'TODO: ADD HANDLERS FOR ORIGIN AND DESTINATION LOCATION BLOCKS
-            lbxOriginSelect.Items.Add(bloc.BuildingName)
+            li1.Content = bloc.BuildingName
+            li1.Tag = "C"
+            AddHandler li1.MouseDoubleClick, AddressOf OriginMove
+            lbxOriginSelect.Items.Add(li1)
+
             lbxDestination.Items.Add(bloc.BuildingName)
         Next
 
@@ -313,8 +325,6 @@ Public Class BGCRM
         lbxPlannersSelect.Items.Clear()
         Dim epq = From epl In BGC.Planners Select epl Order By epl.PlannerName
         For Each epl In epq : lbxPlannersSelect.Items.Add(epl.PlannerName) : Next
-
-
 
     End Sub
 
@@ -371,4 +381,288 @@ Public Class BGCRM
         lbxLocationsChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
 
     End Sub
+
+    Private Sub LeadTeamMove(sender, eventargs)
+        Dim li As New ListBoxItem
+        li = sender
+        Select Case li.Tag
+            Case "C"
+                lbxLeadersSelect.Items.Remove(li)
+                li.Tag = "S"
+                lbxLeadersChosen.Items.Add(li)
+            Case "S"
+                lbxLeadersChosen.Items.Remove(li)
+                li.Tag = "C"
+                lbxLeadersSelect.Items.Add(li)
+        End Select
+        lbxLeadersSelect.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        lbxLeadersChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+    End Sub
+
+    Private Sub CustomerMove(sender, eventargs)
+        Dim li As New ListBoxItem
+        li = sender
+        Select Case li.Tag
+            Case "C"
+                lbxCustomerSelect.Items.Remove(li)
+                li.Tag = "S"
+                lbxCustomerChosen.Items.Add(li)
+            Case "S"
+                lbxCustomerChosen.Items.Remove(li)
+                li.Tag = "C"
+                lbxCustomerSelect.Items.Add(li)
+        End Select
+        lbxCustomerSelect.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        lbxCustomerChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+    End Sub
+
+    Private Sub OffsiteMove(sender, eventargs)
+        Dim li As New ListBoxItem
+        li = sender
+        Select Case li.Tag
+            Case "C"
+                lbxOffsiteLocsSelect.Items.Remove(li)
+                li.Tag = "S"
+                lbxOffsiteLocsChosen.Items.Add(li)
+            Case "S"
+                lbxOffsiteLocsChosen.Items.Remove(li)
+                li.Tag = "C"
+                lbxOffsiteLocsSelect.Items.Add(li)
+        End Select
+        lbxOffsiteLocsSelect.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        lbxOffsiteLocsChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+    End Sub
+
+    Private Sub NotablesMove(sender, eventargs)
+        Dim li As New ListBoxItem
+        li = sender
+        Select Case li.Tag
+            Case "C"
+                lbxNotableSelect.Items.Remove(li)
+                li.Tag = "S"
+                lbxNotableChosen.Items.Add(li)
+            Case "S"
+                lbxNotableChosen.Items.Remove(li)
+                li.Tag = "C"
+                lbxNotableSelect.Items.Add(li)
+        End Select
+        lbxNotableSelect.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        lbxNotableChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+    End Sub
+
+    Private Sub TopTypeMove(sender, eventargs)
+        Dim li As New ListBoxItem
+        li = sender
+        Select Case li.Tag
+            Case "C"
+                lbxTopETypesSelect.Items.Remove(li)
+                li.Tag = "S"
+                lbxTopETypesChosen.Items.Add(li)
+            Case "S"
+                lbxTopETypesChosen.Items.Remove(li)
+                li.Tag = "C"
+                lbxTopETypesSelect.Items.Add(li)
+        End Select
+        lbxTopETypesSelect.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        lbxTopETypesChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+    End Sub
+
+    Private Sub TopSpaceMove(sender, eventargs)
+        Dim li As New ListBoxItem
+        li = sender
+        Select Case li.Tag
+            Case "C"
+                lbxTopSpacesSelect.Items.Remove(li)
+                li.Tag = "S"
+                lbxTopSpacesChosen.Items.Add(li)
+            Case "S"
+                lbxTopSpacesChosen.Items.Remove(li)
+                li.Tag = "C"
+                lbxTopSpacesSelect.Items.Add(li)
+        End Select
+        lbxTopSpacesSelect.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        lbxTopSpacesChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+    End Sub
+
+    Private Sub InvolvementMove(sender, eventargs)
+        Dim li As New ListBoxItem
+        li = sender
+        Select Case li.Tag
+            Case "C"
+                lbxInvolveSelect.Items.Remove(li)
+                li.Tag = "S"
+                lbxInvolveChosen.Items.Add(li)
+            Case "S"
+                lbxInvolveChosen.Items.Remove(li)
+                li.Tag = "C"
+                lbxInvolveSelect.Items.Add(li)
+        End Select
+        lbxInvolveSelect.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        lbxInvolveChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+    End Sub
+
+    Private Sub PlannerMove(sender, eventargs)
+        Dim li As New ListBoxItem
+        li = sender
+        Select Case li.Tag
+            Case "C"
+                lbxPlannersSelect.Items.Remove(li)
+                li.Tag = "S"
+                lbxPlannersChosen.Items.Add(li)
+            Case "S"
+                lbxPlannersChosen.Items.Remove(li)
+                li.Tag = "C"
+                lbxPlannersSelect.Items.Add(li)
+        End Select
+        lbxPlannersSelect.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        lbxPlannersChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+    End Sub
+
+    Private Sub OriginMove(sender, eventargs)
+        Dim li As New ListBoxItem
+        li = sender
+        Select Case li.Tag
+            Case "C"
+                lbxOriginSelect.Items.Remove(li)
+                li.Tag = "S"
+                Dim uni As New SingleUserInput
+                With uni
+                    .InputType = 2
+                    .lblInputDirection.Text = "Enter the population being moved from this building"
+                    .txtUserInput.Focus()
+                    .ShowDialog()
+                End With
+                li.Content = li.Content & "- " & uni.NumVal & " headcount"
+                uni.Close()
+                lbxOriginChosen.Items.Add(li)
+            Case "S"
+                lbxOriginChosen.Items.Remove(li)
+                li.Tag = "C"
+                Dim str As String = li.Content.ToString.Remove(li.Content.ToString.IndexOf("-"))
+                li.Content = str
+                lbxOriginSelect.Items.Add(li)
+        End Select
+        lbxOriginSelect.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        lbxOriginChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+
+    End Sub
+
+#End Region
+
+#Region "Context Menu Actions"
+    Private Sub AddBusinessGroup(sender As Object, e As MouseButtonEventArgs)
+        Dim uni As New SingleUserInput
+        With uni
+            .InputType = 0
+            .lblInputDirection.Text = "Enter the business group name!"
+            .txtUserInput.Focus()
+            .ShowDialog()
+        End With
+        cboGroup.Items.Add(New ComboBoxItem With {.Content = uni.StringVal})
+        cboGroup.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        uni.Close()
+
+    End Sub
+
+    Private Sub AddCommunicationType(sender As Object, e As MouseButtonEventArgs)
+        Dim uni As New SingleUserInput
+        With uni
+            .InputType = 0
+            .lblInputDirection.Text = "Enter the new communication type!"
+            .txtUserInput.Focus()
+            .ShowDialog()
+        End With
+        Try
+            Dim check = BGC.Communications.Single(Function(p) p.CommType = uni.StringVal.ToString)
+            MsgBox("Comm type already exists")  'TODO: EXPAND COMM TYPE EXISTS ALERT
+        Catch ex As InvalidOperationException
+            Dim comm As New Communication With {.CommType = uni.StringVal}
+            BGC.Communications.Add(comm)
+            BGC.SaveChanges()
+            Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
+            AddHandler li.MouseDoubleClick, AddressOf CommItemMove
+            lbxCommsChosen.Items.Add(li)
+            lbxCommsChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        End Try
+        uni.Close()
+    End Sub
+
+    Private Sub AddCulture(sender As Object, e As MouseButtonEventArgs)
+        Dim uni As New SingleUserInput
+        With uni
+            .InputType = 0
+            .lblInputDirection.Text = "Enter the new culture type!"
+            .txtUserInput.Focus()
+            .ShowDialog()
+        End With
+        Try
+            Dim check = BGC.GroupCultures.Single(Function(p) p.Culture = uni.StringVal.ToString)
+            MsgBox("Culture type already exists")  'TODO: EXPAND CULTURE TYPE EXISTS ALERT
+        Catch ex As InvalidOperationException
+            Dim cult As New GroupCulture With {.Culture = uni.StringVal}
+            BGC.GroupCultures.Add(cult)
+            BGC.SaveChanges()
+            Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
+            AddHandler li.MouseDoubleClick, AddressOf CultureItemMove
+            lbxCultureChosen.Items.Add(li)
+            lbxCultureChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        End Try
+        uni.Close()
+    End Sub
+
+    Private Sub AddLeadership(sender As Object, e As MouseButtonEventArgs)
+        Dim uni As New SingleUserInput
+        With uni
+            .InputType = 0
+            .lblInputDirection.Text = "Enter the new team member!"
+            .txtUserInput.Focus()
+            .ShowDialog()
+        End With
+        Try
+            Dim check = BGC.Leaders.Single(Function(p) p.LeaderName = uni.StringVal.ToString)
+            MsgBox("Team member already exists")  'TODO: EXPAND LEADERSHIP TEAM MEMBER EXISTS ALERT
+        Catch ex As InvalidOperationException
+            Dim leader As New Leader With {.LeaderName = uni.StringVal}
+            BGC.Leaders.Add(leader)
+            BGC.SaveChanges()
+            Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
+            AddHandler li.MouseDoubleClick, AddressOf LeadTeamMove
+            lbxLeadersChosen.Items.Add(li)
+            lbxLeadersChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+            '// Also add leader to Org Leader combobox option
+            cboLeader.Items.Add(uni.StringVal)
+            cboLeader.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        End Try
+        uni.Close()
+    End Sub
+
+    Private Sub AddNewCustomer(sender As Object, e As MouseButtonEventArgs) Handles lbiNewCustomer.PreviewMouseLeftButtonDown
+        Dim uni As New SingleUserInput
+        With uni
+            .InputType = 0
+            .lblInputDirection.Text = "Enter the new customer!"
+            .txtUserInput.Focus()
+            .ShowDialog()
+        End With
+        Try
+            Dim check = BGC.Leaders.Single(Function(p) p.LeaderName = uni.StringVal.ToString)
+            MsgBox("Customer already exists")  'TODO: EXPAND CUSTOMER EXISTS ALERT
+        Catch ex As InvalidOperationException
+            Dim customer As New FrequentCustomer With {.CustomerName = uni.StringVal}
+            BGC.FrequentCustomers.Add(customer)
+            BGC.SaveChanges()
+            Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
+            AddHandler li.MouseDoubleClick, AddressOf CustomerMove
+            lbxCustomerChosen.Items.Add(li)
+            lbxCustomerChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+
+            '// Also add customer to relationship manager options
+            cboRelManager.Items.Add(uni.StringVal)
+            cboRelManager.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        End Try
+        uni.Close()
+    End Sub
+
+
+#End Region
 End Class
