@@ -94,6 +94,12 @@
                             </ListView.ContextMenu>
                         </ListView>
                         <ListView x:Name="lbxCustomerSelect" Height="138" Margin="19,417,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                            <ListView.ContextMenu>
+                                <ContextMenu>
+                                    <ComboBoxItem x:Name ="lbiNewCustomer" Content="Add new customer" IsSelected="True"/>
+                                    <ComboBoxItem Content="Delete selected customer" />
+                                </ContextMenu>
+                            </ListView.ContextMenu>
                         </ListView>
                         <ListView x:Name="lbxLeadersChosen" Height="138" Margin="514,218,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                         </ListView>

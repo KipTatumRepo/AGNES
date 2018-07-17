@@ -19,20 +19,20 @@ Public Class BGCRM
     End Sub
 #Region "Navigation"
     Private Sub LastPage(sender As Object, e As RoutedEventArgs) Handles btnBack1.Click, btnBack2.Click, btnBack3.Click, btnBack4.Click
-        ValidatePage(tabPages.SelectedIndex)
+        ValidatePage(tabPages.SelectedIndex, 0)
         SavePageToBGObj(tabPages.SelectedIndex)
         tabPages.SelectedIndex -= 1
     End Sub
     Private Sub NextPage(sender As Object, e As RoutedEventArgs) Handles btnFwd1.Click, btnFwd2.Click, btnFwd3.Click, btnFwd4.Click
-        ValidatePage(tabPages.SelectedIndex)
+        ValidatePage(tabPages.SelectedIndex, 1)
         SavePageToBGObj(tabPages.SelectedIndex)
         tabPages.SelectedIndex += 1
     End Sub
 #End Region
 
 #Region "Data Handling"
-    Private Sub ValidatePage(p)
-        MsgBox("Validatation routine pending construction")
+    Private Sub ValidatePage(p, dir)
+        If dir = 1 Then MsgBox("Validatation routine pending construction") '// Direction 1 = forward, triggering validation
     End Sub
 
     Private Sub SavePageToBGObj(p)
@@ -387,16 +387,16 @@ Public Class BGCRM
         li = sender
         Select Case li.Tag
             Case "C"
-                lbxLocationsSelect.Items.Remove(li)
+                lbxLeadersSelect.Items.Remove(li)
                 li.Tag = "S"
-                lbxLocationsChosen.Items.Add(li)
+                lbxLeadersChosen.Items.Add(li)
             Case "S"
-                lbxLocationsChosen.Items.Remove(li)
+                lbxLeadersChosen.Items.Remove(li)
                 li.Tag = "C"
-                lbxLocationsSelect.Items.Add(li)
+                lbxLeadersSelect.Items.Add(li)
         End Select
-        lbxLocationsSelect.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
-        lbxLocationsChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        lbxLeadersSelect.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        lbxLeadersChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
     End Sub
 
     Private Sub CustomerMove(sender, eventargs)
@@ -629,6 +629,36 @@ Public Class BGCRM
             AddHandler li.MouseDoubleClick, AddressOf LeadTeamMove
             lbxLeadersChosen.Items.Add(li)
             lbxLeadersChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+            '// Also add leader to Org Leader combobox option
+            cboLeader.Items.Add(uni.StringVal)
+            cboLeader.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        End Try
+        uni.Close()
+    End Sub
+
+    Private Sub AddNewCustomer(sender As Object, e As MouseButtonEventArgs) Handles lbiNewCustomer.PreviewMouseLeftButtonDown
+        Dim uni As New SingleUserInput
+        With uni
+            .InputType = 0
+            .lblInputDirection.Text = "Enter the new customer!"
+            .txtUserInput.Focus()
+            .ShowDialog()
+        End With
+        Try
+            Dim check = BGC.Leaders.Single(Function(p) p.LeaderName = uni.StringVal.ToString)
+            MsgBox("Customer already exists")  'TODO: EXPAND CUSTOMER EXISTS ALERT
+        Catch ex As InvalidOperationException
+            Dim customer As New FrequentCustomer With {.CustomerName = uni.StringVal}
+            BGC.FrequentCustomers.Add(customer)
+            BGC.SaveChanges()
+            Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
+            AddHandler li.MouseDoubleClick, AddressOf CustomerMove
+            lbxCustomerChosen.Items.Add(li)
+            lbxCustomerChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+
+            '// Also add customer to relationship manager options
+            cboRelManager.Items.Add(uni.StringVal)
+            cboRelManager.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
         End Try
         uni.Close()
     End Sub
