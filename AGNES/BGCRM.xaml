@@ -71,7 +71,7 @@
                         </Button>
                     </Grid>
                 </TabItem>
-                <TabItem x:Name="tiPeople" Header="People">
+                <TabItem x:Name="tiPeople" Header="People" Height="22" VerticalAlignment="Top">
                     <TabItem.Background>
                         <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                             <GradientStop Color="#FFF0F0F0" Offset="0"/>
@@ -96,7 +96,7 @@
                         <ListView x:Name="lbxCustomerSelect" Height="138" Margin="19,417,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                             <ListView.ContextMenu>
                                 <ContextMenu>
-                                    <ComboBoxItem x:Name ="lbiNewCustomer" Content="Add new customer" IsSelected="True"/>
+                                    <ComboBoxItem x:Name ="lbiNewCustomer" Content="Add new customer" IsSelected="True" PreviewMouseLeftButtonDown="AddNewCustomer"/>
                                     <ComboBoxItem Content="Delete selected customer" />
                                 </ContextMenu>
                             </ListView.ContextMenu>
@@ -183,7 +183,7 @@
                             <ListBoxItem Content="Choices?`"/>
                             <ListView.ContextMenu>
                                 <ContextMenu>
-                                    <ComboBoxItem x:Name ="lbiNewType" Content="Add new event type" IsSelected="True"/>
+                                    <ComboBoxItem x:Name ="lbiNewType" Content="Add new event type" IsSelected="True" PreviewMouseLeftButtonDown="AddNewEventType"/>
                                     <ComboBoxItem Content="Delete selected event type" />
                                 </ContextMenu>
                             </ListView.ContextMenu>
@@ -208,7 +208,7 @@
                             <ListBoxItem Content="Choices?`"/>
                             <ListView.ContextMenu>
                                 <ContextMenu>
-                                    <ComboBoxItem x:Name ="lbiNewSpace" Content="Add new space" IsSelected="True"/>
+                                    <ComboBoxItem x:Name ="lbiNewSpace" Content="Add new space" IsSelected="True" PreviewMouseLeftButtonDown="AddNewEventSpace"/>
                                     <ComboBoxItem Content="Delete selected space" />
                                 </ContextMenu>
                             </ListView.ContextMenu>
@@ -234,7 +234,7 @@
                             <ListBoxItem Content="Choices?`"/>
                             <ListView.ContextMenu>
                                 <ContextMenu>
-                                    <ComboBoxItem x:Name ="lbiNewInvolvement" Content="Add new involvement" IsSelected="True"/>
+                                    <ComboBoxItem x:Name ="lbiNewInvolvement" Content="Add new involvement" IsSelected="True" PreviewMouseLeftButtonDown="AddNewInvolvement"/>
                                     <ComboBoxItem Content="Delete selected involvement" />
                                 </ContextMenu>
                             </ListView.ContextMenu>
@@ -259,7 +259,7 @@
                             <ListBoxItem Content="Choices?`"/>
                             <ListView.ContextMenu>
                                 <ContextMenu>
-                                    <ComboBoxItem x:Name ="lbiNewNotable" Content="Add new event" IsSelected="True"/>
+                                    <ComboBoxItem x:Name ="lbiNewNotable" Content="Add new event" IsSelected="True" PreviewMouseLeftButtonDown="AddNewNotableEvent"/>
                                     <ComboBoxItem Content="Delete selected event" />
                                 </ContextMenu>
                             </ListView.ContextMenu>
@@ -283,7 +283,7 @@
                             <ListBoxItem Content="Choices?`"/>
                             <ListView.ContextMenu>
                                 <ContextMenu>
-                                    <ComboBoxItem x:Name ="lbiNewPlanner" Content="Add new planner" IsSelected="True"/>
+                                    <ComboBoxItem x:Name ="lbiNewPlanner" Content="Add new planner" IsSelected="True" PreviewMouseLeftButtonDown="AddNewPlanner"/>
                                     <ComboBoxItem Content="Delete selected planner" />
                                 </ContextMenu>
                             </ListView.ContextMenu>

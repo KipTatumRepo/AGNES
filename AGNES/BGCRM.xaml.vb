@@ -205,7 +205,7 @@ Public Class BGCRM
     End Sub
 
     Private Sub SaveToEDM(sender As Object, e As RoutedEventArgs) Handles btnSaveFinish.Click
-        ValidatePage(tabPages.SelectedIndex)
+        ValidatePage(tabPages.SelectedIndex, 1)
         SavePageToBGObj(tabPages.SelectedIndex)
         BG.Save(BGC)
         BGC.SaveChanges()
@@ -636,7 +636,7 @@ Public Class BGCRM
         uni.Close()
     End Sub
 
-    Private Sub AddNewCustomer(sender As Object, e As MouseButtonEventArgs) Handles lbiNewCustomer.PreviewMouseLeftButtonDown
+    Private Sub AddNewCustomer(sender As Object, e As MouseButtonEventArgs)
         Dim uni As New SingleUserInput
         With uni
             .InputType = 0
@@ -686,7 +686,7 @@ Public Class BGCRM
         uni.Close()
     End Sub
 
-    Private Sub AddNewEventType(sender As Object, e As MouseButtonEventArgs) Handles lbiNewType.PreviewMouseDoubleClick
+    Private Sub AddNewEventType(sender As Object, e As MouseButtonEventArgs)
         Dim uni As New SingleUserInput
         With uni
             .InputType = 0
@@ -709,7 +709,7 @@ Public Class BGCRM
         uni.Close()
     End Sub
 
-    Private Sub AddNewEventSpace(sender As Object, e As MouseButtonEventArgs) Handles lbiNewSpace.PreviewMouseDoubleClick
+    Private Sub AddNewEventSpace(sender As Object, e As MouseButtonEventArgs)
         Dim uni As New SingleUserInput
         With uni
             .InputType = 0
@@ -732,7 +732,7 @@ Public Class BGCRM
         uni.Close()
     End Sub
 
-    Private Sub AddNewInvolvement(sender As Object, e As MouseButtonEventArgs) Handles lbiNewInvolvement.PreviewMouseDoubleClick
+    Private Sub AddNewInvolvement(sender As Object, e As MouseButtonEventArgs)
         Dim uni As New SingleUserInput
         With uni
             .InputType = 0
@@ -755,7 +755,7 @@ Public Class BGCRM
         uni.Close()
     End Sub
 
-    Private Sub AddNewNotableEvent(sender As Object, e As MouseButtonEventArgs) Handles lbiNewNotable.PreviewMouseDoubleClick
+    Private Sub AddNewNotableEvent(sender As Object, e As MouseButtonEventArgs)
         Dim uni As New SingleUserInput
         With uni
             .InputType = 0
@@ -778,7 +778,7 @@ Public Class BGCRM
         uni.Close()
     End Sub
 
-    Private Sub AddNewPlanner(sender As Object, e As MouseButtonEventArgs) Handles lbiNewPlanner.PreviewMouseDoubleClick
+    Private Sub AddNewPlanner(sender As Object, e As MouseButtonEventArgs)
         Dim uni As New SingleUserInput
         With uni
             .InputType = 0
