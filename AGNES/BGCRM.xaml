@@ -5,29 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGNES"
         mc:Ignorable="d"
-        Title="Business Group Customer Relationship Manager" Height="720" Width="1024   " WindowState="Maximized" WindowStartupLocation="CenterScreen">
+        Title="Business Group Customer Relationship Manager" Height="720" Width="1024   " WindowState="Maximized" WindowStartupLocation="CenterScreen" Background="OldLace">
     <Window.Effect>
         <DropShadowEffect Opacity="0.75"/>
     </Window.Effect>
-    <Grid >
-        <DockPanel>
+    <Grid Background="OldLace" >
+        <DockPanel Background="OldLace">
             <TabControl x:Name="tabPages">
                 <TabItem x:Name="tiGroup" Header="Group Details">
-                    <TabItem.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                            <GradientStop Color="#FFF0F0F0" Offset="0"/>
-                            <GradientStop Color="#FFBBA2A2" Offset="1"/>
-                        </LinearGradientBrush>
-                    </TabItem.Background>
-                    <Grid x:Name="grdGroup" Background="#FFE5E5E5" Margin="0,-1,0,1">
+                    <Grid x:Name="grdGroup" Background="OldLace" Margin="0,-1,0,1">
                         <TextBlock Margin="10,27,0,0" TextWrapping="Wrap" Text="Business group name" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="243" Grid.ColumnSpan="3"/>
-                        <TextBlock Margin="10,64,0,0" TextWrapping="Wrap" Text="Group Overview" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="243" Grid.ColumnSpan="3"/>
+                        <TextBlock Margin="10,73,0,0" TextWrapping="Wrap" Text="Group Overview" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="243"/>
                         <TextBlock Margin="10,146,0,0" TextWrapping="Wrap" Text="Headcount" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="130" Grid.ColumnSpan="3"/>
                         <TextBlock Margin="276,149,0,0" TextWrapping="Wrap" Text="Work Times" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="136"/>
                         <TextBlock Margin="627,148,0,0" TextWrapping="Wrap" Text="Workspace Type" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="184"/>
                         <TextBlock HorizontalAlignment="Left" Margin="10,225,0,0" TextWrapping="Wrap" Text="Communications" VerticalAlignment="Top" FontSize="24" Width="990" TextAlignment="Center"/>
                         <TextBlock Margin="10,464,0,0" TextWrapping="Wrap" Text="Locations" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="990" TextAlignment="Center"/>
                         <ComboBox x:Name="cboGroup" Margin="258,29,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="1" HorizontalAlignment="Left" Width="742" SelectedValuePath="Content">
+                            <ComboBox.Background>
+                                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                    <GradientStop Color="#FFF0F0F0" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                </LinearGradientBrush>
+                            </ComboBox.Background>
                             <ComboBox.ContextMenu>
                                 <ContextMenu>
                                     <ComboBoxItem x:Name="cbiAddBG" Content="Add new business group" />
@@ -35,7 +35,14 @@
                                 </ContextMenu>
                             </ComboBox.ContextMenu>
                         </ComboBox>
-                        <ComboBox x:Name="cboWorkTimes" Margin="412,150,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="4" HorizontalAlignment="Left" Width="192"/>
+                        <ComboBox x:Name="cboWorkTimes" Margin="412,150,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="4" HorizontalAlignment="Left" Width="192">
+                            <ComboBox.Background>
+                                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                    <GradientStop Color="#FFF0F0F0" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                </LinearGradientBrush>
+                            </ComboBox.Background>
+                        </ComboBox>
                         <ComboBox x:Name="cboWorkspace" Margin="816,149,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="5" HorizontalAlignment="Left" Width="184"/>
                         <TextBox x:Name="txtOverview" Height="68" Margin="258,73,0,0" TextWrapping="Wrap" VerticalAlignment="Top" MaxLines="6" MaxLength="4000" IsUndoEnabled="True" TabIndex="2" HorizontalAlignment="Left" Width="742"/>
                         <TextBox x:Name="txtHeadcount" Height="31" Margin="145,149,0,0" VerticalAlignment="Top" MaxLines="1" MaxLength="8" TabIndex="3" HorizontalAlignment="Left" Width="108"/>
@@ -47,9 +54,6 @@
                                     <ComboBoxItem Content="Delete selected communication type" />
                                 </ContextMenu>
                             </ListView.ContextMenu>
-                            <ListBoxItem Content="This"/>
-                            <ListBoxItem Content="That"/>
-                            <ListBoxItem Content="The Other"/>
                         </ListView>
                         <ListView x:Name="lbxCommsChosen" Height="80" Margin="520,257,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480" FontSize="14"/>
                         <ListView x:Name="lbxCultureSelect" Height="80" Margin="10,379,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480" TabIndex="7" FontSize="14">
@@ -72,13 +76,7 @@
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="tiPeople" Header="People" Height="22" VerticalAlignment="Top">
-                    <TabItem.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                            <GradientStop Color="#FFF0F0F0" Offset="0"/>
-                            <GradientStop Color="#FFBBA2A2" Offset="1"/>
-                        </LinearGradientBrush>
-                    </TabItem.Background>
-                    <Grid x:Name="grdPeople" Background="#FFE5E5E5">
+                    <Grid x:Name="grdPeople" Background="OldLace">
                         <TextBlock Margin="10,27,0,0" TextWrapping="Wrap" Text="Business group leader" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="243" Grid.ColumnSpan="2"/>
                         <TextBlock Margin="10,114,0,0" TextWrapping="Wrap" Text="Relationship manager" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="243" Grid.ColumnSpan="2"/>
                         <TextBlock Margin="19,181,0,0" TextWrapping="Wrap" Text="Leadership team" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="975" TextAlignment="Center"/>
@@ -119,13 +117,7 @@
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="tiFinances" Header="Financials">
-                    <TabItem.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                            <GradientStop Color="#FFF0F0F0" Offset="0"/>
-                            <GradientStop Color="#FFBBA2A2" Offset="1"/>
-                        </LinearGradientBrush>
-                    </TabItem.Background>
-                    <Grid x:Name="grdFinances" Background="#FFE5E5E5">
+                    <Grid x:Name="grdFinances" Background="OldLace">
                         <TextBlock Margin="10,27,0,0" TextWrapping="Wrap" Text="Total Revenue" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="254"/>
                         <TextBox x:Name="txtRevenue" Height="31" Margin="269,28,0,0" VerticalAlignment="Top" MaxLines="1" MaxLength="8" TabIndex="3" HorizontalAlignment="Left" Width="189"/>
                         <TextBlock Margin="10,160,0,0" TextWrapping="Wrap" Text="Number of Events/Yr" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="254"/>
@@ -161,26 +153,9 @@
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="tiEvents" Header="Events">
-                    <TabItem.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                            <GradientStop Color="#FFF0F0F0" Offset="0"/>
-                            <GradientStop Color="#FFBBA2A2" Offset="1"/>
-                        </LinearGradientBrush>
-                    </TabItem.Background>
-                    <Grid x:Name="grdEvents" Background="#FFE5E5E5">
+                    <Grid x:Name="grdEvents" Background="OldLace">
                         <TextBlock Margin="0,10,0,0" TextWrapping="Wrap" Text="Notable Events" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1010" TextAlignment="Center"/>
                         <ListView x:Name="lbxTopETypesSelect" Height="78" Margin="10,167,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
-                            <ListBoxItem Content="This"/>
-                            <ListBoxItem Content="That"/>
-                            <ListBoxItem Content="The Other"/>
-                            <ListBoxItem Content="Something else"/>
-                            <ListBoxItem Content="Another thing"/>
-                            <ListBoxItem Content="So Many Things"/>
-                            <ListBoxItem Content="How can you choose"/>
-                            <ListBoxItem Content="When there are"/>
-                            <ListBoxItem Content="This Many"/>
-                            <ListBoxItem Content="Friggin'"/>
-                            <ListBoxItem Content="Choices?`"/>
                             <ListView.ContextMenu>
                                 <ContextMenu>
                                     <ComboBoxItem x:Name ="lbiNewType" Content="Add new event type" IsSelected="True" PreviewMouseLeftButtonDown="AddNewEventType"/>
@@ -195,17 +170,6 @@
                         </ListView>
                         <TextBlock Margin="0,130,-10,0" TextWrapping="Wrap" Text="Top Event Types" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1020" TextAlignment="Center"/>
                         <ListView x:Name="lbxTopSpacesSelect" Height="78" Margin="10,287,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
-                            <ListBoxItem Content="This"/>
-                            <ListBoxItem Content="That"/>
-                            <ListBoxItem Content="The Other"/>
-                            <ListBoxItem Content="Something else"/>
-                            <ListBoxItem Content="Another thing"/>
-                            <ListBoxItem Content="So Many Things"/>
-                            <ListBoxItem Content="How can you choose"/>
-                            <ListBoxItem Content="When there are"/>
-                            <ListBoxItem Content="This Many"/>
-                            <ListBoxItem Content="Friggin'"/>
-                            <ListBoxItem Content="Choices?`"/>
                             <ListView.ContextMenu>
                                 <ContextMenu>
                                     <ComboBoxItem x:Name ="lbiNewSpace" Content="Add new space" IsSelected="True" PreviewMouseLeftButtonDown="AddNewEventSpace"/>
@@ -221,17 +185,6 @@
                         <TextBlock Margin="0,250,-10,0" TextWrapping="Wrap" Text="Top Booked Spaces" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1020" TextAlignment="Center"/>
                         <TextBlock Margin="0,370,-10,0" TextWrapping="Wrap" Text="Eventions Involvement" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1020" TextAlignment="Center"/>
                         <ListView x:Name="lbxInvolveSelect" Height="78" Margin="10,407,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
-                            <ListBoxItem Content="This"/>
-                            <ListBoxItem Content="That"/>
-                            <ListBoxItem Content="The Other"/>
-                            <ListBoxItem Content="Something else"/>
-                            <ListBoxItem Content="Another thing"/>
-                            <ListBoxItem Content="So Many Things"/>
-                            <ListBoxItem Content="How can you choose"/>
-                            <ListBoxItem Content="When there are"/>
-                            <ListBoxItem Content="This Many"/>
-                            <ListBoxItem Content="Friggin'"/>
-                            <ListBoxItem Content="Choices?`"/>
                             <ListView.ContextMenu>
                                 <ContextMenu>
                                     <ComboBoxItem x:Name ="lbiNewInvolvement" Content="Add new involvement" IsSelected="True" PreviewMouseLeftButtonDown="AddNewInvolvement"/>
@@ -246,17 +199,6 @@
                         </ListView>
                         <TextBlock Margin="0,490,-10,0" TextWrapping="Wrap" Text="Embedded Planners" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1020" TextAlignment="Center"/>
                         <ListView x:Name="lbxNotableSelect" Height="78" Margin="10,47,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
-                            <ListBoxItem Content="This"/>
-                            <ListBoxItem Content="That"/>
-                            <ListBoxItem Content="The Other"/>
-                            <ListBoxItem Content="Something else"/>
-                            <ListBoxItem Content="Another thing"/>
-                            <ListBoxItem Content="So Many Things"/>
-                            <ListBoxItem Content="How can you choose"/>
-                            <ListBoxItem Content="When there are"/>
-                            <ListBoxItem Content="This Many"/>
-                            <ListBoxItem Content="Friggin'"/>
-                            <ListBoxItem Content="Choices?`"/>
                             <ListView.ContextMenu>
                                 <ContextMenu>
                                     <ComboBoxItem x:Name ="lbiNewNotable" Content="Add new event" IsSelected="True" PreviewMouseLeftButtonDown="AddNewNotableEvent"/>
@@ -270,17 +212,6 @@
                             </ListView.View>
                         </ListView>
                         <ListView x:Name="lbxPlannersSelect" Height="53" Margin="10,527,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
-                            <ListBoxItem Content="This"/>
-                            <ListBoxItem Content="That"/>
-                            <ListBoxItem Content="The Other"/>
-                            <ListBoxItem Content="Something else"/>
-                            <ListBoxItem Content="Another thing"/>
-                            <ListBoxItem Content="So Many Things"/>
-                            <ListBoxItem Content="How can you choose"/>
-                            <ListBoxItem Content="When there are"/>
-                            <ListBoxItem Content="This Many"/>
-                            <ListBoxItem Content="Friggin'"/>
-                            <ListBoxItem Content="Choices?`"/>
                             <ListView.ContextMenu>
                                 <ContextMenu>
                                     <ComboBoxItem x:Name ="lbiNewPlanner" Content="Add new planner" IsSelected="True" PreviewMouseLeftButtonDown="AddNewPlanner"/>
@@ -306,44 +237,14 @@
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="tiCampusRefresh" Header="Campus Refresh">
-                    <TabItem.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                            <GradientStop Color="#FFF0F0F0" Offset="0"/>
-                            <GradientStop Color="#FFBBA2A2" Offset="1"/>
-                        </LinearGradientBrush>
-                    </TabItem.Background>
-                    <Grid x:Name="grdCampusRefresh" Background="#FFE5E5E5">
+                    <Grid x:Name="grdCampusRefresh" Background="OldLace">
                         <TextBlock Margin="254,436,0,0" TextWrapping="Wrap" Text="Total Population Moving" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="336"/>
                         <TextBlock Margin="0,10,0,0" TextWrapping="Wrap" Text="Origin Buildings" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1010" TextAlignment="Center"/>
                         <ListView x:Name="lbxOriginSelect" Height="150" Margin="10,47,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
-                            <ListBoxItem Content="This"/>
-                            <ListBoxItem Content="That"/>
-                            <ListBoxItem Content="The Other"/>
-                            <ListBoxItem Content="Something else"/>
-                            <ListBoxItem Content="Another thing"/>
-                            <ListBoxItem Content="So Many Things"/>
-                            <ListBoxItem Content="How can you choose"/>
-                            <ListBoxItem Content="When there are"/>
-                            <ListBoxItem Content="This Many"/>
-                            <ListBoxItem Content="Friggin'"/>
-                            <ListBoxItem Content="Choices?`"/>
                         </ListView>
                         <ListView x:Name="lbxOriginChosen" Height="150" Margin="520,47,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
-                            <ListBoxItem Content="Building 50 - 200 headcount"/>
-                            <ListBoxItem Content="Building 9 - 1,200 headcount"/>
                         </ListView>
                         <ListView x:Name="lbxDestination" Height="150" Margin="254,244,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
-                            <ListBoxItem Content="This"/>
-                            <ListBoxItem Content="That"/>
-                            <ListBoxItem Content="The Other"/>
-                            <ListBoxItem Content="Something else"/>
-                            <ListBoxItem Content="Another thing"/>
-                            <ListBoxItem Content="So Many Things"/>
-                            <ListBoxItem Content="How can you choose"/>
-                            <ListBoxItem Content="When there are"/>
-                            <ListBoxItem Content="This Many"/>
-                            <ListBoxItem Content="Friggin'"/>
-                            <ListBoxItem Content="Choices?`"/>
                         </ListView>
                         <TextBlock Margin="0,207,0,0" TextWrapping="Wrap" Text="Destination Building" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1010" TextAlignment="Center"/>
                         <TextBlock Margin="34,511,0,0" TextWrapping="Wrap" Text="Move Start Date" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="210"/>
@@ -351,7 +252,7 @@
                         <TextBox x:Name="txtPopMoving" HorizontalAlignment="Left" Height="32" Margin="608,436,0,0" TextWrapping="Wrap" Text="1,400" VerticalAlignment="Top" Width="126" FontSize="18" TextAlignment="Center"/>
                         <DatePicker x:Name="dtpStartDate" HorizontalAlignment="Left" Margin="254,511,0,0" VerticalAlignment="Top" Width="200" FirstDayOfWeek="Monday" FontSize="18"/>
                         <DatePicker x:Name="dtpEndDate" HorizontalAlignment="Left" Margin="784,511,0,0" VerticalAlignment="Top" Width="200" FontSize="18" FirstDayOfWeek="Monday"/>
-                        <Button x:Name="btnSaveFinish" Content="Save and Close" HorizontalAlignment="Left" Margin="813,606,0,0" Width="187" FontSize="24" Height="45" VerticalAlignment="Top">
+                        <Button x:Name="btnSaveFinish" Content="Save" HorizontalAlignment="Left" Margin="400,596,0,0" Width="188" FontSize="24" Height="45" VerticalAlignment="Top">
                             <Button.Effect>
                                 <DropShadowEffect ShadowDepth="3" Color="#FFBBB2B2"/>
                             </Button.Effect>
