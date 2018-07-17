@@ -133,6 +133,12 @@
                         <TextBlock Margin="478,88,0,0" TextWrapping="Wrap" Text="Number of Catered Events/Yr" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="324"/>
                         <TextBlock Margin="10,88,0,0" TextWrapping="Wrap" Text="Offsite Spend/Yr" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="254"/>
                         <ListView x:Name="lbxOffsiteLocsSelect" Height="242" Margin="10,286,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                            <ListView.ContextMenu>
+                                <ContextMenu>
+                                    <ComboBoxItem x:Name ="lbiNewOffsite" Content="Add new offsite location" IsSelected="True"/>
+                                    <ComboBoxItem Content="Delete selected location" />
+                                </ContextMenu>
+                            </ListView.ContextMenu>
                         </ListView>
                         <ListView x:Name="lbxOffsiteLocsChosen" Height="242" Margin="520,286,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                         </ListView>
@@ -175,6 +181,12 @@
                             <ListBoxItem Content="This Many"/>
                             <ListBoxItem Content="Friggin'"/>
                             <ListBoxItem Content="Choices?`"/>
+                            <ListView.ContextMenu>
+                                <ContextMenu>
+                                    <ComboBoxItem x:Name ="lbiNewType" Content="Add new event type" IsSelected="True"/>
+                                    <ComboBoxItem Content="Delete selected event type" />
+                                </ContextMenu>
+                            </ListView.ContextMenu>
                         </ListView>
                         <ListView x:Name="lbxTopETypesChosen" Height="78" Margin="520,167,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                             <ListView.View>
@@ -194,6 +206,12 @@
                             <ListBoxItem Content="This Many"/>
                             <ListBoxItem Content="Friggin'"/>
                             <ListBoxItem Content="Choices?`"/>
+                            <ListView.ContextMenu>
+                                <ContextMenu>
+                                    <ComboBoxItem x:Name ="lbiNewSpace" Content="Add new space" IsSelected="True"/>
+                                    <ComboBoxItem Content="Delete selected space" />
+                                </ContextMenu>
+                            </ListView.ContextMenu>
                         </ListView>
                         <ListView x:Name="lbxTopSpacesChosen" Height="78" Margin="520,287,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                             <ListView.View>
@@ -214,6 +232,12 @@
                             <ListBoxItem Content="This Many"/>
                             <ListBoxItem Content="Friggin'"/>
                             <ListBoxItem Content="Choices?`"/>
+                            <ListView.ContextMenu>
+                                <ContextMenu>
+                                    <ComboBoxItem x:Name ="lbiNewInvolvement" Content="Add new involvement" IsSelected="True"/>
+                                    <ComboBoxItem Content="Delete selected involvement" />
+                                </ContextMenu>
+                            </ListView.ContextMenu>
                         </ListView>
                         <ListView x:Name="lbxInvolveChosen" Height="78" Margin="520,407,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                             <ListView.View>
@@ -233,6 +257,12 @@
                             <ListBoxItem Content="This Many"/>
                             <ListBoxItem Content="Friggin'"/>
                             <ListBoxItem Content="Choices?`"/>
+                            <ListView.ContextMenu>
+                                <ContextMenu>
+                                    <ComboBoxItem x:Name ="lbiNewNotable" Content="Add new event" IsSelected="True"/>
+                                    <ComboBoxItem Content="Delete selected event" />
+                                </ContextMenu>
+                            </ListView.ContextMenu>
                         </ListView>
                         <ListView x:Name="lbxNotableChosen" Height="78" Margin="520,47,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                             <ListView.View>
@@ -251,6 +281,12 @@
                             <ListBoxItem Content="This Many"/>
                             <ListBoxItem Content="Friggin'"/>
                             <ListBoxItem Content="Choices?`"/>
+                            <ListView.ContextMenu>
+                                <ContextMenu>
+                                    <ComboBoxItem x:Name ="lbiNewPlanner" Content="Add new planner" IsSelected="True"/>
+                                    <ComboBoxItem Content="Delete selected planner" />
+                                </ContextMenu>
+                            </ListView.ContextMenu>
                         </ListView>
                         <ListView x:Name="lbxPlannersChosen" Height="53" Margin="520,527,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                             <ListView.View>
