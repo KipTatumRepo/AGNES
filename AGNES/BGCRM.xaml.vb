@@ -17,6 +17,7 @@ Public Class BGCRM
 
         cboGroup.Focus()
     End Sub
+#Region "Navigation"
     Private Sub LastPage(sender As Object, e As RoutedEventArgs) Handles btnBack1.Click, btnBack2.Click, btnBack3.Click, btnBack4.Click
         ValidatePage(tabPages.SelectedIndex)
         SavePageToBGObj(tabPages.SelectedIndex)
@@ -27,15 +28,13 @@ Public Class BGCRM
         SavePageToBGObj(tabPages.SelectedIndex)
         tabPages.SelectedIndex += 1
     End Sub
-    Private Sub SaveToEDM(sender As Object, e As RoutedEventArgs) Handles btnSaveFinish.Click
-        ValidatePage(tabPages.SelectedIndex)
-        SavePageToBGObj(tabPages.SelectedIndex)
-        BG.Save(BGC)
-        BGC.SaveChanges()
-    End Sub
+#End Region
+
+#Region "Data Handling"
     Private Sub ValidatePage(p)
         MsgBox("Validatation routine pending construction")
     End Sub
+
     Private Sub SavePageToBGObj(p)
         Dim si As ListBoxItem
         Select Case p
@@ -205,6 +204,16 @@ Public Class BGCRM
         End Select
     End Sub
 
+    Private Sub SaveToEDM(sender As Object, e As RoutedEventArgs) Handles btnSaveFinish.Click
+        ValidatePage(tabPages.SelectedIndex)
+        SavePageToBGObj(tabPages.SelectedIndex)
+        BG.Save(BGC)
+        BGC.SaveChanges()
+    End Sub
+
+#End Region
+
+#Region "Field Management"
     Private Sub PopulateOptions()
 
         '// Populate business group names
@@ -314,8 +323,6 @@ Public Class BGCRM
         Dim epq = From epl In BGC.Planners Select epl Order By epl.PlannerName
         For Each epl In epq : lbxPlannersSelect.Items.Add(epl.PlannerName) : Next
 
-
-
     End Sub
 
     Private Sub CommItemMove(sender, eventargs)
@@ -371,4 +378,13 @@ Public Class BGCRM
         lbxLocationsChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
 
     End Sub
+
+#End Region
+
+#Region "Context Menu Actions"
+    Private Sub AddBusinessGroup(sender As Object, e As MouseButtonEventArgs) Handles cbiAddBG.MouseDoubleClick
+        Dim ph As String = ""
+
+    End Sub
+#End Region
 End Class

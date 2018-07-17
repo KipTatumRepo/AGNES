@@ -30,7 +30,7 @@
                         <ComboBox x:Name="cboGroup" Margin="258,29,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="1" HorizontalAlignment="Left" Width="742" SelectedValuePath="Content">
                             <ComboBox.ContextMenu>
                                 <ContextMenu>
-                                    <ComboBoxItem Content="Add new business group"/>
+                                    <ComboBoxItem x:Name="cbiAddBG" Content="Add new business group" />
                                     <ComboBoxItem Content="Delete business group" />
                                 </ContextMenu>
                             </ComboBox.ContextMenu>
