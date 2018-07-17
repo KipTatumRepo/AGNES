@@ -17,6 +17,7 @@ Public Class BGCRM
 
         cboGroup.Focus()
     End Sub
+
 #Region "Navigation"
     Private Sub LastPage(sender As Object, e As RoutedEventArgs) Handles btnBack1.Click, btnBack2.Click, btnBack3.Click, btnBack4.Click
         ValidatePage(tabPages.SelectedIndex, 0)
@@ -24,16 +25,76 @@ Public Class BGCRM
         tabPages.SelectedIndex -= 1
     End Sub
     Private Sub NextPage(sender As Object, e As RoutedEventArgs) Handles btnFwd1.Click, btnFwd2.Click, btnFwd3.Click, btnFwd4.Click
-        ValidatePage(tabPages.SelectedIndex, 1)
+        If ValidatePage(tabPages.SelectedIndex, 1) = False Then Exit Sub
         SavePageToBGObj(tabPages.SelectedIndex)
         tabPages.SelectedIndex += 1
     End Sub
 #End Region
-
 #Region "Data Handling"
-    Private Sub ValidatePage(p, dir)
-        If dir = 1 Then MsgBox("Validatation routine pending construction") '// Direction 1 = forward, triggering validation
-    End Sub
+    Private Function ValidatePage(p, dir) As Boolean
+        If dir = 1 Then '// Direction 1 = forward, triggering validation
+            Dim invalid As New List(Of String), i As Integer, c As Double
+            invalid.Clear()
+            Select Case p
+                Case 0  '// Group page
+                    If cboGroup.SelectedIndex = -1 Then invalid.Add("A business group must be selected.")
+                    If cboWorkTimes.SelectedIndex = -1 Then invalid.Add("A work times option must be selected.")
+                    If cboWorkspace.SelectedIndex = -1 Then invalid.Add("A workspace option must be selected.")
+                    Try
+                        i = FormatNumber(txtHeadcount.Text, 0)
+                    Catch ex As Exception
+                        invalid.Add("Headcount must be a number - enter 0 if currently unknown.")
+                    End Try
+
+                Case 1  '// People page
+                    If cboLeader.SelectedIndex = -1 Then invalid.Add("An organizational leader must be selected.")
+                    If cboRelManager.SelectedIndex = -1 Then invalid.Add("A relationship manager must be selected.")
+                Case 2  '// Financials page
+                    Try
+                        c = FormatNumber(txtRevenue.Text, 2)
+                    Catch ex As Exception
+                        invalid.Add("Revenue must be a number - enter 0 if currently unknown.")
+                    End Try
+
+                    Try
+                        c = FormatNumber(txtOffsiteSpend.Text, 2)
+                    Catch ex As Exception
+                        invalid.Add("Offsite spend must be a number - enter 0 if currently unknown.")
+                    End Try
+
+                    Try
+                        i = FormatNumber(txtEventCount.Text, 0)
+                    Catch ex As Exception
+                        invalid.Add("Event count must be a number - enter 0 if currently unknown.")
+                    End Try
+
+                    Try
+                        i = FormatNumber(txt500EventCount.Text, 0)
+                    Catch ex As Exception
+                        invalid.Add("500+ event count must be a number - enter 0 if currently unknown.")
+                    End Try
+
+                    Try
+                        i = FormatNumber(txtCateredEventCount.Text, 0)
+                    Catch ex As Exception
+                        invalid.Add("Catered event count must be a number - enter 0 if currently unknown.")
+                    End Try
+
+                Case 3  '// Events Page
+                Case 4  '// CR page
+            End Select
+
+            If invalid.Count > 0 Then
+                Dim errorstring As String = "", ct As Integer
+                For ct = 0 To invalid.Count - 1
+                    errorstring = errorstring & invalid(ct) & Chr(13) & Chr(13)
+                Next
+                MsgBox(errorstring, MsgBoxStyle.OkOnly, "Validation failed")
+                Return False
+            End If
+        End If
+        Return True
+    End Function
 
     Private Sub SavePageToBGObj(p)
         Dim si As ListBoxItem
@@ -802,4 +863,5 @@ Public Class BGCRM
     End Sub
 
 #End Region
+
 End Class
