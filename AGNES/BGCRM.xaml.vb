@@ -24,6 +24,7 @@ Public Class BGCRM
         SavePageToBGObj(tabPages.SelectedIndex)
         tabPages.SelectedIndex -= 1
     End Sub
+
     Private Sub NextPage(sender As Object, e As RoutedEventArgs) Handles btnFwd1.Click, btnFwd2.Click, btnFwd3.Click, btnFwd4.Click
         If ValidatePage(tabPages.SelectedIndex, 1) = False Then Exit Sub
         SavePageToBGObj(tabPages.SelectedIndex)
