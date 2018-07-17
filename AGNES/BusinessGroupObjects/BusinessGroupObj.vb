@@ -45,29 +45,29 @@
             _onrem = value
         End Set
     End Property
-    Public Property Communications As New List(Of Byte)
-    Public Property Culture As New List(Of Byte)
-    Public Property Locations As New List(Of Int32)
-    Private _orgleader As Byte
-    Public Property OrgLeader As Byte
+    Public Property Communications As New List(Of Long)
+    Public Property Culture As New List(Of Long)
+    Public Property Locations As New List(Of Long)
+    Private _orgleader As Long
+    Public Property OrgLeader As Long
         Get
             Return _orgleader
         End Get
-        Set(value As Byte)
+        Set(value As Long)
             _orgleader = value
         End Set
     End Property
-    Private _relmanager As Byte
-    Public Property RelationshipMgr As Byte
+    Private _relmanager As Long
+    Public Property RelationshipMgr As Long
         Get
             Return _relmanager
         End Get
-        Set(value As Byte)
+        Set(value As Long)
             _relmanager = value
         End Set
     End Property
-    Public Property Leadership As New List(Of Byte)
-    Public Property FrequentCustomers As New List(Of Byte)
+    Public Property Leadership As New List(Of Long)
+    Public Property FrequentCustomers As New List(Of Long)
     Private _totalrev As Double
     Public Property TotalRevenue As Double
         Get
@@ -113,12 +113,12 @@
             _offsitespend = value
         End Set
     End Property
-    Public Property TopOffsiteLocations As New List(Of Byte)    '// Could be expanded to a list of objects with more detailed info
-    Public Property EmbeddedPlanners As New List(Of Byte)       '// Could be expanded to a list of objects with more detailed info
-    Public Property TopBookedSpaces As New List(Of Byte)        '// Could be expanded to a list of objects with more detailed info
-    Public Property TopEventTypes As New List(Of Byte)
-    Public Property NotableEvents As New List(Of Byte)          '// Could be expanded to a list of objects with more detailed info
-    Public Property EventionsInvolvement As New List(Of Byte)
+    Public Property TopOffsiteLocations As New List(Of Long)    '// Could be expanded to a list of objects with more detailed info
+    Public Property EmbeddedPlanners As New List(Of Long)       '// Could be expanded to a list of objects with more detailed info
+    Public Property TopBookedSpaces As New List(Of Long)        '// Could be expanded to a list of objects with more detailed info
+    Public Property TopEventTypes As New List(Of Long)
+    Public Property NotableEvents As New List(Of Long)          '// Could be expanded to a list of objects with more detailed info
+    Public Property EventionsInvolvement As New List(Of Long)
     Public Property CREvents As New List(Of RefreshEvent)
 
     Public Sub New()
