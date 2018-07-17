@@ -205,7 +205,7 @@ Public Class BGCRM
     End Sub
 
     Private Sub SaveToEDM(sender As Object, e As RoutedEventArgs) Handles btnSaveFinish.Click
-        ValidatePage(tabPages.SelectedIndex)
+        ValidatePage(tabPages.SelectedIndex, 1)
         SavePageToBGObj(tabPages.SelectedIndex)
         BG.Save(BGC)
         BGC.SaveChanges()
@@ -636,7 +636,7 @@ Public Class BGCRM
         uni.Close()
     End Sub
 
-    Private Sub AddNewCustomer(sender As Object, e As MouseButtonEventArgs) Handles lbiNewCustomer.PreviewMouseLeftButtonDown
+    Private Sub AddNewCustomer(sender As Object, e As MouseButtonEventArgs)
         Dim uni As New SingleUserInput
         With uni
             .InputType = 0
@@ -645,7 +645,7 @@ Public Class BGCRM
             .ShowDialog()
         End With
         Try
-            Dim check = BGC.Leaders.Single(Function(p) p.LeaderName = uni.StringVal.ToString)
+            Dim check = BGC.FrequentCustomers.Single(Function(p) p.CustomerName = uni.StringVal.ToString)
             MsgBox("Customer already exists")  'TODO: EXPAND CUSTOMER EXISTS ALERT
         Catch ex As InvalidOperationException
             Dim customer As New FrequentCustomer With {.CustomerName = uni.StringVal}
@@ -663,6 +663,143 @@ Public Class BGCRM
         uni.Close()
     End Sub
 
+    Private Sub AddNewOffsite(sender As Object, e As MouseButtonEventArgs) Handles lbiNewOffsite.PreviewMouseDoubleClick
+        Dim uni As New SingleUserInput
+        With uni
+            .InputType = 0
+            .lblInputDirection.Text = "Enter the new offsite location (temporary interface)."
+            .txtUserInput.Focus()
+            .ShowDialog()
+        End With
+        Try
+            Dim check = BGC.OffsiteLocations.Single(Function(p) p.OffsiteLocName = uni.StringVal.ToString)
+            MsgBox("Location already exists")  'TODO: EXPAND OFFSITE LOCATION EXISTS ALERT
+        Catch ex As InvalidOperationException
+            Dim Offsite As New OffsiteLocation With {.OffsiteLocName = uni.StringVal}
+            BGC.OffsiteLocations.Add(Offsite)
+            BGC.SaveChanges()
+            Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
+            AddHandler li.MouseDoubleClick, AddressOf OffsiteMove
+            lbxOffsiteLocsChosen.Items.Add(li)
+            lbxOffsiteLocsChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        End Try
+        uni.Close()
+    End Sub
+
+    Private Sub AddNewEventType(sender As Object, e As MouseButtonEventArgs)
+        Dim uni As New SingleUserInput
+        With uni
+            .InputType = 0
+            .lblInputDirection.Text = "Enter the new event type (temporary interface)."
+            .txtUserInput.Focus()
+            .ShowDialog()
+        End With
+        Try
+            Dim check = BGC.EventTypes.Single(Function(p) p.EventType1 = uni.StringVal.ToString)
+            MsgBox("Event type already exists")  'TODO: EXPAND EVENT TYPE EXISTS ALERT
+        Catch ex As InvalidOperationException
+            Dim EventType As New EventType With {.EventType1 = uni.StringVal}
+            BGC.EventTypes.Add(EventType)
+            BGC.SaveChanges()
+            Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
+            'AddHandler li.MouseDoubleClick, AddressOf This
+            lbxTopETypesChosen.Items.Add(li)
+            lbxTopETypesChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        End Try
+        uni.Close()
+    End Sub
+
+    Private Sub AddNewEventSpace(sender As Object, e As MouseButtonEventArgs)
+        Dim uni As New SingleUserInput
+        With uni
+            .InputType = 0
+            .lblInputDirection.Text = "Enter the new event space (temporary interface)."
+            .txtUserInput.Focus()
+            .ShowDialog()
+        End With
+        Try
+            Dim check = BGC.EventSpaces.Single(Function(p) p.SpaceName = uni.StringVal.ToString)
+            MsgBox("Event space already exists")  'TODO: EXPAND EVENT SPACE EXISTS ALERT
+        Catch ex As InvalidOperationException
+            Dim EventSpc As New EventSpace With {.SpaceName = uni.StringVal}
+            BGC.EventSpaces.Add(EventSpc)
+            BGC.SaveChanges()
+            Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
+            'AddHandler li.MouseDoubleClick, AddressOf This
+            lbxTopSpacesChosen.Items.Add(li)
+            lbxTopSpacesChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        End Try
+        uni.Close()
+    End Sub
+
+    Private Sub AddNewInvolvement(sender As Object, e As MouseButtonEventArgs)
+        Dim uni As New SingleUserInput
+        With uni
+            .InputType = 0
+            .lblInputDirection.Text = "Enter the new involvement type."
+            .txtUserInput.Focus()
+            .ShowDialog()
+        End With
+        Try
+            Dim check = BGC.Involvements.Single(Function(p) p.Involvement1 = uni.StringVal.ToString)
+            MsgBox("Event space already exists")  'TODO: EXPAND EVENT SPACE EXISTS ALERT
+        Catch ex As InvalidOperationException
+            Dim Involve As New Involvement With {.Involvement1 = uni.StringVal}
+            BGC.Involvements.Add(Involve)
+            BGC.SaveChanges()
+            Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
+            'AddHandler li.MouseDoubleClick, AddressOf This
+            lbxInvolveChosen.Items.Add(li)
+            lbxInvolveChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        End Try
+        uni.Close()
+    End Sub
+
+    Private Sub AddNewNotableEvent(sender As Object, e As MouseButtonEventArgs)
+        Dim uni As New SingleUserInput
+        With uni
+            .InputType = 0
+            .lblInputDirection.Text = "Enter the new notable event (temporary UI)."
+            .txtUserInput.Focus()
+            .ShowDialog()
+        End With
+        Try
+            Dim check = BGC.NotableEvents.Single(Function(p) p.EventName = uni.StringVal.ToString)
+            MsgBox("Event already exists")  'TODO: EXPAND NOTABLE EVENT EXISTS ALERT
+        Catch ex As InvalidOperationException
+            Dim Notable As New NotableEvent With {.EventName = uni.StringVal}
+            BGC.NotableEvents.Add(Notable)
+            BGC.SaveChanges()
+            Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
+            'AddHandler li.MouseDoubleClick, AddressOf This
+            lbxNotableChosen.Items.Add(li)
+            lbxNotableChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        End Try
+        uni.Close()
+    End Sub
+
+    Private Sub AddNewPlanner(sender As Object, e As MouseButtonEventArgs)
+        Dim uni As New SingleUserInput
+        With uni
+            .InputType = 0
+            .lblInputDirection.Text = "Enter the new planner name (temporary UI)."
+            .txtUserInput.Focus()
+            .ShowDialog()
+        End With
+        Try
+            Dim check = BGC.Planners.Single(Function(p) p.PlannerName = uni.StringVal.ToString)
+            MsgBox("Planner already exists")  'TODO: EXPAND PLANNER EXISTS ALERT
+        Catch ex As InvalidOperationException
+            Dim Plannr As New Planner With {.PlannerName = uni.StringVal}
+            BGC.Planners.Add(Plannr)
+            BGC.SaveChanges()
+            Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
+            'AddHandler li.MouseDoubleClick, AddressOf This
+            lbxPlannersChosen.Items.Add(li)
+            lbxPlannersChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        End Try
+        uni.Close()
+    End Sub
 
 #End Region
 End Class
