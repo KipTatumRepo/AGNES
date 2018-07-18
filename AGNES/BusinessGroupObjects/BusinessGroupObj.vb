@@ -224,7 +224,6 @@
         Catch excep As Exception
         End Try
     End Sub
-
     Private Sub SaveComms(pid, isnew)
         If isnew = 0 Then
             For Each i As Byte In Communications

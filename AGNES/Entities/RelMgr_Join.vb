@@ -10,14 +10,9 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class Location
+Partial Public Class RelMgr_Join
     Public Property PID As Long
-    Public Property BuildingName As String
-    Public Property MSCampus As String
-    Public Property ParticipationCampus As String
-    Public Property TotalSeats As Nullable(Of Integer)
-    Public Property SqFt As Nullable(Of Integer)
-    Public Property Lat As Nullable(Of Decimal)
-    Public Property Lng As Nullable(Of Decimal)
+    Public Property CustId As Long
+    Public Property BGId As Long
 
 End Class

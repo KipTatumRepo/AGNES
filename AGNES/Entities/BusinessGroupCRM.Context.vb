@@ -47,5 +47,6 @@ Partial Public Class BGCRMEntity
     Public Overridable Property RefreshEvents() As DbSet(Of RefreshEvent)
     Public Overridable Property TopEventTypes_Join() As DbSet(Of TopEventTypes_Join)
     Public Overridable Property TopSpaces_Join() As DbSet(Of TopSpaces_Join)
+    Public Overridable Property RelMgr_Join() As DbSet(Of RelMgr_Join)
 
 End Class

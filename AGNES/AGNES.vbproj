@@ -208,6 +208,9 @@
     <Compile Include="Entities\Refresh_Join.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\RelMgr_Join.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\TopEventTypes_Join.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
