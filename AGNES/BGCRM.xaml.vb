@@ -8,13 +8,8 @@ Public Class BGCRM
         BG = New objBusinessGroup
         BGC = New BGCRMEntity
         PopulateOptions()
-
-        '//TEST
-        Dim cbi As New ComboBoxItem
-        cbi.Content = "Core Engineering"
-        cboGroup.Items.Add(cbi)
-        '//TEST
-
+        btnSaveFinish.IsEnabled = True
+        'TODO: ADD COMPREHENSIVE TRIGGER FOR ENABLING SAVE
         cboGroup.Focus()
     End Sub
 
@@ -207,6 +202,10 @@ Public Class BGCRM
         SavePageToBGObj(tabPages.SelectedIndex)
         BG.Save(BGC)
         BGC.SaveChanges()
+        'TODO: Add verification of save
+        btnSaveFinish.Content = "Saved"
+        btnSaveFinish.IsEnabled = False
+
     End Sub
 
 #End Region
@@ -700,7 +699,7 @@ Public Class BGCRM
             BGC.EventTypes.Add(EventType)
             BGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
-            'AddHandler li.MouseDoubleClick, AddressOf This
+            AddHandler li.MouseDoubleClick, AddressOf TopTypeMove
             lbxTopETypesChosen.Items.Add(li)
             lbxTopETypesChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
         End Try
@@ -723,7 +722,7 @@ Public Class BGCRM
             BGC.EventSpaces.Add(EventSpc)
             BGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
-            'AddHandler li.MouseDoubleClick, AddressOf This
+            AddHandler li.MouseDoubleClick, AddressOf TopSpaceMove
             lbxTopSpacesChosen.Items.Add(li)
             lbxTopSpacesChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
         End Try
@@ -746,7 +745,7 @@ Public Class BGCRM
             BGC.Involvements.Add(Involve)
             BGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
-            'AddHandler li.MouseDoubleClick, AddressOf This
+            AddHandler li.MouseDoubleClick, AddressOf InvolvementMove
             lbxInvolveChosen.Items.Add(li)
             lbxInvolveChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
         End Try
@@ -769,7 +768,7 @@ Public Class BGCRM
             BGC.NotableEvents.Add(Notable)
             BGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
-            'AddHandler li.MouseDoubleClick, AddressOf This
+            AddHandler li.MouseDoubleClick, AddressOf NotablesMove
             lbxNotableChosen.Items.Add(li)
             lbxNotableChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
         End Try
@@ -792,7 +791,7 @@ Public Class BGCRM
             BGC.Planners.Add(Plannr)
             BGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
-            'AddHandler li.MouseDoubleClick, AddressOf This
+            AddHandler li.MouseDoubleClick, AddressOf PlannerMove
             lbxPlannersChosen.Items.Add(li)
             lbxPlannersChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
         End Try
