@@ -290,7 +290,9 @@ Public Class BGCRM
         Dim lq = From bldr In BGC.Leaders Select bldr Order By bldr.LeaderName
         For Each bldr In lq
             cboLeader.Items.Add(New ComboBoxItem With {.Content = bldr.LeaderName})
-            lbxLeadersSelect.Items.Add(New ListBoxItem With {.Content = bldr.LeaderName})
+            Dim lbi As New ListBoxItem With {.Content = bldr.LeaderName, .Tag = "C"}
+            lbxLeadersSelect.Items.Add(lbi)
+            AddHandler lbi.MouseDoubleClick, AddressOf LeadTeamMove
         Next
 
         '// Populate relationship manager and frequent customers options - shared datasource
@@ -299,38 +301,64 @@ Public Class BGCRM
         Dim rmq = From brlm In BGC.FrequentCustomers Select brlm Order By brlm.CustomerName
         For Each brlm In rmq
             cboRelManager.Items.Add(New ComboBoxItem With {.Content = brlm.CustomerName})
-            lbxCustomerSelect.Items.Add(New ListBoxItem With {.Content = brlm.CustomerName})
+            Dim lbi As New ListBoxItem With {.Content = brlm.CustomerName, .Tag = "C"}
+            lbxCustomerSelect.Items.Add(lbi)
+            AddHandler lbi.MouseDoubleClick, AddressOf CustomerMove
         Next
 
         '// Populate offsite location options
         lbxOffsiteLocsSelect.Items.Clear()
         Dim olq = From osl In BGC.OffsiteLocations Select osl Order By osl.OffsiteLocName
-        For Each osl In olq : lbxCustomerSelect.Items.Add(New ListBoxItem With {.Content = osl.OffsiteLocName}) : Next
+        For Each osl In olq
+            Dim lbi As New ListBoxItem With {.Content = osl.OffsiteLocName, .Tag = "C"}
+            lbxOffsiteLocsSelect.Items.Add(lbi)
+            AddHandler lbi.MouseDoubleClick, AddressOf OffsiteMove
+        Next
 
         '// Populate notable event options
         lbxNotableSelect.Items.Clear()
         Dim neq = From nev In BGC.NotableEvents Select nev Order By nev.EventName
-        For Each nev In neq : lbxNotableSelect.Items.Add(New ListBoxItem With {.Content = nev.EventName}) : Next
+        For Each nev In neq
+            Dim lbi As New ListBoxItem With {.Content = nev.EventName, .Tag = "C"}
+            lbxNotableSelect.Items.Add(lbi)
+            AddHandler lbi.MouseDoubleClick, AddressOf NotablesMove
+        Next
 
         '// Populate top event type options
         lbxTopETypesSelect.Items.Clear()
         Dim teq = From tet In BGC.EventTypes Select tet Order By tet.TypeDescription
-        For Each tet In teq : lbxTopETypesSelect.Items.Add(New ListBoxItem With {.Content = tet.TypeDescription}) : Next
+        For Each tet In teq
+            Dim lbi As New ListBoxItem With {.Content = tet.TypeDescription, .Tag = "C"}
+            lbxTopETypesSelect.Items.Add(lbi)
+            AddHandler lbi.MouseDoubleClick, AddressOf TopTypeMove
+        Next
 
         '// Populate top booked spaces options
         lbxTopSpacesSelect.Items.Clear()
         Dim tsq = From tsb In BGC.EventSpaces Select tsb Order By tsb.SpaceName
-        For Each tsb In tsq : lbxTopSpacesSelect.Items.Add(New ListBoxItem With {.Content = tsb.SpaceName}) : Next
+        For Each tsb In tsq
+            Dim lbi As New ListBoxItem With {.Content = tsb.SpaceName, .Tag = "C"}
+            lbxTopSpacesSelect.Items.Add(lbi)
+            AddHandler lbi.MouseDoubleClick, AddressOf TopSpaceMove
+        Next
 
         '// Populate eventions involvement options
         lbxInvolveSelect.Items.Clear()
         Dim tiq = From tii In BGC.Involvements Select tii Order By tii.Involvement1
-        For Each tii In tiq : lbxInvolveSelect.Items.Add(New ListBoxItem With {.Content = tii.Involvement1}) : Next
+        For Each tii In tiq
+            Dim lbi As New ListBoxItem With {.Content = tii.Involvement1, .Tag = "C"}
+            lbxInvolveSelect.Items.Add(lbi)
+            AddHandler lbi.MouseDoubleClick, AddressOf InvolvementMove
+        Next
 
         '// Populate embedded planner options
         lbxPlannersSelect.Items.Clear()
         Dim epq = From epl In BGC.Planners Select epl Order By epl.PlannerName
-        For Each epl In epq : lbxPlannersSelect.Items.Add(New ListBoxItem With {.Content = epl.PlannerName}) : Next
+        For Each epl In epq
+            Dim lbi As New ListBoxItem With {.Content = epl.PlannerName, .Tag = "C"}
+            lbxPlannersSelect.Items.Add(lbi)
+            AddHandler lbi.MouseDoubleClick, AddressOf PlannerMove
+        Next
 
     End Sub
 
