@@ -8,13 +8,8 @@ Public Class BGCRM
         BG = New objBusinessGroup
         BGC = New BGCRMEntity
         PopulateOptions()
-
-        '//TEST
-        Dim cbi As New ComboBoxItem
-        cbi.Content = "Core Engineering"
-        cboGroup.Items.Add(cbi)
-        '//TEST
-
+        btnSaveFinish.IsEnabled = True
+        'TODO: ADD COMPREHENSIVE TRIGGER FOR ENABLING SAVE
         cboGroup.Focus()
     End Sub
 
@@ -207,6 +202,10 @@ Public Class BGCRM
         SavePageToBGObj(tabPages.SelectedIndex)
         BG.Save(BGC)
         BGC.SaveChanges()
+        'TODO: Add verification of save
+        btnSaveFinish.Content = "Saved"
+        btnSaveFinish.IsEnabled = False
+
     End Sub
 
 #End Region
