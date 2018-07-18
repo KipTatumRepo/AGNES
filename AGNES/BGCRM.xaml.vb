@@ -326,9 +326,9 @@ Public Class BGCRM
 
         '// Populate top event type options
         lbxTopETypesSelect.Items.Clear()
-        Dim teq = From tet In BGC.EventTypes Select tet Order By tet.TypeDescription
+        Dim teq = From tet In BGC.EventTypes Select tet Order By tet.EventType1
         For Each tet In teq
-            Dim lbi As New ListBoxItem With {.Content = tet.TypeDescription, .Tag = "C"}
+            Dim lbi As New ListBoxItem With {.Content = tet.EventType1, .Tag = "C"}
             lbxTopETypesSelect.Items.Add(lbi)
             AddHandler lbi.MouseDoubleClick, AddressOf TopTypeMove
         Next
