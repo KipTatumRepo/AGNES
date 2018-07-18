@@ -33,7 +33,7 @@ Public Class BGCRM
         Select Case p
             Case 0          '====== GROUP PAGE
                 With BG
-                    .OrgName = cboGroup.SelectedValue
+                    .OrgName = cboGroup.Text
                     .Overview = txtOverview.Text
                     .Headcount = FormatNumber(txtHeadcount.Text, 0)
                     .WorkTimes = cboWorkTimes.SelectedIndex
@@ -76,7 +76,7 @@ Public Class BGCRM
 
             Case 1      '======PEOPLE PAGE
                 '// Populate Org leader
-                Dim sl As String = cboLeader.SelectedValue
+                Dim sl As String = cboLeader.Text
                 Dim ql = From c In BGC.Leaders
                          Where c.LeaderName = sl
                          Select c
@@ -85,11 +85,11 @@ Public Class BGCRM
                 Next
 
                 '// Populate relationship manager
-                Dim orm As String = cboRelManager.SelectedValue
+                Dim orm As String = cboRelManager.Text
                 Dim qr = From c In BGC.FrequentCustomers
                          Where c.CustomerName = orm
                          Select c
-                For Each c In ql
+                For Each c In qr
                     BG.RelationshipMgr = FormatNumber(c.PID, 0)
                 Next
 
