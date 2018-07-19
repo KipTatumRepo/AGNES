@@ -30,6 +30,7 @@
         <EntityTypeShape EntityType="BGCRMModel.RefreshEvent" Width="1.5" PointX="10.75" PointY="9.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BGCRMModel.TopEventTypes_Join" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BGCRMModel.TopSpaces_Join" Width="1.5" PointX="0.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BGCRMModel.RelMgr_Join" Width="1.5" PointX="3.375" PointY="12.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

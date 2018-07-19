@@ -33,7 +33,7 @@ Public Class BGCRM
         Select Case p
             Case 0          '====== GROUP PAGE
                 With BG
-                    .OrgName = cboGroup.SelectedValue
+                    .OrgName = cboGroup.Text
                     .Overview = txtOverview.Text
                     .Headcount = FormatNumber(txtHeadcount.Text, 0)
                     .WorkTimes = cboWorkTimes.SelectedIndex
@@ -76,7 +76,7 @@ Public Class BGCRM
 
             Case 1      '======PEOPLE PAGE
                 '// Populate Org leader
-                Dim sl As String = cboLeader.SelectedValue
+                Dim sl As String = cboLeader.Text
                 Dim ql = From c In BGC.Leaders
                          Where c.LeaderName = sl
                          Select c
@@ -85,11 +85,11 @@ Public Class BGCRM
                 Next
 
                 '// Populate relationship manager
-                Dim orm As String = cboRelManager.SelectedValue
+                Dim orm As String = cboRelManager.Text
                 Dim qr = From c In BGC.FrequentCustomers
                          Where c.CustomerName = orm
                          Select c
-                For Each c In ql
+                For Each c In qr
                     BG.RelationshipMgr = FormatNumber(c.PID, 0)
                 Next
 
@@ -216,21 +216,30 @@ Public Class BGCRM
         '// Populate business group names
         cboGroup.Items.Clear()
         Dim gq = From bgroup In BGC.BusinessGroups Select bgroup
-        For Each bgroup In gq : cboGroup.Items.Add(bgroup.BusinessGroupName) : Next
+        Dim ict As Byte = gq.Count, SortArray(ict - 1) As String, ct As Byte = 0
+
+        For Each bgroup In gq
+            SortArray(ct) = bgroup.BusinessGroupName
+            ct += 1
+        Next
+        Array.Sort(SortArray)
+        For Each s As String In SortArray
+            cboGroup.Items.Add(New ComboBoxItem With {.Content = s})
+        Next
 
         '// Populate work times
         With cboWorkTimes.Items
             .Clear()
-            .Add("Banker hours")
-            .Add("Early birds")
-            .Add("Late arrival")
+            .Add(New ComboBoxItem With {.Content = "Banker hours"})
+            .Add(New ComboBoxItem With {.Content = "Early birds"})
+            .Add(New ComboBoxItem With {.Content = "Late arrival"})
         End With
 
         '// Populate workspace types - hard coded for now (7/15/18)
         With cboWorkspace.Items
             .Clear()
-            .Add("Onsite")
-            .Add("Remote")
+            .Add(New ComboBoxItem With {.Content = "Onsite"})
+            .Add(New ComboBoxItem With {.Content = "Remote"})
         End With
 
         '// Populate communication options
@@ -280,8 +289,10 @@ Public Class BGCRM
         lbxLeadersSelect.Items.Clear()
         Dim lq = From bldr In BGC.Leaders Select bldr Order By bldr.LeaderName
         For Each bldr In lq
-            cboLeader.Items.Add(bldr.LeaderName)
-            lbxLeadersSelect.Items.Add(bldr.LeaderName)
+            cboLeader.Items.Add(New ComboBoxItem With {.Content = bldr.LeaderName})
+            Dim lbi As New ListBoxItem With {.Content = bldr.LeaderName, .Tag = "C"}
+            lbxLeadersSelect.Items.Add(lbi)
+            AddHandler lbi.MouseDoubleClick, AddressOf LeadTeamMove
         Next
 
         '// Populate relationship manager and frequent customers options - shared datasource
@@ -289,39 +300,65 @@ Public Class BGCRM
         lbxCustomerSelect.Items.Clear()
         Dim rmq = From brlm In BGC.FrequentCustomers Select brlm Order By brlm.CustomerName
         For Each brlm In rmq
-            cboRelManager.Items.Add(brlm.CustomerName)
-            lbxCustomerSelect.Items.Add(brlm.CustomerName)
+            cboRelManager.Items.Add(New ComboBoxItem With {.Content = brlm.CustomerName})
+            Dim lbi As New ListBoxItem With {.Content = brlm.CustomerName, .Tag = "C"}
+            lbxCustomerSelect.Items.Add(lbi)
+            AddHandler lbi.MouseDoubleClick, AddressOf CustomerMove
         Next
 
         '// Populate offsite location options
         lbxOffsiteLocsSelect.Items.Clear()
         Dim olq = From osl In BGC.OffsiteLocations Select osl Order By osl.OffsiteLocName
-        For Each osl In olq : lbxCustomerSelect.Items.Add(osl.OffsiteLocName) : Next
+        For Each osl In olq
+            Dim lbi As New ListBoxItem With {.Content = osl.OffsiteLocName, .Tag = "C"}
+            lbxOffsiteLocsSelect.Items.Add(lbi)
+            AddHandler lbi.MouseDoubleClick, AddressOf OffsiteMove
+        Next
 
         '// Populate notable event options
         lbxNotableSelect.Items.Clear()
         Dim neq = From nev In BGC.NotableEvents Select nev Order By nev.EventName
-        For Each nev In neq : lbxNotableSelect.Items.Add(nev.EventName) : Next
+        For Each nev In neq
+            Dim lbi As New ListBoxItem With {.Content = nev.EventName, .Tag = "C"}
+            lbxNotableSelect.Items.Add(lbi)
+            AddHandler lbi.MouseDoubleClick, AddressOf NotablesMove
+        Next
 
         '// Populate top event type options
         lbxTopETypesSelect.Items.Clear()
-        Dim teq = From tet In BGC.EventTypes Select tet Order By tet.TypeDescription
-        For Each tet In teq : lbxTopETypesSelect.Items.Add(tet.TypeDescription) : Next
+        Dim teq = From tet In BGC.EventTypes Select tet Order By tet.EventType1
+        For Each tet In teq
+            Dim lbi As New ListBoxItem With {.Content = tet.EventType1, .Tag = "C"}
+            lbxTopETypesSelect.Items.Add(lbi)
+            AddHandler lbi.MouseDoubleClick, AddressOf TopTypeMove
+        Next
 
         '// Populate top booked spaces options
         lbxTopSpacesSelect.Items.Clear()
         Dim tsq = From tsb In BGC.EventSpaces Select tsb Order By tsb.SpaceName
-        For Each tsb In tsq : lbxTopSpacesSelect.Items.Add(tsb.SpaceName) : Next
+        For Each tsb In tsq
+            Dim lbi As New ListBoxItem With {.Content = tsb.SpaceName, .Tag = "C"}
+            lbxTopSpacesSelect.Items.Add(lbi)
+            AddHandler lbi.MouseDoubleClick, AddressOf TopSpaceMove
+        Next
 
         '// Populate eventions involvement options
         lbxInvolveSelect.Items.Clear()
         Dim tiq = From tii In BGC.Involvements Select tii Order By tii.Involvement1
-        For Each tii In tiq : lbxInvolveSelect.Items.Add(tii.Involvement1) : Next
+        For Each tii In tiq
+            Dim lbi As New ListBoxItem With {.Content = tii.Involvement1, .Tag = "C"}
+            lbxInvolveSelect.Items.Add(lbi)
+            AddHandler lbi.MouseDoubleClick, AddressOf InvolvementMove
+        Next
 
         '// Populate embedded planner options
         lbxPlannersSelect.Items.Clear()
         Dim epq = From epl In BGC.Planners Select epl Order By epl.PlannerName
-        For Each epl In epq : lbxPlannersSelect.Items.Add(epl.PlannerName) : Next
+        For Each epl In epq
+            Dim lbi As New ListBoxItem With {.Content = epl.PlannerName, .Tag = "C"}
+            lbxPlannersSelect.Items.Add(lbi)
+            AddHandler lbi.MouseDoubleClick, AddressOf PlannerMove
+        Next
 
     End Sub
 
@@ -556,6 +593,19 @@ Public Class BGCRM
             .ShowDialog()
         End With
         cboGroup.Items.Add(New ComboBoxItem With {.Content = uni.StringVal})
+
+        Dim ict As Byte = cboGroup.Items.Count, SortArray(ict - 1) As String, ct As Byte = 0
+        For Each i As ComboBoxItem In cboGroup.Items
+            SortArray(ct) = i.Content
+            ct += 1
+        Next
+        Array.Sort(SortArray)
+        For ct = 0 To SortArray.Length - 1
+            Dim cbi As ComboBoxItem = cboGroup.Items.Item(ct)
+            cbi.Content = SortArray(ct)
+            If SortArray(ct) = uni.StringVal Then cbi.IsSelected = True
+        Next
+
         cboGroup.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
         uni.Close()
 
@@ -627,8 +677,17 @@ Public Class BGCRM
             lbxLeadersChosen.Items.Add(li)
             lbxLeadersChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
             '// Also add leader to Org Leader combobox option
-            cboLeader.Items.Add(uni.StringVal)
-            cboLeader.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+            cboLeader.Items.Add(New ComboBoxItem With {.Content = uni.StringVal})
+            Dim ict As Byte = cboLeader.Items.Count, SortArray(ict - 1) As String, ct As Byte = 0
+            For Each i As ComboBoxItem In cboLeader.Items
+                SortArray(ct) = i.Content
+                ct += 1
+            Next
+            Array.Sort(SortArray)
+            For ct = 0 To SortArray.Length - 1
+                Dim cbi As ComboBoxItem = cboLeader.Items.Item(ct)
+                cbi.Content = SortArray(ct)
+            Next
         End Try
         uni.Close()
     End Sub
@@ -654,8 +713,17 @@ Public Class BGCRM
             lbxCustomerChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
 
             '// Also add customer to relationship manager options
-            cboRelManager.Items.Add(uni.StringVal)
-            cboRelManager.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+            cboRelManager.Items.Add(New ComboBoxItem With {.Content = uni.StringVal})
+            Dim ict As Byte = cboRelManager.Items.Count, SortArray(ict - 1) As String, ct As Byte = 0
+            For Each i As ComboBoxItem In cboRelManager.Items
+                SortArray(ct) = i.Content
+                ct += 1
+            Next
+            Array.Sort(SortArray)
+            For ct = 0 To SortArray.Length - 1
+                Dim cbi As ComboBoxItem = cboRelManager.Items.Item(ct)
+                cbi.Content = SortArray(ct)
+            Next
         End Try
         uni.Close()
     End Sub

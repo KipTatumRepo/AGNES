@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="BGCRMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="BGCRMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BusinessGroups">
           <Key>
             <PropertyRef Name="PID" />
@@ -120,8 +120,12 @@
           </Key>
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="BuildingName" Type="varchar" MaxLength="512" Nullable="false" />
-          <Property Name="Campus" Type="int" />
-          <Property Name="Population" Type="bigint" />
+          <Property Name="MSCampus" Type="nchar" MaxLength="80" />
+          <Property Name="ParticipationCampus" Type="nchar" MaxLength="80" />
+          <Property Name="TotalSeats" Type="int" />
+          <Property Name="SqFt" Type="int" />
+          <Property Name="Lat" Type="decimal" Precision="12" Scale="6" />
+          <Property Name="Lng" Type="decimal" Precision="12" Scale="6" />
         </EntityType>
         <EntityType Name="Locations_Join">
           <Key>
@@ -201,6 +205,14 @@
           <Property Name="MovePopulation" Type="bigint" Nullable="false" />
           <Property Name="Destination" Type="bigint" Nullable="false" />
         </EntityType>
+        <EntityType Name="RelMgr_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustId" Type="bigint" Nullable="false" />
+          <Property Name="BGId" Type="bigint" Nullable="false" />
+        </EntityType>
         <EntityType Name="TopEventTypes_Join">
           <Key>
             <PropertyRef Name="PID" />
@@ -241,11 +253,11 @@
           <EntitySet Name="Planners_Join" EntityType="Self.Planners_Join" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="Refresh_Join" EntityType="Self.Refresh_Join" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="RefreshEvents" EntityType="Self.RefreshEvents" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="RelMgr_Join" EntityType="Self.RelMgr_Join" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="TopEventTypes_Join" EntityType="Self.TopEventTypes_Join" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="TopSpaces_Join" EntityType="Self.TopSpaces_Join" Schema="BizGroupCRM" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BGCRMModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -364,8 +376,12 @@
           </Key>
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="BuildingName" Type="String" MaxLength="512" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Campus" Type="Int32" />
-          <Property Name="Population" Type="Int64" />
+          <Property Name="MSCampus" Type="String" MaxLength="80" FixedLength="true" Unicode="true" />
+          <Property Name="ParticipationCampus" Type="String" MaxLength="80" FixedLength="true" Unicode="true" />
+          <Property Name="TotalSeats" Type="Int32" />
+          <Property Name="SqFt" Type="Int32" />
+          <Property Name="Lat" Type="Decimal" Precision="12" Scale="6" />
+          <Property Name="Lng" Type="Decimal" Precision="12" Scale="6" />
         </EntityType>
         <EntityType Name="Locations_Join">
           <Key>
@@ -487,7 +503,16 @@
           <EntitySet Name="RefreshEvents" EntityType="Self.RefreshEvent" />
           <EntitySet Name="TopEventTypes_Join" EntityType="Self.TopEventTypes_Join" />
           <EntitySet Name="TopSpaces_Join" EntityType="Self.TopSpaces_Join" />
+          <EntitySet Name="RelMgr_Join" EntityType="BGCRMModel.RelMgr_Join" />
         </EntityContainer>
+        <EntityType Name="RelMgr_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustId" Type="Int64" Nullable="false" />
+          <Property Name="BGId" Type="Int64" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -619,11 +644,15 @@
           <EntitySetMapping Name="Locations">
             <EntityTypeMapping TypeName="BGCRMModel.Location">
               <MappingFragment StoreEntitySet="Locations">
+                <ScalarProperty Name="Lng" ColumnName="Lng" />
+                <ScalarProperty Name="Lat" ColumnName="Lat" />
+                <ScalarProperty Name="SqFt" ColumnName="SqFt" />
+                <ScalarProperty Name="TotalSeats" ColumnName="TotalSeats" />
+                <ScalarProperty Name="ParticipationCampus" ColumnName="ParticipationCampus" />
+                <ScalarProperty Name="MSCampus" ColumnName="MSCampus" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
                 <ScalarProperty Name="BuildingName" ColumnName="BuildingName" />
-                <ScalarProperty Name="Campus" ColumnName="Campus" />
-                <ScalarProperty Name="Population" ColumnName="Population" />
-              </MappingFragment>
+                </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Locations_Join">
@@ -728,6 +757,15 @@
                 <ScalarProperty Name="PID" ColumnName="PID" />
                 <ScalarProperty Name="EventTypeId" ColumnName="EventTypeId" />
                 <ScalarProperty Name="BGId" ColumnName="BGId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RelMgr_Join">
+            <EntityTypeMapping TypeName="BGCRMModel.RelMgr_Join">
+              <MappingFragment StoreEntitySet="RelMgr_Join">
+                <ScalarProperty Name="BGId" ColumnName="BGId" />
+                <ScalarProperty Name="CustId" ColumnName="CustId" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

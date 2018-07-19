@@ -224,10 +224,9 @@
         Catch excep As Exception
         End Try
     End Sub
-
     Private Sub SaveComms(pid, isnew)
         If isnew = 0 Then
-            For Each i As Byte In Communications
+            For Each i As Long In Communications
                 Dim cj As New Comm_Join
                 With cj
                     .BGId = pid
@@ -242,7 +241,7 @@
     End Sub
     Private Sub SaveCulture(pid, isnew)
         If isnew = 0 Then
-            For Each i As Byte In Culture
+            For Each i As Long In Culture
                 Dim cj As New Culture_Join
                 With cj
                     .BGId = pid
@@ -256,7 +255,7 @@
     End Sub
     Private Sub SaveLocations(pid, isnew)
         If isnew = 0 Then
-            For Each i As Byte In Locations
+            For Each i As Long In Locations
                 Dim lj As New Locations_Join
                 With lj
                     .BGId = pid
@@ -271,7 +270,7 @@
     End Sub
     Private Sub SaveLeadership(pid, isnew)
         If isnew = 0 Then
-            For Each i As Byte In Leadership
+            For Each i As Long In Leadership
                 Dim lj As New Leaders_Join
                 With lj
                     .BGId = pid
@@ -285,7 +284,7 @@
     End Sub
     Private Sub SaveOffsites(pid, isnew)
         If isnew = 0 Then
-            For Each i As Byte In TopOffsiteLocations
+            For Each i As Long In TopOffsiteLocations
                 Dim oj As New Offsites_Join
                 With oj
                     .BGId = pid
@@ -299,7 +298,7 @@
     End Sub
     Private Sub SaveCustomers(pid, isnew)
         If isnew = 0 Then
-            For Each i As Byte In FrequentCustomers
+            For Each i As Long In FrequentCustomers
                 Dim cj As New FreqCust_Join
                 With cj
                     .BGId = pid
@@ -313,7 +312,7 @@
     End Sub
     Private Sub SaveNotables(pid, isnew)
         If isnew = 0 Then
-            For Each i As Byte In NotableEvents
+            For Each i As Long In NotableEvents
                 Dim nj As New NotableEvents_Join
                 With nj
                     .BGId = pid
@@ -327,7 +326,7 @@
     End Sub
     Private Sub SaveTypes(pid, isnew)
         If isnew = 0 Then
-            For Each i As Byte In TopEventTypes
+            For Each i As Long In TopEventTypes
                 Dim ej As New TopEventTypes_Join
                 With ej
                     .BGGroup = pid
@@ -341,7 +340,7 @@
     End Sub
     Private Sub SaveSpaces(pid, isnew)
         If isnew = 0 Then
-            For Each i As Byte In TopBookedSpaces
+            For Each i As Long In TopBookedSpaces
                 Dim sj As New TopSpaces_Join
                 With sj
                     .BGId = pid
@@ -355,7 +354,7 @@
     End Sub
     Private Sub SaveInvolvements(pid, isnew)
         If isnew = 0 Then
-            For Each i As Byte In EventionsInvolvement
+            For Each i As Long In EventionsInvolvement
                 Dim ij As New Involvement_Join
                 With ij
                     .BGId = pid
@@ -369,7 +368,7 @@
     End Sub
     Private Sub SavePlanners(pid, isnew)
         If isnew = 0 Then
-            For Each i As Byte In EmbeddedPlanners
+            For Each i As Long In EmbeddedPlanners
                 Dim pj As New Planners_Join
                 With pj
                     .BGId = pid
