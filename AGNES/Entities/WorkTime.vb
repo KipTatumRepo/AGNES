@@ -10,9 +10,8 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class RelMgr_Join
+Partial Public Class WorkTime
     Public Property PID As Long
-    Public Property CustId As Long
-    Public Property BGId As Long
+    Public Property WorkTime1 As String
 
 End Class
