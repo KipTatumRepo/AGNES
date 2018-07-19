@@ -36,9 +36,26 @@ Public Class BGCRM
                     .OrgName = cboGroup.Text
                     .Overview = txtOverview.Text
                     .Headcount = FormatNumber(txtHeadcount.Text, 0)
-                    .WorkTimes = cboWorkTimes.SelectedIndex
                     .OnsiteRemote = cboWorkspace.SelectedIndex
                 End With
+
+                '// Populate work time
+                Dim wt As String = cboWorkTimes.Text
+                Dim qwt = From c In BGC.WorkTimes
+                          Where c.WorkTime1 = wt
+                          Select c
+                For Each c In qwt
+                    BG.WorkTimes = FormatNumber(c.PID, 0)
+                Next
+
+                '// Populate work locations/environment
+                Dim wl As String = cboWorkspace.Text
+                Dim qwl = From c In BGC.WorkLocations
+                          Where c.WorkLocation1 = wl
+                          Select c
+                For Each c In qwl
+                    BG.OnsiteRemote = FormatNumber(c.PID, 0)
+                Next
 
                 '// Populate chosen communications into array
 
@@ -228,19 +245,24 @@ Public Class BGCRM
         Next
 
         '// Populate work times
-        With cboWorkTimes.Items
-            .Clear()
-            .Add(New ComboBoxItem With {.Content = "Banker hours"})
-            .Add(New ComboBoxItem With {.Content = "Early birds"})
-            .Add(New ComboBoxItem With {.Content = "Late arrival"})
-        End With
+        cboWorkTimes.Items.Clear()
+        Dim wtq = From worktime In BGC.WorkTimes Select worktime Order By worktime.WorkTime1
+        For Each worktime In wtq
+            Dim cbi As New ComboBoxItem
+            cbi.Content = worktime.WorkTime1
+            cbi.Tag = "C"
+            cboWorkTimes.Items.Add(cbi)
+        Next
 
         '// Populate workspace types - hard coded for now (7/15/18)
-        With cboWorkspace.Items
-            .Clear()
-            .Add(New ComboBoxItem With {.Content = "Onsite"})
-            .Add(New ComboBoxItem With {.Content = "Remote"})
-        End With
+        cboWorkspace.Items.Clear()
+        Dim wsq = From workloc In BGC.WorkLocations Select workloc Order By workloc.WorkLocation1
+        For Each workloc In wsq
+            Dim cbi As New ComboBoxItem
+            cbi.Content = workloc.WorkLocation1
+            cbi.Tag = "C"
+            cboWorkspace.Items.Add(cbi)
+        Next
 
         '// Populate communication options
         lbxCommSelect.Items.Clear()
@@ -359,6 +381,14 @@ Public Class BGCRM
             lbxPlannersSelect.Items.Add(lbi)
             AddHandler lbi.MouseDoubleClick, AddressOf PlannerMove
         Next
+
+        '// Default date selectors to current date
+        dtpStartDate.SelectedDate = Now().Date
+        dtpStartDate.DisplayDateStart = Now().Date
+        dtpStartDate.DisplayDateEnd = Now().Date.AddYears(2)
+        dtpEndDate.SelectedDate = Now().Date
+        dtpEndDate.DisplayDateStart = Now().Date
+        dtpEndDate.DisplayDateEnd = Now().Date.AddYears(2)
 
     End Sub
 
@@ -579,6 +609,11 @@ Public Class BGCRM
         lbxOriginSelect.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
         lbxOriginChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
 
+    End Sub
+
+    Private Sub StartDateChanged(sender As Object, e As SelectionChangedEventArgs) Handles dtpStartDate.SelectedDateChanged, dtpEndDate.SelectedDateChanged
+        '// Validate end date is not before start date
+        If dtpEndDate.SelectedDate < dtpStartDate.SelectedDate Then dtpEndDate.SelectedDate = dtpStartDate.SelectedDate
     End Sub
 
 #End Region
@@ -933,6 +968,8 @@ Public Class BGCRM
         End If
         Return True
     End Function
+
+
 
 #End Region
 

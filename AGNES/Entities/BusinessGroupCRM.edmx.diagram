@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="239b2bb5bc2549ad9aa396c9093c6142" Name="Diagram1">
+      <Diagram DiagramId="239b2bb5bc2549ad9aa396c9093c6142" Name="Diagram1" ZoomLevel="86">
         <EntityTypeShape EntityType="BGCRMModel.BusinessGroup" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BGCRMModel.Comm_Join" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BGCRMModel.Communication" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
@@ -30,7 +30,8 @@
         <EntityTypeShape EntityType="BGCRMModel.RefreshEvent" Width="1.5" PointX="10.75" PointY="9.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BGCRMModel.TopEventTypes_Join" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BGCRMModel.TopSpaces_Join" Width="1.5" PointX="0.75" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="BGCRMModel.RelMgr_Join" Width="1.5" PointX="3.375" PointY="12.75" />
+        <EntityTypeShape EntityType="BGCRMModel.WorkLocation" Width="1.5" PointX="2.875" PointY="12.625" />
+        <EntityTypeShape EntityType="BGCRMModel.WorkTime" Width="1.5" PointX="5" PointY="12.5" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

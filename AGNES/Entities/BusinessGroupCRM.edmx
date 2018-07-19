@@ -205,14 +205,6 @@
           <Property Name="MovePopulation" Type="bigint" Nullable="false" />
           <Property Name="Destination" Type="bigint" Nullable="false" />
         </EntityType>
-        <EntityType Name="RelMgr_Join">
-          <Key>
-            <PropertyRef Name="PID" />
-          </Key>
-          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CustId" Type="bigint" Nullable="false" />
-          <Property Name="BGId" Type="bigint" Nullable="false" />
-        </EntityType>
         <EntityType Name="TopEventTypes_Join">
           <Key>
             <PropertyRef Name="PID" />
@@ -228,6 +220,20 @@
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="EventTypeId" Type="bigint" Nullable="false" />
           <Property Name="BGId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WorkLocation">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WorkLocation" Type="nchar" MaxLength="48" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WorkTimes">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WorkTime" Type="nchar" MaxLength="32" Nullable="false" />
         </EntityType>
         <EntityContainer Name="BGCRMModelStoreContainer">
           <EntitySet Name="BusinessGroups" EntityType="Self.BusinessGroups" Schema="BizGroupCRM" store:Type="Tables" />
@@ -253,9 +259,10 @@
           <EntitySet Name="Planners_Join" EntityType="Self.Planners_Join" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="Refresh_Join" EntityType="Self.Refresh_Join" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="RefreshEvents" EntityType="Self.RefreshEvents" Schema="BizGroupCRM" store:Type="Tables" />
-          <EntitySet Name="RelMgr_Join" EntityType="Self.RelMgr_Join" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="TopEventTypes_Join" EntityType="Self.TopEventTypes_Join" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="TopSpaces_Join" EntityType="Self.TopSpaces_Join" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="WorkLocation" EntityType="Self.WorkLocation" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="WorkTimes" EntityType="Self.WorkTimes" Schema="BizGroupCRM" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -503,15 +510,22 @@
           <EntitySet Name="RefreshEvents" EntityType="Self.RefreshEvent" />
           <EntitySet Name="TopEventTypes_Join" EntityType="Self.TopEventTypes_Join" />
           <EntitySet Name="TopSpaces_Join" EntityType="Self.TopSpaces_Join" />
-          <EntitySet Name="RelMgr_Join" EntityType="BGCRMModel.RelMgr_Join" />
+          <EntitySet Name="WorkLocations" EntityType="BGCRMModel.WorkLocation" />
+          <EntitySet Name="WorkTimes" EntityType="BGCRMModel.WorkTime" />
         </EntityContainer>
-        <EntityType Name="RelMgr_Join">
+        <EntityType Name="WorkLocation">
           <Key>
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CustId" Type="Int64" Nullable="false" />
-          <Property Name="BGId" Type="Int64" Nullable="false" />
+          <Property Name="WorkLocation1" Type="String" Nullable="false" MaxLength="48" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="WorkTime">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WorkTime1" Type="String" Nullable="false" MaxLength="32" FixedLength="true" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -760,11 +774,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="RelMgr_Join">
-            <EntityTypeMapping TypeName="BGCRMModel.RelMgr_Join">
-              <MappingFragment StoreEntitySet="RelMgr_Join">
-                <ScalarProperty Name="BGId" ColumnName="BGId" />
-                <ScalarProperty Name="CustId" ColumnName="CustId" />
+          <EntitySetMapping Name="WorkLocations">
+            <EntityTypeMapping TypeName="BGCRMModel.WorkLocation">
+              <MappingFragment StoreEntitySet="WorkLocation">
+                <ScalarProperty Name="WorkLocation1" ColumnName="WorkLocation" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WorkTimes">
+            <EntityTypeMapping TypeName="BGCRMModel.WorkTime">
+              <MappingFragment StoreEntitySet="WorkTimes">
+                <ScalarProperty Name="WorkTime1" ColumnName="WorkTime" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
               </MappingFragment>
             </EntityTypeMapping>
