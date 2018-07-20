@@ -28,21 +28,22 @@
         End If
     End Sub
 
-    Private Sub ButtonHover(sender As Object, e As MouseEventArgs) Handles btnRadial1.MouseEnter, btnRadial2.MouseEnter, btnRadial3.MouseEnter, btnRadial4.MouseEnter
+    Private Sub ButtonHover(sender As Object, e As MouseEventArgs) Handles btnRadial1.MouseEnter, btnRadial2.MouseEnter, btnRadial3.MouseEnter, btnRadial4.MouseEnter,
+            btnRadial5.MouseEnter, btnRadial6.MouseEnter, btnRadial7.MouseEnter, btnRadial8.MouseEnter
         Dim s As Image = sender
-        s.Height = 105
-        s.Width = 105
-        Dim l As Integer = s.Margin.Left - 15
-        Dim t As Integer = s.Margin.Top - 15
+        s.Height = 85
+        s.Width = 85
+        Dim l As Integer = s.Margin.Left - 5
+        Dim t As Integer = s.Margin.Top - 5
         s.Margin = New Thickness(l, t, 0, 0)
-
     End Sub
-    Private Sub ButtonLeave(sender As Object, e As MouseEventArgs) Handles btnRadial1.MouseLeave, btnRadial2.MouseLeave, btnRadial3.MouseLeave, btnRadial4.MouseLeave
+    Private Sub ButtonLeave(sender As Object, e As MouseEventArgs) Handles btnRadial1.MouseLeave, btnRadial2.MouseLeave, btnRadial3.MouseLeave, btnRadial4.MouseLeave,
+            btnRadial5.MouseLeave, btnRadial6.MouseLeave, btnRadial7.MouseLeave, btnRadial8.MouseLeave
         Dim s As Image = sender
         s.Height = 75
         s.Width = 75
-        Dim l As Integer = s.Margin.Left + 15
-        Dim t As Integer = s.Margin.Top + 15
+        Dim l As Integer = s.Margin.Left + 5
+        Dim t As Integer = s.Margin.Top + 5
         s.Margin = New Thickness(l, t, 0, 0)
     End Sub
 End Class
