@@ -221,6 +221,9 @@
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Module Orchestrators\WCRModule.vb" />
+    <Compile Include="RadialPortal.xaml.vb">
+      <DependentUpon>RadialPortal.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Resources\DataSets.vb" />
     <Compile Include="WCR Objects\CamCheck.vb" />
     <Compile Include="WCR Objects\VendorObject.vb" />
@@ -255,6 +258,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="RadialPortal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WCRCam.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -339,9 +346,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\AdminTools.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\AgnesIcon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -354,12 +358,7 @@
     <Resource Include="Resources\Policies.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Portal.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\PowerBI.png" />
+    <Resource Include="Resources\Portal.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Small Agnes Image.png" />
@@ -425,6 +424,22 @@
       <DependentUpon>BusinessGroupCRM.edmx</DependentUpon>
       <LastGenOutput>BusinessGroupCRM.vb</LastGenOutput>
     </Content>
+    <Resource Include="Resources\WCR.png" />
+    <Resource Include="Resources\Options.png" />
+    <Resource Include="Resources\More.png" />
+    <Resource Include="Resources\Menu.png" />
+    <Resource Include="Resources\Waste.png" />
+    <Resource Include="Resources\Safety.png" />
+    <Resource Include="Resources\Receipts.png" />
+    <Resource Include="Resources\PowerBI.png" />
+    <Resource Include="Resources\Journal.png" />
+    <Resource Include="Resources\ForecastButton.png" />
+    <Resource Include="Resources\Flash.png" />
+    <Resource Include="Resources\BusinessGroup.png" />
+    <Resource Include="Resources\AVFlash.png" />
+    <Resource Include="Resources\Audit.png" />
+    <Resource Include="Resources\AdminTools.png" />
+    <Resource Include="Resources\RadialUI Agnes Image.png" />
     <Resource Include="Resources\pill_button.png" />
     <Resource Include="Resources\glass_arrow_right.png" />
     <Resource Include="Resources\glass_arrow_left.png" />
