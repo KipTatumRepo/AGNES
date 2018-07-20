@@ -1,4 +1,5 @@
 ﻿Module WCRModule
+    Public WCR As New WCRObject
     Public Sub Runmodule()
         Dim WCRStartPage As New WCRHello
         WCRStartPage.ShowDialog()
