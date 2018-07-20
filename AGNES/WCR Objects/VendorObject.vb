@@ -1,5 +1,6 @@
 ﻿Public Class VendorObject
     Public Property VendorName As String
+    Public Property VendorNumber As Long
     Private _grosssales As Double
     Public Property GrossSales As Double
         Get
