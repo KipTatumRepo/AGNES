@@ -9,12 +9,16 @@
     End Sub
 
     Private Sub WCRGo(sender As Object, e As MouseButtonEventArgs) Handles btnRadial1.PreviewMouseLeftButtonDown
+        Hide()
         WCRModule.Runmodule()
     End Sub
 
     Private Sub BGCRMGo(sender As Object, e As MouseButtonEventArgs) Handles btnRadial2.PreviewMouseLeftButtonDown
+        Hide()
         Dim bgcrm As New BGCRM
         bgcrm.ShowDialog()
+        Show()
+
     End Sub
 
     Private Sub DragViaLeftMouse(sender As Object, e As MouseButtonEventArgs)

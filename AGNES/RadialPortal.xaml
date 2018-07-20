@@ -8,8 +8,8 @@
         Title="RadialPortal" Height="320" Width="320" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="{x:Null}">
     <Grid>
         <Image HorizontalAlignment="Left" Height="100" Margin="114,107,0,0" VerticalAlignment="Top" Width="90" Source="Resources/RadialUI Agnes Image.png" MouseLeftButtonDown="DragViaLeftMouse" MouseRightButtonDown="CloseAGNES"/>
-        <Image x:Name="btnRadial1" HorizontalAlignment="Left" Height="75" Margin="120,13,0,0" VerticalAlignment="Top" Width="76" ToolTip="Cafe Flash" Source="Resources/Flash.png"/>
-        <Image x:Name="btnRadial2" HorizontalAlignment="Left" Height="75" Margin="195,44,0,0" VerticalAlignment="Top" Width="75"  Stretch="UniformToFill" Source="Resources/ForecastButton.png" ToolTip="Cafe Forecast"/>
+        <Image x:Name="btnRadial1" HorizontalAlignment="Left" Height="75" Margin="120,13,0,0" VerticalAlignment="Top" Width="76" ToolTip="Commons WCR" Source="Resources/WCR.png"/>
+        <Image x:Name="btnRadial2" HorizontalAlignment="Left" Height="75" Margin="195,44,0,0" VerticalAlignment="Top" Width="75"  Stretch="UniformToFill" Source="Resources/BusinessGroup.png" ToolTip="Business Group CRM"/>
         <Image x:Name="btnRadial3" HorizontalAlignment="Left" Height="75" Margin="227,120,0,0" VerticalAlignment="Top" Width="75" Stretch="Fill" Source="Resources/Waste.png" ToolTip="Waste Tracker"/>
         <Image x:Name="btnRadial4" HorizontalAlignment="Left" Height="75" Margin="196,196,0,0" VerticalAlignment="Top" Width="75"  Stretch="Fill" Source="Resources/Journal.png" ToolTip="Cafe Journal"/>
         <Image x:Name="btnRadial5" HorizontalAlignment="Left" Height="75" Margin="120,227,0,0" VerticalAlignment="Top" Width="75"  Stretch="Fill" Source="Resources/Menu.png" ToolTip="Menu Engineering"/>
