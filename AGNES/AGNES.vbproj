@@ -358,9 +358,7 @@
     <Resource Include="Resources\Policies.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Portal.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    <Resource Include="Resources\Portal.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Small Agnes Image.png" />
@@ -426,6 +424,10 @@
       <DependentUpon>BusinessGroupCRM.edmx</DependentUpon>
       <LastGenOutput>BusinessGroupCRM.vb</LastGenOutput>
     </Content>
+    <Resource Include="Resources\WCR.png" />
+    <Resource Include="Resources\Options.png" />
+    <Resource Include="Resources\More.png" />
+    <Resource Include="Resources\Menu.png" />
     <Resource Include="Resources\Waste.png" />
     <Resource Include="Resources\Safety.png" />
     <Resource Include="Resources\Receipts.png" />

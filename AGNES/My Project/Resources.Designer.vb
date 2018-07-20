@@ -183,6 +183,36 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property Menu() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Menu", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property More() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("More", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Options() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Options", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property pill_button() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("pill_button", resourceCulture)
@@ -266,6 +296,16 @@ Namespace My.Resources
         Friend ReadOnly Property Waste() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Waste", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property WCR() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("WCR", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
