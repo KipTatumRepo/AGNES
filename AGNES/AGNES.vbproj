@@ -432,6 +432,7 @@
       <DependentUpon>BusinessGroupCRM.edmx</DependentUpon>
       <LastGenOutput>BusinessGroupCRM.vb</LastGenOutput>
     </Content>
+    <Resource Include="Resources\RadialUI Agnes Image.png" />
     <Resource Include="Resources\pill_button.png" />
     <Resource Include="Resources\glass_arrow_right.png" />
     <Resource Include="Resources\glass_arrow_left.png" />

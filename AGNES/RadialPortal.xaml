@@ -7,11 +7,11 @@
         mc:Ignorable="d"
         Title="RadialPortal" Height="900" Width="1080   " WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="{x:Null}">
     <Grid>
-        <Image HorizontalAlignment="Left" Height="99" Margin="500,408,0,0" VerticalAlignment="Top" Width="76" Source="Resources/Small Agnes Image.png" Stretch="UniformToFill" MouseLeftButtonDown="DragViaLeftMouse" MouseRightButtonDown="CloseAGNES"/>
-        <Image x:Name="btnRadial2" HorizontalAlignment="Left" Height="76" Margin="565,332,0,0" VerticalAlignment="Top" Width="82" Source="Resources/Policies.png" Stretch="Fill"/>
-        <Image x:Name="btnRadial3" HorizontalAlignment="Left" Height="76" Margin="602,389,0,0" VerticalAlignment="Top" Width="82" Source="Resources/Policies.png" Stretch="Fill"/>
-        <Ellipse HorizontalAlignment="Left" Height="215" Margin="432,355,0,0" Stroke="Black" VerticalAlignment="Top" Width="215"/>
-        <Image x:Name="btnRadial1" HorizontalAlignment="Left" Height="76" Margin="500,311,0,0" VerticalAlignment="Top" Width="82" Source="Resources/Policies.png" Stretch="Fill"/>
-        <Image HorizontalAlignment="Left" Height="76" Margin="500,522,0,0" VerticalAlignment="Top" Width="82" Source="Resources/Policies.png" Stretch="Fill"/>
+        <Image HorizontalAlignment="Left" Height="88" Margin="504,416,0,0" VerticalAlignment="Top" Width="76" Source="Resources/RadialUI Agnes Image.png" MouseLeftButtonDown="DragViaLeftMouse" MouseRightButtonDown="CloseAGNES"/>
+        <Image x:Name="btnRadial2" HorizontalAlignment="Left" Height="75" Margin="565,332,0,0" VerticalAlignment="Top" Width="75" Source="Resources/Policies.png" Stretch="Fill"/>
+        <Image x:Name="btnRadial3" HorizontalAlignment="Left" Height="75" Margin="603,423,0,0" VerticalAlignment="Top" Width="75" Source="Resources/Policies.png" Stretch="Fill"/>
+        <Ellipse HorizontalAlignment="Left" Height="215" Margin="432,355,0,0" Stroke="Black" VerticalAlignment="Top" Width="215" Visibility="Hidden"/>
+        <Image x:Name="btnRadial1" HorizontalAlignment="Left" Height="75" Margin="504,311,0,0" VerticalAlignment="Top" Width="75" Source="Resources/Policies.png" Stretch="Fill" ToolTip="WCR"/>
+        <Image x:Name="btnRadial4" HorizontalAlignment="Left" Height="75" Margin="504,522,0,0" VerticalAlignment="Top" Width="75" Source="Resources/Policies.png" Stretch="Fill"/>
     </Grid>
 </Window>
