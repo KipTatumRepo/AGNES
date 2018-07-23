@@ -118,7 +118,7 @@ Public Class WCRCam
         If tbCheckAmount.Text <> "" Or tbCheckNumber.Text <> "" Then
             If CheckAmtValid = True And CheckNumValid = True And DepDateValid = True Then
                 ReturnVal = False
-                MainWindow.WCR.AddCamCheck(tbVendorName.Text, tbCheckNumber.Text, FormatNumber(tbCheckAmount.Text, 2), dtpDepositDate.SelectedDate, tbCheckNotes.Text)
+                WCRModule.WCR.AddCamCheck(tbVendorName.Text, tbCheckNumber.Text, FormatNumber(tbCheckAmount.Text, 2), dtpDepositDate.SelectedDate, tbCheckNotes.Text)
                 tbCam.Text = ""
             Else
                 tbCam.Text = "It looks like the check information isn't quite right.  Can you double check it and try again?"
@@ -128,4 +128,12 @@ Public Class WCRCam
         Return ReturnVal
     End Function
 
+    Private Sub ExitWCR(sender As Object, e As MouseButtonEventArgs) Handles btnExit.MouseDown
+        'TODO: ADD APPLICATION STYLE MESSAGEBOX
+        Dim yn As MsgBoxResult = MsgBox("Close WCR?", vbYesNo)
+        If yn = vbYes Then
+            WCRModule.UserClosed = True
+            Close()
+        End If
+    End Sub
 End Class

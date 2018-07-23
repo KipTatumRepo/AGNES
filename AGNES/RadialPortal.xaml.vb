@@ -11,6 +11,7 @@
     Private Sub WCRGo(sender As Object, e As MouseButtonEventArgs) Handles btnRadial1.PreviewMouseLeftButtonDown
         Hide()
         WCRModule.Runmodule()
+        Show()
     End Sub
 
     Private Sub BGCRMGo(sender As Object, e As MouseButtonEventArgs) Handles btnRadial2.PreviewMouseLeftButtonDown

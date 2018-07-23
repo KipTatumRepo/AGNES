@@ -1,6 +1,6 @@
 ﻿Public Class WCRHello
     Private Property _currentstate As Integer
-    Private ActiveWCR As WCRObject = MainWindow.WCR
+    Private ActiveWCR As WCRObject = WCRModule.WCR
 
     Private Sub WCRHello_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
         'TODO: Map to user table to get short name, etc.
@@ -22,7 +22,7 @@
     End Sub
 
     Private Sub LoadTenderFile(sender As Object, e As RoutedEventArgs) Handles btnLoadTenders.Click, btnAnother.Click
-        MainWindow.WCR.LoadTenders(Me)
+        WCRModule.WCR.LoadTenders(Me)
         btnYes.Visibility = Visibility.Visible
         btnNo.Visibility = Visibility.Visible
         btnAnother.Visibility = Visibility.Hidden
@@ -56,5 +56,14 @@
         btnAnother.Visibility = Visibility.Hidden
         btnDone.Visibility = Visibility.Hidden
         Close()
+    End Sub
+
+    Private Sub ExitAGNES(sender As Object, e As MouseButtonEventArgs) Handles btnExit.MouseDown
+        'TODO: ADD APPLICATION STYLE MESSAGEBOX
+        Dim yn As MsgBoxResult = MsgBox("Close WCR?", vbYesNo)
+        If yn = vbYes Then
+            WCRModule.UserClosed = True
+            Close()
+        End If
     End Sub
 End Class
