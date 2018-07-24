@@ -102,7 +102,7 @@
     End Sub
 
     Public Sub PrintInvoice(ByRef pd As PrintDialog, ByRef fd As FlowDocument)
-        Dim ph As String = ""
+        Dim InvoiceNumber As String = VendorNumber & Month(WCR.WeekStart) & Day(WCR.WeekStart) & Year(WCR.WeekStart)
         '// Create Commons logo object
         Dim bimg As New BitmapImage
         bimg.BeginInit()
@@ -132,14 +132,14 @@
             t.RowGroups(0).Rows.Add(New TableRow())
         Next rc
         cr = t.RowGroups(0).Rows(0)
-        cr.Cells.Add(New TableCell(New Paragraph(New Run(VendorName)) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontWeight = FontWeights.Bold, .FontSize = 20}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(InvoiceName)) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontWeight = FontWeights.Bold, .FontSize = 20}))
         cr.Cells(0).ColumnSpan = 4
 
         cr = t.RowGroups(0).Rows(1)
         cr.Cells.Add(New TableCell(New Paragraph(New Run("Invoice Number: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("ABCD1234")) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(InvoiceNumber)) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
         cr.Cells.Add(New TableCell(New Paragraph(New Run("")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("Week Start Date: 6/22/2018")) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Week Start Date: " & WCR.WeekStart)) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
         cr = t.RowGroups(0).Rows(2)
         cr.Cells.Add(New TableCell(New Paragraph(New Run(" ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
         cr.Cells.Add(New TableCell(New Paragraph(New Run("")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
@@ -300,36 +300,43 @@
 
     Private Sub Recalculate()
         '// Calculate Gross Sales, Tax, and Net Sales
-        Dim gs As Double = 0
+        Dim gs As Double = 0, tt As String = ""
         CreditCards = 0
         For Each t As Tender In Tenders
             gs += t.TenderAmt
             GrossSales = gs
-            'TODO: Handle suspend and all other tender-specific properties and Compass Owes/Vendor Owes/Total Owed
-            'TODO: Map property association to Tender ID in table.  Hard coding for development use only
-            Select Case t.TenderId
-                Case 1
+            Dim q = From c In WCRE.TenderID_TenderType_Mapping
+                    Where c.TenderID = t.TenderId
+                    Select c
+            Dim ct As Integer = q.Count
+            For Each c In q
+                tt = c.TenderType
+            Next
+            Select Case tt
+                Case "Cash"
                     Cash = t.TenderAmt
-                Case 9
+                Case "MealCard"
                     MealCard = t.TenderAmt
-                Case 10
+                Case "MealCardCredit"
                     MealCardCredit = t.TenderAmt
-                Case 11
+                Case "ECash"
                     ECash = t.TenderAmt
-                Case 12
+                Case "ECoupons"
                     ECoupons = t.TenderAmt
-                Case 35, 55, 81
+                Case "IOCharges"
                     IOCharges = t.TenderAmt
-                Case 37
-                    'TODO: Deal with Suspend items
-                    Suspend = t.TenderAmt
-                Case 45
+                Case "ExpiredCard"
                     ExpiredCard = t.TenderAmt
-                Case 52
+                Case "ScratchCoupons"
                     ScratchCoupons = t.TenderAmt
-                Case 2, 3, 83, 91, 92, 93, 94
-                    CreditCards += t.TenderAmt
+                Case "VisaMasterCardDiscover", "Visa EMV", "Discover EMV", "Master Card EMV", "WCC Visa/MC", "Visa CC", "Master Card CC", "Visa_High_Limit", "M / C_High_Limit"
+                    VisaMastercard = t.TenderAmt
+                Case "FreedomPay"
+                    FreedomPay = t.TenderAmt
+                Case "AMEX", "AMEX EMV", "WCC Amex", "Amex CC", "Amex_High_Limit"
+                    AMEX = t.TenderAmt
             End Select
+            CreditCards = FreedomPay + VisaMastercard + AMEX
             CompassPayment = MealCard + ECoupons + ECash + ScratchCoupons + ExpiredCard + IOCharges
             VendorPayment = MealCardCredit + CAMAmt + KPIAmt
             DueFromVendor = CompassPayment - VendorPayment

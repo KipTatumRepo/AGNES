@@ -29,12 +29,13 @@ Public Class WCRObject
                 ct += 1
             Loop
             vn = GetVendorNameFromString(valz)
-            Dim v As New VendorObject With {.VendorName = vn}
+            Dim tn As Integer, v As New VendorObject With {.VendorName = vn}
             Vendors.Add(v)
             ct += 3
             Do Until valz = "Subtotal"
                 '// Check for Suspend and Dept Charges
-                Select Case CType(ws.Cells(ct, 1), Excel.Range).Value
+                tn = CType(ws.Cells(ct, 1), Excel.Range).Value
+                Select Case tn
                     Case 15         '/ Dept Charges
                         If MsgBox("IO Charges are present in this tender.  Do you confirm that the required documentation has been received?", MsgBoxStyle.YesNo, "This tender type requires validation!") = MessageBoxResult.Yes Then
                             v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, CType(ws.Cells(ct, 2), Excel.Range).Value,
@@ -64,7 +65,7 @@ Public Class WCRObject
                     Case 92                     '// AMEX
                         v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "AMEX", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
                     Case Else
-                        v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, CType(ws.Cells(ct, 2), Excel.Range).Value,FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                        v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, CType(ws.Cells(ct, 2), Excel.Range).Value, FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
                 End Select
                 ct += 1
                 valz = CType(ws.Cells(ct, 1), Excel.Range).Value
