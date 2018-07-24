@@ -14,7 +14,14 @@ Public Class WCRCam
         AddHandler dt.Tick, AddressOf PauseForMinimizing
         dt.Interval = New TimeSpan(0, 0, 1)
         dt.Start()
-        'TODO: Change vendor name textbox to a combobox and map to the appropriate table
+        Dim q = From c In WCRE.VendorInfoes
+                Where c.VendorType = 1 And c.Active = True
+                Select c
+        Dim ct As Integer = q.Count
+        For Each c In q
+            cboVendor.Items.Add(Trim(c.VendorName))
+        Next
+        cboVendor.SelectedValuePath = Content.ToString
     End Sub
     Public Sub PauseForMinimizing(ByVal sender As Object, ByVal e As EventArgs)
         CommandManager.InvalidateRequerySuggested()
@@ -50,7 +57,8 @@ Public Class WCRCam
                 .DisplayDateEnd = Now()
                 .SelectedDate = Now()
             End With
-            tbVendorName.Text = ""
+            cboVendor.SelectedIndex = -1
+            cboVendor.Text = ""
             tbCheckNumber.Text = ""
             tbCheckAmount.Text = ""
             tbCheckNotes.Text = ""
@@ -60,7 +68,7 @@ Public Class WCRCam
         btnMoreCam.Visibility = Visibility.Visible
         btnYesCam.Visibility = Visibility.Hidden
         btnNo.Visibility = Visibility.Hidden
-        tbVendorName.Focus()
+        cboVendor.Focus()
     End Sub
 
     Private Sub ToggleEntryVisibility(onoff As Boolean)
@@ -71,7 +79,7 @@ Public Class WCRCam
                 txtCheckNotes.Visibility = Visibility.Visible
                 txtCheckNumber.Visibility = Visibility.Visible
                 txtDepositDate.Visibility = Visibility.Visible
-                tbVendorName.Visibility = Visibility.Visible
+                cboVendor.Visibility = Visibility.Visible
                 tbCheckNumber.Visibility = Visibility.Visible
                 dtpDepositDate.Visibility = Visibility.Visible
                 tbCheckAmount.Visibility = Visibility.Visible
@@ -82,7 +90,7 @@ Public Class WCRCam
                 txtCheckNotes.Visibility = Visibility.Hidden
                 txtCheckNumber.Visibility = Visibility.Hidden
                 txtDepositDate.Visibility = Visibility.Hidden
-                tbVendorName.Visibility = Visibility.Hidden
+                cboVendor.Visibility = Visibility.Hidden
                 tbCheckNumber.Visibility = Visibility.Hidden
                 dtpDepositDate.Visibility = Visibility.Hidden
                 tbCheckAmount.Visibility = Visibility.Hidden
@@ -118,7 +126,7 @@ Public Class WCRCam
         If tbCheckAmount.Text <> "" Or tbCheckNumber.Text <> "" Then
             If CheckAmtValid = True And CheckNumValid = True And DepDateValid = True Then
                 ReturnVal = False
-                WCRModule.WCR.AddCamCheck(tbVendorName.Text, tbCheckNumber.Text, FormatNumber(tbCheckAmount.Text, 2), dtpDepositDate.SelectedDate, tbCheckNotes.Text)
+                WCRModule.WCR.AddCamCheck(cboVendor.SelectedValue, tbCheckNumber.Text, FormatNumber(tbCheckAmount.Text, 2), dtpDepositDate.SelectedDate, tbCheckNotes.Text)
                 tbCam.Text = ""
             Else
                 tbCam.Text = "It looks like the check information isn't quite right.  Can you double check it and try again?"
