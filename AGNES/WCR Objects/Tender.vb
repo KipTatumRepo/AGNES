@@ -20,13 +20,13 @@ Public Class Tender
     End Sub
 
     Private Sub GetGLCode(tid)
-        DataSets.TenderGLAdapt.Fill(DataSets.TenderGLTable)
-        Dim dr() As DataRow = DataSets.TenderGLTable.Select("Tender_ID = '" & tid & "'")
-        If dr.Count > 0 Then
-            GL = dr(0)("GL_Account")
-        Else
-            GL = 999
-        End If
+        Dim q = From c In WCRE.Tender_GL_Mapping
+                Where c.Tender_ID = tid
+                Select c
+        GL = 999
+        For Each c In q
+            GL = c.GL_Account
+        Next
     End Sub
 
 End Class

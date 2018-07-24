@@ -54,10 +54,15 @@
                 Case "Percentage"
                     If CAM > 0 Then CAMAmt = NetSales * CAM
                 Case "Flat"
-
+                    If CAM > 0 Then CAMAmt = CAM
             End Select
 
-            If KPI > 0 Then KPIAmt = NetSales * KPI
+            Select Case KPIType
+                Case "Percentage"
+                    If KPI > 0 Then KPIAmt = NetSales * KPI
+                Case "Flat"
+                    If KPI > 0 Then KPIAmt = KPI
+            End Select
         End Set
     End Property
     Public Property SalesTax As Double
