@@ -10,6 +10,7 @@ Public Class WCRObject
     Public Vendors As New List(Of VendorObject)
     Public CamChecks As New List(Of CamCheck)
 
+
     Public Sub New()
         Dim ph As String = ""
     End Sub
@@ -28,12 +29,13 @@ Public Class WCRObject
                 ct += 1
             Loop
             vn = GetVendorNameFromString(valz)
-            Dim v As New VendorObject With {.VendorName = vn}
+            Dim tn As Integer, v As New VendorObject With {.VendorName = vn}
             Vendors.Add(v)
             ct += 3
             Do Until valz = "Subtotal"
                 '// Check for Suspend and Dept Charges
-                Select Case CType(ws.Cells(ct, 1), Excel.Range).Value
+                tn = CType(ws.Cells(ct, 1), Excel.Range).Value
+                Select Case tn
                     Case 15         '/ Dept Charges
                         If MsgBox("IO Charges are present in this tender.  Do you confirm that the required documentation has been received?", MsgBoxStyle.YesNo, "This tender type requires validation!") = MessageBoxResult.Yes Then
                             v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, CType(ws.Cells(ct, 2), Excel.Range).Value,
@@ -63,7 +65,7 @@ Public Class WCRObject
                     Case 92                     '// AMEX
                         v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "AMEX", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
                     Case Else
-                        v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, CType(ws.Cells(ct, 2), Excel.Range).Value,FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                        v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, CType(ws.Cells(ct, 2), Excel.Range).Value, FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
                 End Select
                 ct += 1
                 valz = CType(ws.Cells(ct, 1), Excel.Range).Value
@@ -83,7 +85,30 @@ Public Class WCRObject
     End Sub
 
     Public Sub PrintWCR()
-        Dim ph As String = ""
+        Dim GrossSales As Double, SalesTax As Double, NetSales As Double, CamToCompass As Double, PotentialKpi As Double,
+            MealCardPayments As Double, MealCardCredits As Double, Ecoupons As Double, Ecash As Double, ScratchCoupons As Double,
+            ExpiredCards As Double, IoCharges As Double, CompassPayment As Double, VendorPayment As Double, DueFromVendors As Double,
+            FreedomPay As Double, Amex As Double, VisaMcDisc As Double
+        For Each v As VendorObject In Vendors
+            GrossSales += v.GrossSales
+            SalesTax += v.SalesTax
+            NetSales += v.NetSales
+            CamToCompass += v.CAMAmt
+            PotentialKpi += v.KPIAmt
+            MealCardPayments += v.MealCard
+            MealCardCredits += v.MealCardCredit
+            Ecoupons += v.ECoupons
+            Ecash += v.ECash
+            ScratchCoupons += v.ScratchCoupons
+            ExpiredCards += v.ExpiredCard
+            IoCharges += v.IOCharges
+            CompassPayment += v.CompassPayment
+            VendorPayment += v.VendorPayment
+            DueFromVendors += v.DueFromVendor
+            FreedomPay += v.FreedomPay
+            Amex += v.AMEX
+            VisaMcDisc += v.VisaMastercard
+        Next
         'TODO: Create print WCR routine
     End Sub
 
@@ -114,29 +139,12 @@ Public Class WCRObject
         Dim si As Integer = vn.IndexOf("(")
         Dim li As Integer = vn.IndexOf(")")
         Dim vnum As Integer = FormatNumber(vn.Substring(si + 1, (li - si) - 1))
-        'TODO: Replace hard code with db table lookup for store num -> vendor name
-        Select Case vnum 'This is the STORE number, NOT the profit center ID
-            Case 27
-                vn = "Concierge"
-                'TODO: Handle Concierge file use for Meal Card charge-ups
-            Case 44
-                vn = "Acapulco Fresh"
-            Case 46
-                vn = "Chandys"
-            Case 48
-                vn = "Jewel"
-            Case 49
-                vn = "Typhoon"
-            Case 77
-                vn = "Lunchbox Laboratory"
-            Case 85
-                vn = "Yonanas"
-            Case 86
-                vn = "MOD Pizza"
-            Case Else
-                vn = "Nada"
-                'TODO: Handle unrecognized vendor tender files
-        End Select
+        Dim q = From c In WCRE.VendorInfoes
+                Where c.StoreId = vnum
+                Select c
+        For Each c In q
+            vn = Trim(c.VendorName)
+        Next
         Return vn
     End Function
 

@@ -1,5 +1,43 @@
 ﻿Public Class VendorObject
+    Private _vendorname As String
     Public Property VendorName As String
+        Get
+            Return _vendorname
+        End Get
+        Set(value As String)
+            _vendorname = value
+            Dim q = From c In WCRE.VendorInfoes
+                    Where c.VendorName = value
+                    Select c
+            For Each c In q
+                InvoiceName = Trim(c.InvoiceName)
+                VendorNumber = Trim(c.SupplierCode)
+                '// CAM and KPI >>>
+                CAM = FormatNumber(c.CAMAmount, 4)
+                KPI = FormatNumber(c.KPIAmount, 4)
+                Dim q1 = From c1 In WCRE.CAMWithholdingTypes
+                         Where c1.PID = c.CAMType
+                         Select c1
+                For Each c1 In q1
+                    CAMType = Trim(c1.WithholdingType)
+                Next
+                If Now() < c.CAMStart Then
+                    CAMType = "None" : CAM = 0
+                End If
+                Dim q2 = From c2 In WCRE.KPIWithholdingTypes
+                         Where c2.PID = c.KPIType
+                         Select c2
+                For Each c2 In q2
+                    KPIType = Trim(c2.WithholdingType)
+                Next
+                If Now() < c.KPIStart Then
+                    KPIType = "None" : KPI = 0
+                End If
+                '<<< CAM and KPI //
+            Next
+        End Set
+    End Property
+    Public Property InvoiceName As String
     Public Property VendorNumber As Long
     Private _grosssales As Double
     Public Property GrossSales As Double
@@ -11,13 +49,27 @@
             Dim st As Double = My.Settings.WASalesTax
             NetSales = _grosssales / (1 + st)
             SalesTax = value - NetSales
-            If CAM > 0 Then CAMAmt = NetSales * CAM
-            If KPI > 0 Then KPIAmt = NetSales * KPI
+            CAMAmt = 0 : KPIAmt = 0
+            Select Case CAMType
+                Case "Percentage"
+                    If CAM > 0 Then CAMAmt = NetSales * CAM
+                Case "Flat"
+                    If CAM > 0 Then CAMAmt = CAM
+            End Select
+
+            Select Case KPIType
+                Case "Percentage"
+                    If KPI > 0 Then KPIAmt = NetSales * KPI
+                Case "Flat"
+                    If KPI > 0 Then KPIAmt = KPI
+            End Select
         End Set
     End Property
     Public Property SalesTax As Double
     Public Property NetSales As Double
+    Public Property CAMType As String
     Public Property CAMAmt As Double
+    Public Property KPIType As String
     Public Property KPIAmt As Double
     Public Property CAM As Double
     Public Property KPI As Double
@@ -40,9 +92,7 @@
     Public Tenders As New List(Of Tender)
 
     Public Sub New()
-        'TODO: Add function to populate CAM and KPI values for the vendor from a table.  Hard coding for development use only
-        CAM = 0.075
-        KPI = 0.075
+        Dim ph As String = ""
     End Sub
 
     Public Sub AddTender(id, nm, qty, amt)
@@ -52,7 +102,7 @@
     End Sub
 
     Public Sub PrintInvoice(ByRef pd As PrintDialog, ByRef fd As FlowDocument)
-        Dim ph As String = ""
+        Dim InvoiceNumber As String = VendorNumber & Month(WCR.WeekStart) & Day(WCR.WeekStart) & Year(WCR.WeekStart)
         '// Create Commons logo object
         Dim bimg As New BitmapImage
         bimg.BeginInit()
@@ -82,14 +132,14 @@
             t.RowGroups(0).Rows.Add(New TableRow())
         Next rc
         cr = t.RowGroups(0).Rows(0)
-        cr.Cells.Add(New TableCell(New Paragraph(New Run(VendorName)) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontWeight = FontWeights.Bold, .FontSize = 20}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(InvoiceName)) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontWeight = FontWeights.Bold, .FontSize = 20}))
         cr.Cells(0).ColumnSpan = 4
 
         cr = t.RowGroups(0).Rows(1)
         cr.Cells.Add(New TableCell(New Paragraph(New Run("Invoice Number: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("ABCD1234")) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(InvoiceNumber)) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
         cr.Cells.Add(New TableCell(New Paragraph(New Run("")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("Week Start Date: 6/22/2018")) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Week Start Date: " & WCR.WeekStart)) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
         cr = t.RowGroups(0).Rows(2)
         cr.Cells.Add(New TableCell(New Paragraph(New Run(" ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
         cr.Cells.Add(New TableCell(New Paragraph(New Run("")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
@@ -250,36 +300,43 @@
 
     Private Sub Recalculate()
         '// Calculate Gross Sales, Tax, and Net Sales
-        Dim gs As Double = 0
+        Dim gs As Double = 0, tt As String = ""
         CreditCards = 0
         For Each t As Tender In Tenders
             gs += t.TenderAmt
             GrossSales = gs
-            'TODO: Handle suspend and all other tender-specific properties and Compass Owes/Vendor Owes/Total Owed
-            'TODO: Map property association to Tender ID in table.  Hard coding for development use only
-            Select Case t.TenderId
-                Case 1
+            Dim q = From c In WCRE.TenderID_TenderType_Mapping
+                    Where c.TenderID = t.TenderId
+                    Select c
+            Dim ct As Integer = q.Count
+            For Each c In q
+                tt = c.TenderType
+            Next
+            Select Case tt
+                Case "Cash"
                     Cash = t.TenderAmt
-                Case 9
+                Case "MealCard"
                     MealCard = t.TenderAmt
-                Case 10
+                Case "MealCardCredit"
                     MealCardCredit = t.TenderAmt
-                Case 11
+                Case "ECash"
                     ECash = t.TenderAmt
-                Case 12
+                Case "ECoupons"
                     ECoupons = t.TenderAmt
-                Case 35, 55, 81
+                Case "IOCharges"
                     IOCharges = t.TenderAmt
-                Case 37
-                    'TODO: Deal with Suspend items
-                    Suspend = t.TenderAmt
-                Case 45
+                Case "ExpiredCard"
                     ExpiredCard = t.TenderAmt
-                Case 52
+                Case "ScratchCoupons"
                     ScratchCoupons = t.TenderAmt
-                Case 2, 3, 83, 91, 92, 93, 94
-                    CreditCards += t.TenderAmt
+                Case "VisaMasterCardDiscover", "Visa EMV", "Discover EMV", "Master Card EMV", "WCC Visa/MC", "Visa CC", "Master Card CC", "Visa_High_Limit", "M / C_High_Limit"
+                    VisaMastercard = t.TenderAmt
+                Case "FreedomPay"
+                    FreedomPay = t.TenderAmt
+                Case "AMEX", "AMEX EMV", "WCC Amex", "Amex CC", "Amex_High_Limit"
+                    AMEX = t.TenderAmt
             End Select
+            CreditCards = FreedomPay + VisaMastercard + AMEX
             CompassPayment = MealCard + ECoupons + ECash + ScratchCoupons + ExpiredCard + IOCharges
             VendorPayment = MealCardCredit + CAMAmt + KPIAmt
             DueFromVendor = CompassPayment - VendorPayment

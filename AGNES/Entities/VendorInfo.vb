@@ -27,8 +27,8 @@ Partial Public Class VendorInfo
     Public Property RequiresHood As Boolean
     Public Property InsuranceExpiration As Nullable(Of Date)
     Public Property ContractExpiration As Nullable(Of Date)
-
-    Public Overridable Property CAMWithholdingType As CAMWithholdingType
-    Public Overridable Property KPIWithholdingType As KPIWithholdingType
+    Public Property ProfitCenterId As Nullable(Of Long)
+    Public Property StoreId As Nullable(Of Long)
+    Public Property KPIStart As Nullable(Of Date)
 
 End Class

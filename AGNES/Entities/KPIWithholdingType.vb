@@ -14,6 +14,4 @@ Partial Public Class KPIWithholdingType
     Public Property PID As Long
     Public Property WithholdingType As String
 
-    Public Overridable Property VendorInfoes As ICollection(Of VendorInfo) = New HashSet(Of VendorInfo)
-
 End Class

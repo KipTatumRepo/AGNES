@@ -113,11 +113,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AGNESDataSet.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AGNESDataSet.xsd</DependentUpon>
-    </Compile>
     <Compile Include="BGCRM.xaml.vb">
       <DependentUpon>BGCRM.xaml</DependentUpon>
     </Compile>
@@ -257,7 +252,6 @@
     <Compile Include="RadialPortal.xaml.vb">
       <DependentUpon>RadialPortal.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Resources\DataSets.vb" />
     <Compile Include="WCR Objects\CamCheck.vb" />
     <Compile Include="WCR Objects\VendorObject.vb" />
     <Compile Include="WCR Objects\Tender.vb" />
@@ -350,17 +344,6 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
     </EmbeddedResource>
-    <None Include="AGNESDataSet.xsc">
-      <DependentUpon>AGNESDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="AGNESDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>AGNESDataSet.Designer.vb</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="AGNESDataSet.xss">
-      <DependentUpon>AGNESDataSet.xsd</DependentUpon>
-    </None>
     <None Include="AGNES_TemporaryKey.pfx" />
     <EntityDeploy Include="Entities\BusinessGroupCRM.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
