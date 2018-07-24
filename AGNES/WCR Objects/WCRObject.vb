@@ -10,6 +10,7 @@ Public Class WCRObject
     Public Vendors As New List(Of VendorObject)
     Public CamChecks As New List(Of CamCheck)
 
+
     Public Sub New()
         Dim ph As String = ""
     End Sub
@@ -114,29 +115,12 @@ Public Class WCRObject
         Dim si As Integer = vn.IndexOf("(")
         Dim li As Integer = vn.IndexOf(")")
         Dim vnum As Integer = FormatNumber(vn.Substring(si + 1, (li - si) - 1))
-        'TODO: Replace hard code with db table lookup for store num -> vendor name
-        Select Case vnum 'This is the STORE number, NOT the profit center ID
-            Case 27
-                vn = "Concierge"
-                'TODO: Handle Concierge file use for Meal Card charge-ups
-            Case 44
-                vn = "Acapulco Fresh"
-            Case 46
-                vn = "Chandys"
-            Case 48
-                vn = "Jewel"
-            Case 49
-                vn = "Typhoon"
-            Case 77
-                vn = "Lunchbox Laboratory"
-            Case 85
-                vn = "Yonanas"
-            Case 86
-                vn = "MOD Pizza"
-            Case Else
-                vn = "Nada"
-                'TODO: Handle unrecognized vendor tender files
-        End Select
+        Dim q = From c In WCRE.VendorInfoes
+                Where c.StoreId = vnum
+                Select c
+        For Each c In q
+            vn = Trim(c.VendorName)
+        Next
         Return vn
     End Function
 

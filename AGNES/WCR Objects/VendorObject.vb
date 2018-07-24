@@ -1,5 +1,43 @@
 ﻿Public Class VendorObject
+    Private _vendorname As String
     Public Property VendorName As String
+        Get
+            Return _vendorname
+        End Get
+        Set(value As String)
+            _vendorname = value
+            Dim q = From c In WCRE.VendorInfoes
+                    Where c.VendorName = value
+                    Select c
+            For Each c In q
+                InvoiceName = Trim(c.InvoiceName)
+                VendorNumber = Trim(c.SupplierCode)
+                '// CAM and KPI >>>
+                CAM = FormatNumber(c.CAMAmount, 4)
+                KPI = FormatNumber(c.KPIAmount, 4)
+                Dim q1 = From c1 In WCRE.CAMWithholdingTypes
+                         Where c1.PID = c.CAMType
+                         Select c1
+                For Each c1 In q1
+                    CAMType = Trim(c1.WithholdingType)
+                Next
+                If Now() < c.CAMStart Then
+                    CAMType = "None" : CAM = 0
+                End If
+                Dim q2 = From c2 In WCRE.KPIWithholdingTypes
+                         Where c2.PID = c.KPIType
+                         Select c2
+                For Each c2 In q2
+                    KPIType = Trim(c2.WithholdingType)
+                Next
+                If Now() < c.KPIStart Then
+                    KPIType = "None" : KPI = 0
+                End If
+                '<<< CAM and KPI //
+            Next
+        End Set
+    End Property
+    Public Property InvoiceName As String
     Public Property VendorNumber As Long
     Private _grosssales As Double
     Public Property GrossSales As Double
@@ -11,13 +49,22 @@
             Dim st As Double = My.Settings.WASalesTax
             NetSales = _grosssales / (1 + st)
             SalesTax = value - NetSales
-            If CAM > 0 Then CAMAmt = NetSales * CAM
+            CAMAmt = 0 : KPIAmt = 0
+            Select Case CAMType
+                Case "Percentage"
+                    If CAM > 0 Then CAMAmt = NetSales * CAM
+                Case "Flat"
+
+            End Select
+
             If KPI > 0 Then KPIAmt = NetSales * KPI
         End Set
     End Property
     Public Property SalesTax As Double
     Public Property NetSales As Double
+    Public Property CAMType As String
     Public Property CAMAmt As Double
+    Public Property KPIType As String
     Public Property KPIAmt As Double
     Public Property CAM As Double
     Public Property KPI As Double
@@ -40,9 +87,7 @@
     Public Tenders As New List(Of Tender)
 
     Public Sub New()
-        'TODO: Add function to populate CAM and KPI values for the vendor from a table.  Hard coding for development use only
-        CAM = 0.075
-        KPI = 0.075
+        Dim ph As String = ""
     End Sub
 
     Public Sub AddTender(id, nm, qty, amt)

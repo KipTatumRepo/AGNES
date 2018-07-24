@@ -10,8 +10,6 @@
         <EntityTypeShape EntityType="WCRModel.VendorInfo" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WCRModel.CAMWithholdingType" Width="1.5" PointX="2.875" PointY="3.625" />
         <EntityTypeShape EntityType="WCRModel.KPIWithholdingType" Width="1.5" PointX="3" PointY="5.625" />
-        <AssociationConnector Association="WCRModel.CAMWithholdingTypeVendorInfo" />
-        <AssociationConnector Association="WCRModel.KPIWithholdingTypeVendorInfo" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -43,6 +43,8 @@
           <Property Name="VendorName" Type="nchar" MaxLength="128" Nullable="false" />
           <Property Name="InvoiceName" Type="nchar" MaxLength="128" Nullable="false" />
           <Property Name="SupplierCode" Type="bigint" Nullable="false" />
+          <Property Name="ProfitCenterId" Type="bigint" />
+          <Property Name="StoreId" Type="bigint" />
           <Property Name="VendorType" Type="smallint" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
           <Property Name="FoodType" Type="int" />
@@ -51,6 +53,7 @@
           <Property Name="CAMStart" Type="date" />
           <Property Name="CAMAmount" Type="decimal" Precision="8" Scale="4" />
           <Property Name="KPIType" Type="smallint" />
+          <Property Name="KPIStart" Type="date" />
           <Property Name="KPIAmount" Type="decimal" Precision="8" Scale="4" />
           <Property Name="RequiresHood" Type="bit" Nullable="false" />
           <Property Name="InsuranceExpiration" Type="date" />
@@ -103,8 +106,9 @@
           <Property Name="RequiresHood" Type="Boolean" Nullable="false" />
           <Property Name="InsuranceExpiration" Type="DateTime" Precision="0" />
           <Property Name="ContractExpiration" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="CAMWithholdingType" Relationship="WCRModel.CAMWithholdingTypeVendorInfo" FromRole="VendorInfo" ToRole="CAMWithholdingType" />
-          <NavigationProperty Name="KPIWithholdingType" Relationship="WCRModel.KPIWithholdingTypeVendorInfo" FromRole="VendorInfo" ToRole="KPIWithholdingType" />
+          <Property Name="ProfitCenterId" Type="Int64" />
+          <Property Name="StoreId" Type="Int64" />
+          <Property Name="KPIStart" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityContainer Name="WCREntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Tender_GL_Mapping" EntityType="Self.Tender_GL_Mapping" />
@@ -112,14 +116,6 @@
           <EntitySet Name="VendorInfoes" EntityType="Self.VendorInfo" />
           <EntitySet Name="CAMWithholdingTypes" EntityType="WCRModel.CAMWithholdingType" />
           <EntitySet Name="KPIWithholdingTypes" EntityType="WCRModel.KPIWithholdingType" />
-          <AssociationSet Name="CAMWithholdingTypeVendorInfo" Association="WCRModel.CAMWithholdingTypeVendorInfo">
-            <End Role="CAMWithholdingType" EntitySet="CAMWithholdingTypes" />
-            <End Role="VendorInfo" EntitySet="VendorInfoes" />
-          </AssociationSet>
-          <AssociationSet Name="KPIWithholdingTypeVendorInfo" Association="WCRModel.KPIWithholdingTypeVendorInfo">
-            <End Role="KPIWithholdingType" EntitySet="KPIWithholdingTypes" />
-            <End Role="VendorInfo" EntitySet="VendorInfoes" />
-          </AssociationSet>
         </EntityContainer>
         <EntityType Name="CAMWithholdingType">
           <Key>
@@ -127,7 +123,6 @@
           </Key>
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="WithholdingType" Type="String" Nullable="false" MaxLength="128" FixedLength="true" Unicode="true" />
-          <NavigationProperty Name="VendorInfoes" Relationship="WCRModel.CAMWithholdingTypeVendorInfo" FromRole="CAMWithholdingType" ToRole="VendorInfo" />
         </EntityType>
         <EntityType Name="KPIWithholdingType">
           <Key>
@@ -135,16 +130,7 @@
           </Key>
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="WithholdingType" Type="String" Nullable="false" MaxLength="32" FixedLength="true" Unicode="true" />
-          <NavigationProperty Name="VendorInfoes" Relationship="WCRModel.KPIWithholdingTypeVendorInfo" FromRole="KPIWithholdingType" ToRole="VendorInfo" />
         </EntityType>
-        <Association Name="CAMWithholdingTypeVendorInfo">
-          <End Type="WCRModel.CAMWithholdingType" Role="CAMWithholdingType" Multiplicity="1" />
-          <End Type="WCRModel.VendorInfo" Role="VendorInfo" Multiplicity="*" />
-        </Association>
-        <Association Name="KPIWithholdingTypeVendorInfo">
-          <End Type="WCRModel.KPIWithholdingType" Role="KPIWithholdingType" Multiplicity="1" />
-          <End Type="WCRModel.VendorInfo" Role="VendorInfo" Multiplicity="*" />
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -172,6 +158,9 @@
           <EntitySetMapping Name="VendorInfoes">
             <EntityTypeMapping TypeName="WCRModel.VendorInfo">
               <MappingFragment StoreEntitySet="VendorInfo">
+                <ScalarProperty Name="KPIStart" ColumnName="KPIStart" />
+                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
+                <ScalarProperty Name="ProfitCenterId" ColumnName="ProfitCenterId" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
                 <ScalarProperty Name="VendorName" ColumnName="VendorName" />
                 <ScalarProperty Name="InvoiceName" ColumnName="InvoiceName" />
