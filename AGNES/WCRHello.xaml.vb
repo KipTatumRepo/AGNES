@@ -21,6 +21,11 @@
         ActiveWCR.WeekStart = wkst
     End Sub
 
+    Private Sub ViewSavedWCR(sender As Object, e As RoutedEventArgs) Handles btnViewWCR.Click
+        Dim ph As String = ""
+        'TODO: CREATE ENTIRE ROUTINE FOR LOADING SAVED WCR FILE
+    End Sub
+
     Private Sub LoadTenderFile(sender As Object, e As RoutedEventArgs) Handles btnLoadTenders.Click, btnAnother.Click
         WCRModule.WCR.LoadTenders(Me)
         btnYes.Visibility = Visibility.Visible
@@ -36,7 +41,7 @@
         btnDone.Visibility = Visibility.Visible
     End Sub
 
-    Public Sub PrintToScreen(ByRef v As VendorObject)
+    Public Sub PrintVendorTotalTendersToScreen(ByRef v As VendorObject)
         Dim t As Tender, ttl As Double
         tbHello.FontSize = 12
         For Each t In v.Tenders

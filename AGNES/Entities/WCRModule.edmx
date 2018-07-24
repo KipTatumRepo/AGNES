@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="WCRModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Tender_GL_Mapping">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tender_ID" Type="bigint" Nullable="false" />
+          <Property Name="GL_Account" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TenderID_TenderType_Mapping">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenderID" Type="bigint" Nullable="false" />
+          <Property Name="TenderType" Type="varchar" MaxLength="512" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CAMWithholdingTypes">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WithholdingType" Type="nchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="KPIWithholdingTypes">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WithholdingType" Type="nchar" MaxLength="32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VendorInfo">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VendorName" Type="nchar" MaxLength="128" Nullable="false" />
+          <Property Name="InvoiceName" Type="nchar" MaxLength="128" Nullable="false" />
+          <Property Name="SupplierCode" Type="bigint" Nullable="false" />
+          <Property Name="VendorType" Type="smallint" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="FoodType" Type="int" />
+          <Property Name="FoodSubType" Type="int" />
+          <Property Name="CAMType" Type="smallint" />
+          <Property Name="CAMStart" Type="date" />
+          <Property Name="CAMAmount" Type="decimal" Precision="8" Scale="4" />
+          <Property Name="KPIType" Type="smallint" />
+          <Property Name="KPIAmount" Type="decimal" Precision="8" Scale="4" />
+          <Property Name="RequiresHood" Type="bit" Nullable="false" />
+          <Property Name="InsuranceExpiration" Type="date" />
+          <Property Name="ContractExpiration" Type="date" />
+        </EntityType>
+        <EntityContainer Name="WCRModelStoreContainer">
+          <EntitySet Name="Tender_GL_Mapping" EntityType="Self.Tender_GL_Mapping" Schema="agnes" store:Type="Tables" />
+          <EntitySet Name="TenderID_TenderType_Mapping" EntityType="Self.TenderID_TenderType_Mapping" Schema="agnes" store:Type="Tables" />
+          <EntitySet Name="CAMWithholdingTypes" EntityType="Self.CAMWithholdingTypes" Schema="Vendors" store:Type="Tables" />
+          <EntitySet Name="KPIWithholdingTypes" EntityType="Self.KPIWithholdingTypes" Schema="Vendors" store:Type="Tables" />
+          <EntitySet Name="VendorInfo" EntityType="Self.VendorInfo" Schema="Vendors" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="WCRModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Tender_GL_Mapping">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tender_ID" Type="Int64" Nullable="false" />
+          <Property Name="GL_Account" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TenderID_TenderType_Mapping">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenderID" Type="Int64" Nullable="false" />
+          <Property Name="TenderType" Type="String" MaxLength="512" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VendorInfo">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VendorName" Type="String" MaxLength="128" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="InvoiceName" Type="String" MaxLength="128" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="SupplierCode" Type="Int64" Nullable="false" />
+          <Property Name="VendorType" Type="Int16" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="FoodType" Type="Int32" />
+          <Property Name="FoodSubType" Type="Int32" />
+          <Property Name="CAMType" Type="Int16" />
+          <Property Name="CAMStart" Type="DateTime" Precision="0" />
+          <Property Name="CAMAmount" Type="Decimal" Precision="8" Scale="4" />
+          <Property Name="KPIType" Type="Int16" />
+          <Property Name="KPIAmount" Type="Decimal" Precision="8" Scale="4" />
+          <Property Name="RequiresHood" Type="Boolean" Nullable="false" />
+          <Property Name="InsuranceExpiration" Type="DateTime" Precision="0" />
+          <Property Name="ContractExpiration" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="CAMWithholdingType" Relationship="WCRModel.CAMWithholdingTypeVendorInfo" FromRole="VendorInfo" ToRole="CAMWithholdingType" />
+          <NavigationProperty Name="KPIWithholdingType" Relationship="WCRModel.KPIWithholdingTypeVendorInfo" FromRole="VendorInfo" ToRole="KPIWithholdingType" />
+        </EntityType>
+        <EntityContainer Name="WCREntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Tender_GL_Mapping" EntityType="Self.Tender_GL_Mapping" />
+          <EntitySet Name="TenderID_TenderType_Mapping" EntityType="Self.TenderID_TenderType_Mapping" />
+          <EntitySet Name="VendorInfoes" EntityType="Self.VendorInfo" />
+          <EntitySet Name="CAMWithholdingTypes" EntityType="WCRModel.CAMWithholdingType" />
+          <EntitySet Name="KPIWithholdingTypes" EntityType="WCRModel.KPIWithholdingType" />
+          <AssociationSet Name="CAMWithholdingTypeVendorInfo" Association="WCRModel.CAMWithholdingTypeVendorInfo">
+            <End Role="CAMWithholdingType" EntitySet="CAMWithholdingTypes" />
+            <End Role="VendorInfo" EntitySet="VendorInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="KPIWithholdingTypeVendorInfo" Association="WCRModel.KPIWithholdingTypeVendorInfo">
+            <End Role="KPIWithholdingType" EntitySet="KPIWithholdingTypes" />
+            <End Role="VendorInfo" EntitySet="VendorInfoes" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="CAMWithholdingType">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WithholdingType" Type="String" Nullable="false" MaxLength="128" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="VendorInfoes" Relationship="WCRModel.CAMWithholdingTypeVendorInfo" FromRole="CAMWithholdingType" ToRole="VendorInfo" />
+        </EntityType>
+        <EntityType Name="KPIWithholdingType">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WithholdingType" Type="String" Nullable="false" MaxLength="32" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="VendorInfoes" Relationship="WCRModel.KPIWithholdingTypeVendorInfo" FromRole="KPIWithholdingType" ToRole="VendorInfo" />
+        </EntityType>
+        <Association Name="CAMWithholdingTypeVendorInfo">
+          <End Type="WCRModel.CAMWithholdingType" Role="CAMWithholdingType" Multiplicity="1" />
+          <End Type="WCRModel.VendorInfo" Role="VendorInfo" Multiplicity="*" />
+        </Association>
+        <Association Name="KPIWithholdingTypeVendorInfo">
+          <End Type="WCRModel.KPIWithholdingType" Role="KPIWithholdingType" Multiplicity="1" />
+          <End Type="WCRModel.VendorInfo" Role="VendorInfo" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="WCRModelStoreContainer" CdmEntityContainer="WCREntities">
+          <EntitySetMapping Name="Tender_GL_Mapping">
+            <EntityTypeMapping TypeName="WCRModel.Tender_GL_Mapping">
+              <MappingFragment StoreEntitySet="Tender_GL_Mapping">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="Tender_ID" ColumnName="Tender_ID" />
+                <ScalarProperty Name="GL_Account" ColumnName="GL_Account" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TenderID_TenderType_Mapping">
+            <EntityTypeMapping TypeName="WCRModel.TenderID_TenderType_Mapping">
+              <MappingFragment StoreEntitySet="TenderID_TenderType_Mapping">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="TenderID" ColumnName="TenderID" />
+                <ScalarProperty Name="TenderType" ColumnName="TenderType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VendorInfoes">
+            <EntityTypeMapping TypeName="WCRModel.VendorInfo">
+              <MappingFragment StoreEntitySet="VendorInfo">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+                <ScalarProperty Name="InvoiceName" ColumnName="InvoiceName" />
+                <ScalarProperty Name="SupplierCode" ColumnName="SupplierCode" />
+                <ScalarProperty Name="VendorType" ColumnName="VendorType" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="FoodType" ColumnName="FoodType" />
+                <ScalarProperty Name="FoodSubType" ColumnName="FoodSubType" />
+                <ScalarProperty Name="CAMType" ColumnName="CAMType" />
+                <ScalarProperty Name="CAMStart" ColumnName="CAMStart" />
+                <ScalarProperty Name="CAMAmount" ColumnName="CAMAmount" />
+                <ScalarProperty Name="KPIType" ColumnName="KPIType" />
+                <ScalarProperty Name="KPIAmount" ColumnName="KPIAmount" />
+                <ScalarProperty Name="RequiresHood" ColumnName="RequiresHood" />
+                <ScalarProperty Name="InsuranceExpiration" ColumnName="InsuranceExpiration" />
+                <ScalarProperty Name="ContractExpiration" ColumnName="ContractExpiration" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAMWithholdingTypes">
+            <EntityTypeMapping TypeName="WCRModel.CAMWithholdingType">
+              <MappingFragment StoreEntitySet="CAMWithholdingTypes">
+                <ScalarProperty Name="WithholdingType" ColumnName="WithholdingType" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KPIWithholdingTypes">
+            <EntityTypeMapping TypeName="WCRModel.KPIWithholdingType">
+              <MappingFragment StoreEntitySet="KPIWithholdingTypes">
+                <ScalarProperty Name="WithholdingType" ColumnName="WithholdingType" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

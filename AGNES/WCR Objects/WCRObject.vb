@@ -73,7 +73,7 @@ Public Class WCRObject
             releaseObject(ws)
             releaseObject(wb)
             releaseObject(xlApp)
-            If BadFile = False Then disp.PrintToScreen(v)
+            If BadFile = False Then disp.PrintVendorTotalTendersToScreen(v)
         End If
     End Sub
 

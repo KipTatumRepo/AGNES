@@ -145,6 +145,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\CAMWithholdingType.vb">
+      <DependentUpon>WCRModule.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Communication.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
@@ -174,6 +177,9 @@
     </Compile>
     <Compile Include="Entities\Involvement_Join.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\KPIWithholdingType.vb">
+      <DependentUpon>WCRModule.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Leader.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
@@ -211,11 +217,35 @@
     <Compile Include="Entities\Refresh_Join.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\TenderID_TenderType_Mapping.vb">
+      <DependentUpon>WCRModule.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Tender_GL_Mapping.vb">
+      <DependentUpon>WCRModule.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\TopEventTypes_Join.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\TopSpaces_Join.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\VendorInfo.vb">
+      <DependentUpon>WCRModule.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\WCRModule.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WCRModule.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\WCRModule.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WCRModule.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\WCRModule.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WCRModule.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\WorkLocation.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
@@ -339,6 +369,13 @@
     <None Include="Entities\BusinessGroupCRM.edmx.diagram">
       <DependentUpon>BusinessGroupCRM.edmx</DependentUpon>
     </None>
+    <EntityDeploy Include="Entities\WCRModule.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>WCRModule.Designer.vb</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Entities\WCRModule.edmx.diagram">
+      <DependentUpon>WCRModule.edmx</DependentUpon>
+    </None>
     <None Include="My Project\app.manifest" />
     <None Include="My Project\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -427,6 +464,16 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>BusinessGroupCRM.edmx</DependentUpon>
       <LastGenOutput>BusinessGroupCRM.vb</LastGenOutput>
+    </Content>
+    <Content Include="Entities\WCRModule.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>WCRModule.edmx</DependentUpon>
+      <LastGenOutput>WCRModule.Context.vb</LastGenOutput>
+    </Content>
+    <Content Include="Entities\WCRModule.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>WCRModule.edmx</DependentUpon>
+      <LastGenOutput>WCRModule.vb</LastGenOutput>
     </Content>
     <Resource Include="Resources\WCR.png" />
     <Resource Include="Resources\Options.png" />
