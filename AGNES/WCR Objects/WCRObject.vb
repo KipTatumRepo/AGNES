@@ -85,7 +85,30 @@ Public Class WCRObject
     End Sub
 
     Public Sub PrintWCR()
-        Dim ph As String = ""
+        Dim GrossSales As Double, SalesTax As Double, NetSales As Double, CamToCompass As Double, PotentialKpi As Double,
+            MealCardPayments As Double, MealCardCredits As Double, Ecoupons As Double, Ecash As Double, ScratchCoupons As Double,
+            ExpiredCards As Double, IoCharges As Double, CompassPayment As Double, VendorPayment As Double, DueFromVendors As Double,
+            FreedomPay As Double, Amex As Double, VisaMcDisc As Double
+        For Each v As VendorObject In Vendors
+            GrossSales += v.GrossSales
+            SalesTax += v.SalesTax
+            NetSales += v.NetSales
+            CamToCompass += v.CAMAmt
+            PotentialKpi += v.KPIAmt
+            MealCardPayments += v.MealCard
+            MealCardCredits += v.MealCardCredit
+            Ecoupons += v.ECoupons
+            Ecash += v.ECash
+            ScratchCoupons += v.ScratchCoupons
+            ExpiredCards += v.ExpiredCard
+            IoCharges += v.IOCharges
+            CompassPayment += v.CompassPayment
+            VendorPayment += v.VendorPayment
+            DueFromVendors += v.DueFromVendor
+            FreedomPay += v.FreedomPay
+            Amex += v.AMEX
+            VisaMcDisc += v.VisaMastercard
+        Next
         'TODO: Create print WCR routine
     End Sub
 

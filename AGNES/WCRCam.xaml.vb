@@ -101,8 +101,8 @@ Public Class WCRCam
 
     Private Function ConfirmAndSave() As Boolean
         '// Check for data in each field and validate format.  If all are valid, save.
-        'TODO: Add vendor name textblock check to validation routine
-        Dim CheckNumValid As Boolean, CheckAmtValid As Boolean, DepDateValid As Boolean, ReturnVal As Boolean
+        Dim VendorNameValid As Boolean, CheckNumValid As Boolean, CheckAmtValid As Boolean, DepDateValid As Boolean, ReturnVal As Boolean
+        If cboVendor.SelectedIndex = -1 Then VendorNameValid = False
         If tbCheckNumber.Text <> "" Then CheckNumValid = True
         If tbCheckAmount.Text <> "" Then
             Try
@@ -124,12 +124,12 @@ Public Class WCRCam
             End Try
         End If
         If tbCheckAmount.Text <> "" Or tbCheckNumber.Text <> "" Then
-            If CheckAmtValid = True And CheckNumValid = True And DepDateValid = True Then
+            If VendorNameValid = True And CheckAmtValid = True And CheckNumValid = True And DepDateValid = True Then
                 ReturnVal = False
                 WCRModule.WCR.AddCamCheck(cboVendor.SelectedValue, tbCheckNumber.Text, FormatNumber(tbCheckAmount.Text, 2), dtpDepositDate.SelectedDate, tbCheckNotes.Text)
                 tbCam.Text = ""
             Else
-                tbCam.Text = "It looks like the check information isn't quite right.  Can you double check it and try again?"
+                tbCam.Text = "It looks like the check information isn't quite right.  Please double check it and try again."
                 ReturnVal = True
             End If
         End If
