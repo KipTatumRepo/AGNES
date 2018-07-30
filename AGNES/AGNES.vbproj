@@ -248,6 +248,7 @@
     <Compile Include="Entities\WorkTime.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Module Orchestrators\BGCRMModule.vb" />
     <Compile Include="Module Orchestrators\WCRModule.vb" />
     <Compile Include="RadialPortal.xaml.vb">
       <DependentUpon>RadialPortal.xaml</DependentUpon>

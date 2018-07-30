@@ -35,19 +35,6 @@
         PlaceMenuItem(8, 8, ModuleName, ModuleToolTip, moduleimage)
     End Sub
 
-    Private Sub WCRGo(sender As Object, e As MouseButtonEventArgs) ' Handles btnRadial1.PreviewMouseLeftButtonDown
-        Hide()
-        WCRModule.Runmodule()
-        Show()
-    End Sub
-
-    Private Sub BGCRMGo(sender As Object, e As MouseButtonEventArgs) 'Handles btnRadial2.PreviewMouseLeftButtonDown
-        Hide()
-        Dim bgcrm As New BGCRM
-        bgcrm.ShowDialog()
-        Show()
-    End Sub
-
     Private Sub DragViaLeftMouse(sender As Object, e As MouseButtonEventArgs)
         DragMove()
     End Sub
@@ -67,6 +54,7 @@
         Dim t As Integer = s.Margin.Top - 5
         s.Margin = New Thickness(l, t, 0, 0)
     End Sub
+
     Private Sub ModuleMouseLeave(sender As Object, e As MouseEventArgs)
         Dim s As Image = sender
         s.Height = 75
@@ -75,9 +63,18 @@
         Dim t As Integer = s.Margin.Top + 5
         s.Margin = New Thickness(l, t, 0, 0)
     End Sub
+
     Private Sub ModuleSelect(sender As Object, e As MouseEventArgs)
         Dim s As Image = sender
-        MsgBox(s.Tag)
+        'TODO: FIGURE OUT IMPROVED METHOD FOR CALLING MODULES FROM MENU ITEM CLICK
+        Hide()
+        Select Case s.Tag
+            Case "WCR"
+                WCRModule.Runmodule()
+            Case "BGCRM"
+                BGCRMModule.Runmodule()
+        End Select
+        Show()
     End Sub
 
     Private Sub PlaceMenuItem(item, itemcount, associatedmodule, tooltip, moduleimage)

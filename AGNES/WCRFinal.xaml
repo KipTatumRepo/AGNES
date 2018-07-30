@@ -13,6 +13,8 @@
             <TextBlock x:Name="tbFinal" HorizontalAlignment="Left" Margin="89,312,0,-9" TextWrapping="Wrap"  VerticalAlignment="Top" FontSize="16" Height="139" Width="725" TextAlignment="Center" Text="This is the last page!"/>
             <Button x:Name="btnPrintInvoices" Content="Print Invoices" HorizontalAlignment="Left" Margin="413,154,0,0" VerticalAlignment="Top" Width="104"/>
             <TextBlock x:Name="btnExit" Margin="760,4,0,0" TextWrapping="Wrap" Text="X" VerticalAlignment="Top" FontWeight="Bold" TextAlignment="Center"/>
+            <Button x:Name="btnPrintWCR" Content="Print WCR" HorizontalAlignment="Left" Margin="413,154,0,0" VerticalAlignment="Top" Width="104" Visibility="Hidden"/>
+
         </Grid>
     </Viewbox>
 </Window>

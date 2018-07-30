@@ -305,6 +305,7 @@
         For Each t As Tender In Tenders
             gs += t.TenderAmt
             GrossSales = gs
+            tt = ""
             Dim q = From c In WCRE.TenderID_TenderType_Mapping
                     Where c.TenderID = t.TenderId
                     Select c
@@ -317,7 +318,7 @@
                     Cash = t.TenderAmt
                 Case "MealCard"
                     MealCard = t.TenderAmt
-                Case "MealCardCredit"
+                Case "MealCardCredit", "MealCard Credit"
                     MealCardCredit = t.TenderAmt
                 Case "ECash"
                     ECash = t.TenderAmt
@@ -335,10 +336,11 @@
                     FreedomPay = t.TenderAmt
                 Case "AMEX", "AMEX EMV", "WCC Amex", "Amex CC", "Amex_High_Limit"
                     AMEX = t.TenderAmt
+                Case Else
             End Select
             CreditCards = FreedomPay + VisaMastercard + AMEX
             CompassPayment = MealCard + ECoupons + ECash + ScratchCoupons + ExpiredCard + IOCharges
-            VendorPayment = MealCardCredit + CAMAmt + KPIAmt
+            VendorPayment = (-MealCardCredit) + CAMAmt + KPIAmt
             DueFromVendor = CompassPayment - VendorPayment
         Next
     End Sub

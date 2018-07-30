@@ -43,7 +43,6 @@
           <Property Name="VendorName" Type="nchar" MaxLength="128" Nullable="false" />
           <Property Name="InvoiceName" Type="nchar" MaxLength="128" Nullable="false" />
           <Property Name="SupplierCode" Type="bigint" Nullable="false" />
-          <Property Name="ProfitCenterId" Type="bigint" />
           <Property Name="StoreId" Type="bigint" />
           <Property Name="VendorType" Type="smallint" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
@@ -106,7 +105,6 @@
           <Property Name="RequiresHood" Type="Boolean" Nullable="false" />
           <Property Name="InsuranceExpiration" Type="DateTime" Precision="0" />
           <Property Name="ContractExpiration" Type="DateTime" Precision="0" />
-          <Property Name="ProfitCenterId" Type="Int64" />
           <Property Name="StoreId" Type="Int64" />
           <Property Name="KPIStart" Type="DateTime" Precision="0" />
         </EntityType>
@@ -160,7 +158,6 @@
               <MappingFragment StoreEntitySet="VendorInfo">
                 <ScalarProperty Name="KPIStart" ColumnName="KPIStart" />
                 <ScalarProperty Name="StoreId" ColumnName="StoreId" />
-                <ScalarProperty Name="ProfitCenterId" ColumnName="ProfitCenterId" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
                 <ScalarProperty Name="VendorName" ColumnName="VendorName" />
                 <ScalarProperty Name="InvoiceName" ColumnName="InvoiceName" />
