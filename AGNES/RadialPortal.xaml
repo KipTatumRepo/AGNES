@@ -6,16 +6,8 @@
         xmlns:local="clr-namespace:AGNES"
         mc:Ignorable="d"
         Title="RadialPortal" Height="320" Width="320" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="{x:Null}">
-    <Grid>
-        <Image HorizontalAlignment="Left" Height="100" Margin="114,107,0,0" VerticalAlignment="Top" Width="90" Source="Resources/RadialUI Agnes Image.png" MouseLeftButtonDown="DragViaLeftMouse" MouseRightButtonDown="CloseAGNES"/>
-        <Image x:Name="btnRadial1" HorizontalAlignment="Left" Height="75" Margin="120,13,0,0" VerticalAlignment="Top" Width="76" ToolTip="Commons WCR" Source="Resources/WCR.png"/>
-        <Image x:Name="btnRadial2" HorizontalAlignment="Left" Height="75" Margin="195,44,0,0" VerticalAlignment="Top" Width="75"  Stretch="UniformToFill" Source="Resources/BusinessGroup.png" ToolTip="Business Group CRM"/>
-        <Image x:Name="btnRadial3" HorizontalAlignment="Left" Height="75" Margin="227,120,0,0" VerticalAlignment="Top" Width="75" Stretch="Fill" Source="Resources/Waste.png" ToolTip="Waste Tracker"/>
-        <Image x:Name="btnRadial4" HorizontalAlignment="Left" Height="75" Margin="196,196,0,0" VerticalAlignment="Top" Width="75"  Stretch="Fill" Source="Resources/Journal.png" ToolTip="Cafe Journal"/>
-        <Image x:Name="btnRadial5" HorizontalAlignment="Left" Height="75" Margin="120,227,0,0" VerticalAlignment="Top" Width="75"  Stretch="Fill" Source="Resources/Menu.png" ToolTip="Menu Engineering"/>
-        <Image x:Name="btnRadial6" HorizontalAlignment="Left" Height="75" Margin="44,196,0,0" VerticalAlignment="Top" Width="75"  Stretch="Fill" Source="Resources/Options.png" ToolTip="Settings"/>
-        <Image x:Name="btnRadial7" HorizontalAlignment="Left" Height="75" Margin="13,120,0,0" VerticalAlignment="Top" Width="75"  Stretch="Fill" Source="Resources/PowerBI.png" ToolTip="Power BI"/>
-        <Image x:Name="btnRadial8" HorizontalAlignment="Left" Height="75" Margin="40,44,0,0" VerticalAlignment="Top" Width="75"  Stretch="Fill" Source="Resources/More.png" ToolTip="More options"/>
-        <Ellipse HorizontalAlignment="Left" Height="215" Margin="50,50,0,0" Stroke="Black" VerticalAlignment="Top" Width="215" Visibility="Hidden"/>
-    </Grid>
+    <Canvas x:Name="cnvRadialMenu" Height="216" Width="216">
+        <Ellipse HorizontalAlignment="Left" Height="216"  Stroke="Black" VerticalAlignment="Top" Width="216" Grid.RowSpan="2"/>
+        <Image HorizontalAlignment="Left" Height="100" Margin="63,58,0,0" VerticalAlignment="Top" Width="90" Source="Resources/RadialUI Agnes Image.png" MouseLeftButtonDown="DragViaLeftMouse" MouseRightButtonDown="CloseAGNES" Grid.RowSpan="2"/>
+   </Canvas>
 </Window>

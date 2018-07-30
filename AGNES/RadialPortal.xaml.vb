@@ -3,23 +3,49 @@
 
         ' This call is required by the designer.
         InitializeComponent()
-
-        ' Add any initialization after the InitializeComponent() call.
+        ConstructRadialMenu()
 
     End Sub
+    Private Sub ConstructRadialMenu()
+        'TODO: REPLACE TEST MENU CONSTRUCTION WITH DATABASE-DRIVEN FINAL PRODUCT
+        Dim ModuleName As String, ModuleToolTip As String, moduleimage As String
 
-    Private Sub WCRGo(sender As Object, e As MouseButtonEventArgs) Handles btnRadial1.PreviewMouseLeftButtonDown
+        ModuleName = "WCR" : ModuleToolTip = "Commons WCR" : moduleimage = "Resources/WCR.png"
+        PlaceMenuItem(1, 8, ModuleName, ModuleToolTip, moduleimage)
+
+        ModuleName = "BGCRM" : ModuleToolTip = "Business Group CRM" : moduleimage = "Resources/BusinessGroup.png"
+        PlaceMenuItem(2, 8, ModuleName, ModuleToolTip, moduleimage)
+
+        ModuleName = "CafeFlash" : ModuleToolTip = "Cafe Weekly Flash" : moduleimage = "Resources/Flash.png"
+        PlaceMenuItem(3, 8, ModuleName, ModuleToolTip, moduleimage)
+
+        ModuleName = "CafeForecast" : ModuleToolTip = "Cafe Period Forecast" : moduleimage = "Resources/ForecastButton.png"
+        PlaceMenuItem(4, 8, ModuleName, ModuleToolTip, moduleimage)
+
+        ModuleName = "HRAudit" : ModuleToolTip = "HR Audit" : moduleimage = "Resources/Audit.png"
+        PlaceMenuItem(5, 8, ModuleName, ModuleToolTip, moduleimage)
+
+        ModuleName = "AvFlash" : ModuleToolTip = "A/V Weekly Flash" : moduleimage = "Resources/AVFlash.png"
+        PlaceMenuItem(6, 8, ModuleName, ModuleToolTip, moduleimage)
+
+        ModuleName = "Admin" : ModuleToolTip = "Admin Tools" : moduleimage = "Resources/AdminTools.png"
+        PlaceMenuItem(7, 8, ModuleName, ModuleToolTip, moduleimage)
+
+        ModuleName = "More" : ModuleToolTip = "More Modules" : moduleimage = "Resources/More.png"
+        PlaceMenuItem(8, 8, ModuleName, ModuleToolTip, moduleimage)
+    End Sub
+
+    Private Sub WCRGo(sender As Object, e As MouseButtonEventArgs) ' Handles btnRadial1.PreviewMouseLeftButtonDown
         Hide()
         WCRModule.Runmodule()
         Show()
     End Sub
 
-    Private Sub BGCRMGo(sender As Object, e As MouseButtonEventArgs) Handles btnRadial2.PreviewMouseLeftButtonDown
+    Private Sub BGCRMGo(sender As Object, e As MouseButtonEventArgs) 'Handles btnRadial2.PreviewMouseLeftButtonDown
         Hide()
         Dim bgcrm As New BGCRM
         bgcrm.ShowDialog()
         Show()
-
     End Sub
 
     Private Sub DragViaLeftMouse(sender As Object, e As MouseButtonEventArgs)
@@ -33,8 +59,7 @@
         End If
     End Sub
 
-    Private Sub ButtonHover(sender As Object, e As MouseEventArgs) Handles btnRadial1.MouseEnter, btnRadial2.MouseEnter, btnRadial3.MouseEnter, btnRadial4.MouseEnter,
-            btnRadial5.MouseEnter, btnRadial6.MouseEnter, btnRadial7.MouseEnter, btnRadial8.MouseEnter
+    Private Sub ModuleMouseHover(sender As Object, e As MouseEventArgs)
         Dim s As Image = sender
         s.Height = 85
         s.Width = 85
@@ -42,13 +67,31 @@
         Dim t As Integer = s.Margin.Top - 5
         s.Margin = New Thickness(l, t, 0, 0)
     End Sub
-    Private Sub ButtonLeave(sender As Object, e As MouseEventArgs) Handles btnRadial1.MouseLeave, btnRadial2.MouseLeave, btnRadial3.MouseLeave, btnRadial4.MouseLeave,
-            btnRadial5.MouseLeave, btnRadial6.MouseLeave, btnRadial7.MouseLeave, btnRadial8.MouseLeave
+    Private Sub ModuleMouseLeave(sender As Object, e As MouseEventArgs)
         Dim s As Image = sender
         s.Height = 75
         s.Width = 75
         Dim l As Integer = s.Margin.Left + 5
         Dim t As Integer = s.Margin.Top + 5
         s.Margin = New Thickness(l, t, 0, 0)
+    End Sub
+    Private Sub ModuleSelect(sender As Object, e As MouseEventArgs)
+        Dim s As Image = sender
+        MsgBox(s.Tag)
+    End Sub
+
+    Private Sub PlaceMenuItem(item, itemcount, associatedmodule, tooltip, moduleimage)
+        Dim ang As Double = item * ((2 * Math.PI) / itemcount)
+        Dim rad As Integer = cnvRadialMenu.Height / 2
+        Dim x As Integer = ((Math.Cos(ang) * rad) + rad)
+        Dim y As Integer = (rad - (Math.Sin(ang) * rad))
+        Dim img As New Image With {.Source = New BitmapImage(New Uri(moduleimage, UriKind.Relative)), .Name = "btnRadial" & item,
+            .Height = 75, .Width = 75, .Stretch = Stretch.UniformToFill, .ToolTip = tooltip, .Tag = associatedmodule}
+        x -= img.Width / 2 : y -= img.Height / 2
+        img.Margin = New Thickness(x, y, 0, 0)
+        cnvRadialMenu.Children.Add(img)
+        AddHandler img.MouseEnter, AddressOf ModuleMouseHover
+        AddHandler img.MouseLeave, AddressOf ModuleMouseLeave
+        AddHandler img.MouseLeftButtonDown, AddressOf ModuleSelect
     End Sub
 End Class
