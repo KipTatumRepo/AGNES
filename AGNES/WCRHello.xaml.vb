@@ -28,10 +28,6 @@
 
     Private Sub LoadTenderFile(sender As Object, e As RoutedEventArgs) Handles btnLoadTenders.Click, btnAnother.Click
         WCRModule.WCR.LoadTenders(Me)
-        btnYes.Visibility = Visibility.Visible
-        btnNo.Visibility = Visibility.Visible
-        btnAnother.Visibility = Visibility.Hidden
-        btnDone.Visibility = Visibility.Hidden
     End Sub
 
     Private Sub LoadAnotherTenderFile(sender As Object, e As RoutedEventArgs) Handles btnYes.Click
@@ -39,18 +35,6 @@
         btnNo.Visibility = Visibility.Hidden
         btnAnother.Visibility = Visibility.Visible
         btnDone.Visibility = Visibility.Visible
-    End Sub
-
-    Public Sub PrintVendorTotalTendersToScreen(ByRef v As VendorObject)
-        Dim t As Tender, ttl As Double
-        tbHello.FontSize = 12
-        For Each t In v.Tenders
-            ttl += t.TenderAmt
-        Next
-        tbHello.Text = "It looks like " & v.VendorName & " has a total of " & FormatCurrency(ttl, 2) & ".  Is this correct?"
-        btnLoadTenders.Visibility = Visibility.Hidden
-        btnYes.Visibility = Visibility.Visible
-        btnNo.Visibility = Visibility.Visible
     End Sub
 
     Private Sub btnDone_Click(sender As Object, e As RoutedEventArgs) Handles btnDone.Click
@@ -69,6 +53,31 @@
         If yn = vbYes Then
             WCRModule.UserClosed = True
             Close()
+        End If
+    End Sub
+
+    Public Sub PrintVendorTotalTendersToScreen(ByRef v As VendorObject, bf As Boolean)
+        Dim t As Tender, ttl As Double, msgstring As String = ""
+        tbHello.FontSize = 12
+        If bf = True Then
+            msgstring = "Unable to read data from the selected file."
+            tbHello.Text = msgstring
+            btnLoadTenders.Visibility = Visibility.Hidden
+            btnYes.Visibility = Visibility.Hidden
+            btnNo.Visibility = Visibility.Hidden
+            btnAnother.Visibility = Visibility.Visible
+            btnDone.Visibility = Visibility.Visible
+        Else
+            For Each t In v.Tenders
+                ttl += t.TenderAmt
+            Next
+            msgstring = "It looks like " & v.VendorName & "" & " has a total of " & FormatCurrency(ttl, 2) & ".  Is this correct?"
+            tbHello.Text = msgstring
+            btnLoadTenders.Visibility = Visibility.Hidden
+            btnYes.Visibility = Visibility.Visible
+            btnNo.Visibility = Visibility.Visible
+            btnAnother.Visibility = Visibility.Hidden
+            btnDone.Visibility = Visibility.Hidden
         End If
     End Sub
 End Class

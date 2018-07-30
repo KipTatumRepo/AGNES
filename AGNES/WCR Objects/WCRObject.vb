@@ -30,52 +30,64 @@ Public Class WCRObject
             Loop
             vn = GetVendorNameFromString(valz)
             Dim tn As Integer, v As New VendorObject With {.VendorName = vn}
-            Vendors.Add(v)
             ct += 3
-            Do Until valz = "Subtotal"
-                '// Check for Suspend and Dept Charges
-                tn = CType(ws.Cells(ct, 1), Excel.Range).Value
-                Select Case tn
-                    Case 15         '/ Dept Charges
-                        If MsgBox("IO Charges are present in this tender.  Do you confirm that the required documentation has been received?", MsgBoxStyle.YesNo, "This tender type requires validation!") = MessageBoxResult.Yes Then
-                            v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, CType(ws.Cells(ct, 2), Excel.Range).Value,
+            Try
+                Do Until valz = "Subtotal"
+                    '// Check for Suspend and Dept Charges
+
+                    tn = CType(ws.Cells(ct, 1), Excel.Range).Value
+                    Select Case tn
+                        Case 15         '/ Dept Charges
+                            If MsgBox("IO Charges are present in this tender.  Do you confirm that the required documentation has been received?", MsgBoxStyle.YesNo, "This tender type requires validation!") = MessageBoxResult.Yes Then
+                                v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, CType(ws.Cells(ct, 2), Excel.Range).Value,
                             FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
-                        Else
+                            Else
+                                v.Tenders.Clear()
+                                disp.tbHello.Text = "I've terminated the tender import for " & v.VendorName & ".  Please edit the file, if needed, and reload."
+                                BadFile = True
+                                Exit Do
+                            End If
+                        Case 20, 36, 51 '/ IOU charges, IOU credit, IOU FS
+                            MsgBox("Sorry, " & MySettings.Default.UserName & ", but IOU charges and credits are no longer allowed.", MsgBoxStyle.OkOnly, "Invalid tender type found!")
                             v.Tenders.Clear()
                             disp.tbHello.Text = "I've terminated the tender import for " & v.VendorName & ".  Please edit the file, if needed, and reload."
                             BadFile = True
                             Exit Do
-                        End If
-                    Case 20, 36, 51 '/ IOU charges, IOU credit, IOU FS
-                        MsgBox("Sorry, " & MySettings.Default.UserName & ", but IOU charges and credits are no longer allowed.", MsgBoxStyle.OkOnly, "Invalid tender type found!")
-                        v.Tenders.Clear()
-                        disp.tbHello.Text = "I've terminated the tender import for " & v.VendorName & ".  Please edit the file, if needed, and reload."
-                        BadFile = True
-                        Exit Do
-                    Case 37         '/ Suspend
-                        MsgBox("Sorry, " & MySettings.Default.UserName & ", but Suspend charges are no longer allowed.", MsgBoxStyle.OkOnly, "Invalid tender type found!")
-                        v.Tenders.Clear()
-                        disp.tbHello.Text = "I've terminated the tender import for " & v.VendorName & ".  Please edit the file, if needed, and reload."
-                        BadFile = True
-                        Exit Do
-                    Case 2, 3, 91, 93, 94       '// Visa/Mastercard/Discover
-                        v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "VisaMastercard", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
-                    Case 83                     '// Freedompay [pass-through]
-                        v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "FreedomPay", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
-                    Case 92                     '// AMEX
-                        v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "AMEX", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
-                    Case Else
-                        v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, CType(ws.Cells(ct, 2), Excel.Range).Value, FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
-                End Select
-                ct += 1
-                valz = CType(ws.Cells(ct, 1), Excel.Range).Value
-            Loop
-            wb.Close()
-            xlApp.Quit()
-            releaseObject(ws)
-            releaseObject(wb)
-            releaseObject(xlApp)
-            If BadFile = False Then disp.PrintVendorTotalTendersToScreen(v)
+                        Case 37         '/ Suspend
+                            MsgBox("Sorry, " & MySettings.Default.UserName & ", but Suspend charges are no longer allowed.", MsgBoxStyle.OkOnly, "Invalid tender type found!")
+                            v.Tenders.Clear()
+                            disp.tbHello.Text = "I've terminated the tender import for " & v.VendorName & ".  Please edit the file, if needed, and reload."
+                            BadFile = True
+                            Exit Do
+                        Case 2, 3, 91, 93, 94       '// Visa/Mastercard/Discover
+                            v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "VisaMastercard", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                        Case 57                     '// Coupons (used by Lunchbox for their internal promotions)
+                            MsgBox("FYI, " & MySettings.Default.UserName & ", I'm omitting the Coupon tender for " & vn & " in the amount of " & FormatCurrency(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                        Case 83                     '// Freedompay [pass-through]
+                            v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "FreedomPay", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                        Case 92                     '// AMEX
+                            v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "AMEX", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                        Case Else
+                            v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, CType(ws.Cells(ct, 2), Excel.Range).Value, FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                    End Select
+                    ct += 1
+                    valz = CType(ws.Cells(ct, 1), Excel.Range).Value
+                Loop
+                Vendors.Add(v)
+            Catch ex As InvalidCastException
+                BadFile = True
+            Catch OtherEx As Exception
+                MsgBox("Encountered error " & OtherEx.Message)
+                'TODO: ADD OTHER TENDER-RELATED ERROR CATCHES
+            Finally
+                wb.Close()
+                xlApp.Quit()
+                ReleaseObject(ws)
+                ReleaseObject(wb)
+                ReleaseObject(xlApp)
+                disp.PrintVendorTotalTendersToScreen(v, BadFile)
+            End Try
+
         End If
     End Sub
 
