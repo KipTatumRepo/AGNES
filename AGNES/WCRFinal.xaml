@@ -14,6 +14,7 @@
             <Button x:Name="btnPrintInvoices" Content="Print Invoices" HorizontalAlignment="Left" Margin="413,154,0,0" VerticalAlignment="Top" Width="104"/>
             <TextBlock x:Name="btnExit" Margin="760,4,0,0" TextWrapping="Wrap" Text="X" VerticalAlignment="Top" FontWeight="Bold" TextAlignment="Center"/>
             <Button x:Name="btnPrintWCR" Content="Print WCR" HorizontalAlignment="Left" Margin="413,154,0,0" VerticalAlignment="Top" Width="104" Visibility="Hidden"/>
+            <Button x:Name="btnClose" Content="Close WCR" HorizontalAlignment="Left" Margin="413,154,0,0" VerticalAlignment="Top" Width="104" Visibility="Hidden"/>
 
         </Grid>
     </Viewbox>
