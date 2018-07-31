@@ -10,6 +10,7 @@
         tbFinal.Text = "Invoices have been created!  Last thing - go ahead and print the WCR backup..."
         btnPrintWCR.Visibility = Visibility.Visible
     End Sub
+
     Private Sub btnPrintWCR_Click(sender As Object, e As RoutedEventArgs) Handles btnPrintWCR.Click
         WCRModule.WCR.PrintWCR()
         tbFinal.Text = "That's everything!  Make sure that you double check the numbers before you enter anything into MyFi - you're on your own from here on out!"
@@ -17,7 +18,7 @@
         btnClose.Visibility = Visibility.Visible
     End Sub
 
-    Private Sub SoftExitWCR(sender As Object, e As MouseButtonEventArgs) Handles btnClose.Click
+    Private Sub SoftExitWCR(sender As Object, e As RoutedEventArgs) Handles btnClose.Click
         ExitModule(0)
     End Sub
 
@@ -34,4 +35,5 @@
         WCRModule.UserClosed = True
         Close()
     End Sub
+
 End Class

@@ -15,7 +15,7 @@ Public Class WCRObject
     Dim GrossSales As Double, SalesTax As Double, NetSales As Double, CamToCompass As Double, PotentialKpi As Double,
             MealCardPayments As Double, MealCardCredits As Double, Ecoupons As Double, Ecash As Double, ScratchCoupons As Double,
             ExpiredCards As Double, IoCharges As Double, CompassPayment As Double, VendorPayment As Double, DueFromVendors As Double,
-            FreedomPay As Double, Amex As Double, VisaMcDisc As Double, CreditCards As Double
+            FreedomPay As Double, Amex As Double, VisaMcDisc As Double, CreditCards As Double, InvoiceTotal As Double
 
     Public Sub New()
         Dim ph As String = ""
@@ -336,6 +336,7 @@ Public Class WCRObject
             .Add(New Section() With {.BreakPageBefore = True})
         End With
 
+        InvoiceTotal = invtotal
     End Sub
 
     Private Sub CreateCreditSummarySection(ByRef pd As PrintDialog, ByRef fd As FlowDocument)
@@ -506,77 +507,84 @@ Public Class WCRObject
     End Sub
 
     Private Sub PopulateCreditArray()
+        'TODO: ADD CAM CHECK CAPTURE ROUTINE
+        'TODO: ADD TOTAL CAM REVENUE CALCULATION
+        Dim CamTotal As Double = 0
         CreditArray(0, 0) = "353008"
         CreditArray(1, 0) = "CAM Revenue"
-        CreditArray(2, 0) = "$0.00"
-        CreditArray(3, 0) = "$0.00"
-        CreditArray(4, 0) = "$0.00"
-        CreditArray(5, 0) = "$0.00"
-        CreditArray(6, 0) = "$0.00"
-        CreditArray(7, 0) = "$0.00"
+        CreditArray(2, 0) = FormatCurrency(0, 2)
+        CreditArray(3, 0) = FormatCurrency(0, 2)
+        CreditArray(4, 0) = FormatCurrency(0, 2)
+        CreditArray(5, 0) = FormatCurrency(0, 2)
+        CreditArray(6, 0) = FormatCurrency(CamToCompass + PotentialKpi, 2)
+        CamTotal += (CamToCompass + PotentialKpi)
+        CreditArray(7, 0) = FormatCurrency(CamTotal, 2)
 
         CreditArray(0, 1) = "212910"
         CreditArray(1, 1) = "KPI Hold"
-        CreditArray(2, 1) = "$0.00"
-        CreditArray(3, 1) = "$0.00"
-        CreditArray(4, 1) = "$0.00"
-        CreditArray(5, 1) = "$0.00"
-        CreditArray(6, 1) = "$0.00"
-        CreditArray(7, 1) = "$0.00"
+        CreditArray(2, 1) = FormatCurrency(0, 2)
+        CreditArray(3, 1) = FormatCurrency(0, 2)
+        CreditArray(4, 1) = FormatCurrency(0, 2)
+        CreditArray(5, 1) = FormatCurrency(0, 2)
+        CreditArray(6, 1) = FormatCurrency(PotentialKpi, 2)
+        CreditArray(7, 1) = FormatCurrency(PotentialKpi, 2)
 
+        Dim Owed As Double = 0
+        If InvoiceTotal > 0 Then Owed = -InvoiceTotal
         CreditArray(0, 2) = "411007"
         CreditArray(1, 2) = "Net Owed to Vendor"
-        CreditArray(2, 2) = "$0.00"
-        CreditArray(3, 2) = "$0.00"
-        CreditArray(4, 2) = "$0.00"
-        CreditArray(5, 2) = "$0.00"
-        CreditArray(6, 2) = "$0.00"
-        CreditArray(7, 2) = "$0.00"
+        CreditArray(2, 2) = FormatCurrency(0, 2)
+        CreditArray(3, 2) = FormatCurrency(0, 2)
+        CreditArray(4, 2) = FormatCurrency(0, 2)
+        CreditArray(5, 2) = FormatCurrency(0, 2)
+        CreditArray(6, 2) = FormatCurrency(Owed, 2)
+        CreditArray(7, 2) = FormatCurrency(Owed, 2)
 
         CreditArray(0, 3) = "219301"
         CreditArray(1, 3) = "Mealcard Deposit"
-        CreditArray(2, 3) = "$0.00"
-        CreditArray(3, 3) = "$0.00"
-        CreditArray(4, 3) = "$0.00"
-        CreditArray(5, 3) = "$0.00"
-        CreditArray(6, 3) = "$0.00"
-        CreditArray(7, 3) = "$0.00"
+        CreditArray(2, 3) = FormatCurrency(0, 2)
+        CreditArray(3, 3) = FormatCurrency(0, 2)
+        CreditArray(4, 3) = FormatCurrency(0, 2)
+        CreditArray(5, 3) = FormatCurrency(0, 2)
+        CreditArray(6, 3) = FormatCurrency(-MealCardCredits, 2)
+        CreditArray(7, 3) = FormatCurrency(-MealCardCredits, 2)
 
+        'TODO: ADD CONCIERGE CREDIT ROUTINES
         CreditArray(0, 4) = "313052"
         CreditArray(1, 4) = "Net Sales"
-        CreditArray(2, 4) = "$0.00"
-        CreditArray(3, 4) = "$0.00"
-        CreditArray(4, 4) = "$0.00"
-        CreditArray(5, 4) = "$0.00"
-        CreditArray(6, 4) = "$0.00"
-        CreditArray(7, 4) = "$0.00"
+        CreditArray(2, 4) = FormatCurrency(0, 2)
+        CreditArray(3, 4) = FormatCurrency(0, 2)
+        CreditArray(4, 4) = FormatCurrency(0, 2)
+        CreditArray(5, 4) = FormatCurrency(0, 2)
+        CreditArray(6, 4) = FormatCurrency(0, 2)
+        CreditArray(7, 4) = FormatCurrency(0, 2)
 
         CreditArray(0, 5) = "219927"
         CreditArray(1, 5) = "eCash Sold"
-        CreditArray(2, 5) = "$0.00"
-        CreditArray(3, 5) = "$0.00"
-        CreditArray(4, 5) = "$0.00"
-        CreditArray(5, 5) = "$0.00"
-        CreditArray(6, 5) = "$0.00"
-        CreditArray(7, 5) = "$0.00"
+        CreditArray(2, 5) = FormatCurrency(0, 2)
+        CreditArray(3, 5) = FormatCurrency(0, 2)
+        CreditArray(4, 5) = FormatCurrency(0, 2)
+        CreditArray(5, 5) = FormatCurrency(0, 2)
+        CreditArray(6, 5) = FormatCurrency(0, 2)
+        CreditArray(7, 5) = FormatCurrency(0, 2)
 
         CreditArray(0, 6) = "214902"
         CreditArray(1, 6) = "B&O Tax Liability"
-        CreditArray(2, 6) = "$0.00"
-        CreditArray(3, 6) = "$0.00"
-        CreditArray(4, 6) = "$0.00"
-        CreditArray(5, 6) = "$0.00"
-        CreditArray(6, 6) = "$0.00"
-        CreditArray(7, 6) = "$0.00"
+        CreditArray(2, 6) = FormatCurrency(0, 2)
+        CreditArray(3, 6) = FormatCurrency(0, 2)
+        CreditArray(4, 6) = FormatCurrency(0, 2)
+        CreditArray(5, 6) = FormatCurrency(0, 2)
+        CreditArray(6, 6) = FormatCurrency(0, 2)
+        CreditArray(7, 6) = FormatCurrency(0, 2)
 
         CreditArray(0, 7) = "214245"
         CreditArray(1, 7) = "Sales Tax"
-        CreditArray(2, 7) = "$0.00"
-        CreditArray(3, 7) = "$0.00"
-        CreditArray(4, 7) = "$0.00"
-        CreditArray(5, 7) = "$0.00"
-        CreditArray(6, 7) = "$0.00"
-        CreditArray(7, 7) = "$0.00"
+        CreditArray(2, 7) = FormatCurrency(0, 2)
+        CreditArray(3, 7) = FormatCurrency(0, 2)
+        CreditArray(4, 7) = FormatCurrency(0, 2)
+        CreditArray(5, 7) = FormatCurrency(0, 2)
+        CreditArray(6, 7) = FormatCurrency(0, 2)
+        CreditArray(7, 7) = FormatCurrency(0, 2)
 
 
     End Sub
@@ -584,88 +592,93 @@ Public Class WCRObject
     Private Sub PopulateDebitArray()
         DebitArray(0, 0) = "219301"
         DebitArray(1, 0) = "Mealcard Usage"
-        DebitArray(2, 0) = "$0.00"
-        DebitArray(3, 0) = "$0.00"
-        DebitArray(4, 0) = "$0.00"
-        DebitArray(5, 0) = "$0.00"
-        DebitArray(6, 0) = "$0.00"
-        DebitArray(7, 0) = "$0.00"
+        DebitArray(2, 0) = FormatCurrency(0, 2)
+        DebitArray(3, 0) = FormatCurrency(0, 2)
+        DebitArray(4, 0) = FormatCurrency(0, 2)
+        DebitArray(5, 0) = FormatCurrency(0, 2)
+        DebitArray(6, 0) = FormatCurrency(MealCardPayments, 2)
+        DebitArray(7, 0) = FormatCurrency(MealCardPayments, 2)
 
         DebitArray(0, 1) = "693100"
         DebitArray(1, 1) = "KPI Hold"
-        DebitArray(2, 1) = "$0.00"
-        DebitArray(3, 1) = "$0.00"
-        DebitArray(4, 1) = "$0.00"
-        DebitArray(5, 1) = "$0.00"
-        DebitArray(6, 1) = "$0.00"
-        DebitArray(7, 1) = "$0.00"
+        DebitArray(2, 1) = FormatCurrency(0, 2)
+        DebitArray(3, 1) = FormatCurrency(0, 2)
+        DebitArray(4, 1) = FormatCurrency(0, 2)
+        DebitArray(5, 1) = FormatCurrency(0, 2)
+        DebitArray(6, 1) = FormatCurrency(PotentialKpi, 2)
+        DebitArray(7, 1) = FormatCurrency(PotentialKpi, 2)
 
+        Dim Owed As Double = 0
+        If InvoiceTotal < 0 Then Owed = -InvoiceTotal
         DebitArray(0, 2) = "411007"
         DebitArray(1, 2) = "Net Owed to Compass"
-        DebitArray(2, 2) = "$0.00"
-        DebitArray(3, 2) = "$0.00"
-        DebitArray(4, 2) = "$0.00"
-        DebitArray(5, 2) = "$0.00"
-        DebitArray(6, 2) = "$0.00"
-        DebitArray(7, 2) = "$0.00"
+        DebitArray(2, 2) = FormatCurrency(0, 2)
+        DebitArray(3, 2) = FormatCurrency(0, 2)
+        DebitArray(4, 2) = FormatCurrency(0, 2)
+        DebitArray(5, 2) = FormatCurrency(0, 2)
+        DebitArray(6, 2) = FormatCurrency(Owed, 2)
+        DebitArray(7, 2) = FormatCurrency(Owed, 2)
 
         DebitArray(0, 3) = "219927"
         DebitArray(1, 3) = "eCash"
-        DebitArray(2, 3) = "$0.00"
-        DebitArray(3, 3) = "$0.00"
-        DebitArray(4, 3) = "$0.00"
-        DebitArray(5, 3) = "$0.00"
-        DebitArray(6, 3) = "$0.00"
-        DebitArray(7, 3) = "$0.00"
+        DebitArray(2, 3) = FormatCurrency(0, 2)
+        DebitArray(3, 3) = FormatCurrency(0, 2)
+        DebitArray(4, 3) = FormatCurrency(0, 2)
+        DebitArray(5, 3) = FormatCurrency(0, 2)
+        DebitArray(6, 3) = FormatCurrency(Ecash, 2)
+        DebitArray(7, 3) = FormatCurrency(Ecash, 2)
 
         DebitArray(0, 4) = "219927"
         DebitArray(1, 4) = "eCoupons"
-        DebitArray(2, 4) = "$0.00"
-        DebitArray(3, 4) = "$0.00"
-        DebitArray(4, 4) = "$0.00"
-        DebitArray(5, 4) = "$0.00"
-        DebitArray(6, 4) = "$0.00"
-        DebitArray(7, 4) = "$0.00"
+        DebitArray(2, 4) = FormatCurrency(0, 2)
+        DebitArray(3, 4) = FormatCurrency(0, 2)
+        DebitArray(4, 4) = FormatCurrency(0, 2)
+        DebitArray(5, 4) = FormatCurrency(0, 2)
+        DebitArray(6, 4) = FormatCurrency(Ecoupons, 2)
+        DebitArray(7, 4) = FormatCurrency(Ecoupons, 2)
 
         DebitArray(0, 5) = "11295"
         DebitArray(1, 5) = "IO Billing"
-        DebitArray(2, 5) = "$0.00"
-        DebitArray(3, 5) = "$0.00"
-        DebitArray(4, 5) = "$0.00"
-        DebitArray(5, 5) = "$0.00"
-        DebitArray(6, 5) = "$0.00"
-        DebitArray(7, 5) = "$0.00"
+        DebitArray(2, 5) = FormatCurrency(0, 2)
+        DebitArray(3, 5) = FormatCurrency(0, 2)
+        DebitArray(4, 5) = FormatCurrency(0, 2)
+        DebitArray(5, 5) = FormatCurrency(0, 2)
+        DebitArray(6, 5) = FormatCurrency(IoCharges, 2)
+        DebitArray(7, 5) = FormatCurrency(IoCharges, 2)
 
         DebitArray(0, 6) = "621000"
         DebitArray(1, 6) = "Marketing Discounts"
-        DebitArray(2, 6) = "$0.00"
-        DebitArray(3, 6) = "$0.00"
-        DebitArray(4, 6) = "$0.00"
-        DebitArray(5, 6) = "$0.00"
-        DebitArray(6, 6) = "$0.00"
-        DebitArray(7, 6) = "$0.00"
+        DebitArray(2, 6) = FormatCurrency(0, 2)
+        DebitArray(3, 6) = FormatCurrency(0, 2)
+        DebitArray(4, 6) = FormatCurrency(0, 2)
+        DebitArray(5, 6) = FormatCurrency(0, 2)
+        DebitArray(6, 6) = FormatCurrency(ScratchCoupons, 2)
+        DebitArray(7, 6) = FormatCurrency(ScratchCoupons, 2)
 
         DebitArray(0, 7) = "681020"
         DebitArray(1, 7) = "Expired Cards"
-        DebitArray(2, 7) = "$0.00"
-        DebitArray(3, 7) = "$0.00"
-        DebitArray(4, 7) = "$0.00"
-        DebitArray(5, 7) = "$0.00"
-        DebitArray(6, 7) = "$0.00"
-        DebitArray(7, 7) = "$0.00"
+        DebitArray(2, 7) = FormatCurrency(0, 2)
+        DebitArray(3, 7) = FormatCurrency(0, 2)
+        DebitArray(4, 7) = FormatCurrency(0, 2)
+        DebitArray(5, 7) = FormatCurrency(0, 2)
+        DebitArray(6, 7) = FormatCurrency(ExpiredCards, 2)
+        DebitArray(7, 7) = FormatCurrency(ExpiredCards, 2)
+
+        'TODO: ADD CONCIERGE DEBIT ROUTINES
 
         DebitArray(0, 8) = "676300"
         DebitArray(1, 8) = "B&O Tax Expense"
-        DebitArray(2, 8) = "$0.00"
-        DebitArray(3, 8) = "$0.00"
-        DebitArray(4, 8) = "$0.00"
-        DebitArray(5, 8) = "$0.00"
-        DebitArray(6, 8) = "$0.00"
-        DebitArray(7, 8) = "$0.00"
+        DebitArray(2, 8) = FormatCurrency(0, 2)
+        DebitArray(3, 8) = FormatCurrency(0, 2)
+        DebitArray(4, 8) = FormatCurrency(0, 2)
+        DebitArray(5, 8) = FormatCurrency(0, 2)
+        DebitArray(6, 8) = FormatCurrency(0, 2)
+        DebitArray(7, 8) = FormatCurrency(0, 2)
 
     End Sub
 
     Private Sub PopulateDepositArray()
+        'TODO: ADD CONCIERGE DEPOSIT ROUTINES
         DepositArray(0, 0) = "105200"
         DepositArray(1, 0) = "Depository Cash"
         DepositArray(2, 0) = "$0.00"
