@@ -304,12 +304,12 @@ Public Class WCRObject
             invtotal += v.DueFromVendor
             ct += 1
         Next
-
+        cr = t.RowGroups(0).Rows(ct)
         cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
         cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
         cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("Total:")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(invtotal, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Total:")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(invtotal, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
 
         With fd.Blocks
             .Add(p)
