@@ -98,7 +98,7 @@
     Public Sub AddTender(id, nm, qty, amt)
         Dim t As New Tender With {.TenderId = id, .TenderName = nm, .TenderQty = qty, .TenderAmt = amt}
         Tenders.Add(t)
-        Recalculate()
+        'Recalculate()
     End Sub
 
     Public Sub PrintInvoice(ByRef pd As PrintDialog, ByRef fd As FlowDocument)
@@ -298,7 +298,7 @@
 
     End Sub
 
-    Private Sub Recalculate()
+    Public Sub Recalculate()
         '// Calculate Gross Sales, Tax, and Net Sales
         Dim gs As Double = 0, tt As String = ""
         CreditCards = 0
@@ -319,7 +319,7 @@
                 Case "MealCard"
                     MealCard = t.TenderAmt
                 Case "MealCardCredit", "MealCard Credit"
-                    MealCardCredit = t.TenderAmt
+                    MealCardCredit += t.TenderAmt
                 Case "ECash"
                     ECash = t.TenderAmt
                 Case "ECoupons"
@@ -331,11 +331,11 @@
                 Case "ScratchCoupons"
                     ScratchCoupons = t.TenderAmt
                 Case "VisaMasterCardDiscover", "Visa EMV", "Discover EMV", "Master Card EMV", "WCC Visa/MC", "Visa CC", "Master Card CC", "Visa_High_Limit", "M / C_High_Limit"
-                    VisaMastercard = t.TenderAmt
+                    VisaMastercard += t.TenderAmt
                 Case "FreedomPay"
                     FreedomPay = t.TenderAmt
                 Case "AMEX", "AMEX EMV", "WCC Amex", "Amex CC", "Amex_High_Limit"
-                    AMEX = t.TenderAmt
+                    AMEX += t.TenderAmt
                 Case Else
             End Select
             CreditCards = FreedomPay + VisaMastercard + AMEX

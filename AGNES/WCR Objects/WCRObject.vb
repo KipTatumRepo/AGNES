@@ -73,6 +73,7 @@ Public Class WCRObject
                     ct += 1
                     valz = CType(ws.Cells(ct, 1), Excel.Range).Value
                 Loop
+                v.Recalculate()
                 Vendors.Add(v)
             Catch ex As InvalidCastException
                 BadFile = True
@@ -101,6 +102,14 @@ Public Class WCRObject
             MealCardPayments As Double, MealCardCredits As Double, Ecoupons As Double, Ecash As Double, ScratchCoupons As Double,
             ExpiredCards As Double, IoCharges As Double, CompassPayment As Double, VendorPayment As Double, DueFromVendors As Double,
             FreedomPay As Double, Amex As Double, VisaMcDisc As Double
+
+        Dim pd As New PrintDialog
+        pd.ShowDialog()
+        'TODO: Add error trap for dialog box
+
+        Dim fd As New FlowDocument With {.ColumnGap = 0, .ColumnWidth = pd.PrintableAreaWidth}
+
+        '// Totals Sheet
         For Each v As VendorObject In Vendors
             GrossSales += v.GrossSales
             SalesTax += v.SalesTax
@@ -121,7 +130,132 @@ Public Class WCRObject
             Amex += v.AMEX
             VisaMcDisc += v.VisaMastercard
         Next
-        'TODO: Create print WCR routine
+
+        '// Header, vendor, invoice #, and date
+        Dim p As New Paragraph(New Run("Totals for Week Starting " & WeekStart)) With
+            {.FontSize = 24, .TextAlignment = TextAlignment.Center, .FontWeight = FontWeights.Bold, .FontFamily = New FontFamily("Segoe UI")}
+
+
+        '// Create the Table...
+        Dim t As New Table() With {.CellSpacing = 0, .Background = Brushes.LemonChiffon}
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(200)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(200)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(100)})
+        t.RowGroups.Add(New TableRowGroup())
+
+        '// Alias the current working row for easy reference.
+        Dim cr As New TableRow With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI")}
+
+        '// Add the invoice and date rows
+        Dim rc As Integer
+        For rc = 1 To 17
+            t.RowGroups(0).Rows.Add(New TableRow())
+        Next rc
+
+        cr = t.RowGroups(0).Rows(0)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("         Item Detail")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("     Total")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+
+        cr = t.RowGroups(0).Rows(1)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+
+        cr = t.RowGroups(0).Rows(2)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Gross Sales: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(GrossSales, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+
+        cr = t.RowGroups(0).Rows(3)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Sales Tax: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(SalesTax, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+
+        cr = t.RowGroups(0).Rows(4)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Net Sales: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(NetSales, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+
+        cr = t.RowGroups(0).Rows(5)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("CAM to Compass: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(CamToCompass, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+
+        cr = t.RowGroups(0).Rows(6)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Potential KPI: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(PotentialKpi, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+
+        cr = t.RowGroups(0).Rows(7)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Meal Card Payments: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(MealCardPayments, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+
+        cr = t.RowGroups(0).Rows(8)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Mead Card Credits: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(MealCardCredits, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+
+        cr = t.RowGroups(0).Rows(9)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("eCoupons: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(Ecoupons, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+
+        cr = t.RowGroups(0).Rows(10)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("eCash: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(Ecash, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+
+        cr = t.RowGroups(0).Rows(11)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Scratch Coupons: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(ScratchCoupons, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+
+        cr = t.RowGroups(0).Rows(12)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Expired Cards: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(ExpiredCards, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+
+        cr = t.RowGroups(0).Rows(13)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("IO Charges: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(IoCharges, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+
+        cr = t.RowGroups(0).Rows(14)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Compass Payment: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(CompassPayment, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+
+        cr = t.RowGroups(0).Rows(15)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Vendor Payment: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(VendorPayment, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+
+        '// Determine language based on who owes whom
+        Dim paylang As String = ""
+        If DueFromVendors < 0 Then
+            paylang = "Due to Compass from Vendors: "
+            DueFromVendors = -DueFromVendors
+        Else
+            paylang = "Due to Vendors from Compass: "
+        End If
+        cr = t.RowGroups(0).Rows(16)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(paylang)) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(DueFromVendors, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+
+
+        With fd.Blocks
+            .Add(p)
+            .Add(t)
+        End With
+
+
+        Dim xps_writer As XpsDocumentWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue)
+        Dim idps As IDocumentPaginatorSource = CType(fd, IDocumentPaginatorSource)
+        xps_writer.Write(idps.DocumentPaginator)
+
     End Sub
 
     Public Sub PrintInvoices()
