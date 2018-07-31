@@ -38,6 +38,7 @@
         End Set
     End Property
     Public Property InvoiceName As String
+    Public Property InvoiceNumber As String
     Public Property VendorNumber As Long
     Private _grosssales As Double
     Public Property GrossSales As Double
@@ -102,7 +103,7 @@
     End Sub
 
     Public Sub PrintInvoice(ByRef pd As PrintDialog, ByRef fd As FlowDocument)
-        Dim InvoiceNumber As String = VendorNumber & Month(WCR.WeekStart) & Day(WCR.WeekStart) & Year(WCR.WeekStart)
+        InvoiceNumber = VendorNumber & Month(WCR.WeekStart) & Day(WCR.WeekStart) & Year(WCR.WeekStart)
         '// Create Commons logo object
         Dim bimg As New BitmapImage
         bimg.BeginInit()
@@ -124,7 +125,7 @@
         t.RowGroups.Add(New TableRowGroup())
 
         '// Alias the current working row for easy reference.
-        Dim cr As New TableRow With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI")} '= t.RowGroups(0).Rows(0) 'cr.Background = Brushes.Silver
+        Dim cr As New TableRow With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI")}
 
         '// Add the invoice and date rows
         Dim rc As Integer

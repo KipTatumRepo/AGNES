@@ -9,7 +9,10 @@ Public Class WCRObject
     Public ShortName As String
     Public Vendors As New List(Of VendorObject)
     Public CamChecks As New List(Of CamCheck)
-
+    Dim GrossSales As Double, SalesTax As Double, NetSales As Double, CamToCompass As Double, PotentialKpi As Double,
+            MealCardPayments As Double, MealCardCredits As Double, Ecoupons As Double, Ecash As Double, ScratchCoupons As Double,
+            ExpiredCards As Double, IoCharges As Double, CompassPayment As Double, VendorPayment As Double, DueFromVendors As Double,
+            FreedomPay As Double, Amex As Double, VisaMcDisc As Double
 
     Public Sub New()
         Dim ph As String = ""
@@ -98,11 +101,6 @@ Public Class WCRObject
     End Sub
 
     Public Sub PrintWCR()
-        Dim GrossSales As Double, SalesTax As Double, NetSales As Double, CamToCompass As Double, PotentialKpi As Double,
-            MealCardPayments As Double, MealCardCredits As Double, Ecoupons As Double, Ecash As Double, ScratchCoupons As Double,
-            ExpiredCards As Double, IoCharges As Double, CompassPayment As Double, VendorPayment As Double, DueFromVendors As Double,
-            FreedomPay As Double, Amex As Double, VisaMcDisc As Double
-
         Dim pd As New PrintDialog
         pd.ShowDialog()
         'TODO: Add error trap for dialog box
@@ -131,6 +129,17 @@ Public Class WCRObject
             VisaMcDisc += v.VisaMastercard
         Next
 
+        CreateTotalsSection(pd, fd)
+        CreateInvoiceSection(pd, fd)
+        CreateSummarySection(pd, fd)
+
+        Dim xps_writer As XpsDocumentWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue)
+        Dim idps As IDocumentPaginatorSource = CType(fd, IDocumentPaginatorSource)
+        xps_writer.Write(idps.DocumentPaginator)
+
+    End Sub
+
+    Private Sub CreateTotalsSection(ByRef pd As PrintDialog, ByRef fd As FlowDocument)
         '// Header, vendor, invoice #, and date
         Dim p As New Paragraph(New Run("Totals for Week Starting " & WeekStart)) With
             {.FontSize = 24, .TextAlignment = TextAlignment.Center, .FontWeight = FontWeights.Bold, .FontFamily = New FontFamily("Segoe UI")}
@@ -249,15 +258,70 @@ Public Class WCRObject
         With fd.Blocks
             .Add(p)
             .Add(t)
+            .Add(New Section())
         End With
+    End Sub
+
+    Private Sub CreateInvoiceSection(ByRef pd As PrintDialog, ByRef fd As FlowDocument)
+        '// Header, vendor, invoice #, and date
+        Dim p As New Paragraph(New Run("Invoices for Week Starting " & WeekStart)) With
+            {.FontSize = 24, .TextAlignment = TextAlignment.Center, .FontWeight = FontWeights.Bold, .FontFamily = New FontFamily("Segoe UI")}
 
 
-        Dim xps_writer As XpsDocumentWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue)
-        Dim idps As IDocumentPaginatorSource = CType(fd, IDocumentPaginatorSource)
-        xps_writer.Write(idps.DocumentPaginator)
+        '// Create the Table...
+        Dim t As New Table() With {.CellSpacing = 0, .Background = Brushes.LemonChiffon}
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(160)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(120)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(120)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(120)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(100)})
+        t.RowGroups.Add(New TableRowGroup())
+
+        '// Alias the current working row for easy reference.
+        Dim cr As New TableRow With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI")}
+
+        '// Add the invoice and date rows
+        Dim rc As Integer
+        For rc = 1 To Vendors.Count + 2
+            t.RowGroups(0).Rows.Add(New TableRow())
+        Next rc
+
+        cr = t.RowGroups(0).Rows(0)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Vendor")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Vendor Code")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Invoice Number")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Invoice Amount")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+
+        Dim v As VendorObject, ct As Integer = 1, invtotal As Double
+        For Each v In Vendors
+            cr = t.RowGroups(0).Rows(ct)
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(v.InvoiceName)) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(v.VendorNumber)) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(v.InvoiceNumber)) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(v.DueFromVendor, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+            invtotal += v.DueFromVendor
+            ct += 1
+        Next
+
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Total:")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(invtotal, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+
+        With fd.Blocks
+            .Add(p)
+            .Add(t)
+            .Add(New Section() With {.BreakPageBefore = True})
+        End With
 
     End Sub
 
+    Private Sub CreateSummarySection(ByRef pd As PrintDialog, ByRef fd As FlowDocument)
+        Dim ph As String = ""
+    End Sub
     Public Sub PrintInvoices()
         Dim pd As New PrintDialog
         pd.ShowDialog()
