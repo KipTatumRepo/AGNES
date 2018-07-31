@@ -9,10 +9,13 @@ Public Class WCRObject
     Public ShortName As String
     Public Vendors As New List(Of VendorObject)
     Public CamChecks As New List(Of CamCheck)
+    Public CreditArray(8, 8) As String
+    Public DebitArray(8, 9) As String
+    Public DepositArray(8, 3) As String
     Dim GrossSales As Double, SalesTax As Double, NetSales As Double, CamToCompass As Double, PotentialKpi As Double,
             MealCardPayments As Double, MealCardCredits As Double, Ecoupons As Double, Ecash As Double, ScratchCoupons As Double,
             ExpiredCards As Double, IoCharges As Double, CompassPayment As Double, VendorPayment As Double, DueFromVendors As Double,
-            FreedomPay As Double, Amex As Double, VisaMcDisc As Double
+            FreedomPay As Double, Amex As Double, VisaMcDisc As Double, CreditCards As Double
 
     Public Sub New()
         Dim ph As String = ""
@@ -128,11 +131,12 @@ Public Class WCRObject
             Amex += v.AMEX
             VisaMcDisc += v.VisaMastercard
         Next
-
+        CreditCards = FreedomPay + Amex + VisaMcDisc
         CreateTotalsSection(pd, fd)
         CreateInvoiceSection(pd, fd)
-        CreateSummarySection(pd, fd)
-
+        CreateCreditSummarySection(pd, fd)
+        CreateDebitSummarySection(pd, fd)
+        CreateDepositSummarySection(pd, fd)
         Dim xps_writer As XpsDocumentWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue)
         Dim idps As IDocumentPaginatorSource = CType(fd, IDocumentPaginatorSource)
         xps_writer.Write(idps.DocumentPaginator)
@@ -157,86 +161,81 @@ Public Class WCRObject
 
         '// Add the invoice and date rows
         Dim rc As Integer
-        For rc = 1 To 17
+        For rc = 1 To 20
             t.RowGroups(0).Rows.Add(New TableRow())
         Next rc
 
         cr = t.RowGroups(0).Rows(0)
         cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("         Item Detail")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("     Total")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("         Item Detail")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("     Total")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
 
         cr = t.RowGroups(0).Rows(1)
-        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
-
-        cr = t.RowGroups(0).Rows(2)
         cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
         cr.Cells.Add(New TableCell(New Paragraph(New Run("Gross Sales: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
         cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(GrossSales, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
 
-        cr = t.RowGroups(0).Rows(3)
+        cr = t.RowGroups(0).Rows(2)
         cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
         cr.Cells.Add(New TableCell(New Paragraph(New Run("Sales Tax: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
         cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(SalesTax, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
 
-        cr = t.RowGroups(0).Rows(4)
+        cr = t.RowGroups(0).Rows(3)
         cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
         cr.Cells.Add(New TableCell(New Paragraph(New Run("Net Sales: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
         cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(NetSales, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
 
-        cr = t.RowGroups(0).Rows(5)
+        cr = t.RowGroups(0).Rows(4)
         cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
         cr.Cells.Add(New TableCell(New Paragraph(New Run("CAM to Compass: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
         cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(CamToCompass, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
 
-        cr = t.RowGroups(0).Rows(6)
+        cr = t.RowGroups(0).Rows(5)
         cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
         cr.Cells.Add(New TableCell(New Paragraph(New Run("Potential KPI: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
         cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(PotentialKpi, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
 
-        cr = t.RowGroups(0).Rows(7)
+        cr = t.RowGroups(0).Rows(6)
         cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
         cr.Cells.Add(New TableCell(New Paragraph(New Run("Meal Card Payments: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
         cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(MealCardPayments, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
 
-        cr = t.RowGroups(0).Rows(8)
+        cr = t.RowGroups(0).Rows(7)
         cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
         cr.Cells.Add(New TableCell(New Paragraph(New Run("Mead Card Credits: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
         cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(MealCardCredits, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
 
-        cr = t.RowGroups(0).Rows(9)
+        cr = t.RowGroups(0).Rows(8)
         cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
         cr.Cells.Add(New TableCell(New Paragraph(New Run("eCoupons: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
         cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(Ecoupons, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
 
-        cr = t.RowGroups(0).Rows(10)
+        cr = t.RowGroups(0).Rows(9)
         cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
         cr.Cells.Add(New TableCell(New Paragraph(New Run("eCash: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
         cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(Ecash, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
 
-        cr = t.RowGroups(0).Rows(11)
+        cr = t.RowGroups(0).Rows(10)
         cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
         cr.Cells.Add(New TableCell(New Paragraph(New Run("Scratch Coupons: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
         cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(ScratchCoupons, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
 
-        cr = t.RowGroups(0).Rows(12)
+        cr = t.RowGroups(0).Rows(11)
         cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
         cr.Cells.Add(New TableCell(New Paragraph(New Run("Expired Cards: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
         cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(ExpiredCards, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
 
-        cr = t.RowGroups(0).Rows(13)
+        cr = t.RowGroups(0).Rows(12)
         cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
         cr.Cells.Add(New TableCell(New Paragraph(New Run("IO Charges: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
         cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(IoCharges, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
 
-        cr = t.RowGroups(0).Rows(14)
+        cr = t.RowGroups(0).Rows(13)
         cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
         cr.Cells.Add(New TableCell(New Paragraph(New Run("Compass Payment: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
         cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(CompassPayment, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
 
-        cr = t.RowGroups(0).Rows(15)
+        cr = t.RowGroups(0).Rows(14)
         cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
         cr.Cells.Add(New TableCell(New Paragraph(New Run("Vendor Payment: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
         cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(VendorPayment, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
@@ -249,10 +248,30 @@ Public Class WCRObject
         Else
             paylang = "Due to Vendors from Compass: "
         End If
-        cr = t.RowGroups(0).Rows(16)
+        cr = t.RowGroups(0).Rows(15)
         cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
         cr.Cells.Add(New TableCell(New Paragraph(New Run(paylang)) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
         cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(DueFromVendors, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+
+        cr = t.RowGroups(0).Rows(16)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Credit Cards: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(CreditCards, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+
+        cr = t.RowGroups(0).Rows(17)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Freedom Pay: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(FreedomPay, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+
+        cr = t.RowGroups(0).Rows(18)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Visa/MC/Disc: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(VisaMcDisc, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+
+        cr = t.RowGroups(0).Rows(19)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("AMEX: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(Amex, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
 
 
         With fd.Blocks
@@ -319,9 +338,362 @@ Public Class WCRObject
 
     End Sub
 
-    Private Sub CreateSummarySection(ByRef pd As PrintDialog, ByRef fd As FlowDocument)
-        Dim ph As String = ""
+    Private Sub CreateCreditSummarySection(ByRef pd As PrintDialog, ByRef fd As FlowDocument)
+        '// Header
+        Dim p As New Paragraph(New Run("WCR Summary for Week Starting " & WeekStart)) With
+            {.FontSize = 24, .TextAlignment = TextAlignment.Center, .FontWeight = FontWeights.Bold, .FontFamily = New FontFamily("Segoe UI")}
+
+        '// Create the Table...
+        Dim t As New Table() With {.CellSpacing = 0, .Background = Brushes.LemonChiffon}
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(140)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(100)})
+        t.RowGroups.Add(New TableRowGroup())
+
+        '// Alias the current working row for easy reference.
+        Dim cr As New TableRow With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI")}
+
+        '// Add the credit rows and column headers
+        Dim rc As Integer
+        For rc = 1 To 9
+            t.RowGroups(0).Rows.Add(New TableRow())
+        Next rc
+
+        cr = t.RowGroups(0).Rows(0)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Account")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Credit Description")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontWeight = FontWeights.Bold, .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Fri")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Mon")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Tue")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Wed")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Thu")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Total")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 1, 1)}))
+
+        PopulateCreditArray()
+        For rc = 0 To 7
+            cr = t.RowGroups(0).Rows(rc + 1)
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(CreditArray(0, rc))) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(CreditArray(1, rc))) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(CreditArray(2, rc))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(CreditArray(3, rc))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(CreditArray(4, rc))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(CreditArray(5, rc))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(CreditArray(6, rc))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(CreditArray(7, rc))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 1, 1)}))
+        Next
+
+        With fd.Blocks
+            .Add(p)
+            .Add(t)
+            .Add(New Section())
+        End With
+
     End Sub
+
+    Private Sub CreateDebitSummarySection(ByRef pd As PrintDialog, ByRef fd As FlowDocument)
+        '// Header
+        Dim p As New Paragraph(New Run(""))
+
+        '// Create the Table...
+        Dim t As New Table() With {.CellSpacing = 0, .Background = Brushes.LemonChiffon}
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(140)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(100)})
+        t.RowGroups.Add(New TableRowGroup())
+
+        '// Alias the current working row for easy reference.
+        Dim cr As New TableRow With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI")}
+
+        '// Add the credit rows and column headers
+        Dim rc As Integer
+        For rc = 1 To 10
+            t.RowGroups(0).Rows.Add(New TableRow())
+        Next rc
+
+        cr = t.RowGroups(0).Rows(0)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Account")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Debit Description")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontWeight = FontWeights.Bold, .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Fri")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Mon")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Tue")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Wed")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Thu")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Total")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 1, 1)}))
+
+        PopulateDebitArray()
+        For rc = 0 To 8
+            cr = t.RowGroups(0).Rows(rc + 1)
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(DebitArray(0, rc))) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(DebitArray(1, rc))) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(DebitArray(2, rc))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(DebitArray(3, rc))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(DebitArray(4, rc))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(DebitArray(5, rc))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(DebitArray(6, rc))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(DebitArray(7, rc))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 1, 1)}))
+        Next
+
+        With fd.Blocks
+            .Add(p)
+            .Add(t)
+            .Add(New Section())
+        End With
+    End Sub
+
+    Private Sub CreateDepositSummarySection(ByRef pd As PrintDialog, ByRef fd As FlowDocument)
+        '// Header
+        Dim p As New Paragraph(New Run(""))
+
+        '// Create the Table...
+        Dim t As New Table() With {.CellSpacing = 0, .Background = Brushes.LemonChiffon}
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(140)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(100)})
+        t.RowGroups.Add(New TableRowGroup())
+
+        '// Alias the current working row for easy reference.
+        Dim cr As New TableRow With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI")}
+
+        '// Add the deposit rows and column headers
+        Dim rc As Integer
+        For rc = 1 To 4
+            t.RowGroups(0).Rows.Add(New TableRow())
+        Next rc
+
+        cr = t.RowGroups(0).Rows(0)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Account")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Deposit Description")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontWeight = FontWeights.Bold, .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Fri")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Mon")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Tue")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Wed")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Thu")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Total")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 1, 1)}))
+
+        PopulateDepositArray()
+        For rc = 0 To 2
+            cr = t.RowGroups(0).Rows(rc + 1)
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(DepositArray(0, rc))) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(DepositArray(1, rc))) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(DepositArray(2, rc))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(DepositArray(3, rc))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(DepositArray(4, rc))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(DepositArray(5, rc))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(DepositArray(6, rc))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(DepositArray(7, rc))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 1, 1)}))
+        Next
+
+        With fd.Blocks
+            .Add(p)
+            .Add(t)
+            .Add(New Section())
+        End With
+    End Sub
+
+    Private Sub PopulateCreditArray()
+        CreditArray(0, 0) = "353008"
+        CreditArray(1, 0) = "CAM Revenue"
+        CreditArray(2, 0) = "$0.00"
+        CreditArray(3, 0) = "$0.00"
+        CreditArray(4, 0) = "$0.00"
+        CreditArray(5, 0) = "$0.00"
+        CreditArray(6, 0) = "$0.00"
+        CreditArray(7, 0) = "$0.00"
+
+        CreditArray(0, 1) = "212910"
+        CreditArray(1, 1) = "KPI Hold"
+        CreditArray(2, 1) = "$0.00"
+        CreditArray(3, 1) = "$0.00"
+        CreditArray(4, 1) = "$0.00"
+        CreditArray(5, 1) = "$0.00"
+        CreditArray(6, 1) = "$0.00"
+        CreditArray(7, 1) = "$0.00"
+
+        CreditArray(0, 2) = "411007"
+        CreditArray(1, 2) = "Net Owed to Vendor"
+        CreditArray(2, 2) = "$0.00"
+        CreditArray(3, 2) = "$0.00"
+        CreditArray(4, 2) = "$0.00"
+        CreditArray(5, 2) = "$0.00"
+        CreditArray(6, 2) = "$0.00"
+        CreditArray(7, 2) = "$0.00"
+
+        CreditArray(0, 3) = "219301"
+        CreditArray(1, 3) = "Mealcard Deposit"
+        CreditArray(2, 3) = "$0.00"
+        CreditArray(3, 3) = "$0.00"
+        CreditArray(4, 3) = "$0.00"
+        CreditArray(5, 3) = "$0.00"
+        CreditArray(6, 3) = "$0.00"
+        CreditArray(7, 3) = "$0.00"
+
+        CreditArray(0, 4) = "313052"
+        CreditArray(1, 4) = "Net Sales"
+        CreditArray(2, 4) = "$0.00"
+        CreditArray(3, 4) = "$0.00"
+        CreditArray(4, 4) = "$0.00"
+        CreditArray(5, 4) = "$0.00"
+        CreditArray(6, 4) = "$0.00"
+        CreditArray(7, 4) = "$0.00"
+
+        CreditArray(0, 5) = "219927"
+        CreditArray(1, 5) = "eCash Sold"
+        CreditArray(2, 5) = "$0.00"
+        CreditArray(3, 5) = "$0.00"
+        CreditArray(4, 5) = "$0.00"
+        CreditArray(5, 5) = "$0.00"
+        CreditArray(6, 5) = "$0.00"
+        CreditArray(7, 5) = "$0.00"
+
+        CreditArray(0, 6) = "214902"
+        CreditArray(1, 6) = "B&O Tax Liability"
+        CreditArray(2, 6) = "$0.00"
+        CreditArray(3, 6) = "$0.00"
+        CreditArray(4, 6) = "$0.00"
+        CreditArray(5, 6) = "$0.00"
+        CreditArray(6, 6) = "$0.00"
+        CreditArray(7, 6) = "$0.00"
+
+        CreditArray(0, 7) = "214245"
+        CreditArray(1, 7) = "Sales Tax"
+        CreditArray(2, 7) = "$0.00"
+        CreditArray(3, 7) = "$0.00"
+        CreditArray(4, 7) = "$0.00"
+        CreditArray(5, 7) = "$0.00"
+        CreditArray(6, 7) = "$0.00"
+        CreditArray(7, 7) = "$0.00"
+
+
+    End Sub
+
+    Private Sub PopulateDebitArray()
+        DebitArray(0, 0) = "219301"
+        DebitArray(1, 0) = "Mealcard Usage"
+        DebitArray(2, 0) = "$0.00"
+        DebitArray(3, 0) = "$0.00"
+        DebitArray(4, 0) = "$0.00"
+        DebitArray(5, 0) = "$0.00"
+        DebitArray(6, 0) = "$0.00"
+        DebitArray(7, 0) = "$0.00"
+
+        DebitArray(0, 1) = "693100"
+        DebitArray(1, 1) = "KPI Hold"
+        DebitArray(2, 1) = "$0.00"
+        DebitArray(3, 1) = "$0.00"
+        DebitArray(4, 1) = "$0.00"
+        DebitArray(5, 1) = "$0.00"
+        DebitArray(6, 1) = "$0.00"
+        DebitArray(7, 1) = "$0.00"
+
+        DebitArray(0, 2) = "411007"
+        DebitArray(1, 2) = "Net Owed to Compass"
+        DebitArray(2, 2) = "$0.00"
+        DebitArray(3, 2) = "$0.00"
+        DebitArray(4, 2) = "$0.00"
+        DebitArray(5, 2) = "$0.00"
+        DebitArray(6, 2) = "$0.00"
+        DebitArray(7, 2) = "$0.00"
+
+        DebitArray(0, 3) = "219927"
+        DebitArray(1, 3) = "eCash"
+        DebitArray(2, 3) = "$0.00"
+        DebitArray(3, 3) = "$0.00"
+        DebitArray(4, 3) = "$0.00"
+        DebitArray(5, 3) = "$0.00"
+        DebitArray(6, 3) = "$0.00"
+        DebitArray(7, 3) = "$0.00"
+
+        DebitArray(0, 4) = "219927"
+        DebitArray(1, 4) = "eCoupons"
+        DebitArray(2, 4) = "$0.00"
+        DebitArray(3, 4) = "$0.00"
+        DebitArray(4, 4) = "$0.00"
+        DebitArray(5, 4) = "$0.00"
+        DebitArray(6, 4) = "$0.00"
+        DebitArray(7, 4) = "$0.00"
+
+        DebitArray(0, 5) = "11295"
+        DebitArray(1, 5) = "IO Billing"
+        DebitArray(2, 5) = "$0.00"
+        DebitArray(3, 5) = "$0.00"
+        DebitArray(4, 5) = "$0.00"
+        DebitArray(5, 5) = "$0.00"
+        DebitArray(6, 5) = "$0.00"
+        DebitArray(7, 5) = "$0.00"
+
+        DebitArray(0, 6) = "621000"
+        DebitArray(1, 6) = "Marketing Discounts"
+        DebitArray(2, 6) = "$0.00"
+        DebitArray(3, 6) = "$0.00"
+        DebitArray(4, 6) = "$0.00"
+        DebitArray(5, 6) = "$0.00"
+        DebitArray(6, 6) = "$0.00"
+        DebitArray(7, 6) = "$0.00"
+
+        DebitArray(0, 7) = "681020"
+        DebitArray(1, 7) = "Expired Cards"
+        DebitArray(2, 7) = "$0.00"
+        DebitArray(3, 7) = "$0.00"
+        DebitArray(4, 7) = "$0.00"
+        DebitArray(5, 7) = "$0.00"
+        DebitArray(6, 7) = "$0.00"
+        DebitArray(7, 7) = "$0.00"
+
+        DebitArray(0, 8) = "676300"
+        DebitArray(1, 8) = "B&O Tax Expense"
+        DebitArray(2, 8) = "$0.00"
+        DebitArray(3, 8) = "$0.00"
+        DebitArray(4, 8) = "$0.00"
+        DebitArray(5, 8) = "$0.00"
+        DebitArray(6, 8) = "$0.00"
+        DebitArray(7, 8) = "$0.00"
+
+    End Sub
+
+    Private Sub PopulateDepositArray()
+        DepositArray(0, 0) = "105200"
+        DepositArray(1, 0) = "Depository Cash"
+        DepositArray(2, 0) = "$0.00"
+        DepositArray(3, 0) = "$0.00"
+        DepositArray(4, 0) = "$0.00"
+        DepositArray(5, 0) = "$0.00"
+        DepositArray(6, 0) = "$0.00"
+        DepositArray(7, 0) = "$0.00"
+
+        DepositArray(0, 1) = "112265"
+        DepositArray(1, 1) = "Credit Card Clearing"
+        DepositArray(2, 1) = "$0.00"
+        DepositArray(3, 1) = "$0.00"
+        DepositArray(4, 1) = "$0.00"
+        DepositArray(5, 1) = "$0.00"
+        DepositArray(6, 1) = "$0.00"
+        DepositArray(7, 1) = "$0.00"
+
+        DepositArray(0, 2) = "112266"
+        DepositArray(1, 2) = "AMEX Clearing"
+        DepositArray(2, 2) = "$0.00"
+        DepositArray(3, 2) = "$0.00"
+        DepositArray(4, 2) = "$0.00"
+        DepositArray(5, 2) = "$0.00"
+        DepositArray(6, 2) = "$0.00"
+        DepositArray(7, 2) = "$0.00"
+    End Sub
+
     Public Sub PrintInvoices()
         Dim pd As New PrintDialog
         pd.ShowDialog()
