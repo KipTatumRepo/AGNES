@@ -38,6 +38,7 @@
         End Set
     End Property
     Public Property InvoiceName As String
+    Public Property InvoiceNumber As String
     Public Property VendorNumber As Long
     Private _grosssales As Double
     Public Property GrossSales As Double
@@ -98,11 +99,11 @@
     Public Sub AddTender(id, nm, qty, amt)
         Dim t As New Tender With {.TenderId = id, .TenderName = nm, .TenderQty = qty, .TenderAmt = amt}
         Tenders.Add(t)
-        Recalculate()
+        'Recalculate()
     End Sub
 
     Public Sub PrintInvoice(ByRef pd As PrintDialog, ByRef fd As FlowDocument)
-        Dim InvoiceNumber As String = VendorNumber & Month(WCR.WeekStart) & Day(WCR.WeekStart) & Year(WCR.WeekStart)
+        InvoiceNumber = VendorNumber & Month(WCR.WeekStart) & Day(WCR.WeekStart) & Year(WCR.WeekStart)
         '// Create Commons logo object
         Dim bimg As New BitmapImage
         bimg.BeginInit()
@@ -124,7 +125,7 @@
         t.RowGroups.Add(New TableRowGroup())
 
         '// Alias the current working row for easy reference.
-        Dim cr As New TableRow With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI")} '= t.RowGroups(0).Rows(0) 'cr.Background = Brushes.Silver
+        Dim cr As New TableRow With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI")}
 
         '// Add the invoice and date rows
         Dim rc As Integer
@@ -298,7 +299,7 @@
 
     End Sub
 
-    Private Sub Recalculate()
+    Public Sub Recalculate()
         '// Calculate Gross Sales, Tax, and Net Sales
         Dim gs As Double = 0, tt As String = ""
         CreditCards = 0
@@ -319,7 +320,7 @@
                 Case "MealCard"
                     MealCard = t.TenderAmt
                 Case "MealCardCredit", "MealCard Credit"
-                    MealCardCredit = t.TenderAmt
+                    MealCardCredit += t.TenderAmt
                 Case "ECash"
                     ECash = t.TenderAmt
                 Case "ECoupons"
@@ -331,11 +332,11 @@
                 Case "ScratchCoupons"
                     ScratchCoupons = t.TenderAmt
                 Case "VisaMasterCardDiscover", "Visa EMV", "Discover EMV", "Master Card EMV", "WCC Visa/MC", "Visa CC", "Master Card CC", "Visa_High_Limit", "M / C_High_Limit"
-                    VisaMastercard = t.TenderAmt
+                    VisaMastercard += t.TenderAmt
                 Case "FreedomPay"
                     FreedomPay = t.TenderAmt
                 Case "AMEX", "AMEX EMV", "WCC Amex", "Amex CC", "Amex_High_Limit"
-                    AMEX = t.TenderAmt
+                    AMEX += t.TenderAmt
                 Case Else
             End Select
             CreditCards = FreedomPay + VisaMastercard + AMEX
