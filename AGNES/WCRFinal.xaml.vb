@@ -7,7 +7,11 @@
     Private Sub btnPrintInvoices_Click(sender As Object, e As RoutedEventArgs) Handles btnPrintInvoices.Click
         WCRModule.WCR.PrintInvoices()
         btnPrintInvoices.Visibility = Visibility.Hidden
-        tbFinal.Text = "Invoices have been created!  Last thing - go ahead and print the WCR backup..."
+        If WCRModule.WCR.InvoicesArePresent > 0 Then
+            tbFinal.Text = "Invoices have been created!  Last thing - go ahead and print the WCR backup..."
+        Else
+            tbFinal.Text = "No invoices are available to print.  If this isn't a mistake, go ahead and print the WCR backup..."
+        End If
         btnPrintWCR.Visibility = Visibility.Visible
     End Sub
 

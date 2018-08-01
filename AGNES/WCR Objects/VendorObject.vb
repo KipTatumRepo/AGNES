@@ -90,6 +90,8 @@
     Public Property CompassPayment As Double
     Public Property VendorPayment As Double
     Public Property DueFromVendor As Double
+    Public CCClear As Double
+    Public AmexClear As Double
     Public Tenders As New List(Of Tender)
 
     Public Sub New()
@@ -99,7 +101,6 @@
     Public Sub AddTender(id, nm, qty, amt)
         Dim t As New Tender With {.TenderId = id, .TenderName = nm, .TenderQty = qty, .TenderAmt = amt}
         Tenders.Add(t)
-        'Recalculate()
     End Sub
 
     Public Sub PrintInvoice(ByRef pd As PrintDialog, ByRef fd As FlowDocument)
@@ -332,17 +333,26 @@
                 Case "ScratchCoupons"
                     ScratchCoupons = t.TenderAmt
                 Case "VisaMasterCardDiscover", "Visa EMV", "Discover EMV", "Master Card EMV", "WCC Visa/MC", "Visa CC", "Master Card CC", "Visa_High_Limit", "M / C_High_Limit"
-                    VisaMastercard += t.TenderAmt
+                    If t.TenderName = "CCClearing" Then
+                        CCClear += t.TenderAmt
+                    Else
+                        VisaMastercard += t.TenderAmt
+                    End If
                 Case "FreedomPay"
                     FreedomPay = t.TenderAmt
                 Case "AMEX", "AMEX EMV", "WCC Amex", "Amex CC", "Amex_High_Limit"
-                    AMEX += t.TenderAmt
+                    If t.TenderName = "AMEXClearing" Then
+                        AmexClear += t.TenderAmt
+                    Else
+                        AMEX += t.TenderAmt
+                    End If
                 Case Else
             End Select
+
             CreditCards = FreedomPay + VisaMastercard + AMEX
-            CompassPayment = MealCard + ECoupons + ECash + ScratchCoupons + ExpiredCard + IOCharges
-            VendorPayment = (-MealCardCredit) + CAMAmt + KPIAmt
-            DueFromVendor = CompassPayment - VendorPayment
+            If VendorName <> "Concierge" Then CompassPayment = MealCard + ECoupons + ECash + ScratchCoupons + ExpiredCard + IOCharges
+            If VendorName <> "Concierge" Then VendorPayment = (-MealCardCredit) + CAMAmt + KPIAmt
+            If VendorName <> "Concierge" Then DueFromVendor = CompassPayment - VendorPayment
         Next
     End Sub
 

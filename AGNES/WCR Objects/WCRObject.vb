@@ -15,7 +15,9 @@ Public Class WCRObject
     Dim GrossSales As Double, SalesTax As Double, NetSales As Double, CamToCompass As Double, PotentialKpi As Double,
             MealCardPayments As Double, MealCardCredits As Double, Ecoupons As Double, Ecash As Double, ScratchCoupons As Double,
             ExpiredCards As Double, IoCharges As Double, CompassPayment As Double, VendorPayment As Double, DueFromVendors As Double,
-            FreedomPay As Double, Amex As Double, VisaMcDisc As Double, CreditCards As Double, InvoiceTotal As Double
+            FreedomPay As Double, Amex As Double, VisaMcDisc As Double, CreditCards As Double, InvoiceTotal As Double, Cash As Double,
+            CCClear As Double, AmexClear As Double
+    Public InvoicesArePresent As Integer
 
     Public Sub New()
         Dim ph As String = ""
@@ -65,14 +67,23 @@ Public Class WCRObject
                             disp.tbHello.Text = "I've terminated the tender import for " & v.VendorName & ".  Please edit the file, if needed, and reload."
                             BadFile = True
                             Exit Do
-                        Case 2, 3, 91, 93, 94       '// Visa/Mastercard/Discover
-                            v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "VisaMastercard", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                        Case 2, 3, 5, 91, 93, 94       '// Visa/Mastercard/Discover
+                            If v.VendorName <> "Concierge" Then
+                                v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "VisaMastercard", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                            Else
+                                v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "CCClearing", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                            End If
                         Case 57                     '// Coupons (used by Lunchbox for their internal promotions)
                             MsgBox("FYI, " & MySettings.Default.UserName & ", I'm omitting the Coupon tender for " & vn & " in the amount of " & FormatCurrency(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
                         Case 83                     '// Freedompay [pass-through]
                             v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "FreedomPay", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
-                        Case 92                     '// AMEX
-                            v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "AMEX", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                        Case 4, 92                     '// AMEX
+                            If v.VendorName <> "Concierge" Then
+                                v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "AMEX", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                            Else
+                                v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "AMEXClearing", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                            End If
+
                         Case Else
                             v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, CType(ws.Cells(ct, 2), Excel.Range).Value, FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
                     End Select
@@ -115,6 +126,7 @@ Public Class WCRObject
             GrossSales += v.GrossSales
             SalesTax += v.SalesTax
             NetSales += v.NetSales
+            Cash += v.Cash
             CamToCompass += v.CAMAmt
             PotentialKpi += v.KPIAmt
             MealCardPayments += v.MealCard
@@ -130,6 +142,8 @@ Public Class WCRObject
             FreedomPay += v.FreedomPay
             Amex += v.AMEX
             VisaMcDisc += v.VisaMastercard
+            CCClear += v.CCClear
+            AmexClear += v.AmexClear
         Next
         CreditCards = FreedomPay + Amex + VisaMcDisc
         CreateTotalsSection(pd, fd)
@@ -282,61 +296,62 @@ Public Class WCRObject
     End Sub
 
     Private Sub CreateInvoiceSection(ByRef pd As PrintDialog, ByRef fd As FlowDocument)
-        '// Header, vendor, invoice #, and date
-        Dim p As New Paragraph(New Run("Invoices for Week Starting " & WeekStart)) With
+        If InvoicesArePresent > 0 Then
+
+            '// Header, vendor, invoice #, and date
+            Dim p As New Paragraph(New Run("Invoices for Week Starting " & WeekStart)) With
             {.FontSize = 24, .TextAlignment = TextAlignment.Center, .FontWeight = FontWeights.Bold, .FontFamily = New FontFamily("Segoe UI")}
 
+            '// Create the Table...
+            Dim t As New Table() With {.CellSpacing = 0, .Background = Brushes.LemonChiffon}
+            t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(160)})
+            t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(120)})
+            t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(120)})
+            t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(120)})
+            t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(100)})
+            t.RowGroups.Add(New TableRowGroup())
 
-        '// Create the Table...
-        Dim t As New Table() With {.CellSpacing = 0, .Background = Brushes.LemonChiffon}
-        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(160)})
-        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(120)})
-        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(120)})
-        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(120)})
-        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(100)})
-        t.RowGroups.Add(New TableRowGroup())
+            '// Alias the current working row for easy reference.
+            Dim cr As New TableRow With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI")}
 
-        '// Alias the current working row for easy reference.
-        Dim cr As New TableRow With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI")}
+            '// Add the invoice and date rows
+            Dim rc As Integer
+            For rc = 1 To Vendors.Count + 2
+                t.RowGroups(0).Rows.Add(New TableRow())
+            Next rc
 
-        '// Add the invoice and date rows
-        Dim rc As Integer
-        For rc = 1 To Vendors.Count + 2
-            t.RowGroups(0).Rows.Add(New TableRow())
-        Next rc
+            cr = t.RowGroups(0).Rows(0)
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run("Vendor")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run("Vendor Code")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run("Invoice Number")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run("Invoice Amount")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
 
-        cr = t.RowGroups(0).Rows(0)
-        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("Vendor")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("Vendor Code")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("Invoice Number")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("Invoice Amount")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
-
-        Dim v As VendorObject, ct As Integer = 1, invtotal As Double
-        For Each v In Vendors
+            Dim v As VendorObject, ct As Integer = 1, invtotal As Double
+            For Each v In Vendors
+                cr = t.RowGroups(0).Rows(ct)
+                cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+                cr.Cells.Add(New TableCell(New Paragraph(New Run(v.InvoiceName)) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+                cr.Cells.Add(New TableCell(New Paragraph(New Run(v.VendorNumber)) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+                cr.Cells.Add(New TableCell(New Paragraph(New Run(v.InvoiceNumber)) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+                cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(v.DueFromVendor, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+                invtotal += v.DueFromVendor
+                ct += 1
+            Next
             cr = t.RowGroups(0).Rows(ct)
             cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
-            cr.Cells.Add(New TableCell(New Paragraph(New Run(v.InvoiceName)) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
-            cr.Cells.Add(New TableCell(New Paragraph(New Run(v.VendorNumber)) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
-            cr.Cells.Add(New TableCell(New Paragraph(New Run(v.InvoiceNumber)) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
-            cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(v.DueFromVendor, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
-            invtotal += v.DueFromVendor
-            ct += 1
-        Next
-        cr = t.RowGroups(0).Rows(ct)
-        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("Total:")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(invtotal, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run("Total:")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(invtotal, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+            InvoiceTotal = invtotal
+            With fd.Blocks
+                .Add(p)
+                .Add(t)
+            End With
+        End If
+        fd.Blocks.Add(New Section() With {.BreakPageBefore = True})
 
-        With fd.Blocks
-            .Add(p)
-            .Add(t)
-            .Add(New Section() With {.BreakPageBefore = True})
-        End With
-
-        InvoiceTotal = invtotal
     End Sub
 
     Private Sub CreateCreditSummarySection(ByRef pd As PrintDialog, ByRef fd As FlowDocument)
@@ -681,52 +696,55 @@ Public Class WCRObject
         'TODO: ADD CONCIERGE DEPOSIT ROUTINES
         DepositArray(0, 0) = "105200"
         DepositArray(1, 0) = "Depository Cash"
-        DepositArray(2, 0) = "$0.00"
-        DepositArray(3, 0) = "$0.00"
-        DepositArray(4, 0) = "$0.00"
-        DepositArray(5, 0) = "$0.00"
-        DepositArray(6, 0) = "$0.00"
-        DepositArray(7, 0) = "$0.00"
+        DepositArray(2, 0) = FormatCurrency(0, 2)
+        DepositArray(3, 0) = FormatCurrency(0, 2)
+        DepositArray(4, 0) = FormatCurrency(0, 2)
+        DepositArray(5, 0) = FormatCurrency(0, 2)
+        DepositArray(6, 0) = FormatCurrency(0, 2)
+        DepositArray(7, 0) = FormatCurrency(Cash, 2)
 
         DepositArray(0, 1) = "112265"
         DepositArray(1, 1) = "Credit Card Clearing"
-        DepositArray(2, 1) = "$0.00"
-        DepositArray(3, 1) = "$0.00"
-        DepositArray(4, 1) = "$0.00"
-        DepositArray(5, 1) = "$0.00"
-        DepositArray(6, 1) = "$0.00"
-        DepositArray(7, 1) = "$0.00"
+        DepositArray(2, 1) = FormatCurrency(0, 2)
+        DepositArray(3, 1) = FormatCurrency(0, 2)
+        DepositArray(4, 1) = FormatCurrency(0, 2)
+        DepositArray(5, 1) = FormatCurrency(0, 2)
+        DepositArray(6, 1) = FormatCurrency(0, 2)
+        DepositArray(7, 1) = FormatCurrency(CCClear, 2)
 
         DepositArray(0, 2) = "112266"
         DepositArray(1, 2) = "AMEX Clearing"
-        DepositArray(2, 2) = "$0.00"
-        DepositArray(3, 2) = "$0.00"
-        DepositArray(4, 2) = "$0.00"
-        DepositArray(5, 2) = "$0.00"
-        DepositArray(6, 2) = "$0.00"
-        DepositArray(7, 2) = "$0.00"
+        DepositArray(2, 2) = FormatCurrency(0, 2)
+        DepositArray(3, 2) = FormatCurrency(0, 2)
+        DepositArray(4, 2) = FormatCurrency(0, 2)
+        DepositArray(5, 2) = FormatCurrency(0, 2)
+        DepositArray(6, 2) = FormatCurrency(0, 2)
+        DepositArray(7, 2) = FormatCurrency(AmexClear, 2)
     End Sub
 
     Public Sub PrintInvoices()
         Dim pd As New PrintDialog
         pd.ShowDialog()
 
-
         'TODO: Add error trap for dialog box
         Dim fd As New FlowDocument With {.ColumnGap = 0, .ColumnWidth = pd.PrintableAreaWidth}
         Dim v As VendorObject, ct As Integer = Vendors.Count
-
+        InvoicesArePresent = 0
         For Each v In Vendors
-            ct -= 1
-            v.PrintInvoice(pd, fd)
             Dim s As New Section() With {.BreakPageBefore = True}
+            ct -= 1
+            If v.VendorName <> "Concierge" Then
+                v.PrintInvoice(pd, fd)
+                InvoicesArePresent += 1
+            End If
             If ct > 0 Then fd.Blocks.Add(s)
         Next
 
-        Dim xps_writer As XpsDocumentWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue)
-        Dim idps As IDocumentPaginatorSource = CType(fd, IDocumentPaginatorSource)
-        xps_writer.Write(idps.DocumentPaginator)
-
+        If InvoicesArePresent > 0 Then
+            Dim xps_writer As XpsDocumentWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue)
+            Dim idps As IDocumentPaginatorSource = CType(fd, IDocumentPaginatorSource)
+            xps_writer.Write(idps.DocumentPaginator)
+        End If
     End Sub
 
     Private Function GetVendorNameFromString(st)
