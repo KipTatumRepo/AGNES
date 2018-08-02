@@ -15,7 +15,7 @@ Public Class WCRObject
     Dim GrossSales As Double, SalesTax As Double, NetSales As Double, CamToCompass As Double, PotentialKpi As Double,
             MealCardPayments As Double, MealCardCredits As Double, Ecoupons As Double, Ecash As Double, ScratchCoupons As Double,
             ExpiredCards As Double, IoCharges As Double, CompassPayment As Double, VendorPayment As Double, DueFromVendors As Double,
-            FreedomPay As Double, Amex As Double, VisaMcDisc As Double, CreditCards As Double, InvoiceTotal As Double, Cash As Double,
+            FreedomPay As Double, Amex As Double, VisaMcDisc As Double, CreditCards As Double, InvoiceTotal As Double, ConciergeCash As Double,
             CCClear As Double, AmexClear As Double
     Public InvoicesArePresent As Integer
 
@@ -126,7 +126,7 @@ Public Class WCRObject
             GrossSales += v.GrossSales
             SalesTax += v.SalesTax
             NetSales += v.NetSales
-            Cash += v.Cash
+            If v.VendorName = "Concierge" Then ConciergeCash += v.Cash
             CamToCompass += v.CAMAmt
             PotentialKpi += v.KPIAmt
             MealCardPayments += v.MealCard
@@ -701,7 +701,7 @@ Public Class WCRObject
         DepositArray(4, 0) = FormatCurrency(0, 2)
         DepositArray(5, 0) = FormatCurrency(0, 2)
         DepositArray(6, 0) = FormatCurrency(0, 2)
-        DepositArray(7, 0) = FormatCurrency(Cash, 2)
+        DepositArray(7, 0) = FormatCurrency(ConciergeCash, 2)
 
         DepositArray(0, 1) = "112265"
         DepositArray(1, 1) = "Credit Card Clearing"
