@@ -64,7 +64,7 @@
 
     Public Sub PrintVendorTotalTendersToScreen(ByRef v As VendorObject, bf As Boolean)
         Dim t As Tender, ttl As Double, msgstring As String = ""
-        tbHello.FontSize = 12
+        tbHello.FontSize = 24
         If bf = True Then
             msgstring = "Unable to read data from the selected file."
             tbHello.Text = msgstring
