@@ -114,7 +114,7 @@ Public Class WCRObject
         CamChecks.Add(c)
     End Sub
 
-    Public Sub PrintWCR()
+    Public Sub PrintWCR(ByRef disp As WCRFinal)
         Dim pd As New PrintDialog
         pd.ShowDialog()
         'TODO: Add error trap for dialog box
@@ -146,11 +146,22 @@ Public Class WCRObject
             AmexClear += v.AmexClear
         Next
         CreditCards = FreedomPay + Amex + VisaMcDisc
+
         CreateTotalsSection(pd, fd)
         CreateInvoiceSection(pd, fd)
         CreateCreditSummarySection(pd, fd)
         CreateDebitSummarySection(pd, fd)
         CreateDepositSummarySection(pd, fd)
+
+        Dim balanced As Double = WCRInBalance()
+        If balanced = 0 Then
+            disp.InBalance = True
+        Else
+            'TODO: ADD APPLICATION STYLE MESSAGEBOX
+            Dim yn As MsgBoxResult = MsgBox("The WCR is out of balance in the amount of " & FormatCurrency(balanced, 2) & ".  Do you wish to continue?", vbYesNo)
+            If yn = vbNo Then Exit Sub
+        End If
+
         Dim xps_writer As XpsDocumentWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue)
         Dim idps As IDocumentPaginatorSource = CType(fd, IDocumentPaginatorSource)
         xps_writer.Write(idps.DocumentPaginator)
@@ -280,12 +291,12 @@ Public Class WCRObject
         cr = t.RowGroups(0).Rows(18)
         cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
         cr.Cells.Add(New TableCell(New Paragraph(New Run("Visa/MC/Disc: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(VisaMcDisc, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency((VisaMcDisc + CCClear), 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
 
         cr = t.RowGroups(0).Rows(19)
         cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
         cr.Cells.Add(New TableCell(New Paragraph(New Run("AMEX: ")) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(Amex, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency((Amex + AmexClear), 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12}))
 
 
         With fd.Blocks
@@ -376,7 +387,7 @@ Public Class WCRObject
 
         '// Add the credit rows and column headers
         Dim rc As Integer
-        For rc = 1 To 9
+        For rc = 1 To 5
             t.RowGroups(0).Rows.Add(New TableRow())
         Next rc
 
@@ -391,7 +402,7 @@ Public Class WCRObject
         cr.Cells.Add(New TableCell(New Paragraph(New Run("Total")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 1, 1)}))
 
         PopulateCreditArray()
-        For rc = 0 To 7
+        For rc = 0 To 3
             cr = t.RowGroups(0).Rows(rc + 1)
             cr.Cells.Add(New TableCell(New Paragraph(New Run(CreditArray(0, rc))) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
             cr.Cells.Add(New TableCell(New Paragraph(New Run(CreditArray(1, rc))) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
@@ -432,7 +443,7 @@ Public Class WCRObject
 
         '// Add the credit rows and column headers
         Dim rc As Integer
-        For rc = 1 To 10
+        For rc = 1 To 9
             t.RowGroups(0).Rows.Add(New TableRow())
         Next rc
 
@@ -447,7 +458,7 @@ Public Class WCRObject
         cr.Cells.Add(New TableCell(New Paragraph(New Run("Total")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 1, 1)}))
 
         PopulateDebitArray()
-        For rc = 0 To 8
+        For rc = 0 To 7
             cr = t.RowGroups(0).Rows(rc + 1)
             cr.Cells.Add(New TableCell(New Paragraph(New Run(DebitArray(0, rc))) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
             cr.Cells.Add(New TableCell(New Paragraph(New Run(DebitArray(1, rc))) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
@@ -564,44 +575,6 @@ Public Class WCRObject
         CreditArray(6, 3) = FormatCurrency(-MealCardCredits, 2)
         CreditArray(7, 3) = FormatCurrency(-MealCardCredits, 2)
 
-        'TODO: ADD CONCIERGE CREDIT ROUTINES
-        CreditArray(0, 4) = "313052"
-        CreditArray(1, 4) = "Net Sales"
-        CreditArray(2, 4) = FormatCurrency(0, 2)
-        CreditArray(3, 4) = FormatCurrency(0, 2)
-        CreditArray(4, 4) = FormatCurrency(0, 2)
-        CreditArray(5, 4) = FormatCurrency(0, 2)
-        CreditArray(6, 4) = FormatCurrency(0, 2)
-        CreditArray(7, 4) = FormatCurrency(0, 2)
-
-        CreditArray(0, 5) = "219927"
-        CreditArray(1, 5) = "eCash Sold"
-        CreditArray(2, 5) = FormatCurrency(0, 2)
-        CreditArray(3, 5) = FormatCurrency(0, 2)
-        CreditArray(4, 5) = FormatCurrency(0, 2)
-        CreditArray(5, 5) = FormatCurrency(0, 2)
-        CreditArray(6, 5) = FormatCurrency(0, 2)
-        CreditArray(7, 5) = FormatCurrency(0, 2)
-
-        CreditArray(0, 6) = "214902"
-        CreditArray(1, 6) = "B&O Tax Liability"
-        CreditArray(2, 6) = FormatCurrency(0, 2)
-        CreditArray(3, 6) = FormatCurrency(0, 2)
-        CreditArray(4, 6) = FormatCurrency(0, 2)
-        CreditArray(5, 6) = FormatCurrency(0, 2)
-        CreditArray(6, 6) = FormatCurrency(0, 2)
-        CreditArray(7, 6) = FormatCurrency(0, 2)
-
-        CreditArray(0, 7) = "214245"
-        CreditArray(1, 7) = "Sales Tax"
-        CreditArray(2, 7) = FormatCurrency(0, 2)
-        CreditArray(3, 7) = FormatCurrency(0, 2)
-        CreditArray(4, 7) = FormatCurrency(0, 2)
-        CreditArray(5, 7) = FormatCurrency(0, 2)
-        CreditArray(6, 7) = FormatCurrency(0, 2)
-        CreditArray(7, 7) = FormatCurrency(0, 2)
-
-
     End Sub
 
     Private Sub PopulateDebitArray()
@@ -679,16 +652,6 @@ Public Class WCRObject
         DebitArray(6, 7) = FormatCurrency(ExpiredCards, 2)
         DebitArray(7, 7) = FormatCurrency(ExpiredCards, 2)
 
-        'TODO: ADD CONCIERGE DEBIT ROUTINES
-
-        DebitArray(0, 8) = "676300"
-        DebitArray(1, 8) = "B&O Tax Expense"
-        DebitArray(2, 8) = FormatCurrency(0, 2)
-        DebitArray(3, 8) = FormatCurrency(0, 2)
-        DebitArray(4, 8) = FormatCurrency(0, 2)
-        DebitArray(5, 8) = FormatCurrency(0, 2)
-        DebitArray(6, 8) = FormatCurrency(0, 2)
-        DebitArray(7, 8) = FormatCurrency(0, 2)
 
     End Sub
 
@@ -769,5 +732,15 @@ Public Class WCRObject
             obj = Nothing
         End Try
     End Sub
+
+    Private Function WCRInBalance() As Double
+        Dim creditsection As Double, debitanddepositsection As Double
+        creditsection = CamToCompass + PotentialKpi + PotentialKpi - MealCardCredits
+        If InvoiceTotal > 0 Then creditsection -= InvoiceTotal
+        debitanddepositsection = MealCardPayments + PotentialKpi + Ecoupons + Ecash + IoCharges + ScratchCoupons + ExpiredCards + ConciergeCash + CCClear + AmexClear
+        If InvoiceTotal < 0 Then debitanddepositsection -= InvoiceTotal
+        Return creditsection - debitanddepositsection
+
+    End Function
 
 End Class
