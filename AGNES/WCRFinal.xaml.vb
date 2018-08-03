@@ -1,7 +1,11 @@
 ﻿Public Class WCRFinal
+    Dim HoverDrop As Effects.DropShadowEffect, LeaveDrop As Effects.DropShadowEffect
     Public Sub New()
         InitializeComponent()
         tbFinal.Text = "Okay, we're almost done!  Let's print invoices next - click the button when you're ready."
+        HoverDrop = New Effects.DropShadowEffect With {.Color = Color.FromRgb(235, 235, 235), .Direction = 200, .Opacity = 100, .ShadowDepth = 6, .BlurRadius = 2, .RenderingBias = Effects.RenderingBias.Performance}
+        LeaveDrop = New Effects.DropShadowEffect With {.Color = Color.FromRgb(235, 235, 235), .Direction = 200, .Opacity = 100, .ShadowDepth = 4, .BlurRadius = 2, .RenderingBias = Effects.RenderingBias.Performance}
+
     End Sub
 
     Private Sub PrintInvoices_Click(sender As Object, e As MouseButtonEventArgs) Handles tbPrintInvoices.MouseDown
@@ -32,9 +36,11 @@
 
     Private Sub HoverOver(sender As TextBlock, e As MouseEventArgs) Handles tbPrintInvoices.MouseEnter, tbPrintWCR.MouseEnter, tbClose.MouseEnter
         sender.Foreground = New SolidColorBrush(Colors.Blue)
+        sender.Effect = HoverDrop
     End Sub
     Private Sub HoverLeave(sender As TextBlock, e As MouseEventArgs) Handles tbPrintInvoices.MouseLeave, tbPrintWCR.MouseLeave, tbClose.MouseLeave
         sender.Foreground = New SolidColorBrush(Colors.Black)
+        sender.Effect = LeaveDrop
     End Sub
     Private Sub ExitModule(y)
         'TODO: ADD APPLICATION STYLE MESSAGEBOX

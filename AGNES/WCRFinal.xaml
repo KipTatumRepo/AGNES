@@ -15,7 +15,7 @@
             <TextBlock x:Name="btnExit" Margin="760,4,0,0" TextWrapping="Wrap" Text="X" VerticalAlignment="Top" FontWeight="Bold" TextAlignment="Center"/>
             <TextBlock x:Name="tbPrintInvoices" HorizontalAlignment="Left" Margin="411,179,0,0" TextWrapping="Wrap" Text="Print Invoices" VerticalAlignment="Top" FontSize="18" Width="106">
                 <TextBlock.Effect>
-                    <DropShadowEffect BlurRadius="2" ShadowDepth="4" Color="#FFEBEBEB" Direction="200"/>
+                    <DropShadowEffect BlurRadius="2" Color="#FFEBEBEB" Direction="200" ShadowDepth="4"/>
                 </TextBlock.Effect>
             </TextBlock>
             <TextBlock x:Name="tbClose" HorizontalAlignment="Left" Margin="411,179,0,0" TextWrapping="Wrap" Text="Close WCR" VerticalAlignment="Top" FontSize="18" Width="106" Visibility="Hidden">
