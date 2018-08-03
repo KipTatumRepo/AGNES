@@ -12,10 +12,27 @@
         <Grid Width="824" Height="449">
             <Image x:Name="imgAGNES" HorizontalAlignment="Left" Height="432" VerticalAlignment="Bottom" Width="261" Source="Resources/Full Agnes Image.png" Margin="0,0,0,7"/>
             <TextBlock x:Name="tbCam" HorizontalAlignment="Left" Margin="89,312,0,-9" TextWrapping="Wrap"  VerticalAlignment="Top" FontSize="16" Height="139" Width="725" TextAlignment="Center"/>
-            <Button x:Name="btnYesCam" Content ="Yes" Width="75" Height="33" Margin="243,409,506,0" VerticalAlignment="Top" Visibility="Hidden" TabIndex="5"/>
-            <Button x:Name="btnNo" Content ="No" Width="75" Height="33" VerticalAlignment="Top" Margin="583,409,166,0" Visibility="Hidden" TabIndex="6"/>
-            <Button x:Name="btnMoreCam" Content="Add Another" Width="75" Height="33" VerticalAlignment="Top" Visibility="Hidden" Margin="243,409,506,0" TabIndex="7"/>
-            <Button x:Name="btnDone" Content="Done" Width="75" Height="33" VerticalAlignment="Top" Visibility="Hidden" Margin="583,409,166,0" TabIndex="8"/>
+            <TextBlock x:Name="tbYesCam" HorizontalAlignment="left" Margin="243,411,0,0" TextWrapping="Wrap" Text="Yes" VerticalAlignment="Top" FontSize="18" Width="75" Height="33" TextAlignment="Center" Visibility="Hidden">
+                <TextBlock.Effect>
+                    <DropShadowEffect BlurRadius="2" Color="#FFEBEBEB" Direction="200" ShadowDepth="4"/>
+                </TextBlock.Effect>
+            </TextBlock>
+            <TextBlock x:Name="tbNo" HorizontalAlignment="left" Margin="583,409,0,0" TextWrapping="Wrap" Text="No" VerticalAlignment="Top" FontSize="18" Width="75" Height="33" TextAlignment="Center" Visibility="Hidden">
+                <TextBlock.Effect>
+                    <DropShadowEffect BlurRadius="2" Color="#FFEBEBEB" Direction="200" ShadowDepth="4"/>
+                </TextBlock.Effect>
+            </TextBlock>
+            <TextBlock x:Name="tbMoreCam" HorizontalAlignment="left" Margin="243,409,0,0" TextWrapping="Wrap" Text="Add Another" VerticalAlignment="Top" FontSize="18" Width="75" Height="33" TextAlignment="Center" Visibility="Hidden">
+                <TextBlock.Effect>
+                    <DropShadowEffect BlurRadius="2" Color="#FFEBEBEB" Direction="200" ShadowDepth="4"/>
+                </TextBlock.Effect>
+            </TextBlock>
+            <TextBlock x:Name="tbDone" HorizontalAlignment="left" Margin="583,409,0,0" TextWrapping="Wrap" Text="Done" VerticalAlignment="Top" FontSize="18" Width="75" Height="33" TextAlignment="Center" Visibility="Hidden">
+                <TextBlock.Effect>
+                    <DropShadowEffect BlurRadius="2" Color="#FFEBEBEB" Direction="200" ShadowDepth="4"/>
+                </TextBlock.Effect>
+            </TextBlock>
+
             <TextBlock x:Name="txtVendorName" HorizontalAlignment="Left" Margin="261,41,0,0" TextWrapping="Wrap" Text="Vendor" VerticalAlignment="Top" FontSize="18"/>
             <TextBlock x:Name="txtCheckNumber" HorizontalAlignment="Left" Margin="261,77,0,0" TextWrapping="Wrap" Text="Check Number" VerticalAlignment="Top" FontSize="18"/>
             <TextBlock x:Name="txtDepositDate" HorizontalAlignment="Left" Margin="261,113,0,0" TextWrapping="Wrap" Text="Deposit Date" VerticalAlignment="Top" FontSize="18"/>

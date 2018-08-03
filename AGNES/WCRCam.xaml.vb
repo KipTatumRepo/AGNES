@@ -3,6 +3,7 @@
 Public Class WCRCam
     Dim dt As DispatcherTimer = New DispatcherTimer()
     Dim dt2 As DispatcherTimer = New DispatcherTimer()
+    Dim HoverDrop As Effects.DropShadowEffect, LeaveDrop As Effects.DropShadowEffect
     Public Sub New()
         InitializeComponent()
         ToggleEntryVisibility(0)
@@ -22,6 +23,9 @@ Public Class WCRCam
             cboVendor.Items.Add(Trim(c.VendorName))
         Next
         cboVendor.SelectedValuePath = Content.ToString
+        HoverDrop = New Effects.DropShadowEffect With {.Color = Color.FromRgb(235, 235, 235), .Direction = 200, .Opacity = 100, .ShadowDepth = 6, .BlurRadius = 2, .RenderingBias = Effects.RenderingBias.Performance}
+        LeaveDrop = New Effects.DropShadowEffect With {.Color = Color.FromRgb(235, 235, 235), .Direction = 200, .Opacity = 100, .ShadowDepth = 4, .BlurRadius = 2, .RenderingBias = Effects.RenderingBias.Performance}
+
     End Sub
     Public Sub PauseForMinimizing(ByVal sender As Object, ByVal e As EventArgs)
         CommandManager.InvalidateRequerySuggested()
@@ -36,11 +40,11 @@ Public Class WCRCam
         CommandManager.InvalidateRequerySuggested()
         tbCam.Text = "Did you have any CAM checks to enter today?"
         dt2.Stop()
-        btnYesCam.Visibility = Visibility.Visible
-        btnNo.Visibility = Visibility.Visible
+        tbYesCam.Visibility = Visibility.Visible
+        tbNo.Visibility = Visibility.Visible
     End Sub
 
-    Private Sub CamComplete(sender As Object, e As RoutedEventArgs) Handles btnDone.Click, btnNo.Click
+    Private Sub CamComplete(sender As Object, e As MouseButtonEventArgs) Handles tbDone.MouseDown, tbNo.MouseDown
         'TODO: Confirm all objects are being released - program is staying open after this point.
         If ConfirmAndSave() = False Then
             Close()
@@ -50,7 +54,7 @@ Public Class WCRCam
 
     End Sub
 
-    Private Sub AddCamCheck(sender As Object, e As RoutedEventArgs) Handles btnYesCam.Click, btnMoreCam.Click
+    Private Sub AddCamCheck(sender As Object, e As MouseButtonEventArgs) Handles tbYesCam.MouseDown, tbMoreCam.MouseDown
         If ConfirmAndSave() = False Then
             With dtpDepositDate
                 .DisplayDateStart = Now().AddDays(-14)
@@ -64,11 +68,21 @@ Public Class WCRCam
             tbCheckNotes.Text = ""
         End If
         ToggleEntryVisibility(1)
-        btnDone.Visibility = Visibility.Visible
-        btnMoreCam.Visibility = Visibility.Visible
-        btnYesCam.Visibility = Visibility.Hidden
-        btnNo.Visibility = Visibility.Hidden
+        tbDone.Visibility = Visibility.Visible
+        tbMoreCam.Visibility = Visibility.Visible
+        tbYesCam.Visibility = Visibility.Hidden
+        tbNo.Visibility = Visibility.Hidden
         cboVendor.Focus()
+    End Sub
+
+    Private Sub HoverOver(sender As TextBlock, e As MouseEventArgs) Handles tbYesCam.MouseEnter, tbNo.MouseEnter, tbMoreCam.MouseEnter, tbDone.MouseEnter
+        sender.Foreground = New SolidColorBrush(Colors.Blue)
+        sender.Effect = HoverDrop
+    End Sub
+
+    Private Sub HoverLeave(sender As TextBlock, e As MouseEventArgs) Handles tbYesCam.MouseLeave, tbNo.MouseLeave, tbMoreCam.MouseLeave, tbDone.MouseLeave
+        sender.Foreground = New SolidColorBrush(Colors.Black)
+        sender.Effect = LeaveDrop
     End Sub
 
     Private Sub ToggleEntryVisibility(onoff As Boolean)
