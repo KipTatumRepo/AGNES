@@ -104,6 +104,17 @@ Public Class WCRObject
                         For Each t In v.Tenders
                             ttl += t.TenderAmt
                         Next
+
+                        '///TESTING
+                        Dim amsg As New AgnesMessageBox With {.MsgSize = 0, .MsgType = 1, .TextStyle = 0}
+                        With amsg
+                            .tbTopSection.Text = "Validation!"
+                            .tbBottomSection.Text = "It looks like " & v.VendorName & "" & " has a total of " & FormatCurrency(ttl, 2) & ".  Is this correct?"
+                        End With
+                        amsg.ShowDialog()
+
+                        '///TESTING
+
                         If MsgBox("It looks like " & v.VendorName & "" & " has a total of " & FormatCurrency(ttl, 2) & ".  Is this correct?", MsgBoxStyle.YesNo, "Confirm total") = MessageBoxResult.Yes Then
                             Vendors.Add(v)
                         Else
