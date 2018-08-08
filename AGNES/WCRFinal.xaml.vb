@@ -1,6 +1,7 @@
 ﻿Public Class WCRFinal
     Dim HoverDrop As Effects.DropShadowEffect, LeaveDrop As Effects.DropShadowEffect
     Public Property InBalance As Boolean
+    Public Property CancelDueToBalanceIssue As Boolean
     Public Sub New()
         InitializeComponent()
         tbFinal.Text = "Okay, we're almost done!  Let's print invoices next - click the button when you're ready."
@@ -24,7 +25,11 @@
         If InBalance = True Then
             tbFinal.Text = "That's everything!  The WCR is in balance, but please make sure that you double check the numbers before you enter anything into MyFi - you're on your own from here on out!"
         Else
-            tbFinal.Text = "That's everything!  The WCR was out of balance, so please make sure that you document the reason for this and double check the numbers before you enter anything into MyFi - you're on your own from here on out!"
+            If CancelDueToBalanceIssue = False Then
+                tbFinal.Text = "That's everything!  The WCR was out of balance, so please make sure that you document the reason for this and double check the numbers before you enter anything into MyFi - you're on your own from here on out!"
+            Else
+                tbFinal.Text = "You cancelled the WCR final print job because of a balancing issue.  Please come back and see me when you resolve the issue and we try this again!"
+            End If
         End If
         tbPrintWCR.Visibility = Visibility.Hidden
         tbClose.Visibility = Visibility.Visible

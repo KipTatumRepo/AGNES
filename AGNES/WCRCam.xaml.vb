@@ -52,7 +52,7 @@ Public Class WCRCam
 
     Private Sub AddCamCheck(sender As Object, e As MouseButtonEventArgs) Handles tbYesCam.MouseDown
         With dtpDepositDate
-            .DisplayDateStart = Now().AddDays(-14)
+            .DisplayDateStart = WCR.WeekStart
             .DisplayDateEnd = Now()
             .SelectedDate = Now()
         End With
@@ -80,7 +80,8 @@ Public Class WCRCam
                 tbMoreCam.Visibility = Visibility.Visible
                 tbYesCam.Visibility = Visibility.Hidden
                 tbNo.Visibility = Visibility.Hidden
-                WCR.AddCamCheck(cboVendor.Text, tbCheckNumber.Text, FormatNumber(tbCheckAmount.Text, 2), dtpDepositDate.SelectedDate, tbCheckNotes.Text)
+                Dim dow As Byte = Weekday(dtpDepositDate.SelectedDate, FirstDayOfWeek.Friday)
+                WCR.AddCamCheck(cboVendor.Text, tbCheckNumber.Text, FormatNumber(tbCheckAmount.Text, 2), dtpDepositDate.SelectedDate, dow, tbCheckNotes.Text)
                 With dtpDepositDate
                     .DisplayDateStart = Now().AddDays(-14)
                     .DisplayDateEnd = Now()
@@ -164,7 +165,6 @@ Public Class WCRCam
         If tbCheckAmount.Text <> "" Or tbCheckNumber.Text <> "" Then
             If VendorNameisValid = True And CheckNumIsValid = True And CheckAmtIsValid = True And DepDateIsValid = True Then
                 ReturnVal = True
-                WCRModule.WCR.AddCamCheck(cboVendor.SelectedValue, tbCheckNumber.Text, FormatNumber(tbCheckAmount.Text, 2), dtpDepositDate.SelectedDate, tbCheckNotes.Text)
                 tbCam.Text = ""
             Else
                 tbCam.Text = "It looks like the check information isn't quite right.  Please double check it and try again."
