@@ -27,6 +27,7 @@ Public Class WCRCam
         LeaveDrop = New Effects.DropShadowEffect With {.Color = Color.FromRgb(235, 235, 235), .Direction = 200, .Opacity = 100, .ShadowDepth = 4, .BlurRadius = 2, .RenderingBias = Effects.RenderingBias.Performance}
 
     End Sub
+
     Public Sub PauseForMinimizing(ByVal sender As Object, ByVal e As EventArgs)
         CommandManager.InvalidateRequerySuggested()
         tbCam.Text = "Okay!  Let's move on to CAM checks.  I'll hang out down here so I'm not in your way, but I'll continue to walk you through the process." & Chr(13) & Chr(13) & "If you need additional help, just tap me on the shoulder with your cursor!"
@@ -44,35 +45,71 @@ Public Class WCRCam
         tbNo.Visibility = Visibility.Visible
     End Sub
 
-    Private Sub CamComplete(sender As Object, e As MouseButtonEventArgs) Handles tbDone.MouseDown, tbNo.MouseDown
+    Private Sub CamComplete(sender As Object, e As MouseButtonEventArgs) Handles tbNo.MouseDown
         'TODO: Confirm all objects are being released - program is staying open after this point.
-        If ConfirmAndSave() = False Then
-            Close()
-        Else
-            MsgBox("Not saved")
-        End If
-
+        Close()
     End Sub
 
-    Private Sub AddCamCheck(sender As Object, e As MouseButtonEventArgs) Handles tbYesCam.MouseDown, tbMoreCam.MouseDown
-        If ConfirmAndSave() = False Then
-            With dtpDepositDate
-                .DisplayDateStart = Now().AddDays(-14)
-                .DisplayDateEnd = Now()
-                .SelectedDate = Now()
-            End With
-            cboVendor.SelectedIndex = -1
-            cboVendor.Text = ""
-            tbCheckNumber.Text = ""
-            tbCheckAmount.Text = ""
-            tbCheckNotes.Text = ""
-        End If
+    Private Sub AddCamCheck(sender As Object, e As MouseButtonEventArgs) Handles tbYesCam.MouseDown
+        With dtpDepositDate
+            .DisplayDateStart = Now().AddDays(-14)
+            .DisplayDateEnd = Now()
+            .SelectedDate = Now()
+        End With
+        cboVendor.SelectedIndex = -1
+        cboVendor.Text = ""
+        tbCheckNumber.Text = ""
+        tbCheckAmount.Text = ""
+        tbCheckNotes.Text = ""
         ToggleEntryVisibility(1)
         tbDone.Visibility = Visibility.Visible
         tbMoreCam.Visibility = Visibility.Visible
         tbYesCam.Visibility = Visibility.Hidden
         tbNo.Visibility = Visibility.Hidden
         cboVendor.Focus()
+    End Sub
+    Private Sub AddAnotherCheck(sender As Object, e As MouseButtonEventArgs) Handles tbMoreCam.MouseDown, tbDone.MouseDown
+        Dim s As TextBlock = sender
+        If s.Name = "tbDone" Then
+            If cboVendor.SelectedIndex = -1 And tbCheckNumber.Text = "" And tbCheckAmount.Text = "" And tbCheckNotes.Text = "" Then Close()
+        End If
+        Select Case ConfirmAndSave()
+            Case True                   '// Okay to save
+                tbDone.Visibility = Visibility.Visible
+                tbMoreCam.Visibility = Visibility.Visible
+                tbYesCam.Visibility = Visibility.Hidden
+                tbNo.Visibility = Visibility.Hidden
+                SaveCamCheckEntry()
+                With dtpDepositDate
+                    .DisplayDateStart = Now().AddDays(-14)
+                    .DisplayDateEnd = Now()
+                    .SelectedDate = Now()
+                End With
+                cboVendor.SelectedIndex = -1
+                cboVendor.Text = ""
+                tbCheckNumber.Text = ""
+                tbCheckAmount.Text = ""
+                tbCheckNotes.Text = ""
+                ToggleEntryVisibility(1)
+                tbDone.Visibility = Visibility.Visible
+                tbMoreCam.Visibility = Visibility.Visible
+                tbYesCam.Visibility = Visibility.Hidden
+                tbNo.Visibility = Visibility.Hidden
+                cboVendor.Focus()
+            Case False                  '// Do not save
+        End Select
+    End Sub
+
+    Private Sub SaveCamCheckEntry()
+        Dim NCC As New CamCheck
+        With NCC
+            .VendorName = cboVendor.Text
+            .CheckNumber = tbCheckNumber.Text
+            .DepositDate = dtpDepositDate.SelectedDate
+            .CheckAmt = FormatNumber(tbCheckAmount.Text, 2)
+            .Notes = tbCheckNotes.Text
+        End With
+        WCR.CamChecks.Add(NCC)
     End Sub
 
     Private Sub HoverOver(sender As TextBlock, e As MouseEventArgs) Handles tbYesCam.MouseEnter, tbNo.MouseEnter, tbMoreCam.MouseEnter, tbDone.MouseEnter
@@ -114,16 +151,15 @@ Public Class WCRCam
     End Sub
 
     Private Function ConfirmAndSave() As Boolean
-        '// Check for data in each field and validate format.  If all are valid, save.
-        Dim VendorNameValid As Boolean, CheckNumValid As Boolean, CheckAmtValid As Boolean, DepDateValid As Boolean, ReturnVal As Boolean
-        If cboVendor.SelectedIndex = -1 Then VendorNameValid = False
-        If tbCheckNumber.Text <> "" Then CheckNumValid = True
+        '// Check for data in each field and validate format.  If all are valid, save via returning a TRUE value.  False indicates something is wrong.
+        Dim VendorNameisValid As Boolean, CheckNumIsValid As Boolean, CheckAmtIsValid As Boolean, DepDateIsValid As Boolean, ReturnVal As Boolean
+        If cboVendor.SelectedIndex > -1 Then VendorNameisValid = True
+        If tbCheckNumber.Text <> "" Then CheckNumIsValid = True
         If tbCheckAmount.Text <> "" Then
             Try
                 Dim amtvalid As Double = FormatNumber(tbCheckAmount.Text, 2)
-                CheckAmtValid = True
+                CheckAmtIsValid = True
             Catch ex As Exception
-                CheckAmtValid = False
                 tbCheckAmount.SelectAll()
                 tbCheckAmount.Focus()
             End Try
@@ -131,20 +167,19 @@ Public Class WCRCam
         If dtpDepositDate.Text <> "" Then
             Try
                 Dim dtvalid As Date = FormatDateTime(dtpDepositDate.SelectedDate, DateFormat.ShortDate)
-                DepDateValid = True
+                DepDateIsValid = True
             Catch ex As Exception
-                DepDateValid = False
                 dtpDepositDate.Focus()
             End Try
         End If
         If tbCheckAmount.Text <> "" Or tbCheckNumber.Text <> "" Then
-            If VendorNameValid = True And CheckAmtValid = True And CheckNumValid = True And DepDateValid = True Then
-                ReturnVal = False
+            If VendorNameisValid = True And CheckNumIsValid = True And CheckAmtIsValid = True And DepDateIsValid = True Then
+                ReturnVal = True
                 WCRModule.WCR.AddCamCheck(cboVendor.SelectedValue, tbCheckNumber.Text, FormatNumber(tbCheckAmount.Text, 2), dtpDepositDate.SelectedDate, tbCheckNotes.Text)
                 tbCam.Text = ""
             Else
                 tbCam.Text = "It looks like the check information isn't quite right.  Please double check it and try again."
-                ReturnVal = True
+                ReturnVal = False
             End If
         End If
         Return ReturnVal

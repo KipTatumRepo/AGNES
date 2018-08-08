@@ -22,7 +22,7 @@
                     <DropShadowEffect BlurRadius="2" Color="#FFEBEBEB" Direction="200" ShadowDepth="4"/>
                 </TextBlock.Effect>
             </TextBlock>
-            <TextBlock x:Name="tbMoreCam" HorizontalAlignment="left" Margin="243,409,0,0" TextWrapping="Wrap" Text="Add Another" VerticalAlignment="Top" FontSize="18" Width="75" Height="33" TextAlignment="Center" Visibility="Hidden">
+            <TextBlock x:Name="tbMoreCam" HorizontalAlignment="left" Margin="276,409,0,0" TextWrapping="Wrap" Text="Add Another" VerticalAlignment="Top" FontSize="18" Width="121" Height="33" TextAlignment="Center" Visibility="Hidden">
                 <TextBlock.Effect>
                     <DropShadowEffect BlurRadius="2" Color="#FFEBEBEB" Direction="200" ShadowDepth="4"/>
                 </TextBlock.Effect>
