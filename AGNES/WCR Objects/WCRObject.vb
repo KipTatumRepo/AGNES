@@ -16,7 +16,8 @@ Public Class WCRObject
             MealCardPayments As Double, MealCardCredits As Double, Ecoupons As Double, Ecash As Double, ScratchCoupons As Double,
             ExpiredCards As Double, IoCharges As Double, CompassPayment As Double, VendorPayment As Double, DueFromVendors As Double,
             FreedomPay As Double, Amex As Double, VisaMcDisc As Double, CreditCards As Double, InvoiceTotal As Double, ConciergeCash As Double,
-            CCClear As Double, AmexClear As Double
+            CCClear As Double, AmexClear As Double, CamCheckTotal As Double, FriCam As Double, MonCam As Double, TueCam As Double, WedCam As Double,
+            ThuCam As Double
     Public InvoicesArePresent As Integer
 
     Public Sub New()
@@ -109,8 +110,8 @@ Public Class WCRObject
         End If
     End Sub
 
-    Public Sub AddCamCheck(Vnm As String, Num As String, Amt As Double, Dte As Date, Nts As String)
-        Dim c As New CamCheck With {.VendorName = Vnm, .CheckNumber = Num, .CheckAmt = Amt, .DepositDate = Dte, .Notes = Nts}
+    Public Sub AddCamCheck(Vnm As String, Num As String, Amt As Double, Dte As Date, Dow As Byte, Nts As String)
+        Dim c As New CamCheck With {.VendorName = Vnm, .CheckNumber = Num, .CheckAmt = Amt, .DepositDate = Dte, .DayofWeek = Dow, .Notes = Nts}
         CamChecks.Add(c)
     End Sub
 
@@ -159,7 +160,11 @@ Public Class WCRObject
         Else
             'TODO: ADD APPLICATION STYLE MESSAGEBOX
             Dim yn As MsgBoxResult = MsgBox("The WCR is out of balance in the amount of " & FormatCurrency(balanced, 2) & ".  Do you wish to continue?", vbYesNo)
-            If yn = vbNo Then Exit Sub
+            If yn = vbNo Then
+                disp.CancelDueToBalanceIssue = True
+                disp.InBalance = False
+                Exit Sub
+            End If
         End If
 
         Dim xps_writer As XpsDocumentWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue)
@@ -534,16 +539,37 @@ Public Class WCRObject
 
     Private Sub PopulateCreditArray()
         'TODO: ADD CAM CHECK CAPTURE ROUTINE
+        '// Loop through CAM checks, add to specific weekday total, and tally sum total of checks
+        For Each cc As CamCheck In CamChecks
+            Select Case cc.DayofWeek
+                Case 1  'Friday
+                    FriCam = cc.CheckAmt
+                    CamCheckTotal += cc.CheckAmt
+                Case 4  'Monday
+                    MonCam = cc.CheckAmt
+                    CamCheckTotal += cc.CheckAmt
+                Case 5  'Tuesday
+                    TueCam = cc.CheckAmt
+                    CamCheckTotal += cc.CheckAmt
+                Case 6  'Wednesday
+                    WedCam = cc.CheckAmt
+                    CamCheckTotal += cc.CheckAmt
+                Case 7  'Thursday
+                    ThuCam = cc.CheckAmt
+                    CamCheckTotal += cc.CheckAmt
+            End Select
+        Next
+
         'TODO: ADD TOTAL CAM REVENUE CALCULATION
         Dim CamTotal As Double = 0
         CreditArray(0, 0) = "353008"
         CreditArray(1, 0) = "CAM Revenue"
-        CreditArray(2, 0) = FormatCurrency(0, 2)
-        CreditArray(3, 0) = FormatCurrency(0, 2)
-        CreditArray(4, 0) = FormatCurrency(0, 2)
-        CreditArray(5, 0) = FormatCurrency(0, 2)
-        CreditArray(6, 0) = FormatCurrency(CamToCompass + PotentialKpi, 2)
-        CamTotal += (CamToCompass + PotentialKpi)
+        CreditArray(2, 0) = FormatCurrency(FriCam, 2)
+        CreditArray(3, 0) = FormatCurrency(MonCam, 2)
+        CreditArray(4, 0) = FormatCurrency(TueCam, 2)
+        CreditArray(5, 0) = FormatCurrency(WedCam, 2)
+        CreditArray(6, 0) = FormatCurrency(CamToCompass + PotentialKpi + ThuCam, 2)
+        CamTotal = (CamToCompass + PotentialKpi + CamCheckTotal)
         CreditArray(7, 0) = FormatCurrency(CamTotal, 2)
 
         CreditArray(0, 1) = "212910"
@@ -656,15 +682,15 @@ Public Class WCRObject
     End Sub
 
     Private Sub PopulateDepositArray()
-        'TODO: ADD CONCIERGE DEPOSIT ROUTINES
+
         DepositArray(0, 0) = "105200"
         DepositArray(1, 0) = "Depository Cash"
-        DepositArray(2, 0) = FormatCurrency(0, 2)
-        DepositArray(3, 0) = FormatCurrency(0, 2)
-        DepositArray(4, 0) = FormatCurrency(0, 2)
-        DepositArray(5, 0) = FormatCurrency(0, 2)
-        DepositArray(6, 0) = FormatCurrency(0, 2)
-        DepositArray(7, 0) = FormatCurrency(ConciergeCash, 2)
+        DepositArray(2, 0) = FormatCurrency(FriCam, 2)
+        DepositArray(3, 0) = FormatCurrency(MonCam, 2)
+        DepositArray(4, 0) = FormatCurrency(TueCam, 2)
+        DepositArray(5, 0) = FormatCurrency(WedCam, 2)
+        DepositArray(6, 0) = FormatCurrency(ConciergeCash + ThuCam, 2)
+        DepositArray(7, 0) = FormatCurrency(ConciergeCash + CamCheckTotal, 2)
 
         DepositArray(0, 1) = "112265"
         DepositArray(1, 1) = "Credit Card Clearing"
@@ -672,7 +698,7 @@ Public Class WCRObject
         DepositArray(3, 1) = FormatCurrency(0, 2)
         DepositArray(4, 1) = FormatCurrency(0, 2)
         DepositArray(5, 1) = FormatCurrency(0, 2)
-        DepositArray(6, 1) = FormatCurrency(0, 2)
+        DepositArray(6, 1) = FormatCurrency(CCClear, 2)
         DepositArray(7, 1) = FormatCurrency(CCClear, 2)
 
         DepositArray(0, 2) = "112266"
@@ -681,7 +707,7 @@ Public Class WCRObject
         DepositArray(3, 2) = FormatCurrency(0, 2)
         DepositArray(4, 2) = FormatCurrency(0, 2)
         DepositArray(5, 2) = FormatCurrency(0, 2)
-        DepositArray(6, 2) = FormatCurrency(0, 2)
+        DepositArray(6, 2) = FormatCurrency(AmexClear, 2)
         DepositArray(7, 2) = FormatCurrency(AmexClear, 2)
     End Sub
 
@@ -735,11 +761,11 @@ Public Class WCRObject
 
     Private Function WCRInBalance() As Double
         Dim creditsection As Double, debitanddepositsection As Double
-        creditsection = CamToCompass + PotentialKpi + PotentialKpi - MealCardCredits
+        creditsection = CamToCompass + PotentialKpi + PotentialKpi - MealCardCredits + CamCheckTotal
         If InvoiceTotal > 0 Then creditsection -= InvoiceTotal
-        debitanddepositsection = MealCardPayments + PotentialKpi + Ecoupons + Ecash + IoCharges + ScratchCoupons + ExpiredCards + ConciergeCash + CCClear + AmexClear
+        debitanddepositsection = MealCardPayments + PotentialKpi + Ecoupons + Ecash + IoCharges + ScratchCoupons + ExpiredCards + ConciergeCash + CCClear + AmexClear + CamCheckTotal
         If InvoiceTotal < 0 Then debitanddepositsection -= InvoiceTotal
-        Return creditsection - debitanddepositsection
+        Return Math.Round(creditsection, 2) - Math.Round(debitanddepositsection, 2)
 
     End Function
 
