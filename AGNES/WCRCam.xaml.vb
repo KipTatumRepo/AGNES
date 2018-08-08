@@ -68,6 +68,7 @@ Public Class WCRCam
         tbNo.Visibility = Visibility.Hidden
         cboVendor.Focus()
     End Sub
+
     Private Sub AddAnotherCheck(sender As Object, e As MouseButtonEventArgs) Handles tbMoreCam.MouseDown, tbDone.MouseDown
         Dim s As TextBlock = sender
         If s.Name = "tbDone" Then
@@ -79,7 +80,7 @@ Public Class WCRCam
                 tbMoreCam.Visibility = Visibility.Visible
                 tbYesCam.Visibility = Visibility.Hidden
                 tbNo.Visibility = Visibility.Hidden
-                SaveCamCheckEntry()
+                WCR.AddCamCheck(cboVendor.Text, tbCheckNumber.Text, FormatNumber(tbCheckAmount.Text, 2), dtpDepositDate.SelectedDate, tbCheckNotes.Text)
                 With dtpDepositDate
                     .DisplayDateStart = Now().AddDays(-14)
                     .DisplayDateEnd = Now()
@@ -98,18 +99,6 @@ Public Class WCRCam
                 cboVendor.Focus()
             Case False                  '// Do not save
         End Select
-    End Sub
-
-    Private Sub SaveCamCheckEntry()
-        Dim NCC As New CamCheck
-        With NCC
-            .VendorName = cboVendor.Text
-            .CheckNumber = tbCheckNumber.Text
-            .DepositDate = dtpDepositDate.SelectedDate
-            .CheckAmt = FormatNumber(tbCheckAmount.Text, 2)
-            .Notes = tbCheckNotes.Text
-        End With
-        WCR.CamChecks.Add(NCC)
     End Sub
 
     Private Sub HoverOver(sender As TextBlock, e As MouseEventArgs) Handles tbYesCam.MouseEnter, tbNo.MouseEnter, tbMoreCam.MouseEnter, tbDone.MouseEnter
