@@ -20,22 +20,12 @@
                     <DropShadowEffect BlurRadius="2" Color="#FFEBEBEB" Direction="200" ShadowDepth="4"/>
                 </TextBlock.Effect>
             </TextBlock>
-            <TextBlock x:Name="tbLoadTenders" HorizontalAlignment="left" Margin="434,359,0,0" TextWrapping="Wrap" Text="Select Tender Summary file" VerticalAlignment="Top" FontSize="18" Width="181" Height="53" TextAlignment="Center" Visibility="Hidden">
+            <TextBlock x:Name="tbLoadTenders" HorizontalAlignment="left" Margin="434,359,0,0" TextWrapping="Wrap" Text="Select Tender Summary file(s)" VerticalAlignment="Top" FontSize="18" Width="181" Height="53" TextAlignment="Center" Visibility="Hidden">
                 <TextBlock.Effect>
                     <DropShadowEffect BlurRadius="2" Color="#FFEBEBEB" Direction="200" ShadowDepth="4"/>
                 </TextBlock.Effect>
             </TextBlock>
-            <TextBlock x:Name="tbYes" HorizontalAlignment="left" Margin="305,359,0,0" TextWrapping="Wrap" Text="Yes, that's correct!" VerticalAlignment="Top" FontSize="18" Width="181" Height="53" TextAlignment="Center" Visibility="Hidden">
-                <TextBlock.Effect>
-                    <DropShadowEffect BlurRadius="2" Color="#FFEBEBEB" Direction="200" ShadowDepth="4"/>
-                </TextBlock.Effect>
-            </TextBlock>
-            <TextBlock x:Name="tbNo" HorizontalAlignment="left" Margin="557,359,0,0" TextWrapping="Wrap" Text="No, that's wrong." VerticalAlignment="Top" FontSize="18" Width="181" Height="53" TextAlignment="Center" Visibility="Hidden">
-                <TextBlock.Effect>
-                    <DropShadowEffect BlurRadius="2" Color="#FFEBEBEB" Direction="200" ShadowDepth="4"/>
-                </TextBlock.Effect>
-            </TextBlock>
-            <TextBlock x:Name="tbAnother" HorizontalAlignment="left" Margin="305,359,0,0" TextWrapping="Wrap" Text="Load another vendor file" VerticalAlignment="Top" FontSize="18" Width="181" Height="53" TextAlignment="Center" Visibility="Hidden">
+            <TextBlock x:Name="tbAnother" HorizontalAlignment="left" Margin="305,359,0,0" TextWrapping="Wrap" Text="Load additional vendor files" VerticalAlignment="Top" FontSize="18" Width="181" Height="53" TextAlignment="Center" Visibility="Hidden">
                 <TextBlock.Effect>
                     <DropShadowEffect BlurRadius="2" Color="#FFEBEBEB" Direction="200" ShadowDepth="4"/>
                 </TextBlock.Effect>

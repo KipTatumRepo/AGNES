@@ -119,6 +119,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Application Objects\AgnesMessageBox.xaml.vb">
+      <DependentUpon>AgnesMessageBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BGCRM.xaml.vb">
       <DependentUpon>BGCRM.xaml</DependentUpon>
     </Compile>
@@ -272,6 +275,10 @@
       <DependentUpon>WCRHello.xaml</DependentUpon>
     </Compile>
     <Compile Include="WCR Objects\WCRObject.vb" />
+    <Page Include="Application Objects\AgnesMessageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="BGCRM.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -465,6 +472,7 @@
       <DependentUpon>WCRModule.edmx</DependentUpon>
       <LastGenOutput>WCRModule.vb</LastGenOutput>
     </Content>
+    <Resource Include="Resources\msgbox.png" />
     <Resource Include="Resources\WCR.png" />
     <Resource Include="Resources\Options.png" />
     <Resource Include="Resources\More.png" />

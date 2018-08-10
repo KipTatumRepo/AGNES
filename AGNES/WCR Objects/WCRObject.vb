@@ -12,101 +12,131 @@ Public Class WCRObject
     Public CreditArray(8, 8) As String
     Public DebitArray(8, 9) As String
     Public DepositArray(8, 3) As String
+    Public InvoicesArePresent As Integer
     Dim GrossSales As Double, SalesTax As Double, NetSales As Double, CamToCompass As Double, PotentialKpi As Double,
             MealCardPayments As Double, MealCardCredits As Double, Ecoupons As Double, Ecash As Double, ScratchCoupons As Double,
             ExpiredCards As Double, IoCharges As Double, CompassPayment As Double, VendorPayment As Double, DueFromVendors As Double,
             FreedomPay As Double, Amex As Double, VisaMcDisc As Double, CreditCards As Double, InvoiceTotal As Double, ConciergeCash As Double,
             CCClear As Double, AmexClear As Double, CamCheckTotal As Double, FriCam As Double, MonCam As Double, TueCam As Double, WedCam As Double,
-            ThuCam As Double
-    Public InvoicesArePresent As Integer
+            ThuCam As Double, ConciergeTenderLoaded As Boolean
+
 
     Public Sub New()
+        'TODO: Fetch user information
         Dim ph As String = ""
     End Sub
 
-    Public Sub LoadTenders(ByRef disp As WCRHello)
-        Dim vn As String, fd As New OpenFileDialog()
+    Public Sub LoadTenders(ByRef disp As WCRHello, ByRef disptext As TextBlock)
+        Dim vn As String, fd As New OpenFileDialog() With {.Multiselect = True}
         fd.DefaultExt = ".xls"
         fd.Filter = "Excel (97-2003) documents (.xls)|*.xls"
         Dim result As Nullable(Of Boolean) = fd.ShowDialog()
         If result = True Then
-            Dim filename As String = fd.FileName, BadFile As Boolean
-            Dim xlApp As New Excel.Application(), wb As Excel.Workbook = xlApp.Workbooks.Open(filename)
-            Dim ws As Excel.Worksheet = wb.Sheets(1), valz As String = "", ct As Integer = 1
-            Do Until Left(valz, 13) = "Selected For:"
-                valz = CType(ws.Cells(ct, 1), Excel.Range).Value
-                ct += 1
-            Loop
-            vn = GetVendorNameFromString(valz)
-            Dim tn As Integer, v As New VendorObject With {.VendorName = vn}
-            ct += 3
-            Try
-                Do Until valz = "Subtotal"
-                    '// Check for Suspend and Dept Charges
+            Dim SelectedFile As String, BadFile As Byte = 0, filecount As Byte = fd.FileNames.Count, xlApp As New Excel.Application()
+            For Each SelectedFile In fd.FileNames
+                Dim wb As Excel.Workbook = xlApp.Workbooks.Open(SelectedFile)
+                Dim ws As Excel.Worksheet = wb.Sheets(1), valz As String = "", ct As Integer = 1, badvname As Boolean = False
+                Try
+                    Do Until Left(valz, 13) = "Selected For:"
+                        valz = CType(ws.Cells(ct, 1), Excel.Range).Value
+                        ct += 1
+                    Loop
+                Catch ex As Exception
+                    MsgBox("Error finding the vendor name in " & SelectedFile & ": " & ex.Message & ".  Operation canceled.")
+                    badvname = True
+                    BadFile += 1
+                End Try
+                If badvname = False Then
+                    vn = GetVendorNameFromString(valz)
+                    Dim tn As Integer, v As New VendorObject With {.VendorName = vn}
+                    ct += 3
+                    Try
+                        Do Until valz = "Subtotal"
+                            '// Check for Suspend and Dept Charges
+                            tn = CType(ws.Cells(ct, 1), Excel.Range).Value
+                            Select Case tn
+                                Case 15         '/ Dept Charges
+                                    If MsgBox("IO Charges are present in this tender.  Do you confirm that the required documentation has been received?", MsgBoxStyle.YesNo, "This tender type requires validation!") = MessageBoxResult.Yes Then
+                                        v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, CType(ws.Cells(ct, 2), Excel.Range).Value,
+                                FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                                    Else
+                                        v.Tenders.Clear()
+                                        disp.tbHello.Text = "I've terminated the tender import for " & v.VendorName & ".  Please edit the file, if needed, and reload."
+                                        BadFile += 1
+                                        Exit Do
+                                    End If
+                                Case 20, 36, 51 '/ IOU charges, IOU credit, IOU FS
+                                    MsgBox("Sorry, " & MySettings.Default.UserName & ", but IOU charges and credits are no longer allowed.", MsgBoxStyle.OkOnly, "Invalid tender type found!")
+                                    v.Tenders.Clear()
+                                    disp.tbHello.Text = "I've terminated the tender import for " & v.VendorName & ".  Please edit the file, if needed, and reload."
+                                    BadFile += 1
+                                    Exit Do
+                                Case 37         '/ Suspend
+                                    MsgBox("Sorry, " & MySettings.Default.UserName & ", but Suspend charges are no longer allowed.", MsgBoxStyle.OkOnly, "Invalid tender type found!")
+                                    v.Tenders.Clear()
+                                    disp.tbHello.Text = "I've terminated the tender import for " & v.VendorName & ".  Please edit the file, if needed, and reload."
+                                    BadFile += 1
+                                    Exit Do
+                                Case 2, 3, 5, 91, 93, 94       '// Visa/Mastercard/Discover
+                                    If v.VendorName <> "Concierge" Then
+                                        v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "VisaMastercard", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                                    Else
+                                        v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "CCClearing", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                                    End If
+                                Case 57                     '// Coupons (used by Lunchbox for their internal promotions)
+                                    MsgBox("FYI, " & MySettings.Default.UserName & ", I'm omitting the Coupon tender for " & vn & " in the amount of " & FormatCurrency(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                                Case 83                     '// Freedompay [pass-through]
+                                    v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "FreedomPay", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                                Case 4, 92                     '// AMEX
+                                    If v.VendorName <> "Concierge" Then
+                                        v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "AMEX", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                                    Else
+                                        v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "AMEXClearing", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                                    End If
+                                Case Else
+                                    v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, CType(ws.Cells(ct, 2), Excel.Range).Value, FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                            End Select
+                            ct += 1
+                            valz = CType(ws.Cells(ct, 1), Excel.Range).Value
+                        Loop
+                        v.Recalculate()
+                        Dim ttl As Double = 0
+                        For Each t In v.Tenders
+                            ttl += t.TenderAmt
+                        Next
 
-                    tn = CType(ws.Cells(ct, 1), Excel.Range).Value
-                    Select Case tn
-                        Case 15         '/ Dept Charges
-                            If MsgBox("IO Charges are present in this tender.  Do you confirm that the required documentation has been received?", MsgBoxStyle.YesNo, "This tender type requires validation!") = MessageBoxResult.Yes Then
-                                v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, CType(ws.Cells(ct, 2), Excel.Range).Value,
-                            FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
-                            Else
-                                v.Tenders.Clear()
-                                disp.tbHello.Text = "I've terminated the tender import for " & v.VendorName & ".  Please edit the file, if needed, and reload."
-                                BadFile = True
-                                Exit Do
-                            End If
-                        Case 20, 36, 51 '/ IOU charges, IOU credit, IOU FS
-                            MsgBox("Sorry, " & MySettings.Default.UserName & ", but IOU charges and credits are no longer allowed.", MsgBoxStyle.OkOnly, "Invalid tender type found!")
-                            v.Tenders.Clear()
-                            disp.tbHello.Text = "I've terminated the tender import for " & v.VendorName & ".  Please edit the file, if needed, and reload."
-                            BadFile = True
-                            Exit Do
-                        Case 37         '/ Suspend
-                            MsgBox("Sorry, " & MySettings.Default.UserName & ", but Suspend charges are no longer allowed.", MsgBoxStyle.OkOnly, "Invalid tender type found!")
-                            v.Tenders.Clear()
-                            disp.tbHello.Text = "I've terminated the tender import for " & v.VendorName & ".  Please edit the file, if needed, and reload."
-                            BadFile = True
-                            Exit Do
-                        Case 2, 3, 5, 91, 93, 94       '// Visa/Mastercard/Discover
-                            If v.VendorName <> "Concierge" Then
-                                v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "VisaMastercard", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
-                            Else
-                                v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "CCClearing", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
-                            End If
-                        Case 57                     '// Coupons (used by Lunchbox for their internal promotions)
-                            MsgBox("FYI, " & MySettings.Default.UserName & ", I'm omitting the Coupon tender for " & vn & " in the amount of " & FormatCurrency(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
-                        Case 83                     '// Freedompay [pass-through]
-                            v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "FreedomPay", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
-                        Case 4, 92                     '// AMEX
-                            If v.VendorName <> "Concierge" Then
-                                v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "AMEX", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
-                            Else
-                                v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "AMEXClearing", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
-                            End If
+                        ''///TESTING
+                        'Dim amsg As New AgnesMessageBox With {.MsgSize = 0, .MsgType = 1, .TextStyle = 0}
+                        'With amsg
+                        '    .tbTopSection.Text = "Validation!"
+                        '    .tbBottomSection.Text = "It looks like " & v.VendorName & "" & " has a total of " & FormatCurrency(ttl, 2) & ".  Is this correct?"
+                        'End With
+                        'amsg.ShowDialog()
 
-                        Case Else
-                            v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, CType(ws.Cells(ct, 2), Excel.Range).Value, FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
-                    End Select
-                    ct += 1
-                    valz = CType(ws.Cells(ct, 1), Excel.Range).Value
-                Loop
-                v.Recalculate()
-                Vendors.Add(v)
-            Catch ex As InvalidCastException
-                BadFile = True
-            Catch OtherEx As Exception
-                MsgBox("Encountered error " & OtherEx.Message)
-                'TODO: ADD OTHER TENDER-RELATED ERROR CATCHES
-            Finally
-                wb.Close()
-                xlApp.Quit()
-                ReleaseObject(ws)
-                ReleaseObject(wb)
-                ReleaseObject(xlApp)
-                disp.PrintVendorTotalTendersToScreen(v, BadFile)
-            End Try
+                        ''///TESTING
 
+                        If MsgBox("It looks like " & v.VendorName & "" & " has a total of " & FormatCurrency(ttl, 2) & ".  Is this correct?", MsgBoxStyle.YesNo, "Confirm total") = MessageBoxResult.Yes Then
+                            Vendors.Add(v)
+                        Else
+                            MsgBox("Vendor not added.  Please try to add again after resolving discrepancy.")
+                            BadFile += 1
+                        End If
+                    Catch ex As InvalidCastException
+                        BadFile += 1
+                    Catch OtherEx As Exception
+                        MsgBox("Encountered error " & OtherEx.Message)
+                        BadFile += 1
+                        'TODO: ADD OTHER TENDER-RELATED ERROR CATCHES
+                    Finally
+                        wb.Close()
+                        ReleaseObject(ws)
+                        ReleaseObject(wb)
+                    End Try
+                End If
+            Next
+            xlApp.Quit()
+            ReleaseObject(xlApp)
+            disp.TenderLoadComplete(filecount, BadFile)
         End If
     End Sub
 
@@ -331,8 +361,11 @@ Public Class WCRObject
             Dim cr As New TableRow With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI")}
 
             '// Add the invoice and date rows
-            Dim rc As Integer
-            For rc = 1 To Vendors.Count + 2
+            Dim rc As Integer, invcnt As Byte
+            invcnt = Vendors.Count + 2
+            If ConciergeTenderLoaded = True Then invcnt -= 1
+
+            For rc = 1 To invcnt
                 t.RowGroups(0).Rows.Add(New TableRow())
             Next rc
 
@@ -345,14 +378,16 @@ Public Class WCRObject
 
             Dim v As VendorObject, ct As Integer = 1, invtotal As Double
             For Each v In Vendors
-                cr = t.RowGroups(0).Rows(ct)
-                cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
-                cr.Cells.Add(New TableCell(New Paragraph(New Run(v.InvoiceName)) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
-                cr.Cells.Add(New TableCell(New Paragraph(New Run(v.VendorNumber)) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
-                cr.Cells.Add(New TableCell(New Paragraph(New Run(v.InvoiceNumber)) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
-                cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(v.DueFromVendor, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
-                invtotal += v.DueFromVendor
-                ct += 1
+                If v.VendorName <> "Concierge" Then
+                    cr = t.RowGroups(0).Rows(ct)
+                    cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
+                    cr.Cells.Add(New TableCell(New Paragraph(New Run(v.InvoiceName)) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+                    cr.Cells.Add(New TableCell(New Paragraph(New Run(v.VendorNumber)) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+                    cr.Cells.Add(New TableCell(New Paragraph(New Run(v.InvoiceNumber)) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+                    cr.Cells.Add(New TableCell(New Paragraph(New Run(FormatCurrency(v.DueFromVendor, 2))) With {.TextAlignment = TextAlignment.Right, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+                    invtotal += v.DueFromVendor
+                    ct += 1
+                End If
             Next
             cr = t.RowGroups(0).Rows(ct)
             cr.Cells.Add(New TableCell(New Paragraph(New Run(""))))
@@ -534,6 +569,8 @@ Public Class WCRObject
             .Add(p)
             .Add(t)
             .Add(New Section())
+            'TODO: CHANGE AUTHORSHIP TO FULL SYSTEM NAME LATER
+            .Add(New Paragraph(New Run("Prepared " & Now() & " by " & Environment.UserName)))
         End With
     End Sub
 
@@ -560,7 +597,6 @@ Public Class WCRObject
             End Select
         Next
 
-        'TODO: ADD TOTAL CAM REVENUE CALCULATION
         Dim CamTotal As Double = 0
         CreditArray(0, 0) = "353008"
         CreditArray(1, 0) = "CAM Revenue"
@@ -581,16 +617,16 @@ Public Class WCRObject
         CreditArray(6, 1) = FormatCurrency(PotentialKpi, 2)
         CreditArray(7, 1) = FormatCurrency(PotentialKpi, 2)
 
-        Dim Owed As Double = 0
-        If InvoiceTotal > 0 Then Owed = -InvoiceTotal
+        Dim owed As Double = 0
+        If InvoiceTotal > 0 Then owed = InvoiceTotal
         CreditArray(0, 2) = "411007"
         CreditArray(1, 2) = "Net Owed to Vendor"
         CreditArray(2, 2) = FormatCurrency(0, 2)
         CreditArray(3, 2) = FormatCurrency(0, 2)
         CreditArray(4, 2) = FormatCurrency(0, 2)
         CreditArray(5, 2) = FormatCurrency(0, 2)
-        CreditArray(6, 2) = FormatCurrency(Owed, 2)
-        CreditArray(7, 2) = FormatCurrency(Owed, 2)
+        CreditArray(6, 2) = FormatCurrency(owed, 2)
+        CreditArray(7, 2) = FormatCurrency(owed, 2)
 
         CreditArray(0, 3) = "219301"
         CreditArray(1, 3) = "Mealcard Deposit"
@@ -762,7 +798,7 @@ Public Class WCRObject
     Private Function WCRInBalance() As Double
         Dim creditsection As Double, debitanddepositsection As Double
         creditsection = CamToCompass + PotentialKpi + PotentialKpi - MealCardCredits + CamCheckTotal
-        If InvoiceTotal > 0 Then creditsection -= InvoiceTotal
+        If InvoiceTotal > 0 Then creditsection += InvoiceTotal
         debitanddepositsection = MealCardPayments + PotentialKpi + Ecoupons + Ecash + IoCharges + ScratchCoupons + ExpiredCards + ConciergeCash + CCClear + AmexClear + CamCheckTotal
         If InvoiceTotal < 0 Then debitanddepositsection -= InvoiceTotal
         Return Math.Round(creditsection, 2) - Math.Round(debitanddepositsection, 2)

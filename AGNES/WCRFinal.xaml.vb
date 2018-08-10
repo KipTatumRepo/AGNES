@@ -58,8 +58,10 @@
         If y = 1 Then
             Dim yn As MsgBoxResult = MsgBox("Close WCR?", vbYesNo)
             If yn = vbNo Then Exit Sub
+            WCRModule.UserClosed = True
+        Else
+            WCRModule.UserClosed = False
         End If
-        WCRModule.UserClosed = True
         Close()
     End Sub
 
