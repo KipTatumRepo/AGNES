@@ -575,7 +575,6 @@ Public Class WCRObject
     End Sub
 
     Private Sub PopulateCreditArray()
-        'TODO: ADD CAM CHECK CAPTURE ROUTINE
         '// Loop through CAM checks, add to specific weekday total, and tally sum total of checks
         For Each cc As CamCheck In CamChecks
             Select Case cc.DayofWeek

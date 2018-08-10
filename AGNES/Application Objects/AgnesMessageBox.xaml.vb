@@ -53,7 +53,16 @@
             End Select
         End Set
     End Property
-
+    Private _allowcopy As Boolean
+    Public Property AllowCopy As Boolean
+        Get
+            Return _allowcopy
+        End Get
+        Set(value As Boolean)
+            _allowcopy = value
+            'TODO: Copy feature enable on messagebox
+        End Set
+    End Property
     Private Sub LargeVersion()
         Height = 400
         Width = 800
@@ -131,6 +140,5 @@
     Private Sub ClickThree()
         Dim ph As String = ""
     End Sub
-
 
 End Class
