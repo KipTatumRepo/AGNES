@@ -6,16 +6,13 @@
         xmlns:local="clr-namespace:AGNES"
         mc:Ignorable="d"
         Title="AgnesMessageBox" Height="400" Width="800" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen">
-    <Window.Effect>
-        <DropShadowEffect Opacity="0.5" BlurRadius="18" ShadowDepth="6" Direction="270"/>
-    </Window.Effect>
     <Window.Background>
         <ImageBrush ImageSource="/AGNES;component/Resources/msgbox.png"/>
     </Window.Background>
+    <Window.Effect>
+        <DropShadowEffect Opacity="0.7" BlurRadius="14" ShadowDepth="6" Direction="240"/>
+    </Window.Effect>
     <Grid>
-        <Grid.Background>
-            <ImageBrush/>
-        </Grid.Background>
         <Border x:Name="brdButtonOne" BorderBrush="{x:Null}" Height="40" Width="112" Margin="115,322,569,37">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="6" ShadowDepth="4" Opacity="0.5" Direction="270"/>
@@ -43,9 +40,9 @@
             </Border.Background>
             <TextBlock x:Name="tbButtonThreeText" TextWrapping="Wrap" Text="Cancel" VerticalAlignment="Center" TextAlignment="Center" Foreground="White" FontSize="24"/>
         </Border>
-        <TextBlock x:Name="tbTopSection" HorizontalAlignment="Left" Margin="71,19,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="101" Width="667" TextAlignment="Center" FontSize="24"/>
-        <TextBlock x:Name="tbBottomSection" HorizontalAlignment="Left" Margin="71,125,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="192" Width="667" FontSize="24" TextAlignment="Center"/>
-        <TextBlock x:Name="tbTopOffsetSection" HorizontalAlignment="Left" Margin="193,19,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="101" Width="545" TextAlignment="Center" FontSize="24"/>
-        <Image x:Name="imgAlert" HorizontalAlignment="Left" Height="100" Margin="71,20,0,0" VerticalAlignment="Top" Width="100"/>
-   </Grid>
+        <TextBlock x:Name="tbTopSection" HorizontalAlignment="Left" Margin="71,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="101" Width="667" TextAlignment="Center" FontSize="24"/>
+        <TextBlock x:Name="tbBottomSection" HorizontalAlignment="Left" Margin="71,137,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="171" Width="667" FontSize="24" TextAlignment="Center"/>
+        <TextBlock x:Name="tbTopOffsetSection" HorizontalAlignment="Left" Margin="193,31,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="101" Width="545" TextAlignment="Center" FontSize="24"/>
+        <Image x:Name="imgAlert" HorizontalAlignment="Left" Height="101" Margin="71,31,0,0" VerticalAlignment="Top" Width="117"/>
+    </Grid>
 </Window>

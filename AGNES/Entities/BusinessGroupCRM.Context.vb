@@ -35,7 +35,6 @@ Partial Public Class BGCRMEntity
     Public Overridable Property Involvement_Join() As DbSet(Of Involvement_Join)
     Public Overridable Property Leaders() As DbSet(Of Leader)
     Public Overridable Property Leaders_Join() As DbSet(Of Leaders_Join)
-    Public Overridable Property Locations() As DbSet(Of Location)
     Public Overridable Property Locations_Join() As DbSet(Of Locations_Join)
     Public Overridable Property NotableEvents() As DbSet(Of NotableEvent)
     Public Overridable Property NotableEvents_Join() As DbSet(Of NotableEvents_Join)

@@ -18,7 +18,6 @@
         <EntityTypeShape EntityType="BGCRMModel.Involvement_Join" Width="1.5" PointX="6.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BGCRMModel.Leader" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BGCRMModel.Leaders_Join" Width="1.5" PointX="8.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="BGCRMModel.Location" Width="1.5" PointX="8.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BGCRMModel.Locations_Join" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BGCRMModel.NotableEvent" Width="1.5" PointX="2.75" PointY="9.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BGCRMModel.NotableEvents_Join" Width="1.5" PointX="4.75" PointY="9.75" IsExpanded="true" />
