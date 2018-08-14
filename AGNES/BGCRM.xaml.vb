@@ -1,12 +1,14 @@
 ﻿Imports System.ComponentModel
-
+'TODO: NEED LOAD ROUTINE
 Public Class BGCRM
     Dim BG As objBusinessGroup
     Dim BGC As BGCRMEntity
+    Dim SD As SharedDataEntity
     Public Sub New()
         InitializeComponent()
         BG = New objBusinessGroup
         BGC = New BGCRMEntity
+        SD = New SharedDataEntity
         PopulateOptions()
         btnSaveFinish.IsEnabled = True
         'TODO: ADD COMPREHENSIVE TRIGGER FOR ENABLING SAVE
@@ -83,7 +85,7 @@ Public Class BGCRM
                 '// Populate chosen locations into array
                 For Each si In lbxLocationsChosen.Items
                     Dim sc As String = si.Content
-                    Dim q = From c In BGC.Locations
+                    Dim q = From c In SD.MasterBuildingLists
                             Where c.BuildingName = sc
                             Select c
                     For Each c In q
@@ -290,7 +292,7 @@ Public Class BGCRM
         lbxLocationsSelect.Items.Clear()
         lbxOriginSelect.Items.Clear()
         lbxDestination.Items.Clear()
-        Dim loq = From bloc In BGC.Locations Select bloc Order By bloc.BuildingName
+        Dim loq = From bloc In SD.MasterBuildingLists Select bloc Order By bloc.BuildingName
         For Each bloc In loq
             Dim li As New ListBoxItem, li1 As New ListBoxItem, li2 As New ListBoxItem
             li.Content = bloc.BuildingName
@@ -968,8 +970,6 @@ Public Class BGCRM
         End If
         Return True
     End Function
-
-
 
 #End Region
 

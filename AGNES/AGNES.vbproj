@@ -191,11 +191,11 @@
     <Compile Include="Entities\Leaders_Join.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\Location.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
     <Compile Include="Entities\Locations_Join.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\MasterBuildingList.vb">
+      <DependentUpon>SharedData.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\NotableEvent.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
@@ -220,6 +220,21 @@
     </Compile>
     <Compile Include="Entities\Refresh_Join.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\SharedData.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SharedData.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\SharedData.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SharedData.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\SharedData.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SharedData.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\TenderID_TenderType_Mapping.vb">
       <DependentUpon>WCRModule.tt</DependentUpon>
@@ -370,6 +385,13 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>WCRModule.Designer.vb</LastGenOutput>
     </EntityDeploy>
+    <EntityDeploy Include="Entities\SharedData.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SharedData.Designer.vb</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Entities\SharedData.edmx.diagram">
+      <DependentUpon>SharedData.edmx</DependentUpon>
+    </None>
     <None Include="Entities\WCRModule.edmx.diagram">
       <DependentUpon>WCRModule.edmx</DependentUpon>
     </None>
@@ -461,6 +483,16 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>BusinessGroupCRM.edmx</DependentUpon>
       <LastGenOutput>BusinessGroupCRM.vb</LastGenOutput>
+    </Content>
+    <Content Include="Entities\SharedData.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SharedData.edmx</DependentUpon>
+      <LastGenOutput>SharedData.Context.vb</LastGenOutput>
+    </Content>
+    <Content Include="Entities\SharedData.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SharedData.edmx</DependentUpon>
+      <LastGenOutput>SharedData.vb</LastGenOutput>
     </Content>
     <Content Include="Entities\WCRModule.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
