@@ -105,26 +105,34 @@ Public Class WCRObject
                             ttl += t.TenderAmt
                         Next
 
-                        '///TESTING
                         Dim amsg As New AgnesMessageBox With {.MsgSize = 0, .MsgType = 1, .TextStyle = 0}
                         With amsg
                             .tbTopSection.Text = "Validation!"
                             .tbBottomSection.Text = "It looks like " & v.VendorName & "" & " has a total of " & FormatCurrency(ttl, 2) & ".  Is this correct?"
                         End With
                         amsg.ShowDialog()
-
-                        '///TESTING
-
-                        If MsgBox("It looks like " & v.VendorName & "" & " has a total of " & FormatCurrency(ttl, 2) & ".  Is this correct?", MsgBoxStyle.YesNo, "Confirm total") = MessageBoxResult.Yes Then
+                        If amsg.ReturnResult = "Yes" Then
                             Vendors.Add(v)
                         Else
-                            MsgBox("Vendor not added.  Please try to add again after resolving discrepancy.")
+                            amsg = Nothing
+                            amsg = New AgnesMessageBox With {.MsgSize = 0, .MsgType = 3, .TextStyle = 0}
+                            With amsg
+                                .tbTopSection.Text = "Total incorrect"
+                                .tbBottomSection.Text = "Vendor not added.  Please try to add again after resolving discrepancy."
+                            End With
+                            amsg.ShowDialog()
                             BadFile += 1
                         End If
                     Catch ex As InvalidCastException
                         BadFile += 1
                     Catch OtherEx As Exception
-                        MsgBox("Encountered error " & OtherEx.Message)
+                        Dim amsg = New AgnesMessageBox With {.MsgSize = 0, .MsgType = 3, .TextStyle = 0}
+                        With amsg
+                            .tbTopSection.Text = "Error encountered"
+                            .tbBottomSection.Text = OtherEx.Message
+                            .AllowCopy = True
+                        End With
+                        amsg.ShowDialog()
                         BadFile += 1
                         'TODO: ADD OTHER TENDER-RELATED ERROR CATCHES
                     Finally

@@ -31,9 +31,12 @@
                     YesNoFormat()
                 Case 2                  '// Yes/No/Cancel
                     YesNoCancelFormat()
+                Case 3
+                    OkOnlyFormat()      '// Just OK option
             End Select
         End Set
     End Property
+
     Private _textstyle As Byte
     Public Property TextStyle As Byte
         Get
@@ -53,6 +56,7 @@
             End Select
         End Set
     End Property
+
     Private _allowcopy As Boolean
     Public Property AllowCopy As Boolean
         Get
@@ -63,6 +67,9 @@
             'TODO: Copy feature enable on messagebox
         End Set
     End Property
+
+    Public Property ReturnResult As String
+
     Private Sub LargeVersion()
         Height = 400
         Width = 800
@@ -78,23 +85,64 @@
         Width = 200
     End Sub
 
+    Private Sub OkOnlyFormat()
+        Dim tbTwo As TextBlock = brdButtonTwo.Child
+        With brdButtonTwo
+            .Visibility = Visibility.Visible
+            .Margin = New Thickness With {.Left = 350, .Top = 322, .Right = 334, .Bottom = 37}
+        End With
+        brdButtonOne.Visibility = Visibility.Hidden
+        brdButtonThree.Visibility = Visibility.Hidden
+        tbTwo.Text = "Okay"
+    End Sub
+
     Private Sub OkCancelFormat()
-        brdButtonOne.Visibility = Visibility.Visible
-        brdButtonTwo.Visibility = Visibility.Hidden
-        brdButtonThree.Visibility = Visibility.Visible
-        tbButtonOneText.Text = "Okay"
-        tbButtonTwoText.Text = ""
-        tbButtonThreeText.Text = "Cancel"
-        AddHandler brdButtonOne.MouseDown, AddressOf ClickOne
-        AddHandler brdButtonThree.MouseDown, AddressOf ClickThree
+        Dim tbOne As TextBlock = brdButtonOne.Child, tbTwo As TextBlock = brdButtonTwo.Child
+        With brdButtonOne
+            .Visibility = Visibility.Visible
+            .Margin = New Thickness With {.Left = 235, .Top = 322, .Right = 453, .Bottom = 37}
+        End With
+        With brdButtonTwo
+            .Visibility = Visibility.Visible
+            .Margin = New Thickness With {.Left = 469, .Top = 322, .Right = 219, .Bottom = 37}
+        End With
+        brdButtonThree.Visibility = Visibility.Hidden
+        tbOne.Text = "Okay"
+        tbTwo.Text = "Cancel"
     End Sub
 
     Private Sub YesNoFormat()
-        Dim ph As String = ""
+        Dim tbOne As TextBlock = brdButtonOne.Child, tbTwo As TextBlock = brdButtonTwo.Child
+        With brdButtonOne
+            .Visibility = Visibility.Visible
+            .Margin = New Thickness With {.Left = 235, .Top = 322, .Right = 453, .Bottom = 37}
+        End With
+        With brdButtonTwo
+            .Visibility = Visibility.Visible
+            .Margin = New Thickness With {.Left = 469, .Top = 322, .Right = 219, .Bottom = 37}
+        End With
+        brdButtonThree.Visibility = Visibility.Hidden
+        tbOne.Text = "Yes"
+        tbTwo.Text = "No"
     End Sub
 
     Private Sub YesNoCancelFormat()
-        Dim ph As String = ""
+        Dim tbOne As TextBlock = brdButtonOne.Child, tbTwo As TextBlock = brdButtonTwo.Child, tbThree As TextBlock = brdButtonThree.Child
+        With brdButtonOne
+            .Visibility = Visibility.Visible
+            .Margin = New Thickness With {.Left = 115, .Top = 322, .Right = 569, .Bottom = 37}
+        End With
+        With brdButtonTwo
+            .Visibility = Visibility.Visible
+            .Margin = New Thickness With {.Left = 350, .Top = 322, .Right = 334, .Bottom = 37}
+        End With
+        With brdButtonThree
+            .Visibility = Visibility.Visible
+            .Margin = New Thickness With {.Left = 581, .Top = 322, .Right = 103, .Bottom = 37}
+        End With
+        tbOne.Text = "Yes"
+        tbTwo.Text = "No"
+        tbThree.Text = "Cancel"
     End Sub
 
     Private Sub ShowFullText()
@@ -126,19 +174,32 @@
     End Sub
 
     Private Sub HoverOver(sender As Object, e As MouseEventArgs) Handles brdButtonOne.MouseEnter, brdButtonTwo.MouseEnter, brdButtonThree.MouseEnter
-        Dim s As Border = sender
-
-    End Sub
-    Private Sub ClickOne()
-        Dim ph As String = ""
-    End Sub
-
-    Private Sub ClickTwo()
-        Dim ph As String = ""
+        Dim b As Border = sender, t As TextBlock = b.Child
+        Dim mdse As New Effects.DropShadowEffect With {.BlurRadius = 8, .Direction = 270, .ShadowDepth = 6, .Opacity = 0.75}
+        b.Effect = mdse
+        t.Foreground = New SolidColorBrush(Colors.Yellow)
     End Sub
 
-    Private Sub ClickThree()
-        Dim ph As String = ""
+    Private Sub HoverLeave(sender As Object, e As MouseEventArgs) Handles brdButtonOne.MouseLeave, brdButtonTwo.MouseLeave, brdButtonThree.MouseLeave
+        Dim b As Border = sender, t As TextBlock = b.Child
+        Dim mdse As New Effects.DropShadowEffect With {.BlurRadius = 6, .Direction = 270, .ShadowDepth = 4, .Opacity = 0.5}
+        b.Effect = mdse
+        t.Foreground = New SolidColorBrush(Colors.White)
+    End Sub
+
+    Private Sub ClickOne(sender As Object, e As MouseButtonEventArgs) Handles tbButtonOneText.PreviewMouseDown
+        ReturnResult = tbButtonOneText.Text
+        Hide()
+    End Sub
+
+    Private Sub ClickTwo(sender As Object, e As MouseButtonEventArgs) Handles tbButtonTwoText.PreviewMouseDown
+        ReturnResult = tbButtonTwoText.Text
+        Hide()
+    End Sub
+
+    Private Sub ClickThree(sender As Object, e As MouseButtonEventArgs) Handles tbButtonThreeText.PreviewMouseDown
+        ReturnResult = tbButtonThreeText.Text
+        Hide()
     End Sub
 
 End Class
