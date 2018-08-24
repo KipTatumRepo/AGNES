@@ -104,8 +104,8 @@ Public Class WCRObject
                         For Each t In v.Tenders
                             ttl += t.TenderAmt
                         Next
-
-                        Dim amsg As New AgnesMessageBox With {.MsgSize = 0, .MsgType = 1, .TextStyle = 0}
+                        Dim amsg As New AgnesMessageBox With {.MsgSize = 2, .MsgType = 1, .TextStyle = 0}
+                        'TODO: CRITICAL - msgbox object not releasing; memory leak results
                         With amsg
                             .tbTopSection.Text = "Validation!"
                             .tbBottomSection.Text = "It looks like " & v.VendorName & "" & " has a total of " & FormatCurrency(ttl, 2) & ".  Is this correct?"
@@ -114,15 +114,17 @@ Public Class WCRObject
                         If amsg.ReturnResult = "Yes" Then
                             Vendors.Add(v)
                         Else
-                            amsg = Nothing
-                            amsg = New AgnesMessageBox With {.MsgSize = 0, .MsgType = 3, .TextStyle = 0}
-                            With amsg
+                            Dim amsg1 = New AgnesMessageBox With {.MsgSize = 0, .MsgType = 3, .TextStyle = 0}
+                            With amsg1
                                 .tbTopSection.Text = "Total incorrect"
                                 .tbBottomSection.Text = "Vendor not added.  Please try to add again after resolving discrepancy."
                             End With
                             amsg.ShowDialog()
+                            ReleaseObject(amsg1)
                             BadFile += 1
                         End If
+                        ReleaseObject(amsg)
+                        GC.Collect()
                     Catch ex As InvalidCastException
                         BadFile += 1
                     Catch OtherEx As Exception
@@ -133,13 +135,16 @@ Public Class WCRObject
                             .AllowCopy = True
                         End With
                         amsg.ShowDialog()
+                        ReleaseObject(amsg)
                         BadFile += 1
                         'TODO: ADD OTHER TENDER-RELATED ERROR CATCHES
                     Finally
                         wb.Close()
                         ReleaseObject(ws)
                         ReleaseObject(wb)
+
                     End Try
+
                 End If
             Next
             xlApp.Quit()

@@ -42,6 +42,7 @@
     Private Sub CloseAGNES(sender As Object, e As MouseButtonEventArgs)
         Dim ask As MsgBoxResult = MsgBox("Close AGNES?", MsgBoxStyle.YesNo)
         If ask = MsgBoxResult.Yes Then
+            GC.Collect()
             Close()
         End If
     End Sub
