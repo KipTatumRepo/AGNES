@@ -104,46 +104,51 @@ Public Class WCRObject
                         For Each t In v.Tenders
                             ttl += t.TenderAmt
                         Next
-
-                        Dim amsg As New AgnesMessageBox With {.MsgSize = 0, .MsgType = 1, .TextStyle = 0}
+                        Dim amsg As New AgnesMessageBox With {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Medium, .MsgType = AgnesMessageBox.MsgBoxType.YesNo, .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText}
                         With amsg
-                            .tbTopSection.Text = "Validation!"
+                            .tbTopSection.Text = "Tender Loaded!"
                             .tbBottomSection.Text = "It looks like " & v.VendorName & "" & " has a total of " & FormatCurrency(ttl, 2) & ".  Is this correct?"
                         End With
                         amsg.ShowDialog()
                         If amsg.ReturnResult = "Yes" Then
                             Vendors.Add(v)
                         Else
-                            amsg = Nothing
-                            amsg = New AgnesMessageBox With {.MsgSize = 0, .MsgType = 3, .TextStyle = 0}
-                            With amsg
+                            Dim amsg1 = New AgnesMessageBox With {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Medium, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly, .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText}
+                            With amsg1
                                 .tbTopSection.Text = "Total incorrect"
                                 .tbBottomSection.Text = "Vendor not added.  Please try to add again after resolving discrepancy."
                             End With
-                            amsg.ShowDialog()
+                            amsg1.ShowDialog()
+                            amsg1.Close()
                             BadFile += 1
                         End If
+                        amsg.Close()
                     Catch ex As InvalidCastException
                         BadFile += 1
                     Catch OtherEx As Exception
-                        Dim amsg = New AgnesMessageBox With {.MsgSize = 0, .MsgType = 3, .TextStyle = 0}
+                        Dim amsg = New AgnesMessageBox With {.FntSz = 12, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly, .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText}
                         With amsg
                             .tbTopSection.Text = "Error encountered"
                             .tbBottomSection.Text = OtherEx.Message
                             .AllowCopy = True
                         End With
                         amsg.ShowDialog()
+                        amsg.Close()
                         BadFile += 1
                         'TODO: ADD OTHER TENDER-RELATED ERROR CATCHES
-                    Finally
-                        wb.Close()
-                        ReleaseObject(ws)
-                        ReleaseObject(wb)
                     End Try
                 End If
+                Try
+                    wb.Close()
+                    ReleaseObject(ws)
+                    ReleaseObject(wb)
+                Catch ex As Exception
+
+                End Try
             Next
             xlApp.Quit()
             ReleaseObject(xlApp)
+            GC.Collect()
             disp.TenderLoadComplete(filecount, BadFile)
         End If
     End Sub

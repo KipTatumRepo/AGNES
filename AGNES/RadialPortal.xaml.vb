@@ -40,9 +40,15 @@
     End Sub
 
     Private Sub CloseAGNES(sender As Object, e As MouseButtonEventArgs)
-        Dim ask As MsgBoxResult = MsgBox("Close AGNES?", MsgBoxStyle.YesNo)
-        If ask = MsgBoxResult.Yes Then
+        Dim amsg As New AgnesMessageBox With {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.YesNo, .TextStyle = AgnesMessageBox.MsgBoxLayout.BottomOnly}
+        amsg.tbBottomSection.Text = "Close AGNES?"
+        amsg.ShowDialog()
+        If amsg.ReturnResult = "Yes" Then
+            amsg.Close()
+            GC.Collect()
             Close()
+        Else
+            amsg.Close()
         End If
     End Sub
 
