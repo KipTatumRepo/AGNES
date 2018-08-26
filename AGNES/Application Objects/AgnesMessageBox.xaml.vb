@@ -73,6 +73,7 @@
 
     Public Property ReturnResult As String
 
+    Public Property Caller As Window
     Private Sub ScaleMessagebox(win_h, win_w, img_h, img_w, img_ml, img_mt, img_mr, img_mb, ts_h, ts_w, ts_ml, ts_mt, ts_mr, ts_mb, tos_h,
                              tos_w, tos_ml, tos_mt, tos_mr, tos_mb, bs_h, bs_w, bs_ml, bs_mt, bs_mr, bs_mb, but_h, but_w, b1_ml, b1_mt, b1_mr, b1_mb,
                              b2_ml, b2_mt, b2_mr, b2_mb, b3_ml, b3_mt, b3_mr, b3_mb, fs)

@@ -112,6 +112,12 @@ Public Class WCRObject
                         End With
                         amsg.ShowDialog()
                         If amsg.ReturnResult = "Yes" Then
+
+                            'Dim ask As MsgBoxResult = MsgBox("Close AGNES?", MsgBoxStyle.YesNo)
+                            'If ask = MsgBoxResult.Yes Then
+
+                            'Dim am As MsgBoxResult = MsgBox("It looks like " & v.VendorName & "" & " has a total of " & FormatCurrency(ttl, 2) & ".  Is this correct?", MsgBoxStyle.YesNo, "Validation!")
+                            'If am = MessageBoxResult.Yes Then
                             Vendors.Add(v)
                         Else
                             Dim amsg1 = New AgnesMessageBox With {.MsgSize = 0, .MsgType = 3, .TextStyle = 0}
@@ -119,12 +125,11 @@ Public Class WCRObject
                                 .tbTopSection.Text = "Total incorrect"
                                 .tbBottomSection.Text = "Vendor not added.  Please try to add again after resolving discrepancy."
                             End With
-                            amsg.ShowDialog()
-                            ReleaseObject(amsg1)
+                            amsg1.ShowDialog()
+                            amsg1.Close()
                             BadFile += 1
                         End If
-                        ReleaseObject(amsg)
-                        GC.Collect()
+                        amsg.Close()
                     Catch ex As InvalidCastException
                         BadFile += 1
                     Catch OtherEx As Exception
@@ -135,20 +140,22 @@ Public Class WCRObject
                             .AllowCopy = True
                         End With
                         amsg.ShowDialog()
-                        ReleaseObject(amsg)
+                        amsg.Close()
                         BadFile += 1
                         'TODO: ADD OTHER TENDER-RELATED ERROR CATCHES
-                    Finally
-                        wb.Close()
-                        ReleaseObject(ws)
-                        ReleaseObject(wb)
-
                     End Try
-
                 End If
+                Try
+                    wb.Close()
+                    ReleaseObject(ws)
+                    ReleaseObject(wb)
+                Catch ex As Exception
+
+                End Try
             Next
             xlApp.Quit()
             ReleaseObject(xlApp)
+            GC.Collect()
             disp.TenderLoadComplete(filecount, BadFile)
         End If
     End Sub
