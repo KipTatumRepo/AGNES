@@ -9,13 +9,13 @@
             Select Case value
                 Case 0                  '// Large
                     ScaleMessagebox(400, 800, 100, 100, 71, 31, 0, 0, 100, 667, 71, 31, 0, 0, 100, 545, 193, 31, 0, 0, 170, 667, 71, 137, 0, 0,
-                                 40, 112, 115, 322, 569, 37, 350, 322, 334, 37, 581, 322, 103, 37, 24)
+                                 40, 112, 115, 322, 569, 37, 350, 322, 334, 37, 626, 322, 62, 37, 214, 322, 474, 37, 492, 322, 196, 37, 24)
                 Case 1                  '// Medium
-                    ScaleMessagebox(264, 528, 66, 66, 43, 22, 0, 0, 66, 440, 43, 22, 0, 0, 66, 360, 123, 22, 0, 0, 112, 440, 43, 93, 0, 0, 26,
-                                    74, 43, 210, 411, 28, 225, 210, 229, 28, 409, 210, 45, 28, 18)
+                    ScaleMessagebox(264, 528, 66, 66, 43, 22, 0, 0, 66, 440, 43, 22, 0, 0, 66, 360, 123, 22, 0, 0, 112, 440, 43, 93, 0, 0,
+                                    26, 74, 43, 210, 411, 28, 228, 210, 226, 28, 409, 210, 45, 28, 134, 210, 320, 28, 320, 210, 134, 28, 18)
                 Case 2                  '// Small
-                    ScaleMessagebox(174, 348, 44, 44, 33, 16, 0, 0, 44, 290, 33, 16, 0, 0, 44, 238, 77, 16, 0, 0, 74, 290, 33, 60, 0, 0, 17,
-                                    49, 33, 139, 266, 18, 159, 139, 140, 18, 274, 139, 25, 18, 10)
+                    ScaleMessagebox(174, 348, 44, 44, 33, 16, 0, 0, 44, 290, 33, 16, 0, 0, 44, 238, 77, 16, 0, 0, 74, 290, 33, 60, 0, 0,
+                                    17, 49, 33, 139, 266, 18, 157, 139, 142, 18, 274, 139, 25, 18, 95, 139, 204, 18, 216, 139, 83, 18, 18)
             End Select
         End Set
     End Property
@@ -76,7 +76,7 @@
     Public Property Caller As Window
     Private Sub ScaleMessagebox(win_h, win_w, img_h, img_w, img_ml, img_mt, img_mr, img_mb, ts_h, ts_w, ts_ml, ts_mt, ts_mr, ts_mb, tos_h,
                              tos_w, tos_ml, tos_mt, tos_mr, tos_mb, bs_h, bs_w, bs_ml, bs_mt, bs_mr, bs_mb, but_h, but_w, b1_ml, b1_mt, b1_mr, b1_mb,
-                             b2_ml, b2_mt, b2_mr, b2_mb, b3_ml, b3_mt, b3_mr, b3_mb, fs)
+                             b2_ml, b2_mt, b2_mr, b2_mb, b3_ml, b3_mt, b3_mr, b3_mb, b4_ml, b4_mt, b4_mr, b4_mb, b5_ml, b5_mt, b5_mr, b5_mb, fs)
         Height = win_h
         Width = win_w
         With imgAlert
@@ -120,24 +120,22 @@
             .Margin = New Thickness(b3_ml, b3_mt, b3_mr, b3_mb)
         End With
         tbButtonThreeText.FontSize = fs
-    End Sub
-
-    Private Sub MediumVersion()
-        Height = 200
-        Width = 400
-    End Sub
-
-    Private Sub SmallVersion()
-        Height = 100
-        Width = 200
+        With brdButtonFour
+            .Height = but_h
+            .Width = but_w
+            .Margin = New Thickness(b4_ml, b4_mt, b4_mr, b4_mb)
+        End With
+        tbButtonFourText.FontSize = fs
+        With brdButtonFive
+            .Height = but_h
+            .Width = but_w
+            .Margin = New Thickness(b5_ml, b5_mt, b5_mr, b5_mb)
+        End With
+        tbButtonFiveText.FontSize = fs
     End Sub
 
     Private Sub OkOnlyFormat()
         Dim tbTwo As TextBlock = brdButtonTwo.Child
-        With brdButtonTwo
-            .Visibility = Visibility.Visible
-            .Margin = New Thickness With {.Left = 350, .Top = 322, .Right = 334, .Bottom = 37}
-        End With
         brdButtonOne.Visibility = Visibility.Hidden
         brdButtonThree.Visibility = Visibility.Hidden
         brdButtonFour.Visibility = Visibility.Hidden
@@ -169,21 +167,12 @@
 
     Private Sub YesNoCancelFormat()
         Dim tbOne As TextBlock = brdButtonOne.Child, tbTwo As TextBlock = brdButtonTwo.Child, tbThree As TextBlock = brdButtonThree.Child
-        'With brdButtonOne
-        '    .Visibility = Visibility.Visible
-        '    .Margin = New Thickness With {.Left = 115, .Top = 322, .Right = 569, .Bottom = 37}
-        'End With
-        'With brdButtonTwo
-        '    .Visibility = Visibility.Visible
-        '    .Margin = New Thickness With {.Left = 350, .Top = 322, .Right = 334, .Bottom = 37}
-        'End With
-        'With brdButtonThree
-        '    .Visibility = Visibility.Visible
-        '    .Margin = New Thickness With {.Left = 581, .Top = 322, .Right = 103, .Bottom = 37}
-        'End With
         tbOne.Text = "Yes"
         tbTwo.Text = "No"
         tbThree.Text = "Cancel"
+        brdButtonOne.Visibility = Visibility.Visible
+        brdButtonTwo.Visibility = Visibility.Visible
+        brdButtonThree.Visibility = Visibility.Visible
         brdButtonFour.Visibility = Visibility.Hidden
         brdButtonFive.Visibility = Visibility.Hidden
     End Sub

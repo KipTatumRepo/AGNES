@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGNES"
         mc:Ignorable="d"
-        Title="AgnesMessageBox" Height="174" Width="348" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen">
+        Title="AgnesMessageBox" Height="400" Width="800" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterScreen">
     <Window.Background>
         <ImageBrush ImageSource="/AGNES;component/Resources/msgbox.png"/>
     </Window.Background>
@@ -13,12 +13,12 @@
         <DropShadowEffect Opacity="0.7" BlurRadius="14" ShadowDepth="6" Direction="240"/>
     </Window.Effect>
     <Grid x:Name="grdMsgBox">
-        <Image x:Name="imgAlert" HorizontalAlignment="Left" Height="44" Margin="33,16,0,0" VerticalAlignment="Top" Width="44"/>
-        <TextBlock x:Name="tbTopSection" HorizontalAlignment="Left" Margin="33,16,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="44" Width="290" TextAlignment="Center" FontSize="18"/>
-        <TextBlock x:Name="tbTopOffsetSection" HorizontalAlignment="Left" Margin="77,16,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="44" Width="238" TextAlignment="Center" FontSize="18"/>
-        <TextBlock x:Name="tbBottomSection" HorizontalAlignment="Left" Margin="33,60,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="74" Width="290" FontSize="18" TextAlignment="Center"/>
+        <Image x:Name="imgAlert" HorizontalAlignment="Left" Height="100" Margin="71,31,0,0" VerticalAlignment="Top" Width="100"/>
+        <TextBlock x:Name="tbTopSection" HorizontalAlignment="Left" Margin="71,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="100" Width="667" TextAlignment="Center" FontSize="18"/>
+        <TextBlock x:Name="tbTopOffsetSection" HorizontalAlignment="Left" Margin="193,31,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="100" Width="545" TextAlignment="Center" FontSize="18"/>
+        <TextBlock x:Name="tbBottomSection" HorizontalAlignment="Left" Margin="71,137,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="170" Width="667" FontSize="18" TextAlignment="Center"/>
 
-        <Border x:Name="brdButtonOne" BorderBrush="{x:Null}" Height="17" Width="49" Margin="33,139,266,18">
+        <Border x:Name="brdButtonOne" BorderBrush="{x:Null}" Height="40" Width="112" Margin="71,322,617,37">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="6" ShadowDepth="4" Opacity="0.5" Direction="270"/>
             </Border.Effect>
@@ -27,7 +27,7 @@
             </Border.Background>
             <TextBlock x:Name="tbButtonOneText" TextWrapping="Wrap" Text="Okay" VerticalAlignment="Center" TextAlignment="Center" FontSize="10" Foreground="White"/>
         </Border>
-        <Border x:Name="brdButtonTwo" BorderBrush="{x:Null}" Height="17" Width="49" Margin="157,139,142,18">
+        <Border x:Name="brdButtonTwo" BorderBrush="{x:Null}" Height="40" Width="112" Margin="350,322,334,37">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="6" ShadowDepth="4" Opacity="0.5" Direction="270"/>
             </Border.Effect>
@@ -36,7 +36,7 @@
             </Border.Background>
             <TextBlock x:Name="tbButtonTwoText" TextWrapping="Wrap" Text="No" VerticalAlignment="Center" TextAlignment="Center" FontSize="10" Foreground="White"/>
         </Border>
-        <Border x:Name="brdButtonThree" BorderBrush="{x:Null}" Height="17" Width="49" Margin="274,139,25,18">
+        <Border x:Name="brdButtonThree" BorderBrush="{x:Null}" Height="40" Width="112" Margin="626,322,62,37">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="6" ShadowDepth="4" Opacity="0.5" Direction="270"/>
             </Border.Effect>
@@ -45,7 +45,7 @@
             </Border.Background>
             <TextBlock x:Name="tbButtonThreeText" TextWrapping="Wrap" Text="Cancel" VerticalAlignment="Center" TextAlignment="Center" Foreground="White" FontSize="10"/>
         </Border>
-        <Border x:Name="brdButtonFour" BorderBrush="{x:Null}" Height="17" Width="49" Margin="95,139,204,18">
+        <Border x:Name="brdButtonFour" BorderBrush="{x:Null}" Height="40" Width="112" Margin="214,322,474,37">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="6" ShadowDepth="4" Opacity="0.5" Direction="270"/>
             </Border.Effect>
@@ -54,7 +54,7 @@
             </Border.Background>
             <TextBlock x:Name="tbButtonFourText" TextWrapping="Wrap" Text="Okay" VerticalAlignment="Center" TextAlignment="Center" FontSize="10" Foreground="White"/>
         </Border>
-        <Border x:Name="brdButtonFive" BorderBrush="{x:Null}" Height="17" Width="49" Margin="216,139,83,18">
+        <Border x:Name="brdButtonFive" BorderBrush="{x:Null}" Height="40" Width="112" Margin="492,322,196,37">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="6" ShadowDepth="4" Opacity="0.5" Direction="270"/>
             </Border.Effect>
