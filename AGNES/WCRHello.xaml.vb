@@ -85,12 +85,16 @@
         tbDone.Visibility = Visibility.Visible
     End Sub
 
-    Private Sub ExitAGNES(sender As Object, e As MouseButtonEventArgs) Handles btnExit.MouseDown
-        'TODO: ADD APPLICATION STYLE MESSAGEBOX
-        Dim yn As MsgBoxResult = MsgBox("Close WCR?", vbYesNo)
-        If yn = vbYes Then
+    Private Sub ExitWCR(sender As Object, e As MouseButtonEventArgs) Handles btnExit.MouseDown
+        Dim amsg As New AgnesMessageBox With {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.YesNo, .TextStyle = AgnesMessageBox.MsgBoxLayout.BottomOnly}
+        amsg.tbBottomSection.Text = "Close WCR?"
+        amsg.ShowDialog()
+        If amsg.ReturnResult = "Yes" Then
+            amsg.Close()
             WCRModule.UserClosed = True
             Close()
+        Else
+            amsg.Close()
         End If
     End Sub
 End Class
