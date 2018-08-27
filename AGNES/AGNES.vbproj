@@ -215,6 +215,9 @@
     <Compile Include="Entities\Planners_Join.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\ReceivedCAMCheck.vb">
+      <DependentUpon>WCRModule.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\RefreshEvent.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>

@@ -27,5 +27,6 @@ Partial Public Class WCREntities
     Public Overridable Property VendorInfoes() As DbSet(Of VendorInfo)
     Public Overridable Property CAMWithholdingTypes() As DbSet(Of CAMWithholdingType)
     Public Overridable Property KPIWithholdingTypes() As DbSet(Of KPIWithholdingType)
+    Public Overridable Property ReceivedCAMChecks() As DbSet(Of ReceivedCAMCheck)
 
 End Class

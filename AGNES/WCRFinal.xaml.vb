@@ -37,8 +37,17 @@
     End Sub
 
     Private Sub SaveCamChecks()
-        Dim ph As String = ""
         'TODO: Write routine to save CAM checks to database
+        'Dim CamEF As New
+
+        'Try
+        '    Dim IsNew = ef.BusinessGroups.Single(Function(p) p.BusinessGroupName = OrgName)
+        '    UpdateExisting()
+        'Catch ex As InvalidOperationException
+        '    SaveNew()
+        'Catch ex As Exception
+        'End Try
+
     End Sub
     Private Sub SoftExitWCR(sender As Object, e As MouseButtonEventArgs) Handles tbClose.MouseDown
         ExitModule(0)
