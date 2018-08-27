@@ -68,32 +68,28 @@ Public Class WCRCam
     End Sub
 
     Private Sub SaveCheck(sender As Object, e As MouseButtonEventArgs) Handles tbSave.MouseDown
-        Select Case ConfirmAndSave()
-            Case True                   '// Okay to save
-                tbSave.Visibility = Visibility.Hidden
-                Dim dow As Byte = Weekday(dtpDepositDate.SelectedDate, FirstDayOfWeek.Friday)
-                WCR.AddCamCheck(cboVendor.Text, tbCheckNumber.Text, FormatNumber(tbCheckAmount.Text, 2), dtpDepositDate.SelectedDate, dow, tbCheckNotes.Text)
-                With dtpDepositDate
-                    .DisplayDateStart = Now().AddDays(-14)
-                    .DisplayDateEnd = Now()
-                    .SelectedDate = Now()
-                End With
-                cboVendor.SelectedIndex = -1
-                cboVendor.Text = ""
-                tbCheckNumber.Text = ""
-                tbCheckAmount.Text = ""
-                tbCheckNotes.Text = ""
-                ToggleEntryVisibility(1)
-                tbYesCam.Visibility = Visibility.Visible
-                tbNo.Visibility = Visibility.Visible
-                tbCam.Text = "CAM check saved - did you want to add another?"
-                tbYesCam.Text = "Add Another"
-                tbNo.Text = "I'm done!"
-                ToggleEntryVisibility(0)
-            Case False                  '// Do not save
-                'TODO: Flag errors for CAM save
-
-        End Select
+        If ConfirmAndSave() = True Then
+            tbSave.Visibility = Visibility.Hidden
+            Dim dow As Byte = Weekday(dtpDepositDate.SelectedDate, FirstDayOfWeek.Friday)
+            WCR.AddCamCheck(GetVendorID(cboVendor.Text), cboVendor.Text, tbCheckNumber.Text, FormatNumber(tbCheckAmount.Text, 2), dtpDepositDate.SelectedDate, dow, tbCheckNotes.Text)
+            With dtpDepositDate
+                .DisplayDateStart = Now().AddDays(-14)
+                .DisplayDateEnd = Now()
+                .SelectedDate = Now()
+            End With
+            cboVendor.SelectedIndex = -1
+            cboVendor.Text = ""
+            tbCheckNumber.Text = ""
+            tbCheckAmount.Text = ""
+            tbCheckNotes.Text = ""
+            ToggleEntryVisibility(1)
+            tbYesCam.Visibility = Visibility.Visible
+            tbNo.Visibility = Visibility.Visible
+            tbCam.Text = "CAM check saved - did you want to add another?"
+            tbYesCam.Text = "Add Another"
+            tbNo.Text = "I'm done!"
+            ToggleEntryVisibility(0)
+        End If
     End Sub
 
     Private Sub CamComplete(sender As Object, e As MouseButtonEventArgs) Handles tbNo.MouseDown
@@ -191,6 +187,17 @@ Public Class WCRCam
             End If
         End If
         Return ReturnVal
+    End Function
+
+    Private Function GetVendorID(vnm)
+        Dim vid As Integer
+        Dim q = From c In WCRE.VendorInfoes
+                Where c.VendorName Is vnm
+                Select c
+        For Each c In q
+            vid = c.PID
+        Next
+        Return vid
     End Function
 
     Private Sub ExitWCR(sender As Object, e As MouseButtonEventArgs) Handles btnExit.MouseDown

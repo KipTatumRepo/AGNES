@@ -176,8 +176,8 @@ Public Class WCRObject
         End If
     End Sub
 
-    Public Sub AddCamCheck(Vnm As String, Num As String, Amt As Double, Dte As Date, Dow As Byte, Nts As String)
-        Dim c As New CamCheck With {.VendorName = Vnm, .CheckNumber = Num, .CheckAmt = Amt, .DepositDate = Dte, .DayofWeek = Dow, .Notes = Nts}
+    Public Sub AddCamCheck(VID As Integer, VNm As String, Num As String, Amt As Double, Dte As Date, Dow As Byte, Nts As String)
+        Dim c As New CamCheck With {.VendorID = VID, .VendorName = VNm, .CheckNumber = Num, .CheckAmt = Amt, .DepositDate = Dte, .DayofWeek = Dow, .Notes = Nts}
         CamChecks.Add(c)
     End Sub
 
