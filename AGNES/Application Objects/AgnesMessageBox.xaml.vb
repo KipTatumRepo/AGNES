@@ -21,6 +21,10 @@ Public Class AgnesMessageBox
         OkOnly
     End Enum
 
+    Public Enum ImageType
+        Danger
+        Alert
+    End Enum
     Public Property FntSz As Byte
     Private dt As DispatcherTimer = New DispatcherTimer()
     Private _topsectiontext As String
@@ -57,13 +61,27 @@ Public Class AgnesMessageBox
         End Set
     End Property
 
-    Private _imgsrc As String
-    Public Property ImageSource As String
+    Private _imgsrc As ImageType
+    Public Property ImageSource As ImageType
         Get
             Return _imgsrc
         End Get
-        Set(value As String)
+        Set(value As ImageType)
             _imgsrc = value
+            Select Case value
+                Case ImageType.Alert
+                    Dim img As New Image With {.Source = New BitmapImage(New Uri("Resources/BusinessGroup.png", UriKind.Relative)),
+                        .Height = imgAlert.Height, .Width = imgAlert.Width, .Stretch = Stretch.Fill}
+                    img.Margin = New Thickness(imgAlert.Margin.Left, imgAlert.Margin.Top, imgAlert.Margin.Right, imgAlert.Margin.Bottom)
+                    imgAlert = img
+                    'imgAlert.Source = New BitmapImage(New Uri("Resources/BusinessGroup.png", UriKind.Relative))
+                Case ImageType.Danger
+                    Dim img As New Image With {.Source = New BitmapImage(New Uri("Resources/danger.png", UriKind.Relative)),
+                        .Height = imgAlert.Height, .Width = imgAlert.Width, .Stretch = Stretch.Fill}
+                    img.Margin = New Thickness(imgAlert.Margin.Left, imgAlert.Margin.Top, imgAlert.Margin.Right, imgAlert.Margin.Bottom)
+                    imgAlert = img
+            End Select
+            'TODO: FIGURE OUT THE RUNTIME IMGSOURCE METHOD
         End Set
     End Property
     Public Property ReturnResult As String
@@ -252,7 +270,7 @@ Public Class AgnesMessageBox
     End Sub
 
     Private Sub ShowTextandImage()
-        tbTopOffsetSection.Visibility = Visibility.Hidden
+        tbTopOffsetSection.Visibility = Visibility.Visible
         imgAlert.Visibility = Visibility.Visible
         tbTopSection.Visibility = Visibility.Hidden
         tbBottomSection.Visibility = Visibility.Visible
@@ -309,4 +327,5 @@ Public Class AgnesMessageBox
         dt.Stop()
         tbBottomSection.Text = CopiedText
     End Sub
+
 End Class

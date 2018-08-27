@@ -372,6 +372,7 @@
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="AGNES_TemporaryKey.pfx" />
     <EntityDeploy Include="Entities\BusinessGroupCRM.edmx">
@@ -504,6 +505,8 @@
       <DependentUpon>WCRModule.edmx</DependentUpon>
       <LastGenOutput>WCRModule.vb</LastGenOutput>
     </Content>
+    <Resource Include="Resources\danger.jpg" />
+    <Resource Include="Resources\alert.png" />
     <Resource Include="Resources\msgbox.png" />
     <Resource Include="Resources\WCR.png" />
     <Resource Include="Resources\Options.png" />
