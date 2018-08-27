@@ -1,4 +1,6 @@
-﻿Public Class AgnesMessageBox
+﻿Imports System.Windows.Threading
+Public Class AgnesMessageBox
+
     Public Enum MsgBoxSize
         Small
         Medium
@@ -20,7 +22,50 @@
     End Enum
 
     Public Property FntSz As Byte
+    Private dt As DispatcherTimer = New DispatcherTimer()
+    Private _topsectiontext As String
+    Private CopiedText As String
+    Public Property TopSectionText As String
+        Get
+            Return _topsectiontext
+        End Get
+        Set(value As String)
+            _topsectiontext = value
+            tbTopSection.Text = value
+        End Set
+    End Property
 
+    Private _offsettext As String
+    Public Property OffsetSectionText As String
+        Get
+            Return _offsettext
+        End Get
+        Set(value As String)
+            _offsettext = value
+            tbTopOffsetSection.Text = value
+        End Set
+    End Property
+
+    Private _bottomtext As String
+    Public Property BottomSectionText As String
+        Get
+            Return _bottomtext
+        End Get
+        Set(value As String)
+            _bottomtext = value
+            tbBottomSection.Text = value
+        End Set
+    End Property
+
+    Private _imgsrc As String
+    Public Property ImageSource As String
+        Get
+            Return _imgsrc
+        End Get
+        Set(value As String)
+            _imgsrc = value
+        End Set
+    End Property
     Public Property ReturnResult As String
 
     Private _msgsize As MsgBoxSize
@@ -92,14 +137,8 @@
         End Get
         Set(value As Boolean)
             _allowcopy = value
-            'TODO: Copy feature enable on messagebox
         End Set
     End Property
-
-
-    Public Sub New()
-        InitializeComponent()
-    End Sub
 
     Private Sub ScaleMessagebox(win_h, win_w, img_h, img_w, img_ml, img_mt, img_mr, img_mb, ts_h, ts_w, ts_ml, ts_mt, ts_mr, ts_mb, tos_h,
                              tos_w, tos_ml, tos_mt, tos_mr, tos_mb, bs_h, bs_w, bs_ml, bs_mt, bs_mr, bs_mb, but_h, but_w, b1_ml, b1_mt, b1_mr, b1_mb,
@@ -247,28 +286,27 @@
         t.Foreground = New SolidColorBrush(Colors.White)
     End Sub
 
-    Private Sub ClickOne(sender As Object, e As MouseButtonEventArgs) Handles tbButtonOneText.PreviewMouseDown
-        ReturnResult = tbButtonOneText.Text
+    Private Sub ClickButton(sender As Object, e As MouseButtonEventArgs) Handles tbButtonOneText.PreviewMouseLeftButtonDown, tbButtonTwoText.PreviewMouseLeftButtonDown, tbButtonThreeText.PreviewMouseLeftButtonDown, tbButtonFourText.PreviewMouseLeftButtonDown, tbButtonFiveText.PreviewMouseLeftButtonDown
+        Dim b As New TextBlock
+        b = sender
+        ReturnResult = b.Text
         Hide()
     End Sub
 
-    Private Sub ClickTwo(sender As Object, e As MouseButtonEventArgs) Handles tbButtonTwoText.PreviewMouseDown
-        ReturnResult = tbButtonTwoText.Text
-        Hide()
+    Private Sub CopyText(sender As Object, e As MouseButtonEventArgs) Handles tbBottomSection.PreviewMouseRightButtonDown
+        If _allowcopy = True Then
+            CopiedText = tbBottomSection.Text
+            Clipboard.SetText(CopiedText)
+            tbBottomSection.Text = "Text copied"
+            AddHandler dt.Tick, AddressOf PauseForCopyNotify
+            dt.Interval = New TimeSpan(0, 0, 1)
+            dt.Start()
+        End If
     End Sub
 
-    Private Sub ClickThree(sender As Object, e As MouseButtonEventArgs) Handles tbButtonThreeText.PreviewMouseDown
-        ReturnResult = tbButtonThreeText.Text
-        Hide()
-    End Sub
-
-    Private Sub ClickFour(sender As Object, e As MouseButtonEventArgs) Handles tbButtonFourText.PreviewMouseDown
-        ReturnResult = tbButtonFourText.Text
-        Hide()
-    End Sub
-
-    Private Sub ClickFive(sender As Object, e As MouseButtonEventArgs) Handles tbButtonFiveText.PreviewMouseDown
-        ReturnResult = tbButtonFiveText.Text
-        Hide()
+    Public Sub PauseForCopyNotify(ByVal sender As Object, ByVal e As EventArgs)
+        CommandManager.InvalidateRequerySuggested()
+        dt.Stop()
+        tbBottomSection.Text = CopiedText
     End Sub
 End Class

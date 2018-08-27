@@ -104,20 +104,18 @@ Public Class WCRObject
                         For Each t In v.Tenders
                             ttl += t.TenderAmt
                         Next
-                        Dim amsg As New AgnesMessageBox With {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Medium, .MsgType = AgnesMessageBox.MsgBoxType.YesNo, .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText}
-                        With amsg
-                            .tbTopSection.Text = "Tender Loaded!"
-                            .tbBottomSection.Text = "It looks like " & v.VendorName & "" & " has a total of " & FormatCurrency(ttl, 2) & ".  Is this correct?"
-                        End With
+                        Dim amsg As New AgnesMessageBox With
+                            {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Medium, .MsgType = AgnesMessageBox.MsgBoxType.YesNo,
+                            .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Tender Loaded!",
+                            .BottomSectionText = "It looks like " & v.VendorName & "" & " has a total of " & FormatCurrency(ttl, 2) & ".  Is this correct?"}
                         amsg.ShowDialog()
                         If amsg.ReturnResult = "Yes" Then
                             Vendors.Add(v)
                         Else
-                            Dim amsg1 = New AgnesMessageBox With {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Medium, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly, .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText}
-                            With amsg1
-                                .tbTopSection.Text = "Total incorrect"
-                                .tbBottomSection.Text = "Vendor not added.  Please try to add again after resolving discrepancy."
-                            End With
+                            Dim amsg1 = New AgnesMessageBox With
+                                {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Medium, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly,
+                                .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Total incorrect",
+                                .BottomSectionText = "Vendor not added.  Please try to add again after resolving discrepancy."}
                             amsg1.ShowDialog()
                             amsg1.Close()
                             BadFile += 1
@@ -126,12 +124,10 @@ Public Class WCRObject
                     Catch ex As InvalidCastException
                         BadFile += 1
                     Catch OtherEx As Exception
-                        Dim amsg = New AgnesMessageBox With {.FntSz = 12, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly, .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText}
-                        With amsg
-                            .tbTopSection.Text = "Error encountered"
-                            .tbBottomSection.Text = OtherEx.Message
-                            .AllowCopy = True
-                        End With
+                        Dim amsg = New AgnesMessageBox With
+                            {.FntSz = 12, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly,
+                            .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Error encountered",
+                            .BottomSectionText = OtherEx.Message, .AllowCopy = True}
                         amsg.ShowDialog()
                         amsg.Close()
                         BadFile += 1
