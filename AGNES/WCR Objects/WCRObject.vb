@@ -106,7 +106,12 @@ Public Class WCRObject
                                         v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "CCClearing", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
                                     End If
                                 Case 57                     '// Coupons (used by Lunchbox for their internal promotions)
-                                    MsgBox("FYI, " & MySettings.Default.UserName & ", I'm omitting the Coupon tender for " & vn & " in the amount of " & FormatCurrency(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                                    Dim notifymsg As New AgnesMessageBox With
+                                        {.FntSz = 14, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly,
+                                        .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Coupon tenders found!",
+                                        .BottomSectionText = "FYI, " & MySettings.Default.UserName & ", I'm omitting the Coupon tender for " & vn & " in the amount of " & FormatCurrency(CType(ws.Cells(ct, 9), Excel.Range).Value, 2)}
+                                    notifymsg.ShowDialog()
+                                    notifymsg.Close()
                                 Case 83                     '// Freedompay [pass-through]
                                     v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "FreedomPay", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
                                 Case 4, 92                     '// AMEX
