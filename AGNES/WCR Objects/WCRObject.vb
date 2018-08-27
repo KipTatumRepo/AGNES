@@ -197,13 +197,19 @@ Public Class WCRObject
         If balanced = 0 Then
             disp.InBalance = True
         Else
-            'TODO: ADD APPLICATION STYLE MESSAGEBOX
-            Dim yn As MsgBoxResult = MsgBox("The WCR is out of balance in the amount of " & FormatCurrency(balanced, 2) & ".  Do you wish to continue?", vbYesNo)
-            If yn = vbNo Then
+
+            Dim amsg As New AgnesMessageBox With
+                            {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Medium, .MsgType = AgnesMessageBox.MsgBoxType.YesNo,
+                            .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Out of balance!",
+                            .BottomSectionText = "The WCR is out of balance in the amount of " & FormatCurrency(balanced, 2) & ".  Do you wish to continue?"}
+            amsg.ShowDialog()
+            If amsg.ReturnResult = "No" Then
                 disp.CancelDueToBalanceIssue = True
                 disp.InBalance = False
+                amsg.Close()
                 Exit Sub
             End If
+            amsg.Close()
         End If
 
         Dim xps_writer As XpsDocumentWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue)
