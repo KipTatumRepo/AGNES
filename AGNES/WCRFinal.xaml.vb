@@ -54,11 +54,18 @@
     End Sub
 
     Private Sub ExitModule(y)
-        'TODO: ADD APPLICATION STYLE MESSAGEBOX
         If y = 1 Then
-            Dim yn As MsgBoxResult = MsgBox("Close WCR?", vbYesNo)
-            If yn = vbNo Then Exit Sub
-            WCRModule.UserClosed = True
+            Dim amsg As New AgnesMessageBox With
+            {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.YesNo,
+            .TextStyle = AgnesMessageBox.MsgBoxLayout.BottomOnly, .BottomSectionText = "Close WCR?"}
+            amsg.ShowDialog()
+            If amsg.ReturnResult = "Yes" Then
+                amsg.Close()
+                WCRModule.UserClosed = True
+                Close()
+            Else
+                amsg.Close()
+            End If
         Else
             WCRModule.UserClosed = False
         End If
