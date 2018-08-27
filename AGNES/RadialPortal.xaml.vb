@@ -40,7 +40,6 @@
     End Sub
 
     Private Sub CloseAGNES(sender As Object, e As MouseButtonEventArgs)
-        Dim ph As String = "Placeholder"
         Dim amsg As New AgnesMessageBox With
             {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Medium, .MsgType = AgnesMessageBox.MsgBoxType.YesNo,
             .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .BottomSectionText = "Close AGNES?", .AllowCopy = True}
@@ -78,6 +77,7 @@
         Hide()
         Select Case s.Tag
             Case "WCR"
+
                 WCRModule.Runmodule()
             Case "BGCRM"
                 BGCRMModule.Runmodule()

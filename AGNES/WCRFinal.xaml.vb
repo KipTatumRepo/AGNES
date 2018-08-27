@@ -23,6 +23,7 @@
     Private Sub PrintWCR_Click(sender As Object, e As MouseButtonEventArgs) Handles tbPrintWCR.MouseDown
         WCRModule.WCR.PrintWCR(Me)
         If InBalance = True Then
+            SaveCamChecks()
             tbFinal.Text = "That's everything!  The WCR is in balance, but please make sure that you double check the numbers before you enter anything into MyFi - you're on your own from here on out!"
         Else
             If CancelDueToBalanceIssue = False Then
@@ -35,6 +36,10 @@
         tbClose.Visibility = Visibility.Visible
     End Sub
 
+    Private Sub SaveCamChecks()
+        Dim ph As String = ""
+        'TODO: Write routine to save CAM checks to database
+    End Sub
     Private Sub SoftExitWCR(sender As Object, e As MouseButtonEventArgs) Handles tbClose.MouseDown
         ExitModule(0)
     End Sub

@@ -7,6 +7,9 @@ Public Class WCRCam
     Public Sub New()
         InitializeComponent()
         ToggleEntryVisibility(0)
+        tbYesCam.Visibility = Visibility.Hidden
+        tbSave.Visibility = Visibility.Hidden
+        tbNo.Visibility = Visibility.Hidden
         Dim a As New Animation.DoubleAnimation
         a.From = 432
         a.To = 120
@@ -30,10 +33,10 @@ Public Class WCRCam
 
     Public Sub PauseForMinimizing(ByVal sender As Object, ByVal e As EventArgs)
         CommandManager.InvalidateRequerySuggested()
-        tbCam.Text = "Okay!  Let's move on to CAM checks.  I'll hang out down here so I'm not in your way, but I'll continue to walk you through the process." & Chr(13) & Chr(13) & "If you need additional help, just tap me on the shoulder with your cursor!"
+        tbCam.Text = "Okay!  Let's move on to CAM checks.  I'll hang out down here so I'm not in your way, but I'll continue to walk you through the process."
         dt.Stop()
         AddHandler dt2.Tick, AddressOf PauseBeforeCamChecks
-        dt2.Interval = New TimeSpan(0, 0, 6)
+        dt2.Interval = New TimeSpan(0, 0, 4)
         dt2.Start()
     End Sub
 
@@ -43,11 +46,6 @@ Public Class WCRCam
         dt2.Stop()
         tbYesCam.Visibility = Visibility.Visible
         tbNo.Visibility = Visibility.Visible
-    End Sub
-
-    Private Sub CamComplete(sender As Object, e As MouseButtonEventArgs) Handles tbNo.MouseDown
-        'TODO: Confirm all objects are being released - program is staying open after this point.
-        Close()
     End Sub
 
     Private Sub AddCamCheck(sender As Object, e As MouseButtonEventArgs) Handles tbYesCam.MouseDown
@@ -62,24 +60,17 @@ Public Class WCRCam
         tbCheckAmount.Text = ""
         tbCheckNotes.Text = ""
         ToggleEntryVisibility(1)
-        tbDone.Visibility = Visibility.Visible
-        tbMoreCam.Visibility = Visibility.Visible
+        tbCam.Text = "Please enter the CAM check information above - once you save, you can add more checks."
+        tbSave.Visibility = Visibility.Visible
         tbYesCam.Visibility = Visibility.Hidden
         tbNo.Visibility = Visibility.Hidden
         cboVendor.Focus()
     End Sub
 
-    Private Sub AddAnotherCheck(sender As Object, e As MouseButtonEventArgs) Handles tbMoreCam.MouseDown, tbDone.MouseDown
-        Dim s As TextBlock = sender
-        If s.Name = "tbDone" Then
-            If cboVendor.SelectedIndex = -1 And tbCheckNumber.Text = "" And tbCheckAmount.Text = "" And tbCheckNotes.Text = "" Then Close()
-        End If
+    Private Sub SaveCheck(sender As Object, e As MouseButtonEventArgs) Handles tbSave.MouseDown
         Select Case ConfirmAndSave()
             Case True                   '// Okay to save
-                tbDone.Visibility = Visibility.Visible
-                tbMoreCam.Visibility = Visibility.Visible
-                tbYesCam.Visibility = Visibility.Hidden
-                tbNo.Visibility = Visibility.Hidden
+                tbSave.Visibility = Visibility.Hidden
                 Dim dow As Byte = Weekday(dtpDepositDate.SelectedDate, FirstDayOfWeek.Friday)
                 WCR.AddCamCheck(cboVendor.Text, tbCheckNumber.Text, FormatNumber(tbCheckAmount.Text, 2), dtpDepositDate.SelectedDate, dow, tbCheckNotes.Text)
                 With dtpDepositDate
@@ -93,21 +84,28 @@ Public Class WCRCam
                 tbCheckAmount.Text = ""
                 tbCheckNotes.Text = ""
                 ToggleEntryVisibility(1)
-                tbDone.Visibility = Visibility.Visible
-                tbMoreCam.Visibility = Visibility.Visible
-                tbYesCam.Visibility = Visibility.Hidden
-                tbNo.Visibility = Visibility.Hidden
-                cboVendor.Focus()
+                tbYesCam.Visibility = Visibility.Visible
+                tbNo.Visibility = Visibility.Visible
+                tbCam.Text = "CAM check saved - did you want to add another?"
+                tbYesCam.Text = "Add Another"
+                tbNo.Text = "I'm done!"
+                ToggleEntryVisibility(0)
             Case False                  '// Do not save
+                'TODO: Flag errors for CAM save
+
         End Select
     End Sub
 
-    Private Sub HoverOver(sender As TextBlock, e As MouseEventArgs) Handles tbYesCam.MouseEnter, tbNo.MouseEnter, tbMoreCam.MouseEnter, tbDone.MouseEnter
+    Private Sub CamComplete(sender As Object, e As MouseButtonEventArgs) Handles tbNo.MouseDown
+        Close()
+    End Sub
+
+    Private Sub HoverOver(sender As TextBlock, e As MouseEventArgs) Handles tbYesCam.MouseEnter, tbNo.MouseEnter, tbSave.MouseEnter
         sender.Foreground = New SolidColorBrush(Colors.Blue)
         sender.Effect = HoverDrop
     End Sub
 
-    Private Sub HoverLeave(sender As TextBlock, e As MouseEventArgs) Handles tbYesCam.MouseLeave, tbNo.MouseLeave, tbMoreCam.MouseLeave, tbDone.MouseLeave
+    Private Sub HoverLeave(sender As TextBlock, e As MouseEventArgs) Handles tbYesCam.MouseLeave, tbNo.MouseLeave, tbSave.MouseLeave
         sender.Foreground = New SolidColorBrush(Colors.Black)
         sender.Effect = LeaveDrop
     End Sub
@@ -143,25 +141,46 @@ Public Class WCRCam
     Private Function ConfirmAndSave() As Boolean
         '// Check for data in each field and validate format.  If all are valid, save via returning a TRUE value.  False indicates something is wrong.
         Dim VendorNameisValid As Boolean, CheckNumIsValid As Boolean, CheckAmtIsValid As Boolean, DepDateIsValid As Boolean, ReturnVal As Boolean
-        If cboVendor.SelectedIndex > -1 Then VendorNameisValid = True
-        If tbCheckNumber.Text <> "" Then CheckNumIsValid = True
+        If cboVendor.SelectedIndex > -1 Then
+            VendorNameisValid = True
+            rctVendorNm.Visibility = Visibility.Hidden
+        Else
+            rctVendorNm.Visibility = Visibility.Visible
+        End If
+
+        If tbCheckNumber.Text <> "" Then
+            CheckNumIsValid = True
+            rctCheckNumber.Visibility = Visibility.Hidden
+        Else
+            rctCheckNumber.Visibility = Visibility.Visible
+        End If
+
         If tbCheckAmount.Text <> "" Then
             Try
                 Dim amtvalid As Double = FormatNumber(tbCheckAmount.Text, 2)
                 CheckAmtIsValid = True
+                rctCheckAmt.Visibility = Visibility.Hidden
             Catch ex As Exception
                 tbCheckAmount.SelectAll()
                 tbCheckAmount.Focus()
+                rctCheckAmt.Visibility = Visibility.Visible
             End Try
+        Else
+            rctCheckAmt.Visibility = Visibility.Visible
         End If
         If dtpDepositDate.Text <> "" Then
             Try
                 Dim dtvalid As Date = FormatDateTime(dtpDepositDate.SelectedDate, DateFormat.ShortDate)
                 DepDateIsValid = True
+                rctDepositDt.Visibility = Visibility.Hidden
             Catch ex As Exception
                 dtpDepositDate.Focus()
+                rctDepositDt.Visibility = Visibility.Visible
             End Try
+        Else
+            rctDepositDt.Visibility = Visibility.Visible
         End If
+
         If tbCheckAmount.Text <> "" Or tbCheckNumber.Text <> "" Then
             If VendorNameisValid = True And CheckNumIsValid = True And CheckAmtIsValid = True And DepDateIsValid = True Then
                 ReturnVal = True
