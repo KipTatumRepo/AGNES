@@ -42,7 +42,12 @@ Public Class WCRObject
                         ct += 1
                     Loop
                 Catch ex As Exception
-                    MsgBox("Error finding the vendor name in " & SelectedFile & ": " & ex.Message & ".  Operation canceled.")
+                    Dim notifymsg As New AgnesMessageBox With
+                                        {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly,
+                                        .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Operation canceled!",
+                                        .BottomSectionText = "Error finding the vendor name in " & SelectedFile & ": " & ex.Message}
+                    notifymsg.ShowDialog()
+                    notifymsg.Close()
                     badvname = True
                     BadFile += 1
                 End Try
@@ -56,23 +61,40 @@ Public Class WCRObject
                             tn = CType(ws.Cells(ct, 1), Excel.Range).Value
                             Select Case tn
                                 Case 15         '/ Dept Charges
-                                    If MsgBox("IO Charges are present in this tender.  Do you confirm that the required documentation has been received?", MsgBoxStyle.YesNo, "This tender type requires validation!") = MessageBoxResult.Yes Then
+                                    Dim notifymsg As New AgnesMessageBox With
+                                        {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.YesNo,
+                                        .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Confirmation required!",
+                                        .BottomSectionText = "IO Charges are present in this tender.  Do you confirm that the required documentation has been received?"}
+                                    notifymsg.ShowDialog()
+                                    If notifymsg.ReturnResult = "Yes" Then
                                         v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, CType(ws.Cells(ct, 2), Excel.Range).Value,
-                                FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                                                    FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                                        notifymsg.Close()
                                     Else
                                         v.Tenders.Clear()
                                         disp.tbHello.Text = "I've terminated the tender import for " & v.VendorName & ".  Please edit the file, if needed, and reload."
                                         BadFile += 1
+                                        notifymsg.Close()
                                         Exit Do
                                     End If
                                 Case 20, 36, 51 '/ IOU charges, IOU credit, IOU FS
-                                    MsgBox("Sorry, " & MySettings.Default.UserName & ", but IOU charges and credits are no longer allowed.", MsgBoxStyle.OkOnly, "Invalid tender type found!")
+                                    Dim notifymsg As New AgnesMessageBox With
+                                        {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly,
+                                        .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Invalid tender found!",
+                                        .BottomSectionText = "Sorry, " & MySettings.Default.UserName & ", but IOU charges and credits are no longer allowed."}
+                                    notifymsg.ShowDialog()
+                                    notifymsg.Close()
                                     v.Tenders.Clear()
                                     disp.tbHello.Text = "I've terminated the tender import for " & v.VendorName & ".  Please edit the file, if needed, and reload."
                                     BadFile += 1
                                     Exit Do
                                 Case 37         '/ Suspend
-                                    MsgBox("Sorry, " & MySettings.Default.UserName & ", but Suspend charges are no longer allowed.", MsgBoxStyle.OkOnly, "Invalid tender type found!")
+                                    Dim notifymsg As New AgnesMessageBox With
+                                        {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly,
+                                        .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Invalid tender found!",
+                                        .BottomSectionText = "Sorry, " & MySettings.Default.UserName & ", but Suspend charges are no longer allowed."}
+                                    notifymsg.ShowDialog()
+                                    notifymsg.Close()
                                     v.Tenders.Clear()
                                     disp.tbHello.Text = "I've terminated the tender import for " & v.VendorName & ".  Please edit the file, if needed, and reload."
                                     BadFile += 1
@@ -84,7 +106,12 @@ Public Class WCRObject
                                         v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "CCClearing", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
                                     End If
                                 Case 57                     '// Coupons (used by Lunchbox for their internal promotions)
-                                    MsgBox("FYI, " & MySettings.Default.UserName & ", I'm omitting the Coupon tender for " & vn & " in the amount of " & FormatCurrency(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                                    Dim notifymsg As New AgnesMessageBox With
+                                        {.FntSz = 14, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly,
+                                        .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Coupon tenders found!",
+                                        .BottomSectionText = "FYI, " & MySettings.Default.UserName & ", I'm omitting the Coupon tender for " & vn & " in the amount of " & FormatCurrency(CType(ws.Cells(ct, 9), Excel.Range).Value, 2)}
+                                    notifymsg.ShowDialog()
+                                    notifymsg.Close()
                                 Case 83                     '// Freedompay [pass-through]
                                     v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "FreedomPay", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
                                 Case 4, 92                     '// AMEX
@@ -104,38 +131,47 @@ Public Class WCRObject
                         For Each t In v.Tenders
                             ttl += t.TenderAmt
                         Next
-
-                        ''///TESTING
-                        'Dim amsg As New AgnesMessageBox With {.MsgSize = 0, .MsgType = 1, .TextStyle = 0}
-                        'With amsg
-                        '    .tbTopSection.Text = "Validation!"
-                        '    .tbBottomSection.Text = "It looks like " & v.VendorName & "" & " has a total of " & FormatCurrency(ttl, 2) & ".  Is this correct?"
-                        'End With
-                        'amsg.ShowDialog()
-
-                        ''///TESTING
-
-                        If MsgBox("It looks like " & v.VendorName & "" & " has a total of " & FormatCurrency(ttl, 2) & ".  Is this correct?", MsgBoxStyle.YesNo, "Confirm total") = MessageBoxResult.Yes Then
+                        Dim amsg As New AgnesMessageBox With
+                            {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Medium, .MsgType = AgnesMessageBox.MsgBoxType.YesNo,
+                            .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Tender Loaded!",
+                            .BottomSectionText = "It looks like " & v.VendorName & "" & " has a total of " & FormatCurrency(ttl, 2) & ".  Is this correct?"}
+                        amsg.ShowDialog()
+                        If amsg.ReturnResult = "Yes" Then
                             Vendors.Add(v)
                         Else
-                            MsgBox("Vendor not added.  Please try to add again after resolving discrepancy.")
+                            Dim amsg1 = New AgnesMessageBox With
+                                {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Medium, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly,
+                                .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Total incorrect",
+                                .BottomSectionText = "Vendor not added.  Please try to add again after resolving discrepancy."}
+                            amsg1.ShowDialog()
+                            amsg1.Close()
                             BadFile += 1
                         End If
+                        amsg.Close()
                     Catch ex As InvalidCastException
                         BadFile += 1
                     Catch OtherEx As Exception
-                        MsgBox("Encountered error " & OtherEx.Message)
+                        Dim amsg = New AgnesMessageBox With
+                            {.FntSz = 12, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly,
+                            .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Error encountered",
+                            .BottomSectionText = OtherEx.Message, .AllowCopy = True}
+                        amsg.ShowDialog()
+                        amsg.Close()
                         BadFile += 1
                         'TODO: ADD OTHER TENDER-RELATED ERROR CATCHES
-                    Finally
-                        wb.Close()
-                        ReleaseObject(ws)
-                        ReleaseObject(wb)
                     End Try
                 End If
+                Try
+                    wb.Close()
+                    ReleaseObject(ws)
+                    ReleaseObject(wb)
+                Catch ex As Exception
+
+                End Try
             Next
             xlApp.Quit()
             ReleaseObject(xlApp)
+            GC.Collect()
             disp.TenderLoadComplete(filecount, BadFile)
         End If
     End Sub
@@ -188,13 +224,19 @@ Public Class WCRObject
         If balanced = 0 Then
             disp.InBalance = True
         Else
-            'TODO: ADD APPLICATION STYLE MESSAGEBOX
-            Dim yn As MsgBoxResult = MsgBox("The WCR is out of balance in the amount of " & FormatCurrency(balanced, 2) & ".  Do you wish to continue?", vbYesNo)
-            If yn = vbNo Then
+
+            Dim amsg As New AgnesMessageBox With
+                            {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Medium, .MsgType = AgnesMessageBox.MsgBoxType.YesNo,
+                            .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Out of balance!",
+                            .BottomSectionText = "The WCR is out of balance in the amount of " & FormatCurrency(balanced, 2) & ".  Do you wish to continue?"}
+            amsg.ShowDialog()
+            If amsg.ReturnResult = "No" Then
                 disp.CancelDueToBalanceIssue = True
                 disp.InBalance = False
+                amsg.Close()
                 Exit Sub
             End If
+            amsg.Close()
         End If
 
         Dim xps_writer As XpsDocumentWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue)
@@ -575,7 +617,6 @@ Public Class WCRObject
     End Sub
 
     Private Sub PopulateCreditArray()
-        'TODO: ADD CAM CHECK CAPTURE ROUTINE
         '// Loop through CAM checks, add to specific weekday total, and tally sum total of checks
         For Each cc As CamCheck In CamChecks
             Select Case cc.DayofWeek

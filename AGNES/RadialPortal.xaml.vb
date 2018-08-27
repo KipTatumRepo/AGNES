@@ -40,9 +40,17 @@
     End Sub
 
     Private Sub CloseAGNES(sender As Object, e As MouseButtonEventArgs)
-        Dim ask As MsgBoxResult = MsgBox("Close AGNES?", MsgBoxStyle.YesNo)
-        If ask = MsgBoxResult.Yes Then
+        Dim amsg As New AgnesMessageBox With
+            {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Medium, .MsgType = AgnesMessageBox.MsgBoxType.YesNo,
+            .TextStyle = AgnesMessageBox.MsgBoxLayout.TextAndImage, .BottomSectionText = "Close AGNES?", .AllowCopy = True,
+            .ImageSource = AgnesMessageBox.ImageType.Alert}
+        amsg.ShowDialog()
+        If amsg.ReturnResult = "Yes" Then
+            amsg.Close()
+            GC.Collect()
             Close()
+        Else
+            amsg.Close()
         End If
     End Sub
 
@@ -91,4 +99,5 @@
         AddHandler img.MouseLeave, AddressOf ModuleMouseLeave
         AddHandler img.MouseLeftButtonDown, AddressOf ModuleSelect
     End Sub
+
 End Class

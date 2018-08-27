@@ -114,19 +114,6 @@
           <Property Name="LeaderId" Type="bigint" Nullable="false" />
           <Property Name="BGId" Type="bigint" Nullable="false" />
         </EntityType>
-        <EntityType Name="Locations">
-          <Key>
-            <PropertyRef Name="PID" />
-          </Key>
-          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BuildingName" Type="varchar" MaxLength="512" Nullable="false" />
-          <Property Name="MSCampus" Type="nchar" MaxLength="80" />
-          <Property Name="ParticipationCampus" Type="nchar" MaxLength="80" />
-          <Property Name="TotalSeats" Type="int" />
-          <Property Name="SqFt" Type="int" />
-          <Property Name="Lat" Type="decimal" Precision="12" Scale="6" />
-          <Property Name="Lng" Type="decimal" Precision="12" Scale="6" />
-        </EntityType>
         <EntityType Name="Locations_Join">
           <Key>
             <PropertyRef Name="PID" />
@@ -249,7 +236,6 @@
           <EntitySet Name="Involvement_Join" EntityType="Self.Involvement_Join" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="Leaders" EntityType="Self.Leaders" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="Leaders_Join" EntityType="Self.Leaders_Join" Schema="BizGroupCRM" store:Type="Tables" />
-          <EntitySet Name="Locations" EntityType="Self.Locations" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="Locations_Join" EntityType="Self.Locations_Join" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="NotableEvents" EntityType="Self.NotableEvents" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="NotableEvents_Join" EntityType="Self.NotableEvents_Join" Schema="BizGroupCRM" store:Type="Tables" />
@@ -377,19 +363,6 @@
           <Property Name="LeaderId" Type="Int64" Nullable="false" />
           <Property Name="BGId" Type="Int64" Nullable="false" />
         </EntityType>
-        <EntityType Name="Location">
-          <Key>
-            <PropertyRef Name="PID" />
-          </Key>
-          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BuildingName" Type="String" MaxLength="512" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="MSCampus" Type="String" MaxLength="80" FixedLength="true" Unicode="true" />
-          <Property Name="ParticipationCampus" Type="String" MaxLength="80" FixedLength="true" Unicode="true" />
-          <Property Name="TotalSeats" Type="Int32" />
-          <Property Name="SqFt" Type="Int32" />
-          <Property Name="Lat" Type="Decimal" Precision="12" Scale="6" />
-          <Property Name="Lng" Type="Decimal" Precision="12" Scale="6" />
-        </EntityType>
         <EntityType Name="Locations_Join">
           <Key>
             <PropertyRef Name="PID" />
@@ -498,7 +471,6 @@
           <EntitySet Name="Involvement_Join" EntityType="Self.Involvement_Join" />
           <EntitySet Name="Leaders" EntityType="Self.Leader" />
           <EntitySet Name="Leaders_Join" EntityType="Self.Leaders_Join" />
-          <EntitySet Name="Locations" EntityType="Self.Location" />
           <EntitySet Name="Locations_Join" EntityType="Self.Locations_Join" />
           <EntitySet Name="NotableEvents" EntityType="Self.NotableEvent" />
           <EntitySet Name="NotableEvents_Join" EntityType="Self.NotableEvents_Join" />
@@ -653,20 +625,6 @@
                 <ScalarProperty Name="LeaderId" ColumnName="LeaderId" />
                 <ScalarProperty Name="BGId" ColumnName="BGId" />
               </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Locations">
-            <EntityTypeMapping TypeName="BGCRMModel.Location">
-              <MappingFragment StoreEntitySet="Locations">
-                <ScalarProperty Name="Lng" ColumnName="Lng" />
-                <ScalarProperty Name="Lat" ColumnName="Lat" />
-                <ScalarProperty Name="SqFt" ColumnName="SqFt" />
-                <ScalarProperty Name="TotalSeats" ColumnName="TotalSeats" />
-                <ScalarProperty Name="ParticipationCampus" ColumnName="ParticipationCampus" />
-                <ScalarProperty Name="MSCampus" ColumnName="MSCampus" />
-                <ScalarProperty Name="PID" ColumnName="PID" />
-                <ScalarProperty Name="BuildingName" ColumnName="BuildingName" />
-                </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Locations_Join">
