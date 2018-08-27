@@ -42,7 +42,12 @@ Public Class WCRObject
                         ct += 1
                     Loop
                 Catch ex As Exception
-                    MsgBox("Error finding the vendor name in " & SelectedFile & ": " & ex.Message & ".  Operation canceled.")
+                    Dim notifymsg As New AgnesMessageBox With
+                                        {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly,
+                                        .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Operation canceled!",
+                                        .BottomSectionText = "Error finding the vendor name in " & SelectedFile & ": " & ex.Message}
+                    notifymsg.ShowDialog()
+                    notifymsg.Close()
                     badvname = True
                     BadFile += 1
                 End Try
@@ -56,23 +61,40 @@ Public Class WCRObject
                             tn = CType(ws.Cells(ct, 1), Excel.Range).Value
                             Select Case tn
                                 Case 15         '/ Dept Charges
-                                    If MsgBox("IO Charges are present in this tender.  Do you confirm that the required documentation has been received?", MsgBoxStyle.YesNo, "This tender type requires validation!") = MessageBoxResult.Yes Then
+                                    Dim notifymsg As New AgnesMessageBox With
+                                        {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.YesNo,
+                                        .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Confirmation required!",
+                                        .BottomSectionText = "IO Charges are present in this tender.  Do you confirm that the required documentation has been received?"}
+                                    notifymsg.ShowDialog()
+                                    If notifymsg.ReturnResult = "Yes" Then
                                         v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, CType(ws.Cells(ct, 2), Excel.Range).Value,
-                                FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                                                    FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                                        notifymsg.Close()
                                     Else
                                         v.Tenders.Clear()
                                         disp.tbHello.Text = "I've terminated the tender import for " & v.VendorName & ".  Please edit the file, if needed, and reload."
                                         BadFile += 1
+                                        notifymsg.Close()
                                         Exit Do
                                     End If
                                 Case 20, 36, 51 '/ IOU charges, IOU credit, IOU FS
-                                    MsgBox("Sorry, " & MySettings.Default.UserName & ", but IOU charges and credits are no longer allowed.", MsgBoxStyle.OkOnly, "Invalid tender type found!")
+                                    Dim notifymsg As New AgnesMessageBox With
+                                        {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly,
+                                        .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Invalid tender found!",
+                                        .BottomSectionText = "Sorry, " & MySettings.Default.UserName & ", but IOU charges and credits are no longer allowed."}
+                                    notifymsg.ShowDialog()
+                                    notifymsg.Close()
                                     v.Tenders.Clear()
                                     disp.tbHello.Text = "I've terminated the tender import for " & v.VendorName & ".  Please edit the file, if needed, and reload."
                                     BadFile += 1
                                     Exit Do
                                 Case 37         '/ Suspend
-                                    MsgBox("Sorry, " & MySettings.Default.UserName & ", but Suspend charges are no longer allowed.", MsgBoxStyle.OkOnly, "Invalid tender type found!")
+                                    Dim notifymsg As New AgnesMessageBox With
+                                        {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly,
+                                        .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Invalid tender found!",
+                                        .BottomSectionText = "Sorry, " & MySettings.Default.UserName & ", but Suspend charges are no longer allowed."}
+                                    notifymsg.ShowDialog()
+                                    notifymsg.Close()
                                     v.Tenders.Clear()
                                     disp.tbHello.Text = "I've terminated the tender import for " & v.VendorName & ".  Please edit the file, if needed, and reload."
                                     BadFile += 1

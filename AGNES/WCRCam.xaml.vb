@@ -187,4 +187,5 @@ Public Class WCRCam
             amsg.Close()
         End If
     End Sub
+
 End Class
