@@ -21,6 +21,8 @@
 
     Public Property FntSz As Byte
 
+    Public Property ReturnResult As String
+
     Private _msgsize As MsgBoxSize
     Public Property MsgSize As MsgBoxSize
         Get
@@ -83,6 +85,7 @@
     End Property
 
     Private _allowcopy As Boolean
+
     Public Property AllowCopy As Boolean
         Get
             Return _allowcopy
@@ -93,7 +96,10 @@
         End Set
     End Property
 
-    Public Property ReturnResult As String
+
+    Public Sub New()
+        InitializeComponent()
+    End Sub
 
     Private Sub ScaleMessagebox(win_h, win_w, img_h, img_w, img_ml, img_mt, img_mr, img_mb, ts_h, ts_w, ts_ml, ts_mt, ts_mr, ts_mb, tos_h,
                              tos_w, tos_ml, tos_mt, tos_mr, tos_mb, bs_h, bs_w, bs_ml, bs_mt, bs_mr, bs_mb, but_h, but_w, b1_ml, b1_mt, b1_mr, b1_mb,
