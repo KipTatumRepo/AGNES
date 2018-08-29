@@ -11,22 +11,22 @@ Imports System
 Imports System.Data.Entity
 Imports System.Data.Entity.Infrastructure
 
-Partial Public Class WCREntities
+Partial Public Class AGNESSharedData
     Inherits DbContext
 
     Public Sub New()
-        MyBase.New("name=WCREntities")
+        MyBase.New("name=AGNESSharedData")
     End Sub
 
     Protected Overrides Sub OnModelCreating(modelBuilder As DbModelBuilder)
         Throw New UnintentionalCodeFirstException()
     End Sub
 
-    Public Overridable Property Tender_GL_Mapping() As DbSet(Of Tender_GL_Mapping)
-    Public Overridable Property TenderID_TenderType_Mapping() As DbSet(Of TenderID_TenderType_Mapping)
-    Public Overridable Property VendorInfoes() As DbSet(Of VendorInfo)
-    Public Overridable Property CAMWithholdingTypes() As DbSet(Of CAMWithholdingType)
-    Public Overridable Property KPIWithholdingTypes() As DbSet(Of KPIWithholdingType)
-    Public Overridable Property ReceivedCAMChecks() As DbSet(Of ReceivedCAMCheck)
+    Public Overridable Property AccessLevelLists() As DbSet(Of AccessLevelList)
+    Public Overridable Property ModuleGroupLists() As DbSet(Of ModuleGroupList)
+    Public Overridable Property ModuleLists() As DbSet(Of ModuleList)
+    Public Overridable Property ModuleUser_Join() As DbSet(Of ModuleUser_Join)
+    Public Overridable Property UnitUser_Join() As DbSet(Of UnitUser_Join)
+    Public Overridable Property UserLists() As DbSet(Of UserList)
 
 End Class

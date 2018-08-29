@@ -36,6 +36,7 @@
     End Sub
 
     Private Sub SoftExitWCR(sender As Object, e As MouseButtonEventArgs) Handles tbClose.MouseDown
+        WCRE.SaveChanges()
         ExitModule(0)
     End Sub
 
@@ -55,9 +56,15 @@
 
     Private Sub ExitModule(y)
         If y = 1 Then
+            Dim msgtxt As String
+            If WCR.CamChecks.Count > 0 Then
+                msgtxt = "Close WCR?  Your CAM checks will not be saved."
+            Else
+                msgtxt = "Close WCR?"
+            End If
             Dim amsg As New AgnesMessageBox With
             {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.YesNo,
-            .TextStyle = AgnesMessageBox.MsgBoxLayout.BottomOnly, .BottomSectionText = "Close WCR?"}
+            .TextStyle = AgnesMessageBox.MsgBoxLayout.BottomOnly, .BottomSectionText = msgtxt}
             amsg.ShowDialog()
             If amsg.ReturnResult = "Yes" Then
                 amsg.Close()

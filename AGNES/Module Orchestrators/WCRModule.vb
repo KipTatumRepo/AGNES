@@ -6,11 +6,18 @@
         WCRE = New WCREntities
         Dim WCRStartPage As New WCRHello
         WCRStartPage.ShowDialog()
-        If UserClosed = True Then Exit Sub
+        If UserClosed = True Then
+            WCR = Nothing
+            Exit Sub
+        End If
         Dim WCRCamPage As New WCRCam
         WCRCamPage.ShowDialog()
-        If UserClosed = True Then Exit Sub
+        If UserClosed = True Then
+            WCR = Nothing
+            Exit Sub
+        End If
         Dim WCRFinalPage As New WCRFinal
         WCRFinalPage.ShowDialog()
+        WCR = Nothing
     End Sub
 End Module

@@ -1,7 +1,7 @@
 ﻿Public Class objBusinessGroup
     Private _orgname As String
     Private ef As BGCRMEntity
-    Private sd As SharedDataEntity
+    Private sd As BIEntities
     Public Property OrgName As String
         Get
             Return _orgname

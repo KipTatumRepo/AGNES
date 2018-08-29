@@ -35,6 +35,19 @@
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="WithholdingType" Type="nchar" MaxLength="32" Nullable="false" />
         </EntityType>
+        <EntityType Name="ReceivedCAMChecks">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VID" Type="bigint" Nullable="false" />
+          <Property Name="VendorName" Type="nchar" MaxLength="128" Nullable="false" />
+          <Property Name="CheckNumber" Type="nchar" MaxLength="128" Nullable="false" />
+          <Property Name="DepositDate" Type="date" Nullable="false" />
+          <Property Name="DayofWeek" Type="smallint" Nullable="false" />
+          <Property Name="CheckAmount" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="CheckNotes" Type="nchar" MaxLength="512" />
+        </EntityType>
         <EntityType Name="VendorInfo">
           <Key>
             <PropertyRef Name="PID" />
@@ -63,6 +76,7 @@
           <EntitySet Name="TenderID_TenderType_Mapping" EntityType="Self.TenderID_TenderType_Mapping" Schema="agnes" store:Type="Tables" />
           <EntitySet Name="CAMWithholdingTypes" EntityType="Self.CAMWithholdingTypes" Schema="Vendors" store:Type="Tables" />
           <EntitySet Name="KPIWithholdingTypes" EntityType="Self.KPIWithholdingTypes" Schema="Vendors" store:Type="Tables" />
+          <EntitySet Name="ReceivedCAMChecks" EntityType="Self.ReceivedCAMChecks" Schema="Vendors" store:Type="Tables" />
           <EntitySet Name="VendorInfo" EntityType="Self.VendorInfo" Schema="Vendors" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -114,6 +128,7 @@
           <EntitySet Name="VendorInfoes" EntityType="Self.VendorInfo" />
           <EntitySet Name="CAMWithholdingTypes" EntityType="WCRModel.CAMWithholdingType" />
           <EntitySet Name="KPIWithholdingTypes" EntityType="WCRModel.KPIWithholdingType" />
+          <EntitySet Name="ReceivedCAMChecks" EntityType="WCRModel.ReceivedCAMCheck" />
         </EntityContainer>
         <EntityType Name="CAMWithholdingType">
           <Key>
@@ -128,6 +143,19 @@
           </Key>
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="WithholdingType" Type="String" Nullable="false" MaxLength="32" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ReceivedCAMCheck">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VID" Type="Int64" Nullable="false" />
+          <Property Name="VendorName" Type="String" Nullable="false" MaxLength="128" FixedLength="true" Unicode="true" />
+          <Property Name="CheckNumber" Type="String" Nullable="false" MaxLength="128" FixedLength="true" Unicode="true" />
+          <Property Name="DepositDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DayofWeek" Type="Int16" Nullable="false" />
+          <Property Name="CheckAmount" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="CheckNotes" Type="String" MaxLength="512" FixedLength="true" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -189,6 +217,20 @@
             <EntityTypeMapping TypeName="WCRModel.KPIWithholdingType">
               <MappingFragment StoreEntitySet="KPIWithholdingTypes">
                 <ScalarProperty Name="WithholdingType" ColumnName="WithholdingType" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReceivedCAMChecks">
+            <EntityTypeMapping TypeName="WCRModel.ReceivedCAMCheck">
+              <MappingFragment StoreEntitySet="ReceivedCAMChecks">
+                <ScalarProperty Name="CheckNotes" ColumnName="CheckNotes" />
+                <ScalarProperty Name="CheckAmount" ColumnName="CheckAmount" />
+                <ScalarProperty Name="DayofWeek" ColumnName="DayofWeek" />
+                <ScalarProperty Name="DepositDate" ColumnName="DepositDate" />
+                <ScalarProperty Name="CheckNumber" ColumnName="CheckNumber" />
+                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+                <ScalarProperty Name="VID" ColumnName="VID" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
               </MappingFragment>
             </EntityTypeMapping>
