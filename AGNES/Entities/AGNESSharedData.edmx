@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AGNESSharedModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AccessLevelList">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AccessLevel" Type="nchar" MaxLength="64" Nullable="false" />
+          <Property Name="AccessDesc" Type="nchar" MaxLength="512" />
+        </EntityType>
+        <EntityType Name="ModuleGroupList">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GroupName" Type="nchar" MaxLength="64" Nullable="false" />
+          <Property Name="GroupDesc" Type="nchar" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="ModuleList">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ModuleName" Type="nchar" MaxLength="255" Nullable="false" />
+          <Property Name="ImgResource" Type="nchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ModuleUser_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ModuleId" Type="bigint" Nullable="false" />
+          <Property Name="UserId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UnitUser_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" Nullable="false" />
+          <Property Name="UnitNumber" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserList">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nchar" MaxLength="255" Nullable="false" />
+          <Property Name="UserAlias" Type="nchar" MaxLength="80" Nullable="false" />
+          <Property Name="FirstName" Type="nchar" MaxLength="80" Nullable="false" />
+          <Property Name="LastName" Type="nchar" MaxLength="80" Nullable="false" />
+          <Property Name="SpokenName" Type="nchar" MaxLength="128" Nullable="false" />
+          <Property Name="AccessLevelId" Type="bigint" Nullable="false" />
+          <Property Name="DateAdded" Type="date" Nullable="false" />
+          <Property Name="AddedBy" Type="nchar" MaxLength="80" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="AGNESSharedModelStoreContainer">
+          <EntitySet Name="AccessLevelList" EntityType="Self.AccessLevelList" Schema="agnes" store:Type="Tables" />
+          <EntitySet Name="ModuleGroupList" EntityType="Self.ModuleGroupList" Schema="agnes" store:Type="Tables" />
+          <EntitySet Name="ModuleList" EntityType="Self.ModuleList" Schema="agnes" store:Type="Tables" />
+          <EntitySet Name="ModuleUser_Join" EntityType="Self.ModuleUser_Join" Schema="agnes" store:Type="Tables" />
+          <EntitySet Name="UnitUser_Join" EntityType="Self.UnitUser_Join" Schema="agnes" store:Type="Tables" />
+          <EntitySet Name="UserList" EntityType="Self.UserList" Schema="agnes" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AGNESSharedModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AccessLevelList">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccessLevel" Type="String" MaxLength="64" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="AccessDesc" Type="String" MaxLength="512" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ModuleGroupList">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GroupName" Type="String" MaxLength="64" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="GroupDesc" Type="String" MaxLength="256" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ModuleList">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ModuleName" Type="String" MaxLength="255" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="ImgResource" Type="String" MaxLength="255" FixedLength="true" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ModuleUser_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ModuleId" Type="Int64" Nullable="false" />
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UnitUser_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" />
+          <Property Name="UnitNumber" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserList">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="255" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="UserAlias" Type="String" MaxLength="80" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="80" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="80" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="SpokenName" Type="String" MaxLength="128" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="AccessLevelId" Type="Int64" Nullable="false" />
+          <Property Name="DateAdded" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="AddedBy" Type="String" MaxLength="80" FixedLength="true" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="AGNESSharedData" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AccessLevelLists" EntityType="Self.AccessLevelList" />
+          <EntitySet Name="ModuleGroupLists" EntityType="Self.ModuleGroupList" />
+          <EntitySet Name="ModuleLists" EntityType="Self.ModuleList" />
+          <EntitySet Name="ModuleUser_Join" EntityType="Self.ModuleUser_Join" />
+          <EntitySet Name="UnitUser_Join" EntityType="Self.UnitUser_Join" />
+          <EntitySet Name="UserLists" EntityType="Self.UserList" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AGNESSharedModelStoreContainer" CdmEntityContainer="AGNESSharedData">
+          <EntitySetMapping Name="AccessLevelLists">
+            <EntityTypeMapping TypeName="AGNESSharedModel.AccessLevelList">
+              <MappingFragment StoreEntitySet="AccessLevelList">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="AccessLevel" ColumnName="AccessLevel" />
+                <ScalarProperty Name="AccessDesc" ColumnName="AccessDesc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ModuleGroupLists">
+            <EntityTypeMapping TypeName="AGNESSharedModel.ModuleGroupList">
+              <MappingFragment StoreEntitySet="ModuleGroupList">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+                <ScalarProperty Name="GroupDesc" ColumnName="GroupDesc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ModuleLists">
+            <EntityTypeMapping TypeName="AGNESSharedModel.ModuleList">
+              <MappingFragment StoreEntitySet="ModuleList">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="ModuleName" ColumnName="ModuleName" />
+                <ScalarProperty Name="ImgResource" ColumnName="ImgResource" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ModuleUser_Join">
+            <EntityTypeMapping TypeName="AGNESSharedModel.ModuleUser_Join">
+              <MappingFragment StoreEntitySet="ModuleUser_Join">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="ModuleId" ColumnName="ModuleId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UnitUser_Join">
+            <EntityTypeMapping TypeName="AGNESSharedModel.UnitUser_Join">
+              <MappingFragment StoreEntitySet="UnitUser_Join">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="UnitNumber" ColumnName="UnitNumber" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserLists">
+            <EntityTypeMapping TypeName="AGNESSharedModel.UserList">
+              <MappingFragment StoreEntitySet="UserList">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserAlias" ColumnName="UserAlias" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="SpokenName" ColumnName="SpokenName" />
+                <ScalarProperty Name="AccessLevelId" ColumnName="AccessLevelId" />
+                <ScalarProperty Name="DateAdded" ColumnName="DateAdded" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

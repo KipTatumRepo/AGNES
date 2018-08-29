@@ -23,7 +23,6 @@
     Private Sub PrintWCR_Click(sender As Object, e As MouseButtonEventArgs) Handles tbPrintWCR.MouseDown
         WCRModule.WCR.PrintWCR(Me)
         If InBalance = True Then
-            SaveCamChecks()
             tbFinal.Text = "That's everything!  The WCR is in balance, but please make sure that you double check the numbers before you enter anything into MyFi - you're on your own from here on out!"
         Else
             If CancelDueToBalanceIssue = False Then
@@ -36,20 +35,8 @@
         tbClose.Visibility = Visibility.Visible
     End Sub
 
-    Private Sub SaveCamChecks()
-        'TODO: Write routine to save CAM checks to database
-        'Dim CamEF As New
-
-        'Try
-        '    Dim IsNew = ef.BusinessGroups.Single(Function(p) p.BusinessGroupName = OrgName)
-        '    UpdateExisting()
-        'Catch ex As InvalidOperationException
-        '    SaveNew()
-        'Catch ex As Exception
-        'End Try
-
-    End Sub
     Private Sub SoftExitWCR(sender As Object, e As MouseButtonEventArgs) Handles tbClose.MouseDown
+        WCRE.SaveChanges()
         ExitModule(0)
     End Sub
 
@@ -69,9 +56,15 @@
 
     Private Sub ExitModule(y)
         If y = 1 Then
+            Dim msgtxt As String
+            If WCR.CamChecks.Count > 0 Then
+                msgtxt = "Close WCR?  Your CAM checks will not be saved."
+            Else
+                msgtxt = "Close WCR?"
+            End If
             Dim amsg As New AgnesMessageBox With
             {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.YesNo,
-            .TextStyle = AgnesMessageBox.MsgBoxLayout.BottomOnly, .BottomSectionText = "Close WCR?"}
+            .TextStyle = AgnesMessageBox.MsgBoxLayout.BottomOnly, .BottomSectionText = msgtxt}
             amsg.ShowDialog()
             If amsg.ReturnResult = "Yes" Then
                 amsg.Close()

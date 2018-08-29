@@ -69,9 +69,20 @@ Public Class WCRCam
 
     Private Sub SaveCheck(sender As Object, e As MouseButtonEventArgs) Handles tbSave.MouseDown
         If ConfirmAndSave() = True Then
-            tbSave.Visibility = Visibility.Hidden
-            Dim dow As Byte = Weekday(dtpDepositDate.SelectedDate, FirstDayOfWeek.Friday)
-            WCR.AddCamCheck(GetVendorID(cboVendor.Text), cboVendor.Text, tbCheckNumber.Text, FormatNumber(tbCheckAmount.Text, 2), dtpDepositDate.SelectedDate, dow, tbCheckNotes.Text)
+            Dim vid As Long = WCR.GetVendorID(cboVendor.Text)
+            If WCR.CheckDoesNotExist(tbCheckNumber.Text, vid) = True And WCR.DoesNotExistInTempCheckList(tbCheckNumber.Text, vid) = True Then
+                Dim dow As Byte = Weekday(dtpDepositDate.SelectedDate, FirstDayOfWeek.Friday)
+                WCR.AddCamCheck(vid, cboVendor.Text, tbCheckNumber.Text, FormatNumber(tbCheckAmount.Text, 2), dtpDepositDate.SelectedDate, dow, tbCheckNotes.Text)
+                tbCam.Text = "CAM check saved - did you want to add another?"
+            Else
+                Dim amsg As New AgnesMessageBox With
+                    {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Medium, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly,
+                    .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Save cancelled.",
+                    .BottomSectionText = "A check for this vendor already exists."}
+                amsg.ShowDialog()
+                amsg.Close()
+                tbCam.Text = ""
+            End If
             With dtpDepositDate
                 .DisplayDateStart = Now().AddDays(-14)
                 .DisplayDateEnd = Now()
@@ -83,9 +94,9 @@ Public Class WCRCam
             tbCheckAmount.Text = ""
             tbCheckNotes.Text = ""
             ToggleEntryVisibility(1)
+            tbSave.Visibility = Visibility.Hidden
             tbYesCam.Visibility = Visibility.Visible
             tbNo.Visibility = Visibility.Visible
-            tbCam.Text = "CAM check saved - did you want to add another?"
             tbYesCam.Text = "Add Another"
             tbNo.Text = "I'm done!"
             ToggleEntryVisibility(0)
@@ -189,21 +200,16 @@ Public Class WCRCam
         Return ReturnVal
     End Function
 
-    Private Function GetVendorID(vnm)
-        Dim vid As Integer
-        Dim q = From c In WCRE.VendorInfoes
-                Where c.VendorName Is vnm
-                Select c
-        For Each c In q
-            vid = c.PID
-        Next
-        Return vid
-    End Function
-
     Private Sub ExitWCR(sender As Object, e As MouseButtonEventArgs) Handles btnExit.MouseDown
+        Dim msgtxt As String
+        If WCR.CamChecks.Count > 0 Then
+            msgtxt = "Close WCR?  Your CAM checks will not be saved."
+        Else
+            msgtxt = "Close WCR?"
+        End If
         Dim amsg As New AgnesMessageBox With
             {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.YesNo,
-            .TextStyle = AgnesMessageBox.MsgBoxLayout.BottomOnly, .BottomSectionText = "Close WCR?"}
+            .TextStyle = AgnesMessageBox.MsgBoxLayout.BottomOnly, .BottomSectionText = msgtxt}
         amsg.ShowDialog()
         If amsg.ReturnResult = "Yes" Then
             amsg.Close()

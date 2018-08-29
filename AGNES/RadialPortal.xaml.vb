@@ -3,9 +3,33 @@
 
         ' This call is required by the designer.
         InitializeComponent()
+        GetUserInfo()
         ConstructRadialMenu()
 
     End Sub
+    Private Sub GetUserInfo()
+        Dim ef As New AGNESSharedData
+        Dim usr As String = Environment.UserName
+        Dim qwl = From c In ef.UserLists
+                  Where c.UserAlias = usr
+                  Select c
+        If qwl.Count = 0 Then
+            Dim amsg1 = New AgnesMessageBox With
+                {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Medium, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly,
+                .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Access denied",
+                .BottomSectionText = "It appears that you don't have any access.  Please let your manager know that you need to be added."}
+            amsg1.ShowDialog()
+            amsg1.Close()
+            GC.Collect()
+            Close()
+        Else
+            For Each c In qwl
+                My.Settings.UserName = Trim(c.UserName)
+                My.Settings.UserShortName = Trim(c.FirstName)
+            Next
+        End If
+    End Sub
+
     Private Sub ConstructRadialMenu()
         'TODO: REPLACE TEST MENU CONSTRUCTION WITH DATABASE-DRIVEN FINAL PRODUCT
         Dim ModuleName As String, ModuleToolTip As String, moduleimage As String

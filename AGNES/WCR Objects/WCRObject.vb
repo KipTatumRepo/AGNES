@@ -5,8 +5,6 @@ Imports System.Windows.Xps
 
 Public Class WCRObject
     Public WeekStart As Date
-    Public Author As String
-    Public ShortName As String
     Public Vendors As New List(Of VendorObject)
     Public CamChecks As New List(Of CamCheck)
     Public CreditArray(8, 8) As String
@@ -178,6 +176,23 @@ Public Class WCRObject
 
     Public Sub AddCamCheck(VID As Integer, VNm As String, Num As String, Amt As Double, Dte As Date, Dow As Byte, Nts As String)
         Dim c As New CamCheck With {.VendorID = VID, .VendorName = VNm, .CheckNumber = Num, .CheckAmt = Amt, .DepositDate = Dte, .DayofWeek = Dow, .Notes = Nts}
+        Try
+            Dim cc As New ReceivedCAMCheck
+            With cc
+                .VID = c.VendorID
+                .VendorName = c.VendorName
+                .CheckNumber = c.CheckNumber
+                .DepositDate = c.DepositDate
+                .DayofWeek = c.DayofWeek
+                .CheckAmount = c.CheckAmt
+                .CheckNotes = c.Notes
+            End With
+            WCRE.ReceivedCAMChecks.Add(cc)
+        Catch excep As Exception
+            Dim amsg As New AgnesMessageBox With {.MsgSize = AgnesMessageBox.MsgBoxSize.Medium, .ImageSource = AgnesMessageBox.ImageType.Danger, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly, .TextStyle = AgnesMessageBox.MsgBoxLayout.TextAndImage, .FntSz = 18, .BottomSectionText = excep.Message, .OffsetSectionText = "Unexpected error", .AllowCopy = True}
+            amsg.ShowDialog()
+            amsg.Close()
+        End Try
         CamChecks.Add(c)
     End Sub
 
@@ -835,6 +850,42 @@ Public Class WCRObject
             obj = Nothing
         End Try
     End Sub
+
+    Public Function GetVendorID(vnm)
+        Dim vid As Integer
+        Dim q = From c In WCRE.VendorInfoes
+                Where c.VendorName Is vnm
+                Select c
+        For Each c In q
+            vid = c.PID
+        Next
+        Return vid
+    End Function
+
+    Public Function CheckDoesNotExist(cn, vid) As Boolean
+        Dim ef As New WCREntities
+        Dim vid1 As Integer = vid
+        Try
+            Dim IsNew = ef.ReceivedCAMChecks.Single(Function(p) p.CheckNumber Is cn)     ' If check number exists,
+            Dim DoubleCheck = ef.ReceivedCAMChecks.Single(Function(p) p.VID = vid1)      ' see if it's for the same vendor.  If so, throw an error; if not, create new entry
+            Return False
+        Catch ex As InvalidOperationException
+            Return True
+        Catch ex As Exception
+            Dim a As String = ex.Message
+            Return False
+        End Try
+    End Function
+
+    Public Function DoesNotExistInTempCheckList(cn, vid) As Boolean
+        For Each c As CamCheck In CamChecks
+            If c.CheckNumber = cn And c.VendorID = vid Then
+                Return False
+                Exit Function
+            End If
+        Next
+        Return True
+    End Function
 
     Private Function WCRInBalance() As Double
         Dim creditsection As Double, debitanddepositsection As Double

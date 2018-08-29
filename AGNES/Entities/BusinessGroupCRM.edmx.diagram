@@ -5,7 +5,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="239b2bb5bc2549ad9aa396c9093c6142" Name="Diagram1" ZoomLevel="86">
-        <EntityTypeShape EntityType="BGCRMModel.BusinessGroup" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BGCRMModel.BusinessGroup" Width="1.875" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BGCRMModel.Comm_Join" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BGCRMModel.Communication" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BGCRMModel.Culture_Join" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />

@@ -131,6 +131,24 @@
     <Compile Include="BusinessGroupObjects\SingleUserInput.xaml.vb">
       <DependentUpon>SingleUserInput.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Entities\AccessLevelList.vb">
+      <DependentUpon>AGNESSharedData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AGNESSharedData.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AGNESSharedData.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AGNESSharedData.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AGNESSharedData.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AGNESSharedData.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AGNESSharedData.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\BusinessGroup.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
@@ -173,6 +191,21 @@
     <Compile Include="Entities\FrequentCustomer.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\GeneralSharedData.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GeneralSharedData.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\GeneralSharedData.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GeneralSharedData.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\GeneralSharedData.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GeneralSharedData.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\GroupCulture.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
@@ -195,7 +228,16 @@
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\MasterBuildingList.vb">
-      <DependentUpon>SharedData.tt</DependentUpon>
+      <DependentUpon>GeneralSharedData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ModuleGroupList.vb">
+      <DependentUpon>AGNESSharedData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ModuleList.vb">
+      <DependentUpon>AGNESSharedData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ModuleUser_Join.vb">
+      <DependentUpon>AGNESSharedData.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\NotableEvent.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
@@ -224,21 +266,6 @@
     <Compile Include="Entities\Refresh_Join.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\SharedData.Context.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SharedData.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\SharedData.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SharedData.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\SharedData.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SharedData.tt</DependentUpon>
-    </Compile>
     <Compile Include="Entities\TenderID_TenderType_Mapping.vb">
       <DependentUpon>WCRModule.tt</DependentUpon>
     </Compile>
@@ -250,6 +277,12 @@
     </Compile>
     <Compile Include="Entities\TopSpaces_Join.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\UnitUser_Join.vb">
+      <DependentUpon>AGNESSharedData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\UserList.vb">
+      <DependentUpon>AGNESSharedData.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\VendorInfo.vb">
       <DependentUpon>WCRModule.tt</DependentUpon>
@@ -280,6 +313,7 @@
     <Compile Include="RadialPortal.xaml.vb">
       <DependentUpon>RadialPortal.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings.vb" />
     <Compile Include="WCR Objects\CamCheck.vb" />
     <Compile Include="WCR Objects\VendorObject.vb" />
     <Compile Include="WCR Objects\Tender.vb" />
@@ -374,6 +408,13 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>BusinessGroupCRM.Designer.vb</LastGenOutput>
     </EntityDeploy>
+    <EntityDeploy Include="Entities\AGNESSharedData.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>AGNESSharedData.Designer.vb</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Entities\AGNESSharedData.edmx.diagram">
+      <DependentUpon>AGNESSharedData.edmx</DependentUpon>
+    </None>
     <None Include="Entities\BusinessGroupCRM.edmx.diagram">
       <DependentUpon>BusinessGroupCRM.edmx</DependentUpon>
     </None>
@@ -381,12 +422,12 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>WCRModule.Designer.vb</LastGenOutput>
     </EntityDeploy>
-    <EntityDeploy Include="Entities\SharedData.edmx">
+    <EntityDeploy Include="Entities\GeneralSharedData.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>SharedData.Designer.vb</LastGenOutput>
+      <LastGenOutput>GeneralSharedData.Designer.vb</LastGenOutput>
     </EntityDeploy>
-    <None Include="Entities\SharedData.edmx.diagram">
-      <DependentUpon>SharedData.edmx</DependentUpon>
+    <None Include="Entities\GeneralSharedData.edmx.diagram">
+      <DependentUpon>GeneralSharedData.edmx</DependentUpon>
     </None>
     <None Include="Entities\WCRModule.edmx.diagram">
       <DependentUpon>WCRModule.edmx</DependentUpon>
@@ -470,6 +511,16 @@
     <Resource Include="Resources\Commons.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Entities\AGNESSharedData.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AGNESSharedData.edmx</DependentUpon>
+      <LastGenOutput>AGNESSharedData.Context.vb</LastGenOutput>
+    </Content>
+    <Content Include="Entities\AGNESSharedData.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AGNESSharedData.edmx</DependentUpon>
+      <LastGenOutput>AGNESSharedData.vb</LastGenOutput>
+    </Content>
     <Content Include="Entities\BusinessGroupCRM.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>BusinessGroupCRM.Context.vb</LastGenOutput>
@@ -480,15 +531,15 @@
       <DependentUpon>BusinessGroupCRM.edmx</DependentUpon>
       <LastGenOutput>BusinessGroupCRM.vb</LastGenOutput>
     </Content>
-    <Content Include="Entities\SharedData.Context.tt">
+    <Content Include="Entities\GeneralSharedData.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SharedData.edmx</DependentUpon>
-      <LastGenOutput>SharedData.Context.vb</LastGenOutput>
+      <DependentUpon>GeneralSharedData.edmx</DependentUpon>
+      <LastGenOutput>GeneralSharedData.Context.vb</LastGenOutput>
     </Content>
-    <Content Include="Entities\SharedData.tt">
+    <Content Include="Entities\GeneralSharedData.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SharedData.edmx</DependentUpon>
-      <LastGenOutput>SharedData.vb</LastGenOutput>
+      <DependentUpon>GeneralSharedData.edmx</DependentUpon>
+      <LastGenOutput>GeneralSharedData.vb</LastGenOutput>
     </Content>
     <Content Include="Entities\WCRModule.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

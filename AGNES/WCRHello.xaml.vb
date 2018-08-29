@@ -5,10 +5,8 @@
 
     Private Sub WCRHello_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
         'TODO: Map to user table to get short name, etc.
-        ActiveWCR.Author = "Brian test"
-        ' ActiveWCR.Author = MySettings.Default.UserName
-        ActiveWCR.ShortName = "pal"
-        tbHello.Text = "Hi, " & ActiveWCR.ShortName & "!  It's me, Agnes, and I'll be guiding you through your WCR entry today." & Chr(13) & Chr(13) & "Let's get started by choosing whether we want to look at a past WCR or create a new one!"
+
+        tbHello.Text = "Hi, " & My.Settings.UserShortName & "!  It's me, Agnes, and I'll be guiding you through your WCR entry today." & Chr(13) & Chr(13) & "Let's get started by choosing whether we want to look at a past WCR or create a new one!"
         tbCreateWCR.Visibility = Visibility.Visible
         HoverDrop = New Effects.DropShadowEffect With {.Color = Color.FromRgb(235, 235, 235), .Direction = 200, .Opacity = 100, .ShadowDepth = 6, .BlurRadius = 2, .RenderingBias = Effects.RenderingBias.Performance}
         LeaveDrop = New Effects.DropShadowEffect With {.Color = Color.FromRgb(235, 235, 235), .Direction = 200, .Opacity = 100, .ShadowDepth = 4, .BlurRadius = 2, .RenderingBias = Effects.RenderingBias.Performance}
@@ -21,7 +19,7 @@
         Do Until Weekday(wkst, FirstDayOfWeek.Friday) = 1
             wkst = wkst.AddDays(-1)
         Loop
-        tbHello.Text = "Sounds good, " & ActiveWCR.ShortName & ".  Let's get started on the WCR for the week starting " & wkst & "." & Chr(13) & Chr(13) & "First things first, choose a vendor's Sales Tender Summary file and I'll pull in the information."
+        tbHello.Text = "Sounds good, " & My.Settings.UserShortName & ".  Let's get started on the WCR for the week starting " & wkst & "." & Chr(13) & Chr(13) & "First things first, choose a vendor's Sales Tender Summary file and I'll pull in the information."
         ActiveWCR.WeekStart = wkst
     End Sub
 
@@ -98,4 +96,5 @@
             amsg.Close()
         End If
     End Sub
+
 End Class
