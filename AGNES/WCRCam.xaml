@@ -12,38 +12,62 @@
         <Grid Width="824" Height="449">
             <Image x:Name="imgAGNES" HorizontalAlignment="Left" Height="432" VerticalAlignment="Bottom" Width="261" Source="Resources/Full Agnes Image.png" Margin="0,0,0,7"/>
             <TextBlock x:Name="tbCam" HorizontalAlignment="Left" Margin="89,312,0,-9" TextWrapping="Wrap"  VerticalAlignment="Top" FontSize="16" Height="139" Width="725" TextAlignment="Center"/>
-            <TextBlock x:Name="tbYesCam" HorizontalAlignment="left" Margin="243,411,0,0" TextWrapping="Wrap" Text="Yes" VerticalAlignment="Top" FontSize="18" Width="75" Height="33" TextAlignment="Center" Visibility="Hidden">
+            <TextBlock x:Name="tbYesCam" HorizontalAlignment="left" Margin="227,406,0,0" TextWrapping="Wrap" Text="Yes" VerticalAlignment="Top" FontSize="18" Width="137" Height="33" TextAlignment="Center">
                 <TextBlock.Effect>
                     <DropShadowEffect BlurRadius="2" Color="#FFEBEBEB" Direction="200" ShadowDepth="4"/>
                 </TextBlock.Effect>
             </TextBlock>
-            <TextBlock x:Name="tbNo" HorizontalAlignment="left" Margin="583,409,0,0" TextWrapping="Wrap" Text="No" VerticalAlignment="Top" FontSize="18" Width="75" Height="33" TextAlignment="Center" Visibility="Hidden">
+            <TextBlock x:Name="tbNo" HorizontalAlignment="left" Margin="574,406,0,0" TextWrapping="Wrap" Text="No" VerticalAlignment="Top" FontSize="18" Width="137" Height="33" TextAlignment="Center">
                 <TextBlock.Effect>
                     <DropShadowEffect BlurRadius="2" Color="#FFEBEBEB" Direction="200" ShadowDepth="4"/>
                 </TextBlock.Effect>
             </TextBlock>
-            <TextBlock x:Name="tbMoreCam" HorizontalAlignment="left" Margin="276,409,0,0" TextWrapping="Wrap" Text="Add Another" VerticalAlignment="Top" FontSize="18" Width="121" Height="33" TextAlignment="Center" Visibility="Hidden">
+            <TextBlock x:Name="tbSave" HorizontalAlignment="left" Margin="437,406,0,0" TextWrapping="Wrap" Text="Save" VerticalAlignment="Top" FontSize="18" Width="75" Height="33" TextAlignment="Center">
                 <TextBlock.Effect>
                     <DropShadowEffect BlurRadius="2" Color="#FFEBEBEB" Direction="200" ShadowDepth="4"/>
                 </TextBlock.Effect>
             </TextBlock>
-            <TextBlock x:Name="tbDone" HorizontalAlignment="left" Margin="583,409,0,0" TextWrapping="Wrap" Text="Done" VerticalAlignment="Top" FontSize="18" Width="75" Height="33" TextAlignment="Center" Visibility="Hidden">
-                <TextBlock.Effect>
-                    <DropShadowEffect BlurRadius="2" Color="#FFEBEBEB" Direction="200" ShadowDepth="4"/>
-                </TextBlock.Effect>
-            </TextBlock>
-
+            <Rectangle x:Name="rctVendorNm" HorizontalAlignment="Left" Height="34" Margin="383,39,0,0" VerticalAlignment="Top" Width="226" Fill="#FFF71111" Opacity="0.5" Visibility="Hidden">
+                <Rectangle.Effect>
+                    <BlurEffect/>
+                </Rectangle.Effect>
+            </Rectangle>
+            
+            <Rectangle x:Name="rctCheckNumber" HorizontalAlignment="Left" Height="34" Margin="383,74,0,0" VerticalAlignment="Top" Width="226" Fill="#FFF71111" Opacity="0.5" Visibility="Hidden">
+                <Rectangle.Effect>
+                    <BlurEffect/>
+                </Rectangle.Effect>
+            </Rectangle>
+            <Rectangle x:Name="rctDepositDt" HorizontalAlignment="Left" Height="32" Margin="383,112,0,0" VerticalAlignment="Top" Width="226" Fill="#FFF71111" Opacity="0.5" Visibility="Hidden">
+                <Rectangle.Effect>
+                    <BlurEffect/>
+                </Rectangle.Effect>
+            </Rectangle>
+            <Rectangle x:Name="rctCheckAmt" HorizontalAlignment="Left" Height="34" Margin="383,146,0,0" VerticalAlignment="Top" Width="226" Fill="#FFF71111" Opacity="0.5" Visibility="Hidden">
+                <Rectangle.Effect>
+                    <BlurEffect/>
+                </Rectangle.Effect>
+            </Rectangle>
             <TextBlock x:Name="txtVendorName" HorizontalAlignment="Left" Margin="261,41,0,0" TextWrapping="Wrap" Text="Vendor" VerticalAlignment="Top" FontSize="18"/>
             <TextBlock x:Name="txtCheckNumber" HorizontalAlignment="Left" Margin="261,77,0,0" TextWrapping="Wrap" Text="Check Number" VerticalAlignment="Top" FontSize="18"/>
             <TextBlock x:Name="txtDepositDate" HorizontalAlignment="Left" Margin="261,113,0,0" TextWrapping="Wrap" Text="Deposit Date" VerticalAlignment="Top" FontSize="18"/>
             <TextBlock x:Name="txtCheckAmount" HorizontalAlignment="Left" Margin="261,149,0,0" TextWrapping="Wrap" Text="Check Amount" VerticalAlignment="Top" FontSize="18"/>
             <TextBlock x:Name="txtCheckNotes" HorizontalAlignment="Left" Margin="261,185,0,0" TextWrapping="Wrap" Text="Notes" VerticalAlignment="Top" FontSize="18"/>
-            <TextBox x:Name="tbCheckNumber" HorizontalAlignment="Left" Height="31" Margin="384,76,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="224" FontSize="18" TabIndex="1"/>
+            <TextBox x:Name="tbCheckNumber" HorizontalAlignment="Left" Height="31" Margin="384,76,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="224" FontSize="18" TabIndex="1" Background="White"/>
             <DatePicker x:Name="dtpDepositDate" HorizontalAlignment="Left" Margin="384,112,0,0" VerticalAlignment="Top" Height="31" Width="224" FontSize="18" FirstDayOfWeek="Friday" IsTabStop="True" TabIndex="2"/>
             <TextBox x:Name="tbCheckAmount" HorizontalAlignment="Left" Height="31" Margin="384,148,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="224" FontSize="18" TabIndex="3"/>
-            <TextBox x:Name="tbCheckNotes" HorizontalAlignment="Left" Height="113" Margin="384,184,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="224" FontSize="18" AcceptsReturn="True" MaxLines="6" TabIndex="4"/>
+            <TextBox x:Name="tbCheckNotes" HorizontalAlignment="Left" Height="113" Margin="384,184,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="224" FontSize="18" AcceptsReturn="True" MaxLines="6" TabIndex="4">
+            </TextBox>
             <TextBlock x:Name="btnExit" Margin="760,4,0,0" TextWrapping="Wrap" Text="X" VerticalAlignment="Top" FontWeight="Bold" TextAlignment="Center"/>
-            <ComboBox x:Name="cboVendor" HorizontalAlignment="Left" Margin="384,41,0,0" VerticalAlignment="Top" Width="224" FontSize="18"/>
+            <ComboBox x:Name="cboVendor" HorizontalAlignment="Left" Margin="384,41,0,0" VerticalAlignment="Top" Width="224" FontSize="18" Background="White">
+                <ComboBox.OpacityMask>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="White" Offset="1"/>
+                    </LinearGradientBrush>
+                </ComboBox.OpacityMask>
+            </ComboBox>
+
         </Grid>
     </Viewbox>
 </Window>

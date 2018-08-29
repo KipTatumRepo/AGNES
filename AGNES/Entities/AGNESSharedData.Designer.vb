@@ -1,4 +1,4 @@
-﻿' T4 code generation is enabled for model 'C:\Users\v-brif\Source\Repos\AGNES-WPF\AGNES\Entities\WCRModule.edmx'. 
+﻿' T4 code generation is enabled for model 'C:\Users\v-brif\source\repos\AGNES-WPF\AGNES\Entities\AGNESSharedData.edmx'. 
 ' To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 ' property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 ' is open in the designer.

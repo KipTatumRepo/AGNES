@@ -10,9 +10,9 @@
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BuildingName" Type="nchar" MaxLength="512" Nullable="false" />
-          <Property Name="MSCampus" Type="nchar" MaxLength="80" Nullable="false" />
-          <Property Name="ParticipationCampus" Type="nchar" MaxLength="80" Nullable="false" />
+          <Property Name="BuildingName" Type="text" Nullable="false" />
+          <Property Name="MSCampus" Type="text" Nullable="false" />
+          <Property Name="ParticipationCampus" Type="text" Nullable="false" />
           <Property Name="TotalSeats" Type="int" Nullable="false" />
           <Property Name="SqFt" Type="bigint" Nullable="false" />
           <Property Name="Lat" Type="decimal" Precision="12" Scale="6" />
@@ -31,15 +31,15 @@
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BuildingName" Type="String" MaxLength="512" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="MSCampus" Type="String" MaxLength="80" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="ParticipationCampus" Type="String" MaxLength="80" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="BuildingName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MSCampus" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ParticipationCampus" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="TotalSeats" Type="Int32" Nullable="false" />
           <Property Name="SqFt" Type="Int64" Nullable="false" />
           <Property Name="Lat" Type="Decimal" Precision="12" Scale="6" />
           <Property Name="Long" Type="Decimal" Precision="12" Scale="6" />
         </EntityType>
-        <EntityContainer Name="SharedDataEntity" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="BIEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="MasterBuildingLists" EntityType="Self.MasterBuildingList" />
         </EntityContainer>
       </Schema>
@@ -47,7 +47,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="BIModelStoreContainer" CdmEntityContainer="SharedDataEntity">
+        <EntityContainerMapping StorageEntityContainer="BIModelStoreContainer" CdmEntityContainer="BIEntities">
           <EntitySetMapping Name="MasterBuildingLists">
             <EntityTypeMapping TypeName="BIModel.MasterBuildingList">
               <MappingFragment StoreEntitySet="MasterBuildingList">

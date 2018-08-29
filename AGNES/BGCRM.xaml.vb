@@ -3,12 +3,12 @@
 Public Class BGCRM
     Dim BG As objBusinessGroup
     Dim BGC As BGCRMEntity
-    Dim SD As SharedDataEntity
+    Dim SD As BIEntities
     Public Sub New()
         InitializeComponent()
         BG = New objBusinessGroup
         BGC = New BGCRMEntity
-        SD = New SharedDataEntity
+        SD = New BIEntities
         PopulateOptions()
         btnSaveFinish.IsEnabled = True
         'TODO: ADD COMPREHENSIVE TRIGGER FOR ENABLING SAVE
