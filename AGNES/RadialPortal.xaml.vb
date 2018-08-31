@@ -1,4 +1,21 @@
 ﻿Public Class RadialPortal
+    Private _buttonrest As Byte
+    Private _buttonhover As Byte
+    Private _itemcount As Byte
+    Private Property ItemCount As Byte
+        Get
+            Return _itemcount
+        End Get
+        Set(value As Byte)
+            _itemcount = value
+            _buttonrest = 75 * (8 / ItemCount)
+            If _buttonrest > 75 Then _buttonrest = 75
+            _buttonhover = 85 * (8 / ItemCount)
+            If _buttonhover > 85 Then _buttonhover = 85
+
+        End Set
+    End Property
+
     Public Sub New()
 
         ' This call is required by the designer.
@@ -32,31 +49,39 @@
 
     Private Sub ConstructRadialMenu()
         'TODO: REPLACE TEST MENU CONSTRUCTION WITH DATABASE-DRIVEN FINAL PRODUCT
+
+        '// Placement is counterclockwise and base 0
+        '// The ItemCount property requires a minimum of three items or else an overflow is triggered
+        '// You can "trick" to show fewer by declaring 4 items and using positions 0 And 2 for placement of two
+        '// or position 1 for placement of one item
+
         Dim ModuleName As String, ModuleToolTip As String, moduleimage As String
 
+        ItemCount = 8
         ModuleName = "WCR" : ModuleToolTip = "Commons WCR" : moduleimage = "Resources/WCR.png"
-        PlaceMenuItem(1, 8, ModuleName, ModuleToolTip, moduleimage)
+        PlaceMenuItem(0, ModuleName, ModuleToolTip, moduleimage)
 
         ModuleName = "BGCRM" : ModuleToolTip = "Business Group CRM" : moduleimage = "Resources/BusinessGroup.png"
-        PlaceMenuItem(2, 8, ModuleName, ModuleToolTip, moduleimage)
+        PlaceMenuItem(7, ModuleName, ModuleToolTip, moduleimage)
 
         ModuleName = "CafeFlash" : ModuleToolTip = "Cafe Weekly Flash" : moduleimage = "Resources/Flash.png"
-        PlaceMenuItem(3, 8, ModuleName, ModuleToolTip, moduleimage)
+        PlaceMenuItem(2, ModuleName, ModuleToolTip, moduleimage)
 
         ModuleName = "CafeForecast" : ModuleToolTip = "Cafe Period Forecast" : moduleimage = "Resources/ForecastButton.png"
-        PlaceMenuItem(4, 8, ModuleName, ModuleToolTip, moduleimage)
+        PlaceMenuItem(1, ModuleName, ModuleToolTip, moduleimage)
 
         ModuleName = "HRAudit" : ModuleToolTip = "HR Audit" : moduleimage = "Resources/Audit.png"
-        PlaceMenuItem(5, 8, ModuleName, ModuleToolTip, moduleimage)
+        PlaceMenuItem(6, ModuleName, ModuleToolTip, moduleimage)
 
         ModuleName = "AvFlash" : ModuleToolTip = "A/V Weekly Flash" : moduleimage = "Resources/AVFlash.png"
-        PlaceMenuItem(6, 8, ModuleName, ModuleToolTip, moduleimage)
+        PlaceMenuItem(5, ModuleName, ModuleToolTip, moduleimage)
 
         ModuleName = "Admin" : ModuleToolTip = "Admin Tools" : moduleimage = "Resources/AdminTools.png"
-        PlaceMenuItem(7, 8, ModuleName, ModuleToolTip, moduleimage)
+        PlaceMenuItem(4, ModuleName, ModuleToolTip, moduleimage)
 
         ModuleName = "More" : ModuleToolTip = "More Modules" : moduleimage = "Resources/More.png"
-        PlaceMenuItem(8, 8, ModuleName, ModuleToolTip, moduleimage)
+        PlaceMenuItem(3, ModuleName, ModuleToolTip, moduleimage)
+
     End Sub
 
     Private Sub DragViaLeftMouse(sender As Object, e As MouseButtonEventArgs)
@@ -79,8 +104,8 @@
 
     Private Sub ModuleMouseHover(sender As Object, e As MouseEventArgs)
         Dim s As Image = sender
-        s.Height = 85
-        s.Width = 85
+        s.Height = _buttonhover
+        s.Width = _buttonhover
         Dim l As Integer = s.Margin.Left - 5
         Dim t As Integer = s.Margin.Top - 5
         s.Margin = New Thickness(l, t, 0, 0)
@@ -88,8 +113,8 @@
 
     Private Sub ModuleMouseLeave(sender As Object, e As MouseEventArgs)
         Dim s As Image = sender
-        s.Height = 75
-        s.Width = 75
+        s.Height = _buttonrest
+        s.Width = _buttonrest
         Dim l As Integer = s.Margin.Left + 5
         Dim t As Integer = s.Margin.Top + 5
         s.Margin = New Thickness(l, t, 0, 0)
@@ -101,7 +126,6 @@
         Hide()
         Select Case s.Tag
             Case "WCR"
-
                 WCRModule.Runmodule()
             Case "BGCRM"
                 BGCRMModule.Runmodule()
@@ -109,13 +133,14 @@
         Show()
     End Sub
 
-    Private Sub PlaceMenuItem(item, itemcount, associatedmodule, tooltip, moduleimage)
-        Dim ang As Double = item * ((2 * Math.PI) / itemcount)
+    Private Sub PlaceMenuItem(item, associatedmodule, tooltip, moduleimage)
+        Dim ang As Double = item * ((2 * Math.PI) / ItemCount)
         Dim rad As Integer = cnvRadialMenu.Height / 2
         Dim x As Integer = ((Math.Cos(ang) * rad) + rad)
         Dim y As Integer = (rad - (Math.Sin(ang) * rad))
+
         Dim img As New Image With {.Source = New BitmapImage(New Uri(moduleimage, UriKind.Relative)), .Name = "btnRadial" & item,
-            .Height = 75, .Width = 75, .Stretch = Stretch.UniformToFill, .ToolTip = tooltip, .Tag = associatedmodule}
+            .Height = _buttonrest, .Width = _buttonrest, .Stretch = Stretch.UniformToFill, .ToolTip = tooltip, .Tag = associatedmodule}
         x -= img.Width / 2 : y -= img.Height / 2
         img.Margin = New Thickness(x, y, 0, 0)
         cnvRadialMenu.Children.Add(img)

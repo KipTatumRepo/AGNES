@@ -70,7 +70,7 @@
                         <TextBlock HorizontalAlignment="Left" Margin="10,342,0,0" TextWrapping="Wrap" Text="Culture" VerticalAlignment="Top" FontSize="24" Width="990" TextAlignment="Center"/>
                         <Button x:Name="btnFwd1" Content="" HorizontalAlignment="Left" Margin="943,586,0,0" VerticalAlignment="Top" Width="57" Height="65" BorderThickness="0,0,0,1" IsTabStop="False" BorderBrush="#FFE5E5E5">
                             <Button.Background>
-                                <ImageBrush ImageSource="Resources/glass_arrow_right.png" Stretch="Uniform"/>
+                                <ImageBrush ImageSource="/AGNES;component/Resources/glass_arrow_right.png" Stretch="Uniform"/>
                             </Button.Background>
                         </Button>
                     </Grid>
@@ -106,12 +106,12 @@
                         </ListView>
                         <Button x:Name="btnFwd2" Content="" HorizontalAlignment="Left" Margin="943,586,0,0" VerticalAlignment="Top" Width="57" Height="65" BorderThickness="0,0,0,1" IsTabStop="False" BorderBrush="#FFE5E5E5">
                             <Button.Background>
-                                <ImageBrush ImageSource="Resources/glass_arrow_right.png" Stretch="Uniform"/>
+                                <ImageBrush ImageSource="/AGNES;component/Resources/glass_arrow_right.png" Stretch="Uniform"/>
                             </Button.Background>
                         </Button>
                         <Button x:Name="btnBack1" Content="" HorizontalAlignment="Left" Margin="10,586,0,0" VerticalAlignment="Top" Width="57" Height="65" BorderThickness="0,0,0,1" IsTabStop="False" BorderBrush="#FFE5E5E5">
                             <Button.Background>
-                                <ImageBrush ImageSource="Resources/glass_arrow_left.png" Stretch="Uniform"/>
+                                <ImageBrush ImageSource="/AGNES;component/Resources/glass_arrow_left.png" Stretch="Uniform"/>
                             </Button.Background>
                         </Button>
                     </Grid>
@@ -142,12 +142,12 @@
                         <TextBlock Margin="10,232,0,0" TextWrapping="Wrap" Text="Top Offsite Locations" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="990" TextAlignment="Center"/>
                         <Button x:Name="btnFwd3" Content="" HorizontalAlignment="Left" Margin="943,586,0,0" VerticalAlignment="Top" Width="57" Height="65" BorderThickness="0,0,0,1" IsTabStop="False" BorderBrush="#FFE5E5E5">
                             <Button.Background>
-                                <ImageBrush ImageSource="Resources/glass_arrow_right.png" Stretch="Uniform"/>
+                                <ImageBrush ImageSource="/AGNES;component/Resources/glass_arrow_right.png" Stretch="Uniform"/>
                             </Button.Background>
                         </Button>
                         <Button x:Name="btnBack2" Content="" HorizontalAlignment="Left" Margin="10,586,0,0" VerticalAlignment="Top" Width="57" Height="65" BorderThickness="0,0,0,1" IsTabStop="False" BorderBrush="#FFE5E5E5">
                             <Button.Background>
-                                <ImageBrush ImageSource="Resources/glass_arrow_left.png" Stretch="Uniform"/>
+                                <ImageBrush ImageSource="/AGNES;component/Resources/glass_arrow_left.png" Stretch="Uniform"/>
                             </Button.Background>
                         </Button>
                     </Grid>
@@ -211,12 +211,12 @@
                         </ListView>
                         <Button x:Name="btnFwd4" Content="" HorizontalAlignment="Left" Margin="943,586,0,0" VerticalAlignment="Top" Width="57" Height="65" BorderThickness="0,0,0,1" IsTabStop="False" BorderBrush="#FFE5E5E5">
                             <Button.Background>
-                                <ImageBrush ImageSource="Resources/glass_arrow_right.png" Stretch="Uniform"/>
+                                <ImageBrush ImageSource="/AGNES;component/Resources/glass_arrow_right.png" Stretch="Uniform"/>
                             </Button.Background>
                         </Button>
                         <Button x:Name="btnBack3" Content="" HorizontalAlignment="Left" Margin="10,586,0,0" VerticalAlignment="Top" Width="57" Height="65" BorderThickness="0,0,0,1" IsTabStop="False" BorderBrush="#FFE5E5E5">
                             <Button.Background>
-                                <ImageBrush ImageSource="Resources/glass_arrow_left.png" Stretch="Uniform"/>
+                                <ImageBrush ImageSource="/AGNES;component/Resources/glass_arrow_left.png" Stretch="Uniform"/>
                             </Button.Background>
                         </Button>
                     </Grid>
@@ -244,7 +244,7 @@
                         </Button>
                         <Button x:Name="btnBack4" Content="" HorizontalAlignment="Left" Margin="10,586,0,0" VerticalAlignment="Top" Width="57" Height="65" BorderThickness="0,0,0,1" IsTabStop="False" BorderBrush="#FFE5E5E5">
                             <Button.Background>
-                                <ImageBrush ImageSource="Resources/glass_arrow_left.png" Stretch="Uniform"/>
+                                <ImageBrush ImageSource="/AGNES;component/Resources/glass_arrow_left.png" Stretch="Uniform"/>
                             </Button.Background>
                         </Button>
                     </Grid>
