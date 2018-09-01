@@ -57,6 +57,7 @@
 
         Dim ModuleName As String, ModuleToolTip As String, moduleimage As String
 
+
         ItemCount = 8
         ModuleName = "WCR" : ModuleToolTip = "Commons WCR" : moduleimage = "Resources/WCR.png"
         PlaceMenuItem(0, ModuleName, ModuleToolTip, moduleimage)
