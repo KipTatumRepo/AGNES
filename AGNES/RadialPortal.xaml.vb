@@ -17,13 +17,12 @@
     End Property
 
     Public Sub New()
-
         ' This call is required by the designer.
         InitializeComponent()
         GetUserInfo()
         ConstructRadialMenu()
-
     End Sub
+
     Private Sub GetUserInfo()
         Dim ef As New AGNESSharedData
         Dim usr As String = Environment.UserName
@@ -66,6 +65,7 @@
         ' ULVL = 3
         ' UID = 80
         '// IMPERSONATION
+
         Dim ef As New AGNESSharedData
         Select Case ULVL
             Case 1
