@@ -122,7 +122,12 @@
     <Compile Include="Application Objects\AgnesMessageBox.xaml.vb">
       <DependentUpon>AgnesMessageBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BGCRM.xaml.vb">
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Xaml Modules\Business Group CRM\BGCRM.xaml.vb">
       <DependentUpon>BGCRM.xaml</DependentUpon>
     </Compile>
     <Compile Include="BusinessGroupObjects\BusinessGroupObj.vb" />
@@ -317,13 +322,13 @@
     <Compile Include="WCR Objects\CamCheck.vb" />
     <Compile Include="WCR Objects\VendorObject.vb" />
     <Compile Include="WCR Objects\Tender.vb" />
-    <Compile Include="WCRCam.xaml.vb">
+    <Compile Include="Xaml Modules\WCR\WCRCam.xaml.vb">
       <DependentUpon>WCRCam.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WCRFinal.xaml.vb">
+    <Compile Include="Xaml Modules\WCR\WCRFinal.xaml.vb">
       <DependentUpon>WCRFinal.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WCRHello.xaml.vb">
+    <Compile Include="Xaml Modules\WCR\WCRHello.xaml.vb">
       <DependentUpon>WCRHello.xaml</DependentUpon>
     </Compile>
     <Compile Include="WCR Objects\WCRObject.vb" />
@@ -331,7 +336,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BGCRM.xaml">
+    <Page Include="Xaml Modules\Business Group CRM\BGCRM.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -347,15 +352,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WCRCam.xaml">
+    <Page Include="Xaml Modules\WCR\WCRCam.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WCRFinal.xaml">
+    <Page Include="Xaml Modules\WCR\WCRFinal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WCRHello.xaml">
+    <Page Include="Xaml Modules\WCR\WCRHello.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -387,11 +392,6 @@
       <VBMyExtensionTemplateID>Microsoft.VisualBasic.WPF.MyExtension</VBMyExtensionTemplateID>
       <VBMyExtensionTemplateVersion>1.0.0.0</VBMyExtensionTemplateVersion>
     </Compile>
-    <Compile Include="My Project\Resources.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="My Project\Settings.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -399,9 +399,9 @@
     </Compile>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
     </EmbeddedResource>
     <None Include="AGNES_TemporaryKey.pfx" />
     <EntityDeploy Include="Entities\BusinessGroupCRM.edmx">
@@ -462,9 +462,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\speechleft.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\rijKkeX7T.png" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Core">
@@ -551,6 +548,10 @@
       <DependentUpon>WCRModule.edmx</DependentUpon>
       <LastGenOutput>WCRModule.vb</LastGenOutput>
     </Content>
+    <Resource Include="Resources\Forecast.png" />
+    <Resource Include="Resources\Status.png" />
+    <Resource Include="Resources\Marketing.png" />
+    <Resource Include="Resources\Vendors.png" />
     <Resource Include="Resources\danger.jpg" />
     <Resource Include="Resources\alert.png" />
     <Resource Include="Resources\msgbox.png" />
@@ -560,13 +561,10 @@
     <Resource Include="Resources\Menu.png" />
     <Resource Include="Resources\Waste.png" />
     <Resource Include="Resources\Safety.png" />
-    <Resource Include="Resources\Receipts.png" />
     <Resource Include="Resources\PowerBI.png" />
     <Resource Include="Resources\Journal.png" />
-    <Resource Include="Resources\ForecastButton.png" />
     <Resource Include="Resources\Flash.png" />
     <Resource Include="Resources\BusinessGroup.png" />
-    <Resource Include="Resources\AVFlash.png" />
     <Resource Include="Resources\Audit.png" />
     <Resource Include="Resources\AdminTools.png" />
     <Resource Include="Resources\RadialUI Agnes Image.png" />

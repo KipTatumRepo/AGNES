@@ -4,30 +4,30 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="AGNESSharedModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="AGNESSharedModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AccessLevelList">
           <Key>
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AccessLevel" Type="nchar" MaxLength="64" Nullable="false" />
-          <Property Name="AccessDesc" Type="nchar" MaxLength="512" />
+          <Property Name="AccessLevel" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="AccessDesc" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="ModuleGroupList">
           <Key>
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="GroupName" Type="nchar" MaxLength="64" Nullable="false" />
-          <Property Name="GroupDesc" Type="nchar" MaxLength="256" />
+          <Property Name="GroupName" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="GroupDesc" Type="varchar" MaxLength="256" />
         </EntityType>
         <EntityType Name="ModuleList">
           <Key>
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ModuleName" Type="nchar" MaxLength="255" Nullable="false" />
-          <Property Name="ImgResource" Type="nchar" MaxLength="255" Nullable="false" />
+          <Property Name="ModuleName" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="ImgResource" Type="varchar" MaxLength="64" Nullable="false" />
         </EntityType>
         <EntityType Name="ModuleUser_Join">
           <Key>
@@ -50,14 +50,14 @@
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserName" Type="nchar" MaxLength="255" Nullable="false" />
-          <Property Name="UserAlias" Type="nchar" MaxLength="80" Nullable="false" />
-          <Property Name="FirstName" Type="nchar" MaxLength="80" Nullable="false" />
-          <Property Name="LastName" Type="nchar" MaxLength="80" Nullable="false" />
-          <Property Name="SpokenName" Type="nchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="UserAlias" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="SpokenName" Type="varchar" MaxLength="128" Nullable="false" />
           <Property Name="AccessLevelId" Type="bigint" Nullable="false" />
           <Property Name="DateAdded" Type="date" Nullable="false" />
-          <Property Name="AddedBy" Type="nchar" MaxLength="80" Nullable="false" />
+          <Property Name="AddedBy" Type="varchar" MaxLength="80" Nullable="false" />
         </EntityType>
         <EntityContainer Name="AGNESSharedModelStoreContainer">
           <EntitySet Name="AccessLevelList" EntityType="Self.AccessLevelList" Schema="agnes" store:Type="Tables" />
@@ -67,8 +67,7 @@
           <EntitySet Name="UnitUser_Join" EntityType="Self.UnitUser_Join" Schema="agnes" store:Type="Tables" />
           <EntitySet Name="UserList" EntityType="Self.UserList" Schema="agnes" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AGNESSharedModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -77,24 +76,24 @@
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AccessLevel" Type="String" MaxLength="64" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="AccessDesc" Type="String" MaxLength="512" FixedLength="true" Unicode="true" />
+          <Property Name="AccessLevel" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AccessDesc" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ModuleGroupList">
           <Key>
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="GroupName" Type="String" MaxLength="64" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="GroupDesc" Type="String" MaxLength="256" FixedLength="true" Unicode="true" />
+          <Property Name="GroupName" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="GroupDesc" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ModuleList">
           <Key>
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ModuleName" Type="String" MaxLength="255" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="ImgResource" Type="String" MaxLength="255" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="ModuleName" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ImgResource" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
         <EntityType Name="ModuleUser_Join">
           <Key>
@@ -117,14 +116,14 @@
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="String" MaxLength="255" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="UserAlias" Type="String" MaxLength="80" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="FirstName" Type="String" MaxLength="80" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="LastName" Type="String" MaxLength="80" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="SpokenName" Type="String" MaxLength="128" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserAlias" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SpokenName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="AccessLevelId" Type="Int64" Nullable="false" />
           <Property Name="DateAdded" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="AddedBy" Type="String" MaxLength="80" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="AddedBy" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
         <EntityContainer Name="AGNESSharedData" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AccessLevelLists" EntityType="Self.AccessLevelList" />
