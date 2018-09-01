@@ -41,47 +41,88 @@
             Close()
         Else
             For Each c In qwl
-                My.Settings.UserName = Trim(c.UserName)
-                My.Settings.UserShortName = Trim(c.FirstName)
+                With My.Settings
+                    .UserName = Trim(c.UserName)
+                    .UserShortName = Trim(c.FirstName)
+                    .UserID = c.PID
+                    .UserLevel = c.AccessLevelId
+                End With
             Next
         End If
     End Sub
 
     Private Sub ConstructRadialMenu()
-        'TODO: REPLACE TEST MENU CONSTRUCTION WITH DATABASE-DRIVEN FINAL PRODUCT
-
         '// Placement is counterclockwise and base 0
         '// The ItemCount property requires a minimum of three items or else an overflow is triggered
         '// You can "trick" to show fewer by declaring 4 items and using positions 0 And 2 for placement of two
         '// or position 1 for placement of one item
 
-        Dim ModuleName As String, ModuleToolTip As String, moduleimage As String
+        '// Build array of Module PIDs assigned to the user; bypass if access level is greater than user
+        '// Count # of items & set ItemCount accordingly
+        '// Create buttons from array
+        Dim ct As Integer, UID As Integer = My.Settings.UserID, ULVL As Byte = My.Settings.UserLevel, Modules() As Long
 
+        '// IMPERSONATION - Change to whichever userID and Access Level needed to test
+        ' ULVL = 3
+        ' UID = 80
+        '// IMPERSONATION
+        Dim ef As New AGNESSharedData
+        Select Case ULVL
+            Case 1
+                Dim qwl = From c In ef.ModuleLists
+                          Select c
+                ItemCount = qwl.Count
+                ReDim Modules(ItemCount - 1)
+                ct = 0
+                For Each c In qwl
+                    Modules(ct) = c.PID
+                    ct += 1
+                Next
+            Case 2
+                Dim qwl = From c In ef.ModuleLists
+                          Select c
+                ItemCount = qwl.Count
+                ReDim Modules(ItemCount - 1)
+                ct = 0
+                For Each c In qwl
+                    Modules(ct) = c.PID
+                    ct += 1
+                Next
+            Case 3
+                Dim qwl = From c In ef.ModuleLists
+                          Where c.PID > 1
+                          Select c
+                ItemCount = qwl.Count
+                ReDim Modules(ItemCount - 1)
+                ct = 0
+                For Each c In qwl
+                    Modules(ct) = c.PID
+                    ct += 1
+                Next
+            Case Else
+                Dim qwl = From c In ef.ModuleUser_Join
+                          Where c.UserId = UID
+                          Select c
+                ItemCount = qwl.Count
+                ReDim Modules(ItemCount - 1)
+                ct = 0
+                For Each c In qwl
+                    Modules(ct) = c.ModuleId
+                    ct += 1
+                Next
+        End Select
 
-        ItemCount = 8
-        ModuleName = "WCR" : ModuleToolTip = "Commons WCR" : moduleimage = "Resources/WCR.png"
-        PlaceMenuItem(0, ModuleName, ModuleToolTip, moduleimage)
+        For ct = 0 To ItemCount - 1
+            Dim m As Long = Modules(ct)
+            Dim modul = From c In ef.ModuleLists
+                        Where c.PID = m
+                        Select c
 
-        ModuleName = "BGCRM" : ModuleToolTip = "Business Group CRM" : moduleimage = "Resources/BusinessGroup.png"
-        PlaceMenuItem(7, ModuleName, ModuleToolTip, moduleimage)
-
-        ModuleName = "CafeFlash" : ModuleToolTip = "Cafe Weekly Flash" : moduleimage = "Resources/Flash.png"
-        PlaceMenuItem(2, ModuleName, ModuleToolTip, moduleimage)
-
-        ModuleName = "CafeForecast" : ModuleToolTip = "Cafe Period Forecast" : moduleimage = "Resources/ForecastButton.png"
-        PlaceMenuItem(1, ModuleName, ModuleToolTip, moduleimage)
-
-        ModuleName = "HRAudit" : ModuleToolTip = "HR Audit" : moduleimage = "Resources/Audit.png"
-        PlaceMenuItem(6, ModuleName, ModuleToolTip, moduleimage)
-
-        ModuleName = "AvFlash" : ModuleToolTip = "A/V Weekly Flash" : moduleimage = "Resources/AVFlash.png"
-        PlaceMenuItem(5, ModuleName, ModuleToolTip, moduleimage)
-
-        ModuleName = "Admin" : ModuleToolTip = "Admin Tools" : moduleimage = "Resources/AdminTools.png"
-        PlaceMenuItem(4, ModuleName, ModuleToolTip, moduleimage)
-
-        ModuleName = "More" : ModuleToolTip = "More Modules" : moduleimage = "Resources/More.png"
-        PlaceMenuItem(3, ModuleName, ModuleToolTip, moduleimage)
+            Dim y As Byte = modul.Count
+            For Each c In modul
+                PlaceMenuItem(ct, c.ModuleName, c.ModuleName, "Resources/" & c.ImgResource & ".png")
+            Next
+        Next
 
     End Sub
 
@@ -139,7 +180,6 @@
         Dim rad As Integer = cnvRadialMenu.Height / 2
         Dim x As Integer = ((Math.Cos(ang) * rad) + rad)
         Dim y As Integer = (rad - (Math.Sin(ang) * rad))
-
         Dim img As New Image With {.Source = New BitmapImage(New Uri(moduleimage, UriKind.Relative)), .Name = "btnRadial" & item,
             .Height = _buttonrest, .Width = _buttonrest, .Stretch = Stretch.UniformToFill, .ToolTip = tooltip, .Tag = associatedmodule}
         x -= img.Width / 2 : y -= img.Height / 2
