@@ -123,6 +123,7 @@
     <Compile Include="Application Objects\AgnesMessageBox.xaml.vb">
       <DependentUpon>AgnesMessageBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Application Objects\CurrencyBox.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
