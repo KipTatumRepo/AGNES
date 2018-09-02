@@ -322,6 +322,9 @@
     <Compile Include="WCR Objects\CamCheck.vb" />
     <Compile Include="WCR Objects\VendorObject.vb" />
     <Compile Include="WCR Objects\Tender.vb" />
+    <Compile Include="Xaml Modules\HR Audit\HRAudit.xaml.vb">
+      <DependentUpon>HRAudit.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Xaml Modules\WCR\WCRCam.xaml.vb">
       <DependentUpon>WCRCam.xaml</DependentUpon>
     </Compile>
@@ -349,6 +352,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="RadialPortal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Xaml Modules\HR Audit\HRAudit.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
