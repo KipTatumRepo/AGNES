@@ -96,6 +96,30 @@ Partial Friend NotInheritable Class MySettings
             Return CType(Me("AGNES"),String)
         End Get
     End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+    Public Property UserID() As Integer
+        Get
+            Return CType(Me("UserID"),Integer)
+        End Get
+        Set
+            Me("UserID") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+    Public Property UserLevel() As Byte
+        Get
+            Return CType(Me("UserLevel"),Byte)
+        End Get
+        Set
+            Me("UserLevel") = value
+        End Set
+    End Property
 End Class
 
 Namespace My
