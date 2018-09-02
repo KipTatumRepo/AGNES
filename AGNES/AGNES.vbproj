@@ -119,6 +119,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Application Objects\AgnesBaseInput.vb" />
     <Compile Include="Application Objects\AgnesMessageBox.xaml.vb">
       <DependentUpon>AgnesMessageBox.xaml</DependentUpon>
     </Compile>
