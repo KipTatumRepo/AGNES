@@ -1,0 +1,67 @@
+﻿<Window x:Class="Flash"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AGNES"
+        mc:Ignorable="d"
+        Title="Weekly Financial Flash" Height="510" Width="990" ResizeMode="CanMinimize">
+
+    <Grid x:Name="grdMain">
+        <ToolBar x:Name="tlbFlash" Height="41" VerticalAlignment="Top" UseLayoutRounding="False">
+            <Image x:Name="imgDraft" Source="/AGNES;component/Resources/draft.png" ToolTip="Save Draft" PreviewMouseDown="Image_PreviewMouseDown" />
+            <Separator />
+            <Image x:Name="imgSave" Source="/AGNES;component/Resources/save.png" ToolTip="Save Final" PreviewMouseDown="Image_PreviewMouseDown_1" />
+            <Separator />
+            <Image x:Name="imgPrint" Source="/AGNES;component/Resources/print.png" ToolTip="Print" />
+            <Separator />
+            <Image x:Name="imgPTD" Source="/AGNES;component/Resources/PTD.png" ToolTip="View Period to Date" PreviewMouseDown="Image_PreviewMouseDown_4" />
+            <Separator />
+            <Image x:Name="imgDelegates" Source="/AGNES;component/Resources/Delegates.png" ToolTip="Manage Delegates" PreviewMouseDown="Image_PreviewMouseDown_2" />
+            <Separator />
+            <Image x:Name="imgEscalate" Source="/AGNES;component/Resources/HandWave.png" ToolTip="Call out to DM" PreviewMouseDown="Image_PreviewMouseDown_3" />
+            <Separator />
+            <Border HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="  Select Microsoft Period:  " FontSize="24" />
+            </Border>
+            <ComboBox Height="36" Margin="0" VerticalAlignment="Top" Width="120" FontSize="24">
+                <ComboBoxItem Content="Jul" FontSize="16"/>
+                <ComboBoxItem Content="Aug" FontSize="16"/>
+                <ComboBoxItem Content="Sep" FontSize="16"/>
+                <ComboBoxItem Content="Oct" FontSize="16"/>
+                <ComboBoxItem Content="Nov" FontSize="16"/>
+                <ComboBoxItem Content="Dec" FontSize="16"/>
+                <ComboBoxItem Content="Jan" FontSize="16"/>
+                <ComboBoxItem Content="Feb" FontSize="16"/>
+                <ComboBoxItem Content="Mar" FontSize="16"/>
+                <ComboBoxItem Content="Apr" FontSize="16"/>
+                <ComboBoxItem Content="May" FontSize="16"/>
+                <ComboBoxItem Content="Jun" FontSize="16"/>
+            </ComboBox>
+            <Separator />
+            <Border HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="  Select Week:  " FontSize="24" />
+            </Border>
+            <ComboBox Height="36" Margin="0" VerticalAlignment="Top" Width="69" FontSize="24">
+                <ComboBoxItem Content="1" FontSize="16"/>
+                <ComboBoxItem Content="2" FontSize="16"/>
+                <ComboBoxItem Content="3" FontSize="16"/>
+                <ComboBoxItem Content="4" FontSize="16"/>
+                <ComboBoxItem Content="5" FontSize="16"/>
+            </ComboBox>
+           
+        </ToolBar>
+        <TextBlock HorizontalAlignment="Left" Margin="98,46,0,0" TextWrapping="Wrap" Text="Flash" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16"/>
+        <TextBlock HorizontalAlignment="Left" Margin="273,46,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Width="34" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16"/>
+        <TextBlock HorizontalAlignment="Left" Margin="312,46,0,0" TextWrapping="Wrap" Text="Budget" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16"/>
+        <TextBlock HorizontalAlignment="Left" Margin="456,46,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Width="34" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16"/>
+        <TextBlock HorizontalAlignment="Left" Margin="496,46,0,0" TextWrapping="Wrap" Text="Variance to Budget" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" />
+        <TextBlock HorizontalAlignment="Left" Margin="642,46,0,0" TextWrapping="Wrap" Text="Forecast" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" />
+        <TextBlock HorizontalAlignment="Left" Margin="783,46,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Width="34" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16"/>
+        <TextBlock HorizontalAlignment="Left" Margin="826,46,0,0" TextWrapping="Wrap" Text="Variance to Forecast" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" />
+        <Grid x:Name="grdFlashGroups"></Grid>
+        <StatusBar x:Name="barSaveStatus" Height="24" VerticalAlignment="Bottom" Background="#FFFD6C72">
+            <TextBlock x:Name="tbSaveStatus" Text="SAVE STATUS" Width="972" TextAlignment="Center" FontWeight="SemiBold" />
+        </StatusBar>
+    </Grid>
+</Window>

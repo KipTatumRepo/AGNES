@@ -20,7 +20,6 @@ Public Class WCRObject
 
 
     Public Sub New()
-        'TODO: Fetch user information
         Dim ph As String = ""
     End Sub
 
@@ -156,7 +155,6 @@ Public Class WCRObject
                         amsg.ShowDialog()
                         amsg.Close()
                         BadFile += 1
-                        'TODO: ADD OTHER TENDER-RELATED ERROR CATCHES
                     End Try
                 End If
                 Try
@@ -197,11 +195,14 @@ Public Class WCRObject
     End Sub
 
     Public Sub PrintWCR(ByRef disp As WCRFinal)
-        Dim pd As New PrintDialog
-        pd.ShowDialog()
-        'TODO: Add error trap for dialog box
-
-        Dim fd As New FlowDocument With {.ColumnGap = 0, .ColumnWidth = pd.PrintableAreaWidth}
+        Dim pd As PrintDialog, fd As FlowDocument
+        Try
+            pd = New PrintDialog
+            pd.ShowDialog()
+            fd = New FlowDocument With {.ColumnGap = 0, .ColumnWidth = pd.PrintableAreaWidth}
+        Catch
+            Exit Sub
+        End Try
 
         '// Totals Sheet
         For Each v As VendorObject In Vendors
@@ -626,8 +627,7 @@ Public Class WCRObject
             .Add(p)
             .Add(t)
             .Add(New Section())
-            'TODO: CHANGE AUTHORSHIP TO FULL SYSTEM NAME LATER
-            .Add(New Paragraph(New Run("Prepared " & Now() & " by " & Environment.UserName)))
+            .Add(New Paragraph(New Run("Prepared " & Now() & " by " & My.Settings.UserName)))
         End With
     End Sub
 
@@ -804,11 +804,15 @@ Public Class WCRObject
     End Sub
 
     Public Sub PrintInvoices()
-        Dim pd As New PrintDialog
-        pd.ShowDialog()
+        Dim pd As PrintDialog, fd As FlowDocument
+        Try
+            pd = New PrintDialog
+            pd.ShowDialog()
+            fd = New FlowDocument With {.ColumnGap = 0, .ColumnWidth = pd.PrintableAreaWidth}
+        Catch
+            Exit Sub
+        End Try
 
-        'TODO: Add error trap for dialog box
-        Dim fd As New FlowDocument With {.ColumnGap = 0, .ColumnWidth = pd.PrintableAreaWidth}
         Dim v As VendorObject, ct As Integer = Vendors.Count
         InvoicesArePresent = 0
         For Each v In Vendors

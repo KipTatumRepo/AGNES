@@ -17,7 +17,6 @@
     End Property
 
     Public Sub New()
-        ' This call is required by the designer.
         InitializeComponent()
         GetUserInfo()
         ConstructRadialMenu()
@@ -164,13 +163,14 @@
 
     Private Sub ModuleSelect(sender As Object, e As MouseEventArgs)
         Dim s As Image = sender
-        'TODO: FIGURE OUT IMPROVED METHOD FOR CALLING MODULES FROM MENU ITEM CLICK
         Hide()
         Select Case s.Tag
             Case "WCR"
                 WCRModule.Runmodule()
             Case "BGCRM"
                 BGCRMModule.Runmodule()
+            Case "Flash"
+                FlashModule.Runmodule()
         End Select
         Show()
     End Sub
