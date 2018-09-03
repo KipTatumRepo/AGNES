@@ -125,6 +125,7 @@
     </Compile>
     <Compile Include="Application Objects\CurrencyBox.vb" />
     <Compile Include="Flash Objects\FlashGroup.vb" />
+    <Compile Include="Module Orchestrators\FlashModule.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -565,6 +566,11 @@
       <DependentUpon>WCRModule.edmx</DependentUpon>
       <LastGenOutput>WCRModule.vb</LastGenOutput>
     </Content>
+    <Resource Include="Resources\print.png" />
+    <Resource Include="Resources\PTD.png" />
+    <Resource Include="Resources\draft.png" />
+    <Resource Include="Resources\save.png" />
+    <Resource Include="Resources\Delegates.png" />
     <Resource Include="Resources\Notes-icon.png" />
     <Resource Include="Resources\HandWave.png" />
     <Resource Include="Resources\Forecast.png" />

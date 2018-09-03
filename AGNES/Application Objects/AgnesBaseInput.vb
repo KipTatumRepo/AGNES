@@ -30,7 +30,7 @@
         End Set
     End Property
 
-    Public Sub New(FieldWidth As Integer, ByVal v As VerticalAlignment, ByVal h As HorizontalAlignment, FontSize As FontSz, Optional ta As TextAlignment = TextAlignment.Left, Optional ByVal s As String = "", Optional ByVal tw As TextWrapping = TextWrapping.Wrap)
+    Public Sub New(ByVal FieldWidth As Integer, ByVal v As VerticalAlignment, ByVal h As HorizontalAlignment, FontSize As FontSz, Optional ta As TextAlignment = TextAlignment.Left, Optional ByVal s As String = "", Optional ByVal tw As TextWrapping = TextWrapping.Wrap)
         HorizontalAlignment = h
         VerticalAlignment = v
         Width = FieldWidth
