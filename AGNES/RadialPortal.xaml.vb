@@ -169,6 +169,8 @@
                 WCRModule.Runmodule()
             Case "BGCRM"
                 BGCRMModule.Runmodule()
+            Case "Flash"
+                FlashModule.Runmodule()
         End Select
         Show()
     End Sub

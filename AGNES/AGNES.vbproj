@@ -124,6 +124,8 @@
       <DependentUpon>AgnesMessageBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Application Objects\CurrencyBox.vb" />
+    <Compile Include="Flash Objects\FlashGroup.vb" />
+    <Compile Include="Module Orchestrators\FlashModule.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -324,6 +326,9 @@
     <Compile Include="WCR Objects\CamCheck.vb" />
     <Compile Include="WCR Objects\VendorObject.vb" />
     <Compile Include="WCR Objects\Tender.vb" />
+    <Compile Include="Xaml Modules\Flash\Flash.xaml.vb">
+      <DependentUpon>Flash.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Xaml Modules\HR Audit\HRAudit.xaml.vb">
       <DependentUpon>HRAudit.xaml</DependentUpon>
     </Compile>
@@ -354,6 +359,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="RadialPortal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Xaml Modules\Flash\Flash.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -557,6 +566,13 @@
       <DependentUpon>WCRModule.edmx</DependentUpon>
       <LastGenOutput>WCRModule.vb</LastGenOutput>
     </Content>
+    <Resource Include="Resources\print.png" />
+    <Resource Include="Resources\PTD.png" />
+    <Resource Include="Resources\draft.png" />
+    <Resource Include="Resources\save.png" />
+    <Resource Include="Resources\Delegates.png" />
+    <Resource Include="Resources\Notes-icon.png" />
+    <Resource Include="Resources\HandWave.png" />
     <Resource Include="Resources\Forecast.png" />
     <Resource Include="Resources\Status.png" />
     <Resource Include="Resources\Marketing.png" />
