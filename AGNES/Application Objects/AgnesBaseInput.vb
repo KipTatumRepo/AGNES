@@ -6,10 +6,11 @@
     End Enum
 
     Public Enum FontSz
-        Small
-        Standard
-        Large
-        VeryLarge
+        Small       '8pt font
+        Standard    '12pt font
+        Medium      '16pt font
+        Large       '18pt font
+        VeryLarge   '24pt font
     End Enum
     Private _flare As Boolean
     Public Property Flare As Boolean
@@ -57,6 +58,14 @@
                     .Width = FieldWidth - 8
                     .Margin = New Thickness(4, 4, 0, 0)
                     .FontSize = 12
+                End With
+            Case FontSz.Medium
+                Height = 34
+                With mytxt
+                    .Height = 26
+                    .Width = FieldWidth - 8
+                    .Margin = New Thickness(4, 4, 0, 0)
+                    .FontSize = 16
                 End With
             Case FontSz.Large
                 Height = 36

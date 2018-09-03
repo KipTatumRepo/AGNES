@@ -1,0 +1,416 @@
+﻿<Window x:Class="Flash"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AGNES"
+        mc:Ignorable="d"
+        Title="Flash" Height="500" Width="990" ResizeMode="CanMinimize">
+
+    <Grid x:Name="grdMain">
+        <ToolBar Height="32" VerticalAlignment="Top">
+            <Image Source="/AGNES;component/Resources/BusinessGroup.png" />
+            <Image Source="/AGNES;component/Resources/BusinessGroup.png" />
+            <Image Source="/AGNES;component/Resources/BusinessGroup.png" />
+            <Separator />
+            <Image Source="/AGNES;component/Resources/BusinessGroup.png" />
+        </ToolBar>
+        <DockPanel HorizontalAlignment="Left" Height="42" LastChildFill="False" Margin="10,55,0,0" VerticalAlignment="Top" Width="962" Background="WhiteSmoke" Grid.ColumnSpan="2">
+            <TextBlock Text="Cafe   Sales" LineHeight="16" TextAlignment="Center" Margin="0,-2,0,0" FontSize="16" Width="80" VerticalAlignment="Center" Height="44" HorizontalAlignment="Center" FontWeight="SemiBold" TextWrapping="Wrap" />
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 ">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <Image Width="32" Height="32" Source="/AGNES;component/Resources/Notes-icon.png" Stretch="UniformToFill" Margin="0,1,0,0"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <TextBox Text="95%" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFD6D8DE" IsEnabled="False" Height="26" Margin="4,0,0,0" />
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <TextBox Text="85%" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFD6D8DE" IsEnabled="False" Height="26" Margin="4,0,0,0" />
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <TextBox Text="85%" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFD6D8DE" IsEnabled="False" Height="26" Margin="4,0,0,0" />
+
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+        </DockPanel>
+        <DockPanel HorizontalAlignment="Left" Height="42" LastChildFill="False" Margin="10,102,0,0" VerticalAlignment="Top" Width="962" Background="White" Grid.ColumnSpan="2">
+            <TextBlock Text="Catering Sales" LineHeight="16" TextAlignment="Center" Margin="0,-2,0,0" FontSize="16" Width="80" VerticalAlignment="Center" Height="44" HorizontalAlignment="Center" FontWeight="SemiBold" TextWrapping="Wrap" />
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 ">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <Image Width="32" Height="32" Source="/AGNES;component/Resources/Notes-icon.png" Stretch="UniformToFill" Margin="0,1,0,0"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <TextBox Text="95%" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFD6D8DE" IsEnabled="False" Height="26" Margin="4,0,0,0" />
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <TextBox Text="85%" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFD6D8DE" IsEnabled="False" Height="26" Margin="4,0,0,0" />
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <TextBox Text="85%" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFD6D8DE" IsEnabled="False" Height="26" Margin="4,0,0,0" />
+
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+        </DockPanel>
+        <DockPanel HorizontalAlignment="Left" Height="42" LastChildFill="False" Margin="10,149,0,0" VerticalAlignment="Top" Width="962" Background="WhiteSmoke" Grid.ColumnSpan="2">
+            <TextBlock Text="Total  Sales" LineHeight="16" TextAlignment="Center" Margin="0,-2,0,0" FontSize="16" Width="80" VerticalAlignment="Center" Height="44" HorizontalAlignment="Center" FontWeight="SemiBold" TextWrapping="Wrap" />
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 ">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <Image Width="32" Height="32" Source="/AGNES;component/Resources/Notes-icon.png" Stretch="UniformToFill" Margin="0,1,0,0"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <TextBox Text="95%" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFD6D8DE" IsEnabled="False" Height="26" Margin="4,0,0,0" />
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <TextBox Text="85%" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFD6D8DE" IsEnabled="False" Height="26" Margin="4,0,0,0" />
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <TextBox Text="85%" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFD6D8DE" IsEnabled="False" Height="26" Margin="4,0,0,0" />
+
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+        </DockPanel>
+        <DockPanel HorizontalAlignment="Left" Height="42" LastChildFill="False" Margin="10,196,0,0" VerticalAlignment="Top" Width="962" Grid.ColumnSpan="2">
+            <TextBlock Text="COGS" LineHeight="16" TextAlignment="Center" Margin="0,-2,0,0" FontSize="18" Width="80" VerticalAlignment="Center" Height="44" HorizontalAlignment="Center" FontWeight="SemiBold" />
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 ">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <Image Width="32" Height="32" Source="/AGNES;component/Resources/Notes-icon.png" Stretch="UniformToFill" Margin="0,1,0,0"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <TextBox Text="95%" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFD6D8DE" IsEnabled="False" Height="26" Margin="4,0,0,0" />
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <TextBox Text="85%" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFD6D8DE" IsEnabled="False" Height="26" Margin="4,0,0,0" />
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <TextBox Text="85%" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFD6D8DE" IsEnabled="False" Height="26" Margin="4,0,0,0" />
+
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+        </DockPanel>
+        <DockPanel HorizontalAlignment="Left" Height="42" LastChildFill="False" Margin="10,243,0,0" VerticalAlignment="Top" Width="962" Background="WhiteSmoke" Grid.ColumnSpan="2">
+            <TextBlock Text="Labor" LineHeight="16" TextAlignment="Center" Margin="0,-2,0,0" FontSize="18" Width="80" VerticalAlignment="Center" Height="44" HorizontalAlignment="Center" FontWeight="SemiBold" TextWrapping="Wrap" />
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 ">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <Image Width="32" Height="32" Source="/AGNES;component/Resources/Notes-icon.png" Stretch="UniformToFill" Margin="0,1,0,0"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <TextBox Text="95%" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFD6D8DE" IsEnabled="False" Height="26" Margin="4,0,0,0" />
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <TextBox Text="85%" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFD6D8DE" IsEnabled="False" Height="26" Margin="4,0,0,0" />
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <TextBox Text="85%" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFD6D8DE" IsEnabled="False" Height="26" Margin="4,0,0,0" />
+
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+        </DockPanel>
+        <DockPanel HorizontalAlignment="Left" Height="42" LastChildFill="False" Margin="10,290,0,0" VerticalAlignment="Top" Width="962" Grid.ColumnSpan="2">
+            <TextBlock Text="OPEX" LineHeight="16" TextAlignment="Center" Margin="0,-2,0,0" FontSize="18" Width="80" VerticalAlignment="Center" Height="44" HorizontalAlignment="Center" FontWeight="SemiBold" />
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 ">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <Image Width="32" Height="32" Source="/AGNES;component/Resources/Notes-icon.png" Stretch="UniformToFill" Margin="0,1,0,0"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <TextBox Text="95%" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFD6D8DE" IsEnabled="False" Height="26" Margin="4,0,0,0" />
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <TextBox Text="85%" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFD6D8DE" IsEnabled="False" Height="26" Margin="4,0,0,0" />
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <TextBox Text="85%" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFD6D8DE" IsEnabled="False" Height="26" Margin="4,0,0,0" />
+
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+        </DockPanel>
+        <DockPanel HorizontalAlignment="Left" Height="42" LastChildFill="False" Margin="10,337,0,0" VerticalAlignment="Top" Width="962" Background="WhiteSmoke" Grid.ColumnSpan="2">
+            <TextBlock Text="Fees" LineHeight="16" TextAlignment="Center" Margin="0,-2,0,0" FontSize="18" Width="80" VerticalAlignment="Center" Height="44" HorizontalAlignment="Center" FontWeight="SemiBold" TextWrapping="Wrap" />
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 ">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <Image Width="32" Height="32" Source="/AGNES;component/Resources/Notes-icon.png" Stretch="UniformToFill" Margin="0,1,0,0"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <TextBox Text="95%" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFD6D8DE" IsEnabled="False" Height="26" Margin="4,0,0,0" />
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <TextBox Text="85%" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFD6D8DE" IsEnabled="False" Height="26" Margin="4,0,0,0" />
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <TextBox Text="85%" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFD6D8DE" IsEnabled="False" Height="26" Margin="4,0,0,0" />
+
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+        </DockPanel>
+        <DockPanel HorizontalAlignment="Left" Height="42" LastChildFill="False" Margin="10,384,0,0" VerticalAlignment="Top" Width="962" Grid.ColumnSpan="2">
+            <TextBlock Text="Subsidy" LineHeight="16" TextAlignment="Center" Margin="0,-2,0,0" FontSize="18" Width="80" VerticalAlignment="Center" Height="44" HorizontalAlignment="Center" FontWeight="SemiBold" />
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 ">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <Image Width="32" Height="32" Source="/AGNES;component/Resources/Notes-icon.png" Stretch="UniformToFill" Margin="0,1,0,0"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <TextBox Text="95%" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFD6D8DE" IsEnabled="False" Height="26" Margin="4,0,0,0" />
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <TextBox Text="85%" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFD6D8DE" IsEnabled="False" Height="26" Margin="4,0,0,0" />
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+            <TextBox Text="85%" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFD6D8DE" IsEnabled="False" Height="26" Margin="4,0,0,0" />
+
+            <Grid HorizontalAlignment="Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
+                <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
+                    <Rectangle.Effect>
+                        <BlurEffect Radius="10    "/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
+            </Grid>
+        </DockPanel>
+        <TextBlock HorizontalAlignment="Left" Margin="98,22,0,0" TextWrapping="Wrap" Text="Flash" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
+        <TextBlock HorizontalAlignment="Left" Margin="273,22,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Width="34" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
+        <TextBlock HorizontalAlignment="Left" Margin="312,22,0,0" TextWrapping="Wrap" Text="Budget" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
+        <TextBlock HorizontalAlignment="Left" Margin="456,22,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Width="34" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
+        <TextBlock HorizontalAlignment="Left" Margin="496,22,0,0" TextWrapping="Wrap" Text="Variance to Budget" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" />
+        <TextBlock HorizontalAlignment="Left" Margin="642,26,0,0" TextWrapping="Wrap" Text="Forecast" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" />
+        <TextBlock HorizontalAlignment="Left" Margin="783,26,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Width="34" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
+        <TextBlock HorizontalAlignment="Left" Margin="826,26,0,0" TextWrapping="Wrap" Text="Variance to Forecast" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" />
+
+        <StatusBar Height="24" VerticalAlignment="Bottom" Background="#FFFD6C72">
+            <TextBlock Text="SAVE STATUS" Width="972" TextAlignment="Center" FontWeight="SemiBold" />
+
+        </StatusBar>
+    </Grid>
+</Window>

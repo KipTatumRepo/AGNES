@@ -5,18 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGNES"
         mc:Ignorable="d"
-        Title="HRAudit" Height="450" Width="800">
+        Title="HRAudit" Height="450" Width="960">
+
     <Grid x:Name="grdMain">
-        <Grid HorizontalAlignment="Left" Height="44" Margin="446,54,0,0" VerticalAlignment="Top" Width="204 ">
-            <Rectangle Fill="#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5">
-                <Rectangle.Effect>
-                    <BlurEffect Radius="10    "/>
-                </Rectangle.Effect>
-            </Rectangle>
-            <TextBox HorizontalAlignment="Left" TextAlignment="Right" Height="36" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="196" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="24"/>
-
-        </Grid>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="426,197,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-
     </Grid>
 </Window>

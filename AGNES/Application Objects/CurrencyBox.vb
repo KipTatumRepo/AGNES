@@ -39,6 +39,7 @@
         AddHandler t.TextChanged, AddressOf ValidateText
         ' Field width for 8pt = 80
         '             for 12pt= 112
+        '             for 16pt= 140
         '             for 18pt= 160
         '             for 24pt= 204
     End Sub
