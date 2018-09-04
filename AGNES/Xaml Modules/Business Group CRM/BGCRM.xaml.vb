@@ -57,13 +57,14 @@ Public Class BGCRM
     End Sub
 
 #Region "Navigation"
-    Private Sub LastPage(sender As Object, e As RoutedEventArgs) Handles btnBack1.Click, btnBack2.Click, btnBack3.Click, btnBack4.Click
+    Private Sub LastPage(sender As Object, e As RoutedEventArgs) Handles imgBack1.MouseDown, imgBack2.PreviewMouseDown, imgBack3.PreviewMouseDown, imgBack4.PreviewMouseDown
         ValidatePage(tabPages.SelectedIndex, 0)
         SavePageToBGObj(tabPages.SelectedIndex)
         tabPages.SelectedIndex -= 1
+        'TODO: NAVIGATION NO LONGER WORKING!!
     End Sub
 
-    Private Sub NextPage(sender As Object, e As RoutedEventArgs) Handles btnFwd1.Click, btnFwd2.Click, btnFwd3.Click, btnFwd4.Click
+    Private Sub NextPage(sender As Object, e As RoutedEventArgs) Handles imgFwd1.PreviewMouseDown, imgFwd2.PreviewMouseDown, imgFwd3.PreviewMouseDown, imgFwd4.PreviewMouseDown
         If ValidatePage(tabPages.SelectedIndex, 1) = False Then Exit Sub
         SavePageToBGObj(tabPages.SelectedIndex)
         tabPages.SelectedIndex += 1
