@@ -1,4 +1,6 @@
 ﻿Public Class Flash
+    Public Property Period As Byte = 0
+    Public Property Week As Byte = 0
     Private Sub Image_PreviewMouseDown(sender As Object, e As MouseButtonEventArgs)
         tbSaveStatus.Text = "Draft saved"
         barSaveStatus.Background = Brushes.Yellow
@@ -72,5 +74,118 @@
             .Add(Subsidy)
         End With
         Height = 510 - 141
+    End Sub
+
+    Private Sub PeriodWeekEnter(sender As Object, e As MouseEventArgs)
+        Dim tb As TextBlock
+        If TypeOf (sender) Is TextBlock Then
+            tb = sender
+        Else
+            Dim brd As Border = sender
+            tb = brd.Child
+        End If
+        tb.FontSize = 24
+    End Sub
+
+    Private Sub PeriodWeekLeave(sender As Object, e As MouseEventArgs)
+        Dim tb As TextBlock
+        If TypeOf (sender) Is TextBlock Then
+            tb = sender
+        Else
+            Dim brd As Border = sender
+            tb = brd.Child
+        End If
+        If Mid(tb.Name, 1, 3) = "tbP" Then
+            If FormatNumber(tb.Tag, 0) <> Period Then tb.FontSize = 16
+        Else
+            If FormatNumber(tb.Tag, 0) <> Week Then tb.FontSize = 16
+        End If
+    End Sub
+
+    Private Sub PeriodChosen(sender As Object, e As MouseEventArgs)
+        Dim tb As TextBlock
+        If TypeOf (sender) Is TextBlock Then
+            tb = sender
+        Else
+            Dim brd As Border = sender
+            tb = brd.Child
+        End If
+        If FormatNumber(tb.Tag, 0) <> Period Then
+            tb.FontWeight = FontWeights.SemiBold
+            tb.Foreground = Brushes.Black
+            Period = FormatNumber(tb.Tag, 0)
+            For Each b As Object In tlbFlash.Items
+                If TypeOf (b) Is Border Then
+                    Dim t As TextBlock = b.child
+                    If (Mid(t.Name, 1, 3) = "tbP") And (t.Name <> tb.Name) Then
+                        t.Foreground = Brushes.LightGray
+                        t.FontSize = 16
+                        t.FontWeight = FontWeights.Normal
+                    End If
+                End If
+            Next
+        Else
+            Period = 0
+            For Each b As Object In tlbFlash.Items
+                If TypeOf (b) Is Border Then
+                    Dim t As TextBlock = b.child
+                    If (Mid(t.Name, 1, 3) = "tbP") Then
+                        t.Foreground = Brushes.Black
+                        t.FontSize = 16
+                        t.FontWeight = FontWeights.Normal
+                    End If
+                End If
+            Next
+        End If
+        Week = 0
+        For Each b As Object In tlbFlash.Items
+            If TypeOf (b) Is Border Then
+                Dim t As TextBlock = b.child
+                If (Mid(t.Name, 1, 3) = "tbW") Then
+                    t.Foreground = Brushes.Black
+                    t.FontSize = 16
+                    t.FontWeight = FontWeights.Normal
+                End If
+            End If
+        Next
+
+    End Sub
+
+    Private Sub WeekChosen(sender As Object, e As MouseEventArgs)
+        Dim tb As TextBlock
+        If TypeOf (sender) Is TextBlock Then
+            tb = sender
+        Else
+            Dim brd As Border = sender
+            tb = brd.Child
+        End If
+        If FormatNumber(tb.Tag, 0) <> Week Then
+            tb.FontWeight = FontWeights.SemiBold
+            tb.Foreground = Brushes.Black
+            Week = FormatNumber(tb.Tag, 0)
+            For Each b As Object In tlbFlash.Items
+                If TypeOf (b) Is Border Then
+                    Dim t As TextBlock = b.child
+                    If (Mid(t.Name, 1, 3) = "tbW") And (t.Name <> tb.Name) Then
+                        t.Foreground = Brushes.LightGray
+                        t.FontSize = 16
+                        t.FontWeight = FontWeights.Normal
+                    End If
+                End If
+            Next
+        Else
+            Week = 0
+            For Each b As Object In tlbFlash.Items
+                If TypeOf (b) Is Border Then
+                    Dim t As TextBlock = b.child
+                    If (Mid(t.Name, 1, 3) = "tbW") Then
+                        t.Foreground = Brushes.Black
+                        t.FontSize = 16
+                        t.FontWeight = FontWeights.Normal
+                    End If
+                End If
+            Next
+        End If
+
     End Sub
 End Class

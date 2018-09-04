@@ -21,35 +21,64 @@
             <Separator />
             <Image x:Name="imgEscalate" Source="/AGNES;component/Resources/HandWave.png" ToolTip="Call out to DM" PreviewMouseDown="Image_PreviewMouseDown_3" />
             <Separator />
-            <Border HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Text="  Select Microsoft Period:  " FontSize="24" />
+            <Border x:Name="lblPeriod" BorderBrush="Black" Height="36" VerticalAlignment="center">
+                <TextBlock Text="  MS Period: " TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" />
             </Border>
-            <ComboBox Height="36" Margin="0" VerticalAlignment="Top" Width="120" FontSize="24">
-                <ComboBoxItem Content="Jul" FontSize="16"/>
-                <ComboBoxItem Content="Aug" FontSize="16"/>
-                <ComboBoxItem Content="Sep" FontSize="16"/>
-                <ComboBoxItem Content="Oct" FontSize="16"/>
-                <ComboBoxItem Content="Nov" FontSize="16"/>
-                <ComboBoxItem Content="Dec" FontSize="16"/>
-                <ComboBoxItem Content="Jan" FontSize="16"/>
-                <ComboBoxItem Content="Feb" FontSize="16"/>
-                <ComboBoxItem Content="Mar" FontSize="16"/>
-                <ComboBoxItem Content="Apr" FontSize="16"/>
-                <ComboBoxItem Content="May" FontSize="16"/>
-                <ComboBoxItem Content="Jun" FontSize="16"/>
-            </ComboBox>
+            <Border BorderBrush="Black" Height="36" VerticalAlignment="center" Width="30" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave">
+                <TextBlock x:Name="tbP1" Text="1" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave" PreviewMouseDown="PeriodChosen" Tag="1"/>
+            </Border>
+            <Border  BorderBrush="Black" Height="36" VerticalAlignment="center" Width="30" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave">
+                <TextBlock x:Name="tbP2" Text="2" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave" PreviewMouseDown="PeriodChosen" Tag="2"/>
+            </Border>
+            <Border BorderBrush="Black" Height="36" VerticalAlignment="center" Width="30" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave">
+                <TextBlock x:Name="tbP3" Text="3" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave" PreviewMouseDown="PeriodChosen" Tag="3"/>
+            </Border>
+            <Border  BorderBrush="Black" Height="36" VerticalAlignment="center" Width="30" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave">
+                <TextBlock x:Name="tbP4" Text="4" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave" PreviewMouseDown="PeriodChosen" Tag="4"/>
+            </Border>
+            <Border  BorderBrush="Black" Height="36" VerticalAlignment="center" Width="30" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave">
+                <TextBlock x:Name="tbP5" Text="5" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave" PreviewMouseDown="PeriodChosen" Tag="5"/>
+            </Border>
+            <Border  BorderBrush="Black" Height="36" VerticalAlignment="center" Width="30" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave">
+                <TextBlock x:Name="tbP6" Text="6" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave" PreviewMouseDown="PeriodChosen" Tag="6"/>
+            </Border>
+            <Border  BorderBrush="Black" Height="36" VerticalAlignment="center" Width="30" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave">
+                <TextBlock x:Name="tbP7" Text="7" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave" PreviewMouseDown="PeriodChosen" Tag="7"/>
+            </Border>
+            <Border  BorderBrush="Black" Height="36" VerticalAlignment="center" Width="30" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave">
+                <TextBlock x:Name="tbP8" Text="8" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave" PreviewMouseDown="PeriodChosen" Tag="8"/>
+            </Border>
+            <Border BorderBrush="Black" Height="36" VerticalAlignment="center" Width="30" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave">
+                <TextBlock x:Name="tbP9" Text="9" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave" PreviewMouseDown="PeriodChosen" Tag="9"/>
+            </Border>
+            <Border  BorderBrush="Black" Height="36" VerticalAlignment="center" Width="30" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave">
+                <TextBlock x:Name="tbP10" Text="10" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave" PreviewMouseDown="PeriodChosen" Tag="10"/>
+            </Border>
+            <Border  BorderBrush="Black" Height="36" VerticalAlignment="center" Width="30" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave">
+                <TextBlock x:Name="tbP11" Text="11" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave" PreviewMouseDown="PeriodChosen" Tag="11"/>
+            </Border>
+            <Border BorderBrush="Black" Height="36" VerticalAlignment="center" Width="30" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave">
+                <TextBlock x:Name="tbP12" Text="12" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave" PreviewMouseDown="PeriodChosen" Tag="12" />
+            </Border>
             <Separator />
-            <Border HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Text="  Select Week:  " FontSize="24" />
+            <Border x:Name="lblWeek" BorderBrush="Black" Height="36" VerticalAlignment="center">
+                <TextBlock Text="  Week: " TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" />
             </Border>
-            <ComboBox Height="36" Margin="0" VerticalAlignment="Top" Width="69" FontSize="24">
-                <ComboBoxItem Content="1" FontSize="16"/>
-                <ComboBoxItem Content="2" FontSize="16"/>
-                <ComboBoxItem Content="3" FontSize="16"/>
-                <ComboBoxItem Content="4" FontSize="16"/>
-                <ComboBoxItem Content="5" FontSize="16"/>
-            </ComboBox>
-           
+            <Border BorderBrush="Black" Height="36" VerticalAlignment="center" Width="30" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave">
+                <TextBlock x:Name="tbW1" Text="1" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave" PreviewMouseDown="WeekChosen" Tag="1" />
+            </Border>
+            <Border  BorderBrush="Black" Height="36" VerticalAlignment="center" Width="30" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave">
+                <TextBlock x:Name="tbW2" Text="2" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave" PreviewMouseDown="WeekChosen" Tag="2"/>
+            </Border>
+            <Border BorderBrush="Black" Height="36" VerticalAlignment="center" Width="30" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave">
+                <TextBlock x:Name="tbW3"  Text="3" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave" PreviewMouseDown="WeekChosen" Tag="3"/>
+            </Border>
+            <Border  BorderBrush="Black" Height="36" VerticalAlignment="center" Width="30" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave">
+                <TextBlock x:Name="tbW4" Text="4" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave" PreviewMouseDown="WeekChosen" Tag="4"/>
+            </Border>
+            <Border  BorderBrush="Black" Height="36" VerticalAlignment="center" Width="30" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave">
+                <TextBlock x:Name="tbW5" Text="5" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" MouseEnter="PeriodWeekEnter" MouseLeave="PeriodWeekLeave" PreviewMouseDown="WeekChosen" Tag="5"/>
+            </Border>
         </ToolBar>
         <TextBlock HorizontalAlignment="Left" Margin="98,46,0,0" TextWrapping="Wrap" Text="Flash" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16"/>
         <TextBlock HorizontalAlignment="Left" Margin="273,46,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Width="34" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16"/>
