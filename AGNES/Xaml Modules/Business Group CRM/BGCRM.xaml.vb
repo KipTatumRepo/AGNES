@@ -10,6 +10,7 @@ Public Class BGCRM
     Dim num500Events As NumberBox
     Dim numCatered As NumberBox
     Dim numHeadcount As NumberBox
+    Dim numPopMoving As NumberBox
 
     Public Sub New()
         InitializeComponent()
@@ -23,12 +24,22 @@ Public Class BGCRM
         num500Events = New NumberBox(189, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(807, 28, 0, 0)}
         numCatered = New NumberBox(189, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(807, 88, 0, 0)}
         numHeadcount = New NumberBox(108, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(145, 149, 0, 0)}
-        Dim tb As TextBox = numHeadcount.Children(1)
+        numPopMoving = New NumberBox(126, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(608, 436, 0, 0)}
+
+
+        Dim tb As TextBox
+        tb = numHeadcount.Children(1)
         tb.IsTabStop = True
         tb.TabIndex = 3
+
+        tb = numPopMoving.Children(1)
+        tb.IsTabStop = True
+        tb.TabIndex = 1
+
         With grdGroup.Children
             .Add(numHeadcount)
         End With
+
         With grdFinances.Children
             .Add(curRevenue)
             .Add(curOffsite)
@@ -37,6 +48,9 @@ Public Class BGCRM
             .Add(numCatered)
         End With
 
+        With grdCampusRefresh.Children
+            .Add(numPopMoving)
+        End With
         btnSaveFinish.IsEnabled = True
         'TODO: ADD COMPREHENSIVE TRIGGER FOR ENABLING SAVE
         cboGroup.Focus()
@@ -58,13 +72,15 @@ Public Class BGCRM
 
 #Region "Data Handling"
     Private Sub SavePageToBGObj(p)
-        Dim si As ListBoxItem
+        Dim si As ListBoxItem, tb As TextBox, v As Double
         Select Case p
             Case 0          '====== GROUP PAGE
+                tb = numHeadcount.Children(1)
+                v = FormatNumber(tb.Text, 0)
+                BG.Headcount = v
                 With BG
                     .OrgName = cboGroup.Text
                     .Overview = txtOverview.Text
-                    .Headcount = FormatNumber(txtHeadcount.Text, 0)
                     .OnsiteRemote = cboWorkspace.SelectedIndex
                 End With
 
@@ -163,7 +179,7 @@ Public Class BGCRM
                 Next
 
             Case 2          '======FINANCIAL PAGE
-                Dim tb As TextBox, v As Double
+
                 tb = curRevenue.Children(1)
                 v = FormatNumber(tb.Text, 2)
                 BG.TotalRevenue = v
@@ -953,7 +969,8 @@ Public Class BGCRM
                     If cboWorkTimes.SelectedIndex = -1 Then invalid.Add("A work times option must be selected.")
                     If cboWorkspace.SelectedIndex = -1 Then invalid.Add("A workspace option must be selected.")
                     Try
-                        i = FormatNumber(txtHeadcount.Text, 0)
+                        Dim tb As TextBox = numHeadcount.Children(1)
+                        c = FormatNumber(tb.Text, 2)
                     Catch ex As Exception
                         invalid.Add("Headcount must be a number - enter 0 if currently unknown.")
                     End Try
