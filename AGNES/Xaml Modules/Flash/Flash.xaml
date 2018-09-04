@@ -21,35 +21,6 @@
             <Separator />
             <Image x:Name="imgEscalate" Source="/AGNES;component/Resources/HandWave.png" ToolTip="Call out to DM" PreviewMouseDown="Image_PreviewMouseDown_3" />
             <Separator />
-            <Border HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Text="  Select Microsoft Period:  " FontSize="24" />
-            </Border>
-            <ComboBox Height="36" Margin="0" VerticalAlignment="Top" Width="120" FontSize="24">
-                <ComboBoxItem Content="Jul" FontSize="16"/>
-                <ComboBoxItem Content="Aug" FontSize="16"/>
-                <ComboBoxItem Content="Sep" FontSize="16"/>
-                <ComboBoxItem Content="Oct" FontSize="16"/>
-                <ComboBoxItem Content="Nov" FontSize="16"/>
-                <ComboBoxItem Content="Dec" FontSize="16"/>
-                <ComboBoxItem Content="Jan" FontSize="16"/>
-                <ComboBoxItem Content="Feb" FontSize="16"/>
-                <ComboBoxItem Content="Mar" FontSize="16"/>
-                <ComboBoxItem Content="Apr" FontSize="16"/>
-                <ComboBoxItem Content="May" FontSize="16"/>
-                <ComboBoxItem Content="Jun" FontSize="16"/>
-            </ComboBox>
-            <Separator />
-            <Border HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Text="  Select Week:  " FontSize="24" />
-            </Border>
-            <ComboBox Height="36" Margin="0" VerticalAlignment="Top" Width="69" FontSize="24">
-                <ComboBoxItem Content="1" FontSize="16"/>
-                <ComboBoxItem Content="2" FontSize="16"/>
-                <ComboBoxItem Content="3" FontSize="16"/>
-                <ComboBoxItem Content="4" FontSize="16"/>
-                <ComboBoxItem Content="5" FontSize="16"/>
-            </ComboBox>
-           
         </ToolBar>
         <TextBlock HorizontalAlignment="Left" Margin="98,46,0,0" TextWrapping="Wrap" Text="Flash" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16"/>
         <TextBlock HorizontalAlignment="Left" Margin="273,46,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Width="34" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16"/>
@@ -64,4 +35,5 @@
             <TextBlock x:Name="tbSaveStatus" Text="SAVE STATUS" Width="972" TextAlignment="Center" FontWeight="SemiBold" />
         </StatusBar>
     </Grid>
+
 </Window>

@@ -18,7 +18,7 @@
         GroupLabel.Child = tb
 
         '// Create Flash value input field
-        Dim FlashVal As New CurrencyBox(140, True, False, True, False, True, AgnesBaseInput.FontSz.Medium) With {.Margin = New Thickness(4, 4, 0, 0)}
+        Dim FlashVal As New CurrencyBox(140, False, True, False, False, True, AgnesBaseInput.FontSz.Medium) With {.Margin = New Thickness(4, 4, 0, 0)}
 
         '// Create image for notes
         Dim NoteImage As New Image With {.Height = 32, .Width = 32, .Stretch = Stretch.UniformToFill, .HorizontalAlignment = Windows.HorizontalAlignment.Center,

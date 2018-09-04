@@ -1,4 +1,17 @@
 ﻿Public Class Flash
+    Private Sub Flash_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
+        'TODO: "Me" represents the object that the Chooser(s) is/are in; passing it by reference
+        '      will allow a writeback of the selections period And/Or week to the object.  NEED TO TIE BACK ONCE THE FLASH OBJECT IS DONE.
+
+        Dim Wk As New WeekChooser(Me, 1, 5, 1)
+        Dim MSP As New PeriodChooser(Me, Wk, 1, 12, 3)
+        Dim sep As New Separator
+        With tlbFlash.Items
+            .Add(MSP)
+            .Add(sep)
+            .Add(Wk)
+        End With
+    End Sub
     Private Sub Image_PreviewMouseDown(sender As Object, e As MouseButtonEventArgs)
         tbSaveStatus.Text = "Draft saved"
         barSaveStatus.Background = Brushes.Yellow
@@ -73,4 +86,5 @@
         End With
         Height = 510 - 141
     End Sub
+
 End Class
