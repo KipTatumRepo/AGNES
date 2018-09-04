@@ -35,4 +35,5 @@
             <TextBlock x:Name="tbSaveStatus" Text="SAVE STATUS" Width="972" TextAlignment="Center" FontWeight="SemiBold" />
         </StatusBar>
     </Grid>
+
 </Window>
