@@ -1,6 +1,8 @@
 ﻿Public Class Flash
     Private Property Period As Byte = 0
     Private Property Week As Byte = 0
+
+
     Private Sub Image_PreviewMouseDown(sender As Object, e As MouseButtonEventArgs)
         tbSaveStatus.Text = "Draft saved"
         barSaveStatus.Background = Brushes.Yellow
@@ -186,6 +188,18 @@
                 End If
             Next
         End If
+
+    End Sub
+
+    Private Sub Flash_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
+        Dim Wk As New WeekChooser(1, 5, 1)
+        Dim MSP As New PeriodChooser(Wk, 1, 12, 3)
+        Dim sep As New Separator
+        With tlbFlash.Items
+            .Add(MSP)
+            .Add(sep)
+            .Add(Wk)
+        End With
 
     End Sub
 End Class
