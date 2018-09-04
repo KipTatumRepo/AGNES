@@ -1,6 +1,6 @@
 ﻿Public Class Flash
-    Public Property Period As Byte = 0
-    Public Property Week As Byte = 0
+    Private Property Period As Byte = 0
+    Private Property Week As Byte = 0
     Private Sub Image_PreviewMouseDown(sender As Object, e As MouseButtonEventArgs)
         tbSaveStatus.Text = "Draft saved"
         barSaveStatus.Background = Brushes.Yellow
