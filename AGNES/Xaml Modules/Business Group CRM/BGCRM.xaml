@@ -12,7 +12,7 @@
     <Grid Background="OldLace" >
         <DockPanel Background="OldLace">
             <TabControl x:Name="tabPages">
-                <TabItem x:Name="tiGroup" Header="Group Details">
+                <TabItem x:Name="tiGroup" Header="Group Details" IsTabStop="False">
                     <Grid x:Name="grdGroup" Background="OldLace" Margin="0,-1,0,1">
                         <TextBlock Margin="10,27,0,0" TextWrapping="Wrap" Text="Business group name" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="243" Grid.ColumnSpan="3"/>
                         <TextBlock Margin="10,73,0,0" TextWrapping="Wrap" Text="Group Overview" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="243"/>
@@ -45,7 +45,7 @@
                         </ComboBox>
                         <ComboBox x:Name="cboWorkspace" Margin="816,149,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="5" HorizontalAlignment="Left" Width="184"/>
                         <TextBox x:Name="txtOverview" Height="68" Margin="258,73,0,0" TextWrapping="Wrap" VerticalAlignment="Top" MaxLines="6" MaxLength="4000" IsUndoEnabled="True" TabIndex="2" HorizontalAlignment="Left" Width="742"/>
-                        <TextBox x:Name="txtHeadcount" Height="31" Margin="145,149,0,0" VerticalAlignment="Top" MaxLines="1" MaxLength="8" TabIndex="3" HorizontalAlignment="Left" Width="108"/>
+                        <TextBox x:Name="txtHeadcount" Height="31" Margin="145,149,0,0" VerticalAlignment="Top" MaxLines="1" MaxLength="8" TabIndex="3" HorizontalAlignment="Left" Width="108" Visibility="Hidden"/>
                         <Separator Height="39" Margin="0,186,0,0" VerticalAlignment="Top"/>
                         <ListView x:Name="lbxCommSelect" Height="80" Margin="10,257,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480" TabIndex="6" FontSize="14">
                             <ListView.ContextMenu>
@@ -75,7 +75,7 @@
                         </Button>
                     </Grid>
                 </TabItem>
-                <TabItem x:Name="tiPeople" Header="People" Height="22" VerticalAlignment="Top">
+                <TabItem x:Name="tiPeople" Header="People" Height="22" VerticalAlignment="Top" IsTabStop="False">
                     <Grid x:Name="grdPeople" Background="OldLace">
                         <TextBlock Margin="10,27,0,0" TextWrapping="Wrap" Text="Business group leader" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="243" Grid.ColumnSpan="2"/>
                         <TextBlock Margin="10,114,0,0" TextWrapping="Wrap" Text="Relationship manager" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="243" Grid.ColumnSpan="2"/>
@@ -116,29 +116,24 @@
                         </Button>
                     </Grid>
                 </TabItem>
-                <TabItem x:Name="tiFinances" Header="Financials">
+                <TabItem x:Name="tiFinances" Header="Financials" IsTabStop="False">
                     <Grid x:Name="grdFinances" Background="OldLace">
                         <TextBlock Margin="10,27,0,0" TextWrapping="Wrap" Text="Total Revenue" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="254"/>
-                        <TextBox x:Name="txtRevenue" Height="31" Margin="269,28,0,0" VerticalAlignment="Top" MaxLines="1" MaxLength="8" TabIndex="3" HorizontalAlignment="Left" Width="189"/>
                         <TextBlock Margin="10,160,0,0" TextWrapping="Wrap" Text="Number of Events/Yr" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="254"/>
                         <TextBlock Margin="478,27,0,0" TextWrapping="Wrap" Text="Number of 500+ Events/Yr" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="304"/>
                         <TextBlock Margin="478,88,0,0" TextWrapping="Wrap" Text="Number of Catered Events/Yr" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="324"/>
                         <TextBlock Margin="10,88,0,0" TextWrapping="Wrap" Text="Offsite Spend/Yr" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="254"/>
-                        <ListView x:Name="lbxOffsiteLocsSelect" Height="242" Margin="10,286,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                        <ListView x:Name="lbxOffsiteLocsSelect" Height="242" Margin="10,286,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480" TabIndex="6">
                             <ListView.ContextMenu>
                                 <ContextMenu>
-                                    <ComboBoxItem x:Name ="lbiNewOffsite" Content="Add new offsite location" IsSelected="True"/>
-                                    <ComboBoxItem Content="Delete selected location" IsEnabled="False" />
+                                    <ComboBoxItem x:Name ="lbiNewOffsite" Content="Add new offsite location" IsSelected="True" IsTabStop="False"/>
+                                    <ComboBoxItem Content="Delete selected location" IsEnabled="False" IsTabStop="False" />
                                 </ContextMenu>
                             </ListView.ContextMenu>
                         </ListView>
-                        <ListView x:Name="lbxOffsiteLocsChosen" Height="242" Margin="520,286,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
+                        <ListView x:Name="lbxOffsiteLocsChosen" Height="242" Margin="520,286,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480" TabIndex="7">
                         </ListView>
-                        <Separator HorizontalAlignment="Left" Height="40" Margin="0,192,0,0" VerticalAlignment="Top" Width="1010"/>
-                        <TextBox x:Name="txtOffsiteSpend" Height="31" Margin="269,88,0,0" VerticalAlignment="Top" MaxLines="1" MaxLength="8" TabIndex="3" HorizontalAlignment="Left" Width="189"/>
-                        <TextBox x:Name="txtEventCount" Height="31" Margin="269,156,0,0" VerticalAlignment="Top" MaxLines="1" MaxLength="8" TabIndex="3" HorizontalAlignment="Left" Width="189"/>
-                        <TextBox x:Name="txt500EventCount" Height="31" Margin="807,28,0,0" VerticalAlignment="Top" MaxLines="1" MaxLength="8" TabIndex="3" HorizontalAlignment="Left" Width="189"/>
-                        <TextBox x:Name="txtCateredEventCount" Height="31" Margin="807,88,0,0" VerticalAlignment="Top" MaxLines="1" MaxLength="8" TabIndex="3" HorizontalAlignment="Left" Width="189"/>
+                        <Separator HorizontalAlignment="Left" Height="40" Margin="0,192,0,0" VerticalAlignment="Top" Width="1010" IsTabStop="False"/>
                         <TextBlock Margin="10,232,0,0" TextWrapping="Wrap" Text="Top Offsite Locations" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="990" TextAlignment="Center"/>
                         <Button x:Name="btnFwd3" Content="" HorizontalAlignment="Left" Margin="943,586,0,0" VerticalAlignment="Top" Width="57" Height="65" BorderThickness="0,0,0,1" IsTabStop="False" BorderBrush="#FFE5E5E5">
                             <Button.Background>
@@ -152,7 +147,7 @@
                         </Button>
                     </Grid>
                 </TabItem>
-                <TabItem x:Name="tiEvents" Header="Events">
+                <TabItem x:Name="tiEvents" Header="Events" IsTabStop="False">
                     <Grid x:Name="grdEvents" Background="OldLace">
                         <TextBlock Margin="0,10,0,0" TextWrapping="Wrap" Text="Notable Events" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1010" TextAlignment="Center"/>
                         <ListView x:Name="lbxTopETypesSelect" Height="78" Margin="10,167,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
@@ -221,7 +216,7 @@
                         </Button>
                     </Grid>
                 </TabItem>
-                <TabItem x:Name="tiCampusRefresh" Header="Campus Refresh">
+                <TabItem x:Name="tiCampusRefresh" Header="Campus Refresh" IsTabStop="False">
                     <Grid x:Name="grdCampusRefresh" Background="OldLace">
                         <TextBlock Margin="254,436,0,0" TextWrapping="Wrap" Text="Total Population Moving" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="336"/>
                         <TextBlock Margin="0,10,0,0" TextWrapping="Wrap" Text="Origin Buildings" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1010" TextAlignment="Center"/>

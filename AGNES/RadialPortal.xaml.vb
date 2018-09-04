@@ -167,7 +167,7 @@
         Select Case s.Tag
             Case "WCR"
                 WCRModule.Runmodule()
-            Case "BGCRM"
+            Case "Business Group CRM"
                 BGCRMModule.Runmodule()
             Case "Flash"
                 FlashModule.Runmodule()

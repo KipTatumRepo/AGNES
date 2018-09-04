@@ -4,12 +4,39 @@ Public Class BGCRM
     Dim BG As objBusinessGroup
     Dim BGC As BGCRMEntity
     Dim SD As BIEntities
+    Dim curRevenue As CurrencyBox
+    Dim curOffsite As CurrencyBox
+    Dim numEventCount As NumberBox
+    Dim num500Events As NumberBox
+    Dim numCatered As NumberBox
+    Dim numHeadcount As NumberBox
+
     Public Sub New()
         InitializeComponent()
         BG = New objBusinessGroup
         BGC = New BGCRMEntity
         SD = New BIEntities
         PopulateOptions()
+        curRevenue = New CurrencyBox(189, False, True, False, True, True, AgnesBaseInput.FontSz.Medium) With {.Margin = New Thickness(269, 28, 0, 0)}
+        curOffsite = New CurrencyBox(189, False, True, False, True, True, AgnesBaseInput.FontSz.Medium) With {.Margin = New Thickness(269, 88, 0, 0)}
+        numEventCount = New NumberBox(189, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(269, 156, 0, 0)}
+        num500Events = New NumberBox(189, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(807, 28, 0, 0)}
+        numCatered = New NumberBox(189, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(807, 88, 0, 0)}
+        numHeadcount = New NumberBox(108, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(145, 149, 0, 0)}
+        Dim tb As TextBox = numHeadcount.Children(1)
+        tb.IsTabStop = True
+        tb.TabIndex = 3
+        With grdGroup.Children
+            .Add(numHeadcount)
+        End With
+        With grdFinances.Children
+            .Add(curRevenue)
+            .Add(curOffsite)
+            .Add(numEventCount)
+            .Add(num500Events)
+            .Add(numCatered)
+        End With
+
         btnSaveFinish.IsEnabled = True
         'TODO: ADD COMPREHENSIVE TRIGGER FOR ENABLING SAVE
         cboGroup.Focus()
@@ -86,9 +113,10 @@ Public Class BGCRM
                 For Each si In lbxLocationsChosen.Items
                     Dim sc As String = si.Content
                     Dim q = From c In SD.MasterBuildingLists
-                            Where c.BuildingName = sc
+                            Where c.BuildingName Is sc
                             Select c
                     For Each c In q
+                        Dim nu As Long = c.PID
                         BG.Locations.Add(FormatNumber(c.PID, 0))
                     Next
                 Next
@@ -135,13 +163,22 @@ Public Class BGCRM
                 Next
 
             Case 2          '======FINANCIAL PAGE
-                With BG
-                    .TotalRevenue = FormatNumber(txtRevenue.Text, 2)
-                    .OffSiteSpend = FormatNumber(txtOffsiteSpend.Text, 2)
-                    .TotalEvents = FormatNumber(txtEventCount.Text, 0)
-                    .Events500 = FormatNumber(txt500EventCount.Text, 0)
-                    .CateredEvents = FormatNumber(txtCateredEventCount.Text, 0)
-                End With
+                Dim tb As TextBox, v As Double
+                tb = curRevenue.Children(1)
+                v = FormatNumber(tb.Text, 2)
+                BG.TotalRevenue = v
+                tb = curOffsite.Children(1)
+                v = FormatNumber(tb.Text, 2)
+                BG.OffSiteSpend = v
+                tb = numEventCount.Children(1)
+                v = FormatNumber(tb.Text, numEventCount.NumberOfDecimals)
+                BG.TotalEvents = v
+                tb = num500Events.Children(1)
+                v = FormatNumber(tb.Text, num500Events.NumberOfDecimals)
+                BG.Events500 = v
+                tb = numCatered.Children(1)
+                v = FormatNumber(tb.Text, numCatered.NumberOfDecimals)
+                BG.CateredEvents = v
 
                 '// Populate top offsite locations into array
                 For Each si In lbxOffsiteLocsChosen.Items
@@ -292,7 +329,7 @@ Public Class BGCRM
         lbxLocationsSelect.Items.Clear()
         lbxOriginSelect.Items.Clear()
         lbxDestination.Items.Clear()
-        Dim loq = From bloc In SD.MasterBuildingLists Select bloc Order By bloc.BuildingName
+        Dim loq = From bloc In SD.MasterBuildingLists Select bloc 'Order By bloc.BuildingName
         For Each bloc In loq
             Dim li As New ListBoxItem, li1 As New ListBoxItem, li2 As New ListBoxItem
             li.Content = bloc.BuildingName
@@ -334,7 +371,7 @@ Public Class BGCRM
         lbxOffsiteLocsSelect.Items.Clear()
         Dim olq = From osl In BGC.OffsiteLocations Select osl Order By osl.OffsiteLocName
         For Each osl In olq
-            Dim lbi As New ListBoxItem With {.Content = osl.OffsiteLocName, .Tag = "C"}
+            Dim lbi As New ListBoxItem With {.Content = osl.OffsiteLocName, .Tag = "C", .IsTabStop = False}
             lbxOffsiteLocsSelect.Items.Add(lbi)
             AddHandler lbi.MouseDoubleClick, AddressOf OffsiteMove
         Next
@@ -926,31 +963,36 @@ Public Class BGCRM
                     If cboRelManager.SelectedIndex = -1 Then invalid.Add("A relationship manager must be selected.")
                 Case 2  '// Financials page
                     Try
-                        c = FormatNumber(txtRevenue.Text, 2)
-                    Catch ex As Exception
-                        invalid.Add("Revenue must be a number - enter 0 if currently unknown.")
-                    End Try
-
-                    Try
-                        c = FormatNumber(txtOffsiteSpend.Text, 2)
+                        Dim tb As TextBox = curRevenue.Children(1)
+                        c = FormatNumber(tb.Text, 2)
                     Catch ex As Exception
                         invalid.Add("Offsite spend must be a number - enter 0 if currently unknown.")
                     End Try
 
                     Try
-                        i = FormatNumber(txtEventCount.Text, 0)
+                        Dim tb As TextBox = curOffsite.Children(1)
+                        c = FormatNumber(tb.Text, 2)
+                    Catch ex As Exception
+                        invalid.Add("Offsite spend must be a number - enter 0 if currently unknown.")
+                    End Try
+
+                    Try
+                        Dim tb As TextBox = numEventCount.Children(1)
+                        i = FormatNumber(tb.Text, 0)
                     Catch ex As Exception
                         invalid.Add("Event count must be a number - enter 0 if currently unknown.")
                     End Try
 
                     Try
-                        i = FormatNumber(txt500EventCount.Text, 0)
+                        Dim tb As TextBox = num500Events.Children(1)
+                        i = FormatNumber(tb.Text, 0)
                     Catch ex As Exception
                         invalid.Add("500+ event count must be a number - enter 0 if currently unknown.")
                     End Try
 
                     Try
-                        i = FormatNumber(txtCateredEventCount.Text, 0)
+                        Dim tb As TextBox = numCatered.Children(1)
+                        i = FormatNumber(tb.Text, 0)
                     Catch ex As Exception
                         invalid.Add("Catered event count must be a number - enter 0 if currently unknown.")
                     End Try
