@@ -695,10 +695,8 @@ Public Class BGCRM
             cbi.Content = SortArray(ct)
             If SortArray(ct) = uni.StringVal Then cbi.IsSelected = True
         Next
-
         cboGroup.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
         uni.Close()
-
     End Sub
 
     Private Sub AddCommunicationType(sender As Object, e As MouseButtonEventArgs)
@@ -715,7 +713,6 @@ Public Class BGCRM
         Catch ex As InvalidOperationException
             Dim comm As New Communication With {.CommType = uni.StringVal}
             BGC.Communications.Add(comm)
-            BGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
             AddHandler li.MouseDoubleClick, AddressOf CommItemMove
             lbxCommsChosen.Items.Add(li)
@@ -738,7 +735,6 @@ Public Class BGCRM
         Catch ex As InvalidOperationException
             Dim cult As New GroupCulture With {.Culture = uni.StringVal}
             BGC.GroupCultures.Add(cult)
-            BGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
             AddHandler li.MouseDoubleClick, AddressOf CultureItemMove
             lbxCultureChosen.Items.Add(li)
@@ -761,7 +757,6 @@ Public Class BGCRM
         Catch ex As InvalidOperationException
             Dim leader As New Leader With {.LeaderName = uni.StringVal}
             BGC.Leaders.Add(leader)
-            BGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
             AddHandler li.MouseDoubleClick, AddressOf LeadTeamMove
             lbxLeadersChosen.Items.Add(li)
@@ -796,7 +791,6 @@ Public Class BGCRM
         Catch ex As InvalidOperationException
             Dim customer As New FrequentCustomer With {.CustomerName = uni.StringVal}
             BGC.FrequentCustomers.Add(customer)
-            BGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
             AddHandler li.MouseDoubleClick, AddressOf CustomerMove
             lbxCustomerChosen.Items.Add(li)
@@ -832,7 +826,6 @@ Public Class BGCRM
         Catch ex As InvalidOperationException
             Dim Offsite As New OffsiteLocation With {.OffsiteLocName = uni.StringVal}
             BGC.OffsiteLocations.Add(Offsite)
-            BGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
             AddHandler li.MouseDoubleClick, AddressOf OffsiteMove
             lbxOffsiteLocsChosen.Items.Add(li)
@@ -855,7 +848,6 @@ Public Class BGCRM
         Catch ex As InvalidOperationException
             Dim EventType As New EventType With {.EventType1 = uni.StringVal}
             BGC.EventTypes.Add(EventType)
-            BGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
             AddHandler li.MouseDoubleClick, AddressOf TopTypeMove
             lbxTopETypesChosen.Items.Add(li)
@@ -878,7 +870,6 @@ Public Class BGCRM
         Catch ex As InvalidOperationException
             Dim EventSpc As New EventSpace With {.SpaceName = uni.StringVal}
             BGC.EventSpaces.Add(EventSpc)
-            BGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
             AddHandler li.MouseDoubleClick, AddressOf TopSpaceMove
             lbxTopSpacesChosen.Items.Add(li)
@@ -901,7 +892,6 @@ Public Class BGCRM
         Catch ex As InvalidOperationException
             Dim Involve As New Involvement With {.Involvement1 = uni.StringVal}
             BGC.Involvements.Add(Involve)
-            BGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
             AddHandler li.MouseDoubleClick, AddressOf InvolvementMove
             lbxInvolveChosen.Items.Add(li)
@@ -924,7 +914,6 @@ Public Class BGCRM
         Catch ex As InvalidOperationException
             Dim Notable As New NotableEvent With {.EventName = uni.StringVal}
             BGC.NotableEvents.Add(Notable)
-            BGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
             AddHandler li.MouseDoubleClick, AddressOf NotablesMove
             lbxNotableChosen.Items.Add(li)
@@ -947,7 +936,6 @@ Public Class BGCRM
         Catch ex As InvalidOperationException
             Dim Plannr As New Planner With {.PlannerName = uni.StringVal}
             BGC.Planners.Add(Plannr)
-            BGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
             AddHandler li.MouseDoubleClick, AddressOf PlannerMove
             lbxPlannersChosen.Items.Add(li)

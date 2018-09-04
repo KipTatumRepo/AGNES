@@ -32,8 +32,6 @@
         Dim Opex As New FlashGroup("OPEX", True, 309, False, False)
         Dim Fees As New FlashGroup("Fees", True, 356, True, False)
         Dim Total As New FlashGroup("Total", True, 403, True, True)
-        'TODO: ADD PROCEDURE AND LIST FOR RELATED SUBTOTALS
-
         With grdFlashGroups.Children
             .Add(CafeSales)
             .Add(CateringSales)
@@ -54,9 +52,6 @@
         Dim Labor As New FlashGroup("Labor", True, 168, True, False)
         Dim Opex As New FlashGroup("OPEX", True, 215, False, False)
         Dim Subsidy As New FlashGroup("Subsidy", True, 262, True, True)
-
-        'TODO: ADD PROCEDURE AND LIST FOR RELATED SUBTOTALS
-
         With grdFlashGroups.Children
             .Add(Sales)
             .Add(Cogs)
