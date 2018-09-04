@@ -26,7 +26,7 @@
     Public Property MinWeek As Byte
     Public Property MaxWeek As Byte
 
-    Public Sub New(MinW, MaxW, CurW)
+    Public Sub New(ByRef DataObject As Object, MinW As Byte, MaxW As Byte, CurW As Byte)
         Dim ct As Byte
         MinWeek = MinW
         MaxWeek = MaxW

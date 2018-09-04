@@ -28,7 +28,7 @@
     Public Property MaxPeriod As Byte
 
     Public RelatedWeekObject As Object
-    Public Sub New(ByRef RelatedWeekObject, MinP, MaxP, CurP)
+    Public Sub New(ByRef DataObject As Object, ByRef RelatedWeekObject As WeekChooser, MinP As Byte, MaxP As Byte, CurP As Byte)
         Dim ct As Byte
         Week = RelatedWeekObject
         MinPeriod = MinP
@@ -50,7 +50,6 @@
             AddHandler tbPeriod.MouseEnter, AddressOf HoverOverPeriod
             AddHandler brdPeriod.MouseLeave, AddressOf LeavePeriod
             AddHandler tbPeriod.MouseLeave, AddressOf LeavePeriod
-            'AddHandler brdPeriod.PreviewMouseDown, AddressOf ChoosePeriod
             AddHandler tbPeriod.PreviewMouseDown, AddressOf ChoosePeriod
             brdPeriod.Child = tbPeriod
             Children.Add(brdPeriod)
