@@ -57,14 +57,13 @@ Public Class BGCRM
     End Sub
 
 #Region "Navigation"
-    Private Sub LastPage(sender As Object, e As RoutedEventArgs) Handles imgBack1.MouseDown, imgBack2.PreviewMouseDown, imgBack3.PreviewMouseDown, imgBack4.PreviewMouseDown
+    Private Sub LastPage(sender As Object, e As RoutedEventArgs) Handles btnBack1.Click, btnBack2.Click, btnBack3.Click, btnBack4.Click
         ValidatePage(tabPages.SelectedIndex, 0)
         SavePageToBGObj(tabPages.SelectedIndex)
         tabPages.SelectedIndex -= 1
-        'TODO: NAVIGATION NO LONGER WORKING!!
     End Sub
 
-    Private Sub NextPage(sender As Object, e As RoutedEventArgs) Handles imgFwd1.PreviewMouseDown, imgFwd2.PreviewMouseDown, imgFwd3.PreviewMouseDown, imgFwd4.PreviewMouseDown
+    Private Sub NextPage(sender As Object, e As RoutedEventArgs) Handles btnFwd1.Click, btnFwd2.Click, btnFwd3.Click, btnFwd4.Click
         If ValidatePage(tabPages.SelectedIndex, 1) = False Then Exit Sub
         SavePageToBGObj(tabPages.SelectedIndex)
         tabPages.SelectedIndex += 1
@@ -1012,7 +1011,10 @@ Public Class BGCRM
                 For ct = 0 To invalid.Count - 1
                     errorstring = errorstring & invalid(ct) & Chr(13) & Chr(13)
                 Next
-                MsgBox(errorstring, MsgBoxStyle.OkOnly, "Validation failed")
+                Dim amsg1 = New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText,
+                                                AgnesMessageBox.MsgBoxType.OkOnly, 14,,,, errorstring)
+                amsg1.ShowDialog()
+                amsg1.Close()
                 Return False
             End If
         End If

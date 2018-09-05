@@ -25,7 +25,7 @@ Public Class AgnesMessageBox
         Danger
         Alert
     End Enum
-    Public Property FntSz As Byte
+    Private Property FntSz As Byte
     Private dt As DispatcherTimer = New DispatcherTimer()
     Private _topsectiontext As String
     Private CopiedText As String
@@ -87,7 +87,7 @@ Public Class AgnesMessageBox
     Public Property ReturnResult As String
 
     Private _msgsize As MsgBoxSize
-    Public Property MsgSize As MsgBoxSize
+    Private Property MsgSize As MsgBoxSize
         Get
             Return _msgsize
         End Get
@@ -108,7 +108,7 @@ Public Class AgnesMessageBox
     End Property
 
     Private _msgtype As MsgBoxType
-    Public Property MsgType As MsgBoxType
+    Private Property MsgType As MsgBoxType
         Get
             Return _msgtype
         End Get
@@ -128,7 +128,7 @@ Public Class AgnesMessageBox
     End Property
 
     Private _textstyle As MsgBoxLayout
-    Public Property TextStyle As MsgBoxLayout
+    Private Property TextStyle As MsgBoxLayout
         Get
             Return _textstyle
         End Get
@@ -149,7 +149,7 @@ Public Class AgnesMessageBox
 
     Private _allowcopy As Boolean
 
-    Public Property AllowCopy As Boolean
+    Private Property AllowCopy As Boolean
         Get
             Return _allowcopy
         End Get
@@ -158,6 +158,17 @@ Public Class AgnesMessageBox
         End Set
     End Property
 
+    Public Sub New(Size As MsgBoxSize, Layout As MsgBoxLayout, Type As MsgBoxType, Fontsize As Byte, Optional PermitCopying As Boolean = False, Optional TopText As String = "", Optional OffsetText As String = "", Optional BottomText As String = "")
+        InitializeComponent()
+        FntSz = Fontsize
+        MsgSize = Size
+        MsgType = Type
+        TextStyle = Layout
+        AllowCopy = PermitCopying
+        TopSectionText = TopText
+        OffsetSectionText = OffsetText
+        BottomSectionText = BottomText
+    End Sub
     Private Sub ScaleMessagebox(win_h, win_w, img_h, img_w, img_ml, img_mt, img_mr, img_mb, ts_h, ts_w, ts_ml, ts_mt, ts_mr, ts_mb, tos_h,
                              tos_w, tos_ml, tos_mt, tos_mr, tos_mb, bs_h, bs_w, bs_ml, bs_mt, bs_mr, bs_mb, but_h, but_w, b1_ml, b1_mt, b1_mr, b1_mb,
                              b2_ml, b2_mt, b2_mr, b2_mb, b3_ml, b3_mt, b3_mr, b3_mb, b4_ml, b4_mt, b4_mr, b4_mb, b5_ml, b5_mt, b5_mr, b5_mb, dsr, dsd, bfs)
