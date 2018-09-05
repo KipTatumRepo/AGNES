@@ -29,10 +29,9 @@
                   Where c.UserAlias = usr
                   Select c
         If qwl.Count = 0 Then
-            Dim amsg1 = New AgnesMessageBox With
-                {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Medium, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly,
-                .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Access denied",
-                .BottomSectionText = "It appears that you don't have any access.  Please let your manager know that you need to be added."}
+            Dim amsg1 = New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText,
+                                            AgnesMessageBox.MsgBoxType.OkOnly, 18,, "Access denied",, "It appears that you don't have any access.  Please let your manager know that you need to be added.")
+
             amsg1.ShowDialog()
             amsg1.Close()
             GC.Collect()
@@ -130,9 +129,8 @@
     End Sub
 
     Private Sub CloseAGNES(sender As Object, e As MouseButtonEventArgs)
-        Dim amsg As New AgnesMessageBox With
-            {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Medium, .MsgType = AgnesMessageBox.MsgBoxType.YesNo,
-            .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .BottomSectionText = "Close AGNES?", .AllowCopy = True}
+        Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
+                                                18,,,, "Close AGNES?")
         amsg.ShowDialog()
         If amsg.ReturnResult = "Yes" Then
             amsg.Close()
@@ -167,7 +165,7 @@
         Select Case s.Tag
             Case "WCR"
                 WCRModule.Runmodule()
-            Case "BGCRM"
+            Case "Business Group CRM"
                 BGCRMModule.Runmodule()
             Case "Flash"
                 FlashModule.Runmodule()

@@ -62,9 +62,8 @@
             Else
                 msgtxt = "Close WCR?"
             End If
-            Dim amsg As New AgnesMessageBox With
-            {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.YesNo,
-            .TextStyle = AgnesMessageBox.MsgBoxLayout.BottomOnly, .BottomSectionText = msgtxt}
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
+                                                18,,,, msgtxt)
             amsg.ShowDialog()
             If amsg.ReturnResult = "Yes" Then
                 amsg.Close()

@@ -114,6 +114,19 @@
           <Property Name="LeaderId" Type="bigint" Nullable="false" />
           <Property Name="BGId" Type="bigint" Nullable="false" />
         </EntityType>
+        <EntityType Name="Locations">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BuildingName" Type="varchar" MaxLength="512" Nullable="false" />
+          <Property Name="MSCampus" Type="varchar" MaxLength="80" />
+          <Property Name="ParticipationCampus" Type="varchar" MaxLength="80" />
+          <Property Name="TotalSeats" Type="int" />
+          <Property Name="SqFt" Type="int" />
+          <Property Name="Lat" Type="decimal" Precision="12" Scale="6" />
+          <Property Name="Lng" Type="decimal" Precision="12" Scale="6" />
+        </EntityType>
         <EntityType Name="Locations_Join">
           <Key>
             <PropertyRef Name="PID" />
@@ -213,7 +226,7 @@
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="WorkLocation" Type="nchar" MaxLength="48" Nullable="false" />
+          <Property Name="WorkLocation" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="WorkTimes">
           <Key>
@@ -236,6 +249,7 @@
           <EntitySet Name="Involvement_Join" EntityType="Self.Involvement_Join" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="Leaders" EntityType="Self.Leaders" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="Leaders_Join" EntityType="Self.Leaders_Join" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="Locations" EntityType="Self.Locations" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="Locations_Join" EntityType="Self.Locations_Join" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="NotableEvents" EntityType="Self.NotableEvents" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="NotableEvents_Join" EntityType="Self.NotableEvents_Join" Schema="BizGroupCRM" store:Type="Tables" />
@@ -484,13 +498,14 @@
           <EntitySet Name="TopSpaces_Join" EntityType="Self.TopSpaces_Join" />
           <EntitySet Name="WorkLocations" EntityType="BGCRMModel.WorkLocation" />
           <EntitySet Name="WorkTimes" EntityType="BGCRMModel.WorkTime" />
+          <EntitySet Name="Locations" EntityType="BGCRMModel.Location" />
         </EntityContainer>
         <EntityType Name="WorkLocation">
           <Key>
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="WorkLocation1" Type="String" Nullable="false" MaxLength="48" FixedLength="true" Unicode="true" />
+          <Property Name="WorkLocation1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="WorkTime">
           <Key>
@@ -498,6 +513,19 @@
           </Key>
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="WorkTime1" Type="String" Nullable="false" MaxLength="32" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BuildingName" Type="String" Nullable="false" MaxLength="512" FixedLength="false" Unicode="false" />
+          <Property Name="MSCampus" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="ParticipationCampus" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="TotalSeats" Type="Int32" />
+          <Property Name="SqFt" Type="Int32" />
+          <Property Name="Lat" Type="Decimal" Precision="12" Scale="6" />
+          <Property Name="Lng" Type="Decimal" Precision="12" Scale="6" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -744,6 +772,20 @@
             <EntityTypeMapping TypeName="BGCRMModel.WorkTime">
               <MappingFragment StoreEntitySet="WorkTimes">
                 <ScalarProperty Name="WorkTime1" ColumnName="WorkTime" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Locations">
+            <EntityTypeMapping TypeName="BGCRMModel.Location">
+              <MappingFragment StoreEntitySet="Locations">
+                <ScalarProperty Name="Lng" ColumnName="Lng" />
+                <ScalarProperty Name="Lat" ColumnName="Lat" />
+                <ScalarProperty Name="SqFt" ColumnName="SqFt" />
+                <ScalarProperty Name="TotalSeats" ColumnName="TotalSeats" />
+                <ScalarProperty Name="ParticipationCampus" ColumnName="ParticipationCampus" />
+                <ScalarProperty Name="MSCampus" ColumnName="MSCampus" />
+                <ScalarProperty Name="BuildingName" ColumnName="BuildingName" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
               </MappingFragment>
             </EntityTypeMapping>

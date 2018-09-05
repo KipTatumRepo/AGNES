@@ -124,8 +124,12 @@
       <DependentUpon>AgnesMessageBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Application Objects\CurrencyBox.vb" />
+    <Compile Include="Application Objects\NumberBox.vb" />
     <Compile Include="Application Objects\PeriodChooser.vb" />
     <Compile Include="Application Objects\WeekChooser.vb" />
+    <Compile Include="Entities\Location.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
     <Compile Include="Flash Objects\FlashGroup.vb" />
     <Compile Include="Module Orchestrators\FlashModule.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
@@ -601,6 +605,14 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Xaml Modules\Campaign Manager\" />
+    <Folder Include="Xaml Modules\Forecast\" />
+    <Folder Include="Xaml Modules\Journal\" />
+    <Folder Include="Xaml Modules\QA Suite\" />
+    <Folder Include="Xaml Modules\Vendor Management\" />
+    <Folder Include="Xaml Modules\Waste\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
