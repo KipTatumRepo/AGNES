@@ -22,12 +22,7 @@
                         <TextBlock HorizontalAlignment="Left" Margin="10,225,0,0" TextWrapping="Wrap" Text="Communications" VerticalAlignment="Top" FontSize="24" Width="990" TextAlignment="Center"/>
                         <TextBlock Margin="10,464,0,0" TextWrapping="Wrap" Text="Locations" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="990" TextAlignment="Center"/>
                         <ComboBox x:Name="cboGroup" Margin="258,29,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="1" HorizontalAlignment="Left" Width="742" SelectedValuePath="Content">
-                            <ComboBox.Background>
-                                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
-                                    <GradientStop Color="#FFF0F0F0" Offset="0"/>
-                                    <GradientStop Color="White" Offset="1"/>
-                                </LinearGradientBrush>
-                            </ComboBox.Background>
+
                             <ComboBox.ContextMenu>
                                 <ContextMenu>
                                     <ComboBoxItem x:Name="cbiAddBG" Content="Add new business group" PreviewMouseLeftButtonDown="AddBusinessGroup"/>
@@ -67,7 +62,9 @@
                         <ListView x:Name="lbxLocationsSelect" Height="80" Margin="10,501,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480" TabIndex="8" FontSize="14"/>
                         <ListView x:Name="lbxLocationsChosen" Height="80" Margin="529,501,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="471" FontSize="14"/>
                         <TextBlock HorizontalAlignment="Left" Margin="10,342,0,0" TextWrapping="Wrap" Text="Culture" VerticalAlignment="Top" FontSize="24" Width="990" TextAlignment="Center"/>
-                        <Image x:Name="imgFwd1" Width="60" Height="60" Source="/AGNES;component/Resources/glass_arrow_right.png" Margin="0,588,9,0" HorizontalAlignment="Right" VerticalAlignment="Top" />
+                        <Button x:Name="btnFwd1" HorizontalAlignment="Right" Margin="0,586,18,0" VerticalAlignment="Top" Width="64" Background="OldLace" BorderBrush="OldLace" Height="64">
+                            <Image x:Name="imgFwd1" Width="60" Height="60" Source="/AGNES;component/Resources/glass_arrow_right.png" HorizontalAlignment="Right" VerticalAlignment="Top" />
+                        </Button>
 
                     </Grid>
                 </TabItem>
@@ -100,8 +97,12 @@
                         <ListView x:Name="lbxCustomerChosen" Height="138" Margin="514,417,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
 
                         </ListView>
-                        <Image x:Name="imgFwd2" Width="60" Height="60" Source="/AGNES;component/Resources/glass_arrow_right.png" Margin="0,588,9,0" VerticalAlignment="Top" HorizontalAlignment="Right" />
-                        <Image x:Name="imgBack1" Width="60" Height="60" Source="/AGNES;component/Resources/glass_arrow_left.png" Margin="10,588,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                        <Button x:Name="btnBack1" HorizontalAlignment="Right" Margin="0,586,929,0" VerticalAlignment="Top" Width="64" Height ="64" Background="OldLace" BorderBrush="OldLace">
+                            <Image x:Name="imgBack1" Width="60" Height="60" Source="/AGNES;component/Resources/glass_arrow_left.png" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                        </Button>
+                        <Button x:Name="btnFwd2" HorizontalAlignment="Right" Margin="0,586,18,0" VerticalAlignment="Top" Width="64" Background="OldLace" BorderBrush="OldLace" Height="64">
+                            <Image x:Name="imgFwd2" Width="60" Height="60" Source="/AGNES;component/Resources/glass_arrow_right.png" HorizontalAlignment="Right" VerticalAlignment="Top" />
+                        </Button>
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="tiFinances" Header="Financials" IsTabStop="False">
@@ -123,8 +124,12 @@
                         </ListView>
                         <Separator HorizontalAlignment="Left" Height="40" Margin="0,192,0,0" VerticalAlignment="Top" Width="1010" IsTabStop="False"/>
                         <TextBlock Margin="10,232,0,0" TextWrapping="Wrap" Text="Top Offsite Locations" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="990" TextAlignment="Center"/>
-                        <Image x:Name="imgFwd3" Width="60" Height="60" Source="/AGNES;component/Resources/glass_arrow_right.png" Margin="0,588,9,0" HorizontalAlignment="Right" VerticalAlignment="Top" />
-                        <Image x:Name="imgBack2" Width="60" Height="60" Source="/AGNES;component/Resources/glass_arrow_left.png" Margin="10,588,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <Button x:Name="btnBack2" HorizontalAlignment="Right" Margin="0,586,929,0" VerticalAlignment="Top" Width="64" Height ="64" Background="OldLace" BorderBrush="OldLace">
+                            <Image x:Name="imgBack2" Width="60" Height="60" Source="/AGNES;component/Resources/glass_arrow_left.png" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                        </Button>
+                        <Button x:Name="btnFwd3" HorizontalAlignment="Right" Margin="0,586,18,0" VerticalAlignment="Top" Width="64" Background="OldLace" BorderBrush="OldLace" Height="64">
+                            <Image x:Name="imgFwd3" Width="60" Height="60" Source="/AGNES;component/Resources/glass_arrow_right.png" HorizontalAlignment="Right" VerticalAlignment="Top" />
+                        </Button>
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="tiEvents" Header="Events" IsTabStop="False">
@@ -184,8 +189,12 @@
                         </ListView>
                         <ListView x:Name="lbxPlannersChosen" Height="53" Margin="520,527,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480">
                         </ListView>
-                        <Image x:Name="imgFwd4" Width="60" Height="60" Source="/AGNES;component/Resources/glass_arrow_right.png" Margin="0,588,9,0" VerticalAlignment="Top" HorizontalAlignment="Right" />
-                        <Image x:Name="imgBack3" Width="60" Height="60" Source="/AGNES;component/Resources/glass_arrow_left.png" Margin="10,588,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                        <Button x:Name="btnBack3" HorizontalAlignment="Right" Margin="0,586,929,0" VerticalAlignment="Top" Width="64" Height ="64" Background="OldLace" BorderBrush="OldLace">
+                            <Image x:Name="imgBack3" Width="60" Height="60" Source="/AGNES;component/Resources/glass_arrow_left.png" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                        </Button>
+                        <Button x:Name="btnFwd4" HorizontalAlignment="Right" Margin="0,586,18,0" VerticalAlignment="Top" Width="64" Background="OldLace" BorderBrush="OldLace" Height="64">
+                            <Image x:Name="imgFwd4" Width="60" Height="60" Source="/AGNES;component/Resources/glass_arrow_right.png" HorizontalAlignment="Right" VerticalAlignment="Top" />
+                        </Button>
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="tiCampusRefresh" Header="Campus Refresh" IsTabStop="False">
@@ -203,12 +212,15 @@
                         <TextBlock Margin="570,509,0,0" TextWrapping="Wrap" Text="Move End Date" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="210"/>
                         <DatePicker x:Name="dtpStartDate" HorizontalAlignment="Left" Margin="254,511,0,0" VerticalAlignment="Top" Width="200" FirstDayOfWeek="Monday" FontSize="18" TabIndex="2"/>
                         <DatePicker x:Name="dtpEndDate" HorizontalAlignment="Left" Margin="784,511,0,0" VerticalAlignment="Top" Width="200" FontSize="18" FirstDayOfWeek="Monday" TabIndex="3"/>
-                        <Button x:Name="btnSaveFinish" Content="Save" HorizontalAlignment="Left" Margin="400,596,0,0" Width="188" FontSize="24" Height="45" VerticalAlignment="Top" TabIndex="4">
+                        <Button x:Name="btnSaveFinish" Content="Save Group Information" HorizontalAlignment="Left" Margin="369,596,0,0" Width="288" FontSize="24" Height="46" VerticalAlignment="Top" TabIndex="4">
                             <Button.Effect>
                                 <DropShadowEffect ShadowDepth="3" Color="#FFBBB2B2"/>
                             </Button.Effect>
                         </Button>
-                        <Image x:Name="imgBack4" Width="60" Height="60" Source="/AGNES;component/Resources/glass_arrow_left.png" Margin="10,588,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                        <Button x:Name="btnBack4" HorizontalAlignment="Right" Margin="0,586,929,0" VerticalAlignment="Top" Width="64" Height ="64" Background="OldLace" BorderBrush="OldLace">
+                            <Image x:Name="imgBack4" Width="60" Height="60" Source="/AGNES;component/Resources/glass_arrow_left.png" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                        </Button>
+
                     </Grid>
                 </TabItem>
             </TabControl>

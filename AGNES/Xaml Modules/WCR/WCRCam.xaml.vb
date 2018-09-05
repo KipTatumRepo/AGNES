@@ -75,10 +75,8 @@ Public Class WCRCam
                 WCR.AddCamCheck(vid, cboVendor.Text, tbCheckNumber.Text, FormatNumber(tbCheckAmount.Text, 2), dtpDepositDate.SelectedDate, dow, tbCheckNotes.Text)
                 tbCam.Text = "CAM check saved - did you want to add another?"
             Else
-                Dim amsg As New AgnesMessageBox With
-                    {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Medium, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly,
-                    .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Save cancelled.",
-                    .BottomSectionText = "A check for this vendor already exists."}
+                Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                                18,, "Save cancelled.",, "A check for this vendor already exists.")
                 amsg.ShowDialog()
                 amsg.Close()
                 tbCam.Text = ""
@@ -207,9 +205,8 @@ Public Class WCRCam
         Else
             msgtxt = "Close WCR?"
         End If
-        Dim amsg As New AgnesMessageBox With
-            {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.YesNo,
-            .TextStyle = AgnesMessageBox.MsgBoxLayout.BottomOnly, .BottomSectionText = msgtxt}
+        Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
+                                                18, , "Out of balance!",, msgtxt)
         amsg.ShowDialog()
         If amsg.ReturnResult = "Yes" Then
             amsg.Close()

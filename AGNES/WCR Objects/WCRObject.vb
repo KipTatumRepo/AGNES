@@ -39,10 +39,8 @@ Public Class WCRObject
                         ct += 1
                     Loop
                 Catch ex As Exception
-                    Dim notifymsg As New AgnesMessageBox With
-                                        {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly,
-                                        .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Operation canceled!",
-                                        .BottomSectionText = "Error finding the vendor name in " & SelectedFile & ": " & ex.Message}
+                    Dim notifymsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                                         18,, "Operation canceled!",, "Error finding the vendor name in " & SelectedFile & ": " & ex.Message)
                     notifymsg.ShowDialog()
                     notifymsg.Close()
                     badvname = True
@@ -58,10 +56,8 @@ Public Class WCRObject
                             tn = CType(ws.Cells(ct, 1), Excel.Range).Value
                             Select Case tn
                                 Case 15         '/ Dept Charges
-                                    Dim notifymsg As New AgnesMessageBox With
-                                        {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.YesNo,
-                                        .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Confirmation required!",
-                                        .BottomSectionText = "IO Charges are present in this tender.  Do you confirm that the required documentation has been received?"}
+                                    Dim notifymsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.YesNo,
+                                                         18,, "Confirmation required!",, "IO Charges are present in this tender.  Do you confirm that the required documentation has been received?")
                                     notifymsg.ShowDialog()
                                     If notifymsg.ReturnResult = "Yes" Then
                                         v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, CType(ws.Cells(ct, 2), Excel.Range).Value,
@@ -75,10 +71,8 @@ Public Class WCRObject
                                         Exit Do
                                     End If
                                 Case 20, 36, 51 '/ IOU charges, IOU credit, IOU FS
-                                    Dim notifymsg As New AgnesMessageBox With
-                                        {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly,
-                                        .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Invalid tender found!",
-                                        .BottomSectionText = "Sorry, " & MySettings.Default.UserName & ", but IOU charges and credits are no longer allowed."}
+                                    Dim notifymsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                                         18,, "Invalid tender found!",, "Sorry, " & MySettings.Default.UserShortName & ", but IOU charges and credits are no longer allowed.")
                                     notifymsg.ShowDialog()
                                     notifymsg.Close()
                                     v.Tenders.Clear()
@@ -86,10 +80,8 @@ Public Class WCRObject
                                     BadFile += 1
                                     Exit Do
                                 Case 37         '/ Suspend
-                                    Dim notifymsg As New AgnesMessageBox With
-                                        {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly,
-                                        .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Invalid tender found!",
-                                        .BottomSectionText = "Sorry, " & MySettings.Default.UserName & ", but Suspend charges are no longer allowed."}
+                                    Dim notifymsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                                         18,, "Invalid tender found!",, "Sorry, " & MySettings.Default.UserShortName & ", but Suspend charges and credits are no longer allowed.")
                                     notifymsg.ShowDialog()
                                     notifymsg.Close()
                                     v.Tenders.Clear()
@@ -103,10 +95,8 @@ Public Class WCRObject
                                         v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "CCClearing", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
                                     End If
                                 Case 57                     '// Coupons (used by Lunchbox for their internal promotions)
-                                    Dim notifymsg As New AgnesMessageBox With
-                                        {.FntSz = 14, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly,
-                                        .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Coupon tenders found!",
-                                        .BottomSectionText = "FYI, " & MySettings.Default.UserName & ", I'm omitting the Coupon tender for " & vn & " in the amount of " & FormatCurrency(CType(ws.Cells(ct, 9), Excel.Range).Value, 2)}
+                                    Dim notifymsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                                         14,, "Coupon tenders found!",, "FYI, " & MySettings.Default.UserShortName & ", I'm omitting the Coupon tender for " & vn & " in the amount of " & FormatCurrency(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
                                     notifymsg.ShowDialog()
                                     notifymsg.Close()
                                 Case 83                     '// Freedompay [pass-through]
@@ -128,18 +118,14 @@ Public Class WCRObject
                         For Each t In v.Tenders
                             ttl += t.TenderAmt
                         Next
-                        Dim amsg As New AgnesMessageBox With
-                            {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Medium, .MsgType = AgnesMessageBox.MsgBoxType.YesNo,
-                            .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Tender Loaded!",
-                            .BottomSectionText = "It looks like " & v.VendorName & "" & " has a total of " & FormatCurrency(ttl, 2) & ".  Is this correct?"}
+                        Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.YesNo,
+                                                         18,, "Tender Loaded!",, "It looks like " & v.VendorName & "" & " has a total of " & FormatCurrency(ttl, 2) & ".  Is this correct?")
                         amsg.ShowDialog()
                         If amsg.ReturnResult = "Yes" Then
                             Vendors.Add(v)
                         Else
-                            Dim amsg1 = New AgnesMessageBox With
-                                {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Medium, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly,
-                                .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Total incorrect",
-                                .BottomSectionText = "Vendor not added.  Please try to add again after resolving discrepancy."}
+                            Dim amsg1 = New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                                         18,, "Total incorrect!",, "Vendor not added.  Please try to add again after resolving discrepancy.")
                             amsg1.ShowDialog()
                             amsg1.Close()
                             BadFile += 1
@@ -148,10 +134,8 @@ Public Class WCRObject
                     Catch ex As InvalidCastException
                         BadFile += 1
                     Catch OtherEx As Exception
-                        Dim amsg = New AgnesMessageBox With
-                            {.FntSz = 12, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly,
-                            .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Error encountered",
-                            .BottomSectionText = OtherEx.Message, .AllowCopy = True}
+                        Dim amsg = New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                                         12, True, "Error encountered!",, OtherEx.Message)
                         amsg.ShowDialog()
                         amsg.Close()
                         BadFile += 1
@@ -187,7 +171,8 @@ Public Class WCRObject
             End With
             WCRE.ReceivedCAMChecks.Add(cc)
         Catch excep As Exception
-            Dim amsg As New AgnesMessageBox With {.MsgSize = AgnesMessageBox.MsgBoxSize.Medium, .ImageSource = AgnesMessageBox.ImageType.Danger, .MsgType = AgnesMessageBox.MsgBoxType.OkOnly, .TextStyle = AgnesMessageBox.MsgBoxLayout.TextAndImage, .FntSz = 18, .BottomSectionText = excep.Message, .OffsetSectionText = "Unexpected error", .AllowCopy = True}
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                                18, True, "Unexpected error!",, excep.Message)
             amsg.ShowDialog()
             amsg.Close()
         End Try
@@ -241,10 +226,8 @@ Public Class WCRObject
             disp.InBalance = True
         Else
 
-            Dim amsg As New AgnesMessageBox With
-                            {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Medium, .MsgType = AgnesMessageBox.MsgBoxType.YesNo,
-                            .TextStyle = AgnesMessageBox.MsgBoxLayout.FullText, .TopSectionText = "Out of balance!",
-                            .BottomSectionText = "The WCR is out of balance in the amount of " & FormatCurrency(balanced, 2) & ".  Do you wish to continue?"}
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.YesNo,
+                                                18, , "Out of balance!",, "The WCR is out of balance in the amount of " & FormatCurrency(balanced, 2) & ".  Do you wish to continue?")
             amsg.ShowDialog()
             If amsg.ReturnResult = "No" Then
                 disp.CancelDueToBalanceIssue = True
