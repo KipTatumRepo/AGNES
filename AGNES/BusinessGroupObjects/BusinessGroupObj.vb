@@ -121,7 +121,7 @@
     Public Property NotableEvents As New List(Of Long)          '// Could be expanded to a list of objects with more detailed info
     Public Property EventionsInvolvement As New List(Of Long)
     Public Property CREvents As New List(Of RefreshEvent)
-
+    Public Property SaveSuccessful As Boolean
     Public Sub New()
         Dim ph As String = ""
     End Sub
@@ -180,11 +180,16 @@
     End Sub
 
     Private Sub SaveNew()
-        Dim BGPID As Long
         Try
-            '// Handle all non-joined first, save, query for PID, and then handle writing to _join tables
+            '// Handle all non-joined first, save, query for next business group id, and then handle writing to _join tables
+            '// Determine if the business group already exists
+            Dim qwl = Aggregate c In ef.BusinessGroups
+            Into Max(c.BusinessGroupID)
+
+            Dim NextID As Long = qwl + 1
             Dim bg As New BusinessGroup
             With bg
+                .BusinessGroupID = NextID
                 .BusinessGroupName = OrgName
                 .GroupOverview = Overview
                 .Headcount = Headcount
@@ -198,39 +203,34 @@
                 .EventsCatered = CateredEvents
                 .OffsiteSpend = OffSiteSpend
             End With
-
             ef.BusinessGroups.Add(bg)
-            ef.SaveChanges()
-
-            Dim q = From c In ef.BusinessGroups
-                    Where c.BusinessGroupName = OrgName
-                    Select c
-
-            For Each c In q
-                BGPID = c.PID
-            Next
-
-            SaveComms(BGPID, 0)
-            SaveCulture(BGPID, 0)
-            SaveLocations(BGPID, 0)
-            SaveLeadership(BGPID, 0)
-            SaveCustomers(BGPID, 0)
-            SaveOffsites(BGPID, 0)
-            SaveNotables(BGPID, 0)
-            SaveTypes(BGPID, 0)
-            SaveSpaces(BGPID, 0)
-            SaveInvolvements(BGPID, 0)
-            SavePlanners(BGPID, 0)
-
+            SaveComms(NextID, 0)
+            SaveCulture(NextID, 0)
+            SaveLocations(NextID, 0)
+            SaveLeadership(NextID, 0)
+            SaveCustomers(NextID, 0)
+            SaveOffsites(NextID, 0)
+            SaveNotables(NextID, 0)
+            SaveTypes(NextID, 0)
+            SaveSpaces(NextID, 0)
+            SaveInvolvements(NextID, 0)
+            SavePlanners(NextID, 0)
+            Try
+                ef.SaveChanges()
+                SaveSuccessful = True
+            Catch ex As Exception
+                SaveSuccessful = False
+            End Try
         Catch excep As Exception
+            SaveSuccessful = False
         End Try
     End Sub
-    Private Sub SaveComms(pid, isnew)
+    Private Sub SaveComms(bgid, isnew)
         If isnew = 0 Then
             For Each i As Long In Communications
                 Dim cj As New Comm_Join
                 With cj
-                    .BGId = pid
+                    .BGId = bgid
                     .CommId = i
                 End With
                 ef.Comm_Join.Add(cj)
@@ -240,12 +240,12 @@
         End If
 
     End Sub
-    Private Sub SaveCulture(pid, isnew)
+    Private Sub SaveCulture(bgid, isnew)
         If isnew = 0 Then
             For Each i As Long In Culture
                 Dim cj As New Culture_Join
                 With cj
-                    .BGId = pid
+                    .BGId = bgid
                     .CultureId = i
                 End With
                 ef.Culture_Join.Add(cj)
@@ -254,12 +254,12 @@
             Dim ph1 As String = ""
         End If
     End Sub
-    Private Sub SaveLocations(pid, isnew)
+    Private Sub SaveLocations(bgid, isnew)
         If isnew = 0 Then
             For Each i As Long In Locations
                 Dim lj As New Locations_Join
                 With lj
-                    .BGId = pid
+                    .BGId = bgid
                     .LocId = i
                 End With
                 ef.Locations_Join.Add(lj)
@@ -269,12 +269,12 @@
         End If
 
     End Sub
-    Private Sub SaveLeadership(pid, isnew)
+    Private Sub SaveLeadership(bgid, isnew)
         If isnew = 0 Then
             For Each i As Long In Leadership
                 Dim lj As New Leaders_Join
                 With lj
-                    .BGId = pid
+                    .BGId = bgid
                     .LeaderId = i
                 End With
                 ef.Leaders_Join.Add(lj)
@@ -283,12 +283,12 @@
             Dim ph1 As String = ""
         End If
     End Sub
-    Private Sub SaveOffsites(pid, isnew)
+    Private Sub SaveOffsites(bgid, isnew)
         If isnew = 0 Then
             For Each i As Long In TopOffsiteLocations
                 Dim oj As New Offsites_Join
                 With oj
-                    .BGId = pid
+                    .BGId = bgid
                     .OffsiteId = i
                 End With
                 ef.Offsites_Join.Add(oj)
@@ -297,12 +297,12 @@
             Dim ph1 As String = ""
         End If
     End Sub
-    Private Sub SaveCustomers(pid, isnew)
+    Private Sub SaveCustomers(bgid, isnew)
         If isnew = 0 Then
             For Each i As Long In FrequentCustomers
                 Dim cj As New FreqCust_Join
                 With cj
-                    .BGId = pid
+                    .BGId = bgid
                     .CustId = i
                 End With
                 ef.FreqCust_Join.Add(cj)
@@ -311,12 +311,12 @@
             Dim ph1 As String = ""
         End If
     End Sub
-    Private Sub SaveNotables(pid, isnew)
+    Private Sub SaveNotables(bgid, isnew)
         If isnew = 0 Then
             For Each i As Long In NotableEvents
                 Dim nj As New NotableEvents_Join
                 With nj
-                    .BGId = pid
+                    .BGId = bgid
                     .EventId = i
                 End With
                 ef.NotableEvents_Join.Add(nj)
@@ -325,12 +325,12 @@
             Dim ph1 As String = ""
         End If
     End Sub
-    Private Sub SaveTypes(pid, isnew)
+    Private Sub SaveTypes(bgid, isnew)
         If isnew = 0 Then
             For Each i As Long In TopEventTypes
                 Dim ej As New TopEventTypes_Join
                 With ej
-                    .BGGroup = pid
+                    .BGGroup = bgid
                     .TypeId = i
                 End With
                 ef.TopEventTypes_Join.Add(ej)
@@ -339,12 +339,12 @@
             Dim ph1 As String = ""
         End If
     End Sub
-    Private Sub SaveSpaces(pid, isnew)
+    Private Sub SaveSpaces(bgid, isnew)
         If isnew = 0 Then
             For Each i As Long In TopBookedSpaces
                 Dim sj As New TopSpaces_Join
                 With sj
-                    .BGId = pid
+                    .BGId = bgid
                     .EventTypeId = i
                 End With
                 ef.TopSpaces_Join.Add(sj)
@@ -353,12 +353,12 @@
             Dim ph1 As String = ""
         End If
     End Sub
-    Private Sub SaveInvolvements(pid, isnew)
+    Private Sub SaveInvolvements(bgid, isnew)
         If isnew = 0 Then
             For Each i As Long In EventionsInvolvement
                 Dim ij As New Involvement_Join
                 With ij
-                    .BGId = pid
+                    .BGId = bgid
                     .InvolveId = i
                 End With
                 ef.Involvement_Join.Add(ij)
@@ -367,12 +367,12 @@
             Dim ph1 As String = ""
         End If
     End Sub
-    Private Sub SavePlanners(pid, isnew)
+    Private Sub SavePlanners(bgid, isnew)
         If isnew = 0 Then
             For Each i As Long In EmbeddedPlanners
                 Dim pj As New Planners_Join
                 With pj
-                    .BGId = pid
+                    .BGId = bgid
                     .PlannerId = i
                 End With
                 ef.Planners_Join.Add(pj)

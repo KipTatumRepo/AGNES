@@ -42,12 +42,9 @@ Partial Public Class BGCRMEntity
     Public Overridable Property Offsites_Join() As DbSet(Of Offsites_Join)
     Public Overridable Property Planners() As DbSet(Of Planner)
     Public Overridable Property Planners_Join() As DbSet(Of Planners_Join)
-    Public Overridable Property Refresh_Join() As DbSet(Of Refresh_Join)
-    Public Overridable Property RefreshEvents() As DbSet(Of RefreshEvent)
     Public Overridable Property TopEventTypes_Join() As DbSet(Of TopEventTypes_Join)
     Public Overridable Property TopSpaces_Join() As DbSet(Of TopSpaces_Join)
     Public Overridable Property WorkLocations() As DbSet(Of WorkLocation)
     Public Overridable Property WorkTimes() As DbSet(Of WorkTime)
-    Public Overridable Property Locations() As DbSet(Of Location)
 
 End Class
