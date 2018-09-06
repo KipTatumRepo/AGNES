@@ -264,10 +264,6 @@ Public Class BGCRM
                         BG.EmbeddedPlanners.Add(FormatNumber(c.PID, 0))
                     Next
                 Next
-
-            Case 4          '======CAMPUS REFRESH PAGE
-                'TODO: Build out CR objects and populate into BG object
-
         End Select
     End Sub
 
@@ -286,6 +282,54 @@ Public Class BGCRM
         End If
     End Sub
 
+    Private Sub LoadRefreshEvents()
+        lbxRefreshEvents.Items.Clear()
+        Dim GroupID As Integer
+        Dim GetGroupID = From businessgroups In BGC.BusinessGroups
+                         Where businessgroups.BusinessGroupName Is cboGroup.SelectedValue
+                         Select businessgroups
+        For Each c In GetGroupID
+            GroupID = FormatNumber(c.BusinessGroupID, 0)
+        Next
+        Dim GetRefreshEvents = From refreshevents In BGC.RefreshEvents
+                               Where refreshevents.BusinessGroupId = GroupID
+                               Select refreshevents
+        For Each c In GetRefreshEvents
+            lbxRefreshEvents.Items.Add(c.RefreshEventName)
+        Next
+        'TODO:  Add routine to load the events into the BGObject CREvents list property
+    End Sub
+
+    Private Sub SaveRefreshEvent(sender As Object, e As EventArgs) Handles btnSaveRefreshEvent.Click
+
+TODO: '// Validate refresh event doesn't exist
+
+        Dim NewCr As New RefreshEvent, tb As TextBox = numPopMoving.Children(1)
+        With NewCr
+            .RefreshEventName = txtEventName.Text
+            .MoveStart = dtpStartDate.SelectedDate
+            .MoveEnd = dtpEndDate.SelectedDate
+            .TotalPopulation = FormatNumber(tb.Text, 0)
+            .DestinationBuilding = lbxDestination.SelectedValue
+        End With
+        Dim lbi As ListBoxItem
+        For Each lbi In lbxOriginChosen.Items
+            Dim newBldg As New CRBuilding, BldgName As String = "", MovePop As Integer = 0, BldgId As Integer = 0
+            Dim ParseString() As String
+            ParseString = Split(lbi.Content, "--", 2)
+            BldgName = ParseString(0)
+            MovePop = FormatNumber(ParseString(1).Replace(" headcount", ""), 0)
+            With newBldg
+                .BuildingName = BldgName
+                .MovePopulation = MovePop
+                .BuildingId = BldgId
+            End With
+            NewCr.BuildingsMoving = New List(Of CRBuilding)
+            NewCr.BuildingsMoving.Add(newBldg)
+        Next
+        BGO.CREvents.Add(NewCr)
+        lbxRefreshEvents.Items.Add(NewCr.RefreshEventName)
+    End Sub
 #End Region
 
 #Region "Field Management"
@@ -453,6 +497,10 @@ Public Class BGCRM
 
     End Sub
 
+    Private Sub GroupChosen(sender As Object, e As SelectionChangedEventArgs) Handles cboGroup.SelectionChanged
+        If cboGroup.SelectedIndex = -1 Then Exit Sub
+        LoadRefreshEvents()
+    End Sub
     Private Sub CommItemMove(sender, eventargs)
         Dim li As New ListBoxItem
         li = sender
@@ -657,7 +705,7 @@ Public Class BGCRM
                     .txtUserInput.Focus()
                     .ShowDialog()
                 End With
-                li.Content = li.Content & "- " & uni.NumVal & " headcount"
+                li.Content = li.Content & "--" & uni.NumVal & " headcount"
                 Dim txtb As TextBox = numPopMoving.Children(1)
                 Dim curval As Integer = FormatNumber(txtb.Text, 0) + uni.NumVal
                 txtb.Text = curval

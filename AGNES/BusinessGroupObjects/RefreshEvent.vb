@@ -1,25 +1,36 @@
 ﻿Public Class RefreshEvent
-    Private _orgid As Integer
-    Public Property OrgID As Integer
+    Private _groupid As Integer
+    Public Property GroupID As Integer
         Get
-            Return _orgid
+            Return _groupid
         End Get
         Set(value As Integer)
-            _orgid = value
+            _groupid = value
         End Set
     End Property
 
-    Private _eventdate As Date
-    Public Property MoveDate As Date
+    Private _startdate As Date
+    Public Property MoveStart As Date
         Get
-            Return _eventdate
+            Return _startdate
         End Get
         Set(value As Date)
-            _eventdate = value
+            _startdate = value
+        End Set
+    End Property
+
+    Private _enddate As Date
+    Public Property MoveEnd As Date
+        Get
+            Return _enddate
+        End Get
+        Set(value As Date)
+            _enddate = value
         End Set
     End Property
 
     Private _totalpopulation As Integer
+
     Public Property TotalPopulation As Integer
         Get
             Return _totalpopulation
@@ -29,16 +40,18 @@
         End Set
     End Property
 
-    Private _destbuild As Integer
-    Public Property DestinationBuilding As Integer
+    Public Property BuildingsMoving As List(Of CRBuilding)
+
+    Private _destbuild As String
+    Public Property DestinationBuilding As String
         Get
             Return _destbuild
         End Get
-        Set(value As Integer)
+        Set(value As String)
             _destbuild = value
         End Set
     End Property
 
-    Public Property BuildingsMoving As List(Of CRBuilding)
+
 
 End Class

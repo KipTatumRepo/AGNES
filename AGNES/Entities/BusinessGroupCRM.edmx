@@ -172,6 +172,19 @@
           <Property Name="PlannerId" Type="bigint" Nullable="false" />
           <Property Name="BGId" Type="bigint" Nullable="false" />
         </EntityType>
+        <EntityType Name="RefreshEvents">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RefreshEventName" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="BusinessGroupId" Type="bigint" Nullable="false" />
+          <Property Name="MoveStartDate" Type="date" Nullable="false" />
+          <Property Name="MoveEndDate" Type="date" Nullable="false" />
+          <Property Name="MovePopulation" Type="bigint" Nullable="false" />
+          <Property Name="Building" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="Destination" Type="varchar" MaxLength="64" Nullable="false" />
+        </EntityType>
         <EntityType Name="TopEventTypes_Join">
           <Key>
             <PropertyRef Name="PID" />
@@ -223,6 +236,7 @@
           <EntitySet Name="Offsites_Join" EntityType="Self.Offsites_Join" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="Planners" EntityType="Self.Planners" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="Planners_Join" EntityType="Self.Planners_Join" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="RefreshEvents" EntityType="Self.RefreshEvents" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="TopEventTypes_Join" EntityType="Self.TopEventTypes_Join" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="TopSpaces_Join" EntityType="Self.TopSpaces_Join" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="WorkLocation" EntityType="Self.WorkLocation" Schema="BizGroupCRM" store:Type="Tables" />
@@ -440,6 +454,7 @@
           <EntitySet Name="TopSpaces_Join" EntityType="Self.TopSpaces_Join" />
           <EntitySet Name="WorkLocations" EntityType="BGCRMModel.WorkLocation" />
           <EntitySet Name="WorkTimes" EntityType="BGCRMModel.WorkTime" />
+          <EntitySet Name="RefreshEvents" EntityType="BGCRMModel.RefreshEvent" />
         </EntityContainer>
         <EntityType Name="WorkLocation">
           <Key>
@@ -454,6 +469,19 @@
           </Key>
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="WorkTime1" Type="String" Nullable="false" MaxLength="32" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="RefreshEvent">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RefreshEventName" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="BusinessGroupId" Type="Int64" Nullable="false" />
+          <Property Name="MoveStartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="MoveEndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="MovePopulation" Type="Int64" Nullable="false" />
+          <Property Name="Building" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="Destination" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -678,6 +706,20 @@
             <EntityTypeMapping TypeName="BGCRMModel.WorkTime">
               <MappingFragment StoreEntitySet="WorkTimes">
                 <ScalarProperty Name="WorkTime1" ColumnName="WorkTime" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RefreshEvents">
+            <EntityTypeMapping TypeName="BGCRMModel.RefreshEvent">
+              <MappingFragment StoreEntitySet="RefreshEvents">
+                <ScalarProperty Name="Destination" ColumnName="Destination" />
+                <ScalarProperty Name="Building" ColumnName="Building" />
+                <ScalarProperty Name="MovePopulation" ColumnName="MovePopulation" />
+                <ScalarProperty Name="MoveEndDate" ColumnName="MoveEndDate" />
+                <ScalarProperty Name="MoveStartDate" ColumnName="MoveStartDate" />
+                <ScalarProperty Name="BusinessGroupId" ColumnName="BusinessGroupId" />
+                <ScalarProperty Name="RefreshEventName" ColumnName="RefreshEventName" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
               </MappingFragment>
             </EntityTypeMapping>

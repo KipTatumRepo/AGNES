@@ -46,5 +46,6 @@ Partial Public Class BGCRMEntity
     Public Overridable Property TopSpaces_Join() As DbSet(Of TopSpaces_Join)
     Public Overridable Property WorkLocations() As DbSet(Of WorkLocation)
     Public Overridable Property WorkTimes() As DbSet(Of WorkTime)
+    Public Overridable Property RefreshEvents() As DbSet(Of RefreshEvent)
 
 End Class
