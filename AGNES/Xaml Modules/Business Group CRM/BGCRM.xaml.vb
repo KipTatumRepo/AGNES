@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+Imports System.Linq
 'TODO: NEED LOAD ROUTINE
 Public Class BGCRM
     Dim BG As objBusinessGroup
@@ -24,8 +25,10 @@ Public Class BGCRM
         num500Events = New NumberBox(189, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(807, 28, 0, 0)}
         numCatered = New NumberBox(189, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(807, 88, 0, 0)}
         numHeadcount = New NumberBox(108, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(145, 149, 0, 0)}
-        numPopMoving = New NumberBox(126, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(608, 436, 0, 0)}
-
+        numPopMoving = New NumberBox(126, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(798, 452, 0, 0)}
+        Dim txtbx As TextBox = numPopMoving.Children(1)
+        txtbx.IsTabStop = True
+        txtbx.TabIndex = 5
 
         Dim tb As TextBox
         tb = numHeadcount.Children(1)
@@ -52,7 +55,6 @@ Public Class BGCRM
             .Add(numPopMoving)
         End With
         btnSaveFinish.IsEnabled = True
-        'TODO: ADD COMPREHENSIVE TRIGGER FOR ENABLING SAVE
         cboGroup.Focus()
     End Sub
 
@@ -273,11 +275,15 @@ Public Class BGCRM
         ValidatePage(tabPages.SelectedIndex, 1)
         SavePageToBGObj(tabPages.SelectedIndex)
         BG.Save(BGC)
-        BGC.SaveChanges()
-        'TODO: Add verification of save
-        btnSaveFinish.Content = "Saved"
-        btnSaveFinish.IsEnabled = False
-
+        If BG.SaveSuccessful = True Then
+            BGC.SaveChanges()
+            btnSaveFinish.Content = "Saved"
+            btnSaveFinish.IsEnabled = False
+        Else
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly, 12,, "Save failed!",, "Unable to save.  Please checks your work and try again.")
+            amsg.ShowDialog()
+            amsg.Close()
+        End If
     End Sub
 
 #End Region
@@ -652,6 +658,9 @@ Public Class BGCRM
                     .ShowDialog()
                 End With
                 li.Content = li.Content & "- " & uni.NumVal & " headcount"
+                Dim txtb As TextBox = numPopMoving.Children(1)
+                Dim curval As Integer = FormatNumber(txtb.Text, 0) + uni.NumVal
+                txtb.Text = curval
                 uni.Close()
                 lbxOriginChosen.Items.Add(li)
             Case "S"
@@ -682,20 +691,31 @@ Public Class BGCRM
             .txtUserInput.Focus()
             .ShowDialog()
         End With
-        cboGroup.Items.Add(New ComboBoxItem With {.Content = uni.StringVal})
-
-        Dim ict As Byte = cboGroup.Items.Count, SortArray(ict - 1) As String, ct As Byte = 0
-        For Each i As ComboBoxItem In cboGroup.Items
-            SortArray(ct) = i.Content
-            ct += 1
-        Next
-        Array.Sort(SortArray)
-        For ct = 0 To SortArray.Length - 1
-            Dim cbi As ComboBoxItem = cboGroup.Items.Item(ct)
-            cbi.Content = SortArray(ct)
-            If SortArray(ct) = uni.StringVal Then cbi.IsSelected = True
-        Next
-        cboGroup.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        If uni.StringVal.ToString = "" Then
+            uni.Close()
+            Exit Sub
+        End If
+        Try
+            Dim check = BGC.BusinessGroups.Single(Function(p) p.BusinessGroupName = uni.StringVal.ToString)
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                            12,,,, "Business group already exists")
+            amsg.ShowDialog()
+            amsg.Close()
+        Catch ex As InvalidOperationException
+            cboGroup.Items.Add(New ComboBoxItem With {.Content = uni.StringVal})
+            Dim ict As Byte = cboGroup.Items.Count, SortArray(ict - 1) As String, ct As Byte = 0
+            For Each i As ComboBoxItem In cboGroup.Items
+                SortArray(ct) = i.Content
+                ct += 1
+            Next
+            Array.Sort(SortArray)
+            For ct = 0 To SortArray.Length - 1
+                Dim cbi As ComboBoxItem = cboGroup.Items.Item(ct)
+                cbi.Content = SortArray(ct)
+                If SortArray(ct) = uni.StringVal Then cbi.IsSelected = True
+            Next
+            cboGroup.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        End Try
         uni.Close()
     End Sub
 
@@ -707,9 +727,16 @@ Public Class BGCRM
             .txtUserInput.Focus()
             .ShowDialog()
         End With
+        If uni.StringVal.ToString = "" Then
+            uni.Close()
+            Exit Sub
+        End If
         Try
             Dim check = BGC.Communications.Single(Function(p) p.CommType = uni.StringVal.ToString)
-            MsgBox("Comm type already exists")  'TODO: EXPAND COMM TYPE EXISTS ALERT
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                            12,,,, "Comm type already exists")
+            amsg.ShowDialog()
+            amsg.Close()
         Catch ex As InvalidOperationException
             Dim comm As New Communication With {.CommType = uni.StringVal}
             BGC.Communications.Add(comm)
@@ -729,9 +756,16 @@ Public Class BGCRM
             .txtUserInput.Focus()
             .ShowDialog()
         End With
+        If uni.StringVal.ToString = "" Then
+            uni.Close()
+            Exit Sub
+        End If
         Try
             Dim check = BGC.GroupCultures.Single(Function(p) p.Culture = uni.StringVal.ToString)
-            MsgBox("Culture type already exists")  'TODO: EXPAND CULTURE TYPE EXISTS ALERT
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                            12,,,, "Culture type already exists")
+            amsg.ShowDialog()
+            amsg.Close()
         Catch ex As InvalidOperationException
             Dim cult As New GroupCulture With {.Culture = uni.StringVal}
             BGC.GroupCultures.Add(cult)
@@ -751,9 +785,16 @@ Public Class BGCRM
             .txtUserInput.Focus()
             .ShowDialog()
         End With
+        If uni.StringVal.ToString = "" Then
+            uni.Close()
+            Exit Sub
+        End If
         Try
             Dim check = BGC.Leaders.Single(Function(p) p.LeaderName = uni.StringVal.ToString)
-            MsgBox("Team member already exists")  'TODO: EXPAND LEADERSHIP TEAM MEMBER EXISTS ALERT
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                            12,,,, "Team member already exists")
+            amsg.ShowDialog()
+            amsg.Close()
         Catch ex As InvalidOperationException
             Dim leader As New Leader With {.LeaderName = uni.StringVal}
             BGC.Leaders.Add(leader)
@@ -785,9 +826,16 @@ Public Class BGCRM
             .txtUserInput.Focus()
             .ShowDialog()
         End With
+        If uni.StringVal.ToString = "" Then
+            uni.Close()
+            Exit Sub
+        End If
         Try
             Dim check = BGC.FrequentCustomers.Single(Function(p) p.CustomerName = uni.StringVal.ToString)
-            MsgBox("Customer already exists")  'TODO: EXPAND CUSTOMER EXISTS ALERT
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                            12,,,, "Customer already exists")
+            amsg.ShowDialog()
+            amsg.Close()
         Catch ex As InvalidOperationException
             Dim customer As New FrequentCustomer With {.CustomerName = uni.StringVal}
             BGC.FrequentCustomers.Add(customer)
@@ -820,9 +868,16 @@ Public Class BGCRM
             .txtUserInput.Focus()
             .ShowDialog()
         End With
+        If uni.StringVal.ToString = "" Then
+            uni.Close()
+            Exit Sub
+        End If
         Try
             Dim check = BGC.OffsiteLocations.Single(Function(p) p.OffsiteLocName = uni.StringVal.ToString)
-            MsgBox("Location already exists")  'TODO: EXPAND OFFSITE LOCATION EXISTS ALERT
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                            12,,,, "Locations already exists")
+            amsg.ShowDialog()
+            amsg.Close()
         Catch ex As InvalidOperationException
             Dim Offsite As New OffsiteLocation With {.OffsiteLocName = uni.StringVal}
             BGC.OffsiteLocations.Add(Offsite)
@@ -842,9 +897,16 @@ Public Class BGCRM
             .txtUserInput.Focus()
             .ShowDialog()
         End With
+        If uni.StringVal.ToString = "" Then
+            uni.Close()
+            Exit Sub
+        End If
         Try
             Dim check = BGC.EventTypes.Single(Function(p) p.EventType1 = uni.StringVal.ToString)
-            MsgBox("Event type already exists")  'TODO: EXPAND EVENT TYPE EXISTS ALERT
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                            12,,,, "Event type already exists")
+            amsg.ShowDialog()
+            amsg.Close()
         Catch ex As InvalidOperationException
             Dim EventType As New EventType With {.EventType1 = uni.StringVal}
             BGC.EventTypes.Add(EventType)
@@ -864,9 +926,16 @@ Public Class BGCRM
             .txtUserInput.Focus()
             .ShowDialog()
         End With
+        If uni.StringVal.ToString = "" Then
+            uni.Close()
+            Exit Sub
+        End If
         Try
             Dim check = BGC.EventSpaces.Single(Function(p) p.SpaceName = uni.StringVal.ToString)
-            MsgBox("Event space already exists")  'TODO: EXPAND EVENT SPACE EXISTS ALERT
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                            12,,,, "Event space already exists")
+            amsg.ShowDialog()
+            amsg.Close()
         Catch ex As InvalidOperationException
             Dim EventSpc As New EventSpace With {.SpaceName = uni.StringVal}
             BGC.EventSpaces.Add(EventSpc)
@@ -886,9 +955,16 @@ Public Class BGCRM
             .txtUserInput.Focus()
             .ShowDialog()
         End With
+        If uni.StringVal.ToString = "" Then
+            uni.Close()
+            Exit Sub
+        End If
         Try
             Dim check = BGC.Involvements.Single(Function(p) p.Involvement1 = uni.StringVal.ToString)
-            MsgBox("Event space already exists")  'TODO: EXPAND EVENT SPACE EXISTS ALERT
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                            12,,,, "Involvement type already exists")
+            amsg.ShowDialog()
+            amsg.Close()
         Catch ex As InvalidOperationException
             Dim Involve As New Involvement With {.Involvement1 = uni.StringVal}
             BGC.Involvements.Add(Involve)
@@ -908,9 +984,16 @@ Public Class BGCRM
             .txtUserInput.Focus()
             .ShowDialog()
         End With
+        If uni.StringVal.ToString = "" Then
+            uni.Close()
+            Exit Sub
+        End If
         Try
             Dim check = BGC.NotableEvents.Single(Function(p) p.EventName = uni.StringVal.ToString)
-            MsgBox("Event already exists")  'TODO: EXPAND NOTABLE EVENT EXISTS ALERT
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                            12,,,, "Event already exists")
+            amsg.ShowDialog()
+            amsg.Close()
         Catch ex As InvalidOperationException
             Dim Notable As New NotableEvent With {.EventName = uni.StringVal}
             BGC.NotableEvents.Add(Notable)
@@ -930,9 +1013,16 @@ Public Class BGCRM
             .txtUserInput.Focus()
             .ShowDialog()
         End With
+        If uni.StringVal.ToString = "" Then
+            uni.Close()
+            Exit Sub
+        End If
         Try
             Dim check = BGC.Planners.Single(Function(p) p.PlannerName = uni.StringVal.ToString)
-            MsgBox("Planner already exists")  'TODO: EXPAND PLANNER EXISTS ALERT
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                            12,,,, "Planner already exists")
+            amsg.ShowDialog()
+            amsg.Close()
         Catch ex As InvalidOperationException
             Dim Plannr As New Planner With {.PlannerName = uni.StringVal}
             BGC.Planners.Add(Plannr)

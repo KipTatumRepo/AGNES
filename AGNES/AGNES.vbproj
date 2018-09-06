@@ -127,9 +127,6 @@
     <Compile Include="Application Objects\NumberBox.vb" />
     <Compile Include="Application Objects\PeriodChooser.vb" />
     <Compile Include="Application Objects\WeekChooser.vb" />
-    <Compile Include="Entities\Location.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
     <Compile Include="Flash Objects\FlashGroup.vb" />
     <Compile Include="Module Orchestrators\FlashModule.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
@@ -274,12 +271,6 @@
     </Compile>
     <Compile Include="Entities\ReceivedCAMCheck.vb">
       <DependentUpon>WCRModule.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\RefreshEvent.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\Refresh_Join.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\TenderID_TenderType_Mapping.vb">
       <DependentUpon>WCRModule.tt</DependentUpon>

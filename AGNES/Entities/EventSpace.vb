@@ -13,6 +13,5 @@ Imports System.Collections.Generic
 Partial Public Class EventSpace
     Public Property PID As Long
     Public Property SpaceName As String
-    Public Property BuildingId As Long
 
 End Class
