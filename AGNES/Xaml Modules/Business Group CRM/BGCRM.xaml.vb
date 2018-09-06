@@ -25,7 +25,10 @@ Public Class BGCRM
         num500Events = New NumberBox(189, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(807, 28, 0, 0)}
         numCatered = New NumberBox(189, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(807, 88, 0, 0)}
         numHeadcount = New NumberBox(108, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(145, 149, 0, 0)}
-        numPopMoving = New NumberBox(126, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(608, 436, 0, 0)}
+        numPopMoving = New NumberBox(126, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(798, 452, 0, 0)}
+        Dim txtbx As TextBox = numPopMoving.Children(1)
+        txtbx.IsTabStop = True
+        txtbx.TabIndex = 5
 
         Dim tb As TextBox
         tb = numHeadcount.Children(1)
@@ -655,6 +658,9 @@ Public Class BGCRM
                     .ShowDialog()
                 End With
                 li.Content = li.Content & "- " & uni.NumVal & " headcount"
+                Dim txtb As TextBox = numPopMoving.Children(1)
+                Dim curval As Integer = FormatNumber(txtb.Text, 0) + uni.NumVal
+                txtb.Text = curval
                 uni.Close()
                 lbxOriginChosen.Items.Add(li)
             Case "S"

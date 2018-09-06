@@ -12,7 +12,7 @@ Imports System.Collections.Generic
 
 Partial Public Class TopSpaces_Join
     Public Property PID As Long
-    Public Property EventTypeId As Long
     Public Property BGId As Long
+    Public Property SpaceID As Long
 
 End Class

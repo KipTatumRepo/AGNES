@@ -53,7 +53,6 @@
           </Key>
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SpaceName" Type="varchar" MaxLength="512" Nullable="false" />
-          <Property Name="BuildingId" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="EventTypes">
           <Key>
@@ -186,7 +185,7 @@
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="EventTypeId" Type="bigint" Nullable="false" />
+          <Property Name="SpaceID" Type="bigint" Nullable="false" />
           <Property Name="BGId" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="WorkLocation">
@@ -281,7 +280,6 @@
           </Key>
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SpaceName" Type="String" MaxLength="512" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="BuildingId" Type="Int64" Nullable="false" />
         </EntityType>
         <EntityType Name="EventType">
           <Key>
@@ -414,8 +412,8 @@
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EventTypeId" Type="Int64" Nullable="false" />
           <Property Name="BGId" Type="Int64" Nullable="false" />
+          <Property Name="SpaceID" Type="Int64" Nullable="false" />
         </EntityType>
         <EntityContainer Name="BGCRMEntity" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="BusinessGroups" EntityType="Self.BusinessGroup" />
@@ -514,7 +512,6 @@
               <MappingFragment StoreEntitySet="EventSpaces">
                 <ScalarProperty Name="PID" ColumnName="PID" />
                 <ScalarProperty Name="SpaceName" ColumnName="SpaceName" />
-                <ScalarProperty Name="BuildingId" ColumnName="BuildingId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -663,8 +660,8 @@
           <EntitySetMapping Name="TopSpaces_Join">
             <EntityTypeMapping TypeName="BGCRMModel.TopSpaces_Join">
               <MappingFragment StoreEntitySet="TopSpaces_Join">
+                <ScalarProperty Name="SpaceID" ColumnName="SpaceID" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
-                <ScalarProperty Name="EventTypeId" ColumnName="EventTypeId" />
                 <ScalarProperty Name="BGId" ColumnName="BGId" />
               </MappingFragment>
             </EntityTypeMapping>

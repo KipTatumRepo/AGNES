@@ -187,6 +187,17 @@
             Into Max(c.BusinessGroupID)
 
             Dim NextID As Long = qwl + 1
+            SaveComms(NextID, 0)
+            SaveCulture(NextID, 0)
+            SaveLocations(NextID, 0)
+            SaveLeadership(NextID, 0)
+            SaveCustomers(NextID, 0)
+            SaveOffsites(NextID, 0)
+            SaveNotables(NextID, 0)
+            SaveTypes(NextID, 0)
+            SaveSpaces(NextID, 0)
+            SaveInvolvements(NextID, 0)
+            SavePlanners(NextID, 0)
             Dim bg As New BusinessGroup
             With bg
                 .BusinessGroupID = NextID
@@ -204,17 +215,6 @@
                 .OffsiteSpend = OffSiteSpend
             End With
             ef.BusinessGroups.Add(bg)
-            SaveComms(NextID, 0)
-            SaveCulture(NextID, 0)
-            SaveLocations(NextID, 0)
-            SaveLeadership(NextID, 0)
-            SaveCustomers(NextID, 0)
-            SaveOffsites(NextID, 0)
-            SaveNotables(NextID, 0)
-            SaveTypes(NextID, 0)
-            SaveSpaces(NextID, 0)
-            SaveInvolvements(NextID, 0)
-            SavePlanners(NextID, 0)
             Try
                 ef.SaveChanges()
                 SaveSuccessful = True
@@ -345,7 +345,7 @@
                 Dim sj As New TopSpaces_Join
                 With sj
                     .BGId = bgid
-                    .EventTypeId = i
+                    .SpaceID = i
                 End With
                 ef.TopSpaces_Join.Add(sj)
             Next
