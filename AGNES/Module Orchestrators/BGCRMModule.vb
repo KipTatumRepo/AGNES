@@ -1,5 +1,4 @@
 ﻿Module BGCRMModule
-    Public BGO As New objBusinessGroup
     Public UserClosed As Boolean
     Public BGE As BGCRMEntity
 

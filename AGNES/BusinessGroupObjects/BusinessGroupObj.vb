@@ -198,6 +198,7 @@
             SaveSpaces(NextID, 0)
             SaveInvolvements(NextID, 0)
             SavePlanners(NextID, 0)
+            SaveRefreshEvents(NextID, 0)
             Dim bg As New BusinessGroup
             With bg
                 .BusinessGroupID = NextID
@@ -376,6 +377,47 @@
                     .PlannerId = i
                 End With
                 ef.Planners_Join.Add(pj)
+            Next
+        Else
+            Dim ph1 As String = ""
+        End If
+    End Sub
+    Private Sub SaveRefreshEvents(bgid, isnew)
+        If isnew = 0 Then
+            Dim EID As Long
+            '// Fetch next event ID
+            Try
+                Dim qwl = Aggregate c In ef.RefreshEvents
+                    Into Max(c.EventID)
+                EID = qwl + 1
+            Catch ex As Exception
+                EID = 1
+            End Try
+
+            For Each cr As RefreshEvent In CREvents
+                '// Write base event to database
+                Dim re As New RefreshEvent
+                With re
+                    .EventID = EID
+                    .RefreshEventName = cr.RefreshEventName
+                    .BusinessGroupId = bgid
+                    .MoveStartDate = cr.MoveStart
+                    .MoveEndDate = cr.MoveEnd
+                    .Destination = cr.DestinationBuilding
+                    .MovePopulation = cr.TotalPopulation
+                End With
+                ef.RefreshEvents.Add(re)
+                '// for each origin building, write to the Origins database
+                For Each crb As CRBuilding In cr.BuildingsMoving
+                    Dim eob As New RefreshEventOrigin
+                    With eob
+                        .EventId = EID
+                        .BuildingId = crb.BuildingId
+                        .PopMoving = crb.MovePopulation
+                    End With
+                    ef.RefreshEventOrigins.Add(eob)
+                Next
+                EID += 1
             Next
         Else
             Dim ph1 As String = ""

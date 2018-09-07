@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGNES"
         mc:Ignorable="d"
-        Title="Business Group Customer Relationship Manager" Height="720" Width="1024   " WindowStartupLocation="CenterScreen" Background="OldLace" ResizeMode="CanMinimize">
+        Title="Business Group Customer Relationship Manager" Height="720" Width="1024   " WindowStartupLocation="CenterScreen" Background="OldLace" ResizeMode="CanMinimize" IsTabStop="False">
     <Window.Effect>
         <DropShadowEffect Opacity="0.75"/>
     </Window.Effect>
@@ -21,7 +21,7 @@
                         <TextBlock Margin="627,148,0,0" TextWrapping="Wrap" Text="Workspace Type" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="184"/>
                         <TextBlock HorizontalAlignment="Left" Margin="10,225,0,0" TextWrapping="Wrap" Text="Communications" VerticalAlignment="Top" FontSize="24" Width="990" TextAlignment="Center"/>
                         <TextBlock Margin="10,464,0,0" TextWrapping="Wrap" Text="Locations" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="990" TextAlignment="Center"/>
-                        <ComboBox x:Name="cboGroup" Margin="258,29,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="1" HorizontalAlignment="Left" Width="742" SelectedValuePath="Content">
+                        <ComboBox x:Name="cboGroup" Margin="258,29,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="0" HorizontalAlignment="Left" Width="742" SelectedValuePath="Content">
 
                             <ComboBox.ContextMenu>
                                 <ContextMenu>
@@ -30,7 +30,7 @@
                                 </ContextMenu>
                             </ComboBox.ContextMenu>
                         </ComboBox>
-                        <ComboBox x:Name="cboWorkTimes" Margin="412,150,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="4" HorizontalAlignment="Left" Width="192">
+                        <ComboBox x:Name="cboWorkTimes" Margin="412,150,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="3" HorizontalAlignment="Left" Width="192">
                             <ComboBox.Background>
                                 <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                                     <GradientStop Color="#FFF0F0F0" Offset="0"/>
@@ -38,10 +38,10 @@
                                 </LinearGradientBrush>
                             </ComboBox.Background>
                         </ComboBox>
-                        <ComboBox x:Name="cboWorkspace" Margin="816,149,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="5" HorizontalAlignment="Left" Width="184"/>
-                        <TextBox x:Name="txtOverview" Height="68" Margin="258,73,0,0" TextWrapping="Wrap" VerticalAlignment="Top" MaxLines="6" MaxLength="4000" IsUndoEnabled="True" TabIndex="2" HorizontalAlignment="Left" Width="742"/>
+                        <ComboBox x:Name="cboWorkspace" Margin="816,149,0,0" VerticalAlignment="Top" FontSize="18" TabIndex="4" HorizontalAlignment="Left" Width="184"/>
+                        <TextBox x:Name="txtOverview" Height="68" Margin="258,73,0,0" TextWrapping="Wrap" VerticalAlignment="Top" MaxLines="6" MaxLength="4000" IsUndoEnabled="True" TabIndex="1" HorizontalAlignment="Left" Width="742"/>
                         <Separator Height="39" Margin="0,186,0,0" VerticalAlignment="Top"/>
-                        <ListView x:Name="lbxCommSelect" Height="80" Margin="10,257,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480" TabIndex="6" FontSize="14">
+                        <ListView x:Name="lbxCommSelect" Height="80" Margin="10,257,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480" TabIndex="5" FontSize="14" IsTabStop="True">
                             <ListView.ContextMenu>
                                 <ContextMenu>
                                     <ComboBoxItem x:Name ="cbiNewCommType" Content="Add new communication type" IsSelected="True" PreviewMouseLeftButtonDown="AddCommunicationType" />
@@ -50,7 +50,7 @@
                             </ListView.ContextMenu>
                         </ListView>
                         <ListView x:Name="lbxCommsChosen" Height="80" Margin="520,257,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480" FontSize="14"/>
-                        <ListView x:Name="lbxCultureSelect" Height="80" Margin="10,379,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480" TabIndex="7" FontSize="14">
+                        <ListView x:Name="lbxCultureSelect" Height="80" Margin="10,379,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480" TabIndex="6" FontSize="14" IsTabStop="True">
                             <ListView.ContextMenu>
                                 <ContextMenu>
                                     <ComboBoxItem x:Name ="cbiNewCultureType" Content="Add new culture type" IsSelected="True" PreviewMouseLeftButtonDown="AddCulture"/>
@@ -59,10 +59,10 @@
                             </ListView.ContextMenu>
                         </ListView>
                         <ListView x:Name="lbxCultureChosen" Height="80  " Margin="520,379,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480" FontSize="14"/>
-                        <ListView x:Name="lbxLocationsSelect" Height="80" Margin="10,501,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480" TabIndex="8" FontSize="14"/>
+                        <ListView x:Name="lbxLocationsSelect" Height="80" Margin="10,501,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480" TabIndex="7" FontSize="14" IsTabStop="True"/>
                         <ListView x:Name="lbxLocationsChosen" Height="80" Margin="529,501,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="471" FontSize="14"/>
                         <TextBlock HorizontalAlignment="Left" Margin="10,342,0,0" TextWrapping="Wrap" Text="Culture" VerticalAlignment="Top" FontSize="24" Width="990" TextAlignment="Center"/>
-                        <Button x:Name="btnFwd1" HorizontalAlignment="Right" Margin="0,586,18,0" VerticalAlignment="Top" Width="64" Background="OldLace" BorderBrush="OldLace" Height="64">
+                        <Button x:Name="btnFwd1" HorizontalAlignment="Right" Margin="0,586,18,0" VerticalAlignment="Top" Width="64" Background="OldLace" BorderBrush="OldLace" Height="64" IsTabStop="False">
                             <Image x:Name="imgFwd1" Width="60" Height="60" Source="/AGNES;component/Resources/glass_arrow_right.png" HorizontalAlignment="Right" VerticalAlignment="Top" />
                         </Button>
 
@@ -199,36 +199,33 @@
                 </TabItem>
                 <TabItem x:Name="tiCampusRefresh" Header="Campus Refresh" IsTabStop="False">
                     <Grid x:Name="grdCampusRefresh" Background="OldLace">
-                        <TextBlock Margin="520,452,0,0" TextWrapping="Wrap" Text="Total Population Moving" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="278"/>
-                        <TextBlock Margin="0,142,0,0" TextWrapping="Wrap" Text="Origin Buildings" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1010" TextAlignment="Center"/>
-                        <ListView x:Name="lbxOriginSelect" Height="108" Margin="10,179,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480" TabIndex="1" IsTabStop="True">
-                        </ListView>
-                        <ListView x:Name="lbxOriginChosen" Height="108" Margin="520,179,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="482">
-                        </ListView>
-                        <ListView x:Name="lbxDestination" Height="150" Margin="10,334,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="480" IsTabStop="True" TabIndex="2" SelectionMode="Single"/>
-                        <TextBlock Margin="0,297,0,0" TextWrapping="Wrap" Text="Destination Building" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="490" TextAlignment="Center"/>
-                        <TextBlock Margin="520,374,0,0" TextWrapping="Wrap" Text="Move Start Date" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="200" TextAlignment="Left"/>
-                        <TextBlock Margin="520,413,0,0" TextWrapping="Wrap" Text="Move End Date" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="200" TextAlignment="Left"/>
-                        <DatePicker x:Name="dtpStartDate" HorizontalAlignment="Left" Margin="725,378,0,0" VerticalAlignment="Top" Width="277" FirstDayOfWeek="Monday" FontSize="18" TabIndex="4" IsTabStop="True"/>
-                        <DatePicker x:Name="dtpEndDate" HorizontalAlignment="Left" Margin="725,415,0,0" VerticalAlignment="Top" Width="277" FontSize="18" FirstDayOfWeek="Monday" TabIndex="5" IsTabStop="True"/>
-                        <Button x:Name="btnSaveFinish" Content="Save Group Information" HorizontalAlignment="Left" Margin="369,596,0,0" Width="288" FontSize="24" Height="46" VerticalAlignment="Top" TabIndex="8">
+                        <TextBlock Margin="2,10,0,0" TextWrapping="Wrap" Text="Business Group Campus Refresh Events" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1010" TextAlignment="Center"/>
+                        <ListView x:Name="lbxRefreshEvents" Height="85" Margin="10,52,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="992" TabIndex="0" IsTabStop="True"/>
+                        <TextBlock Margin="10,162,0,0" TextWrapping="Wrap" Text="Event Name" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="200" TextAlignment="Left"/>
+                        <TextBox x:Name="txtEventName" HorizontalAlignment="Left" Height="32" Margin="215,162,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="277" FontSize="18" TabIndex="1"/>
+                        <TextBlock Margin="520,160,0,0" TextWrapping="Wrap" Text="Total Population Moving:" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="278"/>
+                        <TextBlock Margin="10,199,0,0" TextWrapping="Wrap" Text="Move Start Date" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="200" TextAlignment="Left"/>
+                        <DatePicker x:Name="dtpStartDate" HorizontalAlignment="Left" Margin="215,199,0,0" VerticalAlignment="Top" Width="277" FirstDayOfWeek="Monday" FontSize="18" TabIndex="2" IsTabStop="True"/>
+                        <TextBlock Margin="520,197,0,0" TextWrapping="Wrap" Text="Move End Date" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="200" TextAlignment="Left"/>
+                        <DatePicker x:Name="dtpEndDate" HorizontalAlignment="Left" Margin="725,199,0,0" VerticalAlignment="Top" Width="277" FontSize="18" FirstDayOfWeek="Monday" TabIndex="3" IsTabStop="True"/>
+                        <TextBlock Margin="10,252,0,0" TextWrapping="Wrap" Text="Origin Buildings" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="653" TextAlignment="Center"/>
+                        <TextBlock Margin="725,252,0,0" TextWrapping="Wrap" Text="Destination Building" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="277" TextAlignment="Center"/>
+                        <ListView x:Name="lbxOriginSelect" Height="221" Margin="10,289,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="325" IsTabStop="False"/>
+                        <ListView x:Name="lbxOriginChosen" Height="221" Margin="338,289,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="325" IsTabStop="False"/>
+                        <ListView x:Name="lbxDestination" Height="221" Margin="725,289,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="277" IsTabStop="False" SelectionMode="Single"/>
+                        <Button x:Name="btnSaveRefreshEvent" Content="Save Refresh Event" HorizontalAlignment="Left" Margin="369,515,0,0" Width="288" FontSize="24" Height="46" VerticalAlignment="Top" TabIndex="5" IsTabStop="True">
                             <Button.Effect>
                                 <DropShadowEffect ShadowDepth="3" Color="#FFBBB2B2"/>
                             </Button.Effect>
                         </Button>
-                        <Button x:Name="btnBack4" HorizontalAlignment="Right" Margin="0,586,929,0" VerticalAlignment="Top" Width="64" Height ="64" Background="OldLace" BorderBrush="OldLace">
+                        <Button x:Name="btnSaveFinish" Content="Save Group Information" HorizontalAlignment="Left" Margin="369,596,0,0" Width="288" FontSize="24" Height="46" VerticalAlignment="Top" IsTabStop="False">
+                            <Button.Effect>
+                                <DropShadowEffect ShadowDepth="3" Color="#FFBBB2B2"/>
+                            </Button.Effect>
+                        </Button>
+                        <Button x:Name="btnBack4" HorizontalAlignment="Right" Margin="0,586,929,0" VerticalAlignment="Top" Width="64" Height ="64" Background="OldLace" BorderBrush="OldLace" IsTabStop="False">
                             <Image x:Name="imgBack4" Width="60" Height="60" Source="/AGNES;component/Resources/glass_arrow_left.png" VerticalAlignment="Top" HorizontalAlignment="Left" />
                         </Button>
-                        <ListView x:Name="lbxRefreshEvents" Height="85" Margin="10,52,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="992" TabIndex="0" IsTabStop="True"/>
-                        <TextBlock Margin="2,10,0,0" TextWrapping="Wrap" Text="Business Group Campus Refresh Events" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="1010" TextAlignment="Center"/>
-                        <Button x:Name="btnSaveRefreshEvent" Content="Save Refresh Event" HorizontalAlignment="Left" Margin="369,515,0,0" Width="288" FontSize="24" Height="46" VerticalAlignment="Top" TabIndex="7" IsTabStop="False">
-                            <Button.Effect>
-                                <DropShadowEffect ShadowDepth="3" Color="#FFBBB2B2"/>
-                            </Button.Effect>
-                        </Button>
-                        <TextBlock Margin="520,334,0,0" TextWrapping="Wrap" Text="Event Name" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Left" Width="200" TextAlignment="Left"/>
-                        <TextBox x:Name="txtEventName" HorizontalAlignment="Left" Height="32" Margin="725,334,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="277" FontSize="18" TabIndex="3"/>
-
                     </Grid>
                 </TabItem>
             </TabControl>

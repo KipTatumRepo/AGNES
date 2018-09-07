@@ -25,7 +25,7 @@ Public Class BGCRM
         num500Events = New NumberBox(189, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(807, 28, 0, 0)}
         numCatered = New NumberBox(189, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(807, 88, 0, 0)}
         numHeadcount = New NumberBox(108, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(145, 149, 0, 0)}
-        numPopMoving = New NumberBox(126, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(798, 452, 0, 0)}
+        numPopMoving = New NumberBox(126, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(798, 162, 0, 0), .IsEnabled = False}
         Dim txtbx As TextBox = numPopMoving.Children(1)
         txtbx.IsTabStop = True
         txtbx.TabIndex = 5
@@ -302,7 +302,7 @@ Public Class BGCRM
 
     Private Sub SaveRefreshEvent(sender As Object, e As EventArgs) Handles btnSaveRefreshEvent.Click
 
-TODO: '// Validate refresh event doesn't exist
+        'TODO: '// Validate refresh event doesn't exist
 
         Dim NewCr As New RefreshEvent, tb As TextBox = numPopMoving.Children(1)
         With NewCr
@@ -322,13 +322,23 @@ TODO: '// Validate refresh event doesn't exist
             With newBldg
                 .BuildingName = BldgName
                 .MovePopulation = MovePop
-                .BuildingId = BldgId
+                .BuildingId = FetchBuildingID(BldgName)
             End With
-            NewCr.BuildingsMoving = New List(Of CRBuilding)
             NewCr.BuildingsMoving.Add(newBldg)
+            Dim NewLbi As New ListBoxItem With {.Content = BldgName}
+            lbxOriginSelect.Items.Add(NewLbi)
         Next
-        BGO.CREvents.Add(NewCr)
+
+        BG.CREvents.Add(NewCr)
+        lbxOriginChosen.Items.Clear()
+        lbxOriginSelect.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
         lbxRefreshEvents.Items.Add(NewCr.RefreshEventName)
+        lbxDestination.SelectedIndex = -1
+        Dim txtb As TextBox = numPopMoving.Children(1)
+        txtb.Text = "0"
+        txtEventName.Text = ""
+        dtpStartDate.SelectedDate = Now()
+        dtpEndDate.SelectedDate = Now()
     End Sub
 #End Region
 
@@ -397,12 +407,11 @@ TODO: '// Validate refresh event doesn't exist
         lbxDestination.Items.Clear()
         Dim loq = From bloc In SD.MasterBuildingLists Select bloc 'Order By bloc.BuildingName
         For Each bloc In loq
-            Dim li As New ListBoxItem, li1 As New ListBoxItem, li2 As New ListBoxItem
+            Dim li As New ListBoxItem With {.IsTabStop = False}, li1 As New ListBoxItem With {.IsTabStop = False}, li2 As New ListBoxItem With {.IsTabStop = False}
             li.Content = bloc.BuildingName
             li.Tag = "C"
             AddHandler li.MouseDoubleClick, AddressOf LocationItemMove
             lbxLocationsSelect.Items.Add(li)
-
             li1.Content = bloc.BuildingName
             li1.Tag = "C"
             AddHandler li1.MouseDoubleClick, AddressOf OriginMove
@@ -501,6 +510,7 @@ TODO: '// Validate refresh event doesn't exist
         If cboGroup.SelectedIndex = -1 Then Exit Sub
         LoadRefreshEvents()
     End Sub
+
     Private Sub CommItemMove(sender, eventargs)
         Dim li As New ListBoxItem
         li = sender
@@ -714,8 +724,9 @@ TODO: '// Validate refresh event doesn't exist
             Case "S"
                 lbxOriginChosen.Items.Remove(li)
                 li.Tag = "C"
-                Dim str As String = li.Content.ToString.Remove(li.Content.ToString.IndexOf("-"))
-                li.Content = str
+                Dim ParseString() As String
+                ParseString = Split(li.Content, "--", 2)
+                li.Content = ParseString(0)
                 lbxOriginSelect.Items.Add(li)
         End Select
         lbxOriginSelect.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
@@ -1159,6 +1170,14 @@ TODO: '// Validate refresh event doesn't exist
         Return True
     End Function
 
+    Private Function FetchBuildingID(bn) As Integer
+        Dim retval As Integer = 0
+        Dim loq = From bloc In SD.MasterBuildingLists Select bloc Where bloc.BuildingName Is bn
+        For Each bloc In loq
+            retval = bloc.PID
+        Next
+        Return retval
+    End Function
 #End Region
 
 End Class

@@ -130,6 +130,9 @@
     <Compile Include="Entities\RefreshEvent.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\RefreshEventOrigin.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
     <Compile Include="Flash Objects\FlashGroup.vb" />
     <Compile Include="Module Orchestrators\FlashModule.vb" />
     <Compile Include="My Project\Resources.Designer.vb">

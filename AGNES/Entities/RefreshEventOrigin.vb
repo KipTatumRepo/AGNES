@@ -10,14 +10,11 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class RefreshEvent
+Partial Public Class RefreshEventOrigin
     Public Property PID As Long
-    Public Property RefreshEventName As String
-    Public Property BusinessGroupId As Long
-    Public Property MoveStartDate As Date
-    Public Property MoveEndDate As Date
-    Public Property MovePopulation As Long
-    Public Property Destination As String
-    Public Property EventID As Nullable(Of Long)
+    Public Property EventId As Long
+    Public Property BuildingId As Long
+    Public Property PopMoving As Long
+    Public Property BusinessGroupID As Long
 
 End Class

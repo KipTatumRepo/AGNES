@@ -40,7 +40,7 @@
         End Set
     End Property
 
-    Public Property BuildingsMoving As List(Of CRBuilding)
+    Public Property BuildingsMoving As New List(Of CRBuilding)
 
     Private _destbuild As String
     Public Property DestinationBuilding As String
