@@ -60,8 +60,8 @@
         Dim ct As Integer, UID As Integer = My.Settings.UserID, ULVL As Byte = My.Settings.UserLevel, Modules() As Long
 
         '// IMPERSONATION - Change to whichever userID and Access Level needed to test
-        ' ULVL = 3
-        ' UID = 80
+        'ULVL = 4
+        'UID = 80
         '// IMPERSONATION
 
         Dim ef As New AGNESSharedData

@@ -127,6 +127,12 @@
     <Compile Include="Application Objects\NumberBox.vb" />
     <Compile Include="Application Objects\PeriodChooser.vb" />
     <Compile Include="Application Objects\WeekChooser.vb" />
+    <Compile Include="Entities\RefreshEvent.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\RefreshEventOrigin.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
     <Compile Include="Flash Objects\FlashGroup.vb" />
     <Compile Include="Module Orchestrators\FlashModule.vb" />
     <Compile Include="My Project\Resources.Designer.vb">

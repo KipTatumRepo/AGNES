@@ -24,20 +24,17 @@ Public Class BGCRM
         numEventCount = New NumberBox(189, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(269, 156, 0, 0)}
         num500Events = New NumberBox(189, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(807, 28, 0, 0)}
         numCatered = New NumberBox(189, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(807, 88, 0, 0)}
-        numHeadcount = New NumberBox(108, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(145, 149, 0, 0)}
-        numPopMoving = New NumberBox(126, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(798, 452, 0, 0)}
+        numHeadcount = New NumberBox(108, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(886, 156, 0, 0)}
+        numPopMoving = New NumberBox(126, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(798, 162, 0, 0), .IsEnabled = False}
         Dim txtbx As TextBox = numPopMoving.Children(1)
-        txtbx.IsTabStop = True
-        txtbx.TabIndex = 5
 
         Dim tb As TextBox
         tb = numHeadcount.Children(1)
         tb.IsTabStop = True
-        tb.TabIndex = 3
+        tb.TabIndex = 4
 
         tb = numPopMoving.Children(1)
-        tb.IsTabStop = True
-        tb.TabIndex = 1
+        tb.IsTabStop = False
 
         With grdGroup.Children
             .Add(numHeadcount)
@@ -264,10 +261,6 @@ Public Class BGCRM
                         BG.EmbeddedPlanners.Add(FormatNumber(c.PID, 0))
                     Next
                 Next
-
-            Case 4          '======CAMPUS REFRESH PAGE
-                'TODO: Build out CR objects and populate into BG object
-
         End Select
     End Sub
 
@@ -284,6 +277,65 @@ Public Class BGCRM
             amsg.ShowDialog()
             amsg.Close()
         End If
+    End Sub
+
+    Private Sub LoadRefreshEvents()
+        lbxRefreshEvents.Items.Clear()
+        Dim GroupID As Integer
+        Dim GetGroupID = From businessgroups In BGC.BusinessGroups
+                         Where businessgroups.BusinessGroupName Is cboGroup.SelectedValue
+                         Select businessgroups
+        For Each c In GetGroupID
+            GroupID = FormatNumber(c.BusinessGroupID, 0)
+        Next
+        Dim GetRefreshEvents = From refreshevents In BGC.RefreshEvents
+                               Where refreshevents.BGId = GroupID
+                               Select refreshevents
+        For Each c In GetRefreshEvents
+            lbxRefreshEvents.Items.Add(c.RefreshEventName)
+        Next
+        'TODO:  Add routine to load the events into the BGObject CREvents list property
+    End Sub
+
+    Private Sub SaveRefreshEvent(sender As Object, e As EventArgs) Handles btnSaveRefreshEvent.Click
+
+        'TODO: '// Validate refresh event doesn't exist
+
+        Dim NewCr As New RefreshEvent, tb As TextBox = numPopMoving.Children(1)
+        With NewCr
+            .RefreshEventName = txtEventName.Text
+            .MoveStart = dtpStartDate.SelectedDate
+            .MoveEnd = dtpEndDate.SelectedDate
+            .TotalPopulation = FormatNumber(tb.Text, 0)
+            .DestinationBuilding = lbxDestination.SelectedValue
+        End With
+        Dim lbi As ListBoxItem
+        For Each lbi In lbxOriginChosen.Items
+            Dim newBldg As New CRBuilding, BldgName As String = "", MovePop As Integer = 0, BldgId As Integer = 0
+            Dim ParseString() As String
+            ParseString = Split(lbi.Content, "--", 2)
+            BldgName = ParseString(0)
+            MovePop = FormatNumber(ParseString(1).Replace(" headcount", ""), 0)
+            With newBldg
+                .BuildingName = BldgName
+                .MovePopulation = MovePop
+                .BuildingId = BG.FetchBuildingID(BldgName)
+            End With
+            NewCr.BuildingsMoving.Add(newBldg)
+            Dim NewLbi As New ListBoxItem With {.Content = BldgName}
+            lbxOriginSelect.Items.Add(NewLbi)
+        Next
+
+        BG.CREvents.Add(NewCr)
+        lbxOriginChosen.Items.Clear()
+        lbxOriginSelect.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        lbxRefreshEvents.Items.Add(NewCr.RefreshEventName)
+        lbxDestination.SelectedIndex = -1
+        Dim txtb As TextBox = numPopMoving.Children(1)
+        txtb.Text = "0"
+        txtEventName.Text = ""
+        dtpStartDate.SelectedDate = Now()
+        dtpEndDate.SelectedDate = Now()
     End Sub
 
 #End Region
@@ -353,12 +405,11 @@ Public Class BGCRM
         lbxDestination.Items.Clear()
         Dim loq = From bloc In SD.MasterBuildingLists Select bloc 'Order By bloc.BuildingName
         For Each bloc In loq
-            Dim li As New ListBoxItem, li1 As New ListBoxItem, li2 As New ListBoxItem
+            Dim li As New ListBoxItem With {.IsTabStop = False}, li1 As New ListBoxItem With {.IsTabStop = False}, li2 As New ListBoxItem With {.IsTabStop = False}
             li.Content = bloc.BuildingName
             li.Tag = "C"
             AddHandler li.MouseDoubleClick, AddressOf LocationItemMove
             lbxLocationsSelect.Items.Add(li)
-
             li1.Content = bloc.BuildingName
             li1.Tag = "C"
             AddHandler li1.MouseDoubleClick, AddressOf OriginMove
@@ -451,6 +502,11 @@ Public Class BGCRM
         dtpEndDate.DisplayDateStart = Now().Date
         dtpEndDate.DisplayDateEnd = Now().Date.AddYears(2)
 
+    End Sub
+
+    Private Sub GroupChosen(sender As Object, e As SelectionChangedEventArgs) Handles cboGroup.SelectionChanged
+        If cboGroup.SelectedIndex = -1 Then Exit Sub
+        LoadRefreshEvents()
     End Sub
 
     Private Sub CommItemMove(sender, eventargs)
@@ -657,7 +713,7 @@ Public Class BGCRM
                     .txtUserInput.Focus()
                     .ShowDialog()
                 End With
-                li.Content = li.Content & "- " & uni.NumVal & " headcount"
+                li.Content = li.Content & "--" & uni.NumVal & " headcount"
                 Dim txtb As TextBox = numPopMoving.Children(1)
                 Dim curval As Integer = FormatNumber(txtb.Text, 0) + uni.NumVal
                 txtb.Text = curval
@@ -666,8 +722,9 @@ Public Class BGCRM
             Case "S"
                 lbxOriginChosen.Items.Remove(li)
                 li.Tag = "C"
-                Dim str As String = li.Content.ToString.Remove(li.Content.ToString.IndexOf("-"))
-                li.Content = str
+                Dim ParseString() As String
+                ParseString = Split(li.Content, "--", 2)
+                li.Content = ParseString(0)
                 lbxOriginSelect.Items.Add(li)
         End Select
         lbxOriginSelect.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
@@ -680,6 +737,10 @@ Public Class BGCRM
         If dtpEndDate.SelectedDate < dtpStartDate.SelectedDate Then dtpEndDate.SelectedDate = dtpStartDate.SelectedDate
     End Sub
 
+    Private Sub ResetFields()
+        Dim ph As String = ""
+        'TODO : Build field reset routine
+    End Sub
 #End Region
 
 #Region "Context Menu Actions"
@@ -717,6 +778,22 @@ Public Class BGCRM
             cboGroup.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
         End Try
         uni.Close()
+    End Sub
+
+    Private Sub DeleteBusinessGroup(sender As Object, e As MouseButtonEventArgs)
+        If cboGroup.SelectedIndex = -1 Then Exit Sub
+        Dim bgnm As String = cboGroup.SelectedValue
+        Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.YesNo,
+                                        18, False, "Confirm Delete",, "This will delete EVERYTHING related to " & bgnm & ", including refresh events.  Continue?")
+        amsg.ShowDialog()
+        If amsg.ReturnResult = "No" Then
+            amsg.Close()
+        Else
+            Dim cbi As ComboBoxItem = cboGroup.SelectedItem
+            cboGroup.Items.Remove(cbi)
+            cboGroup.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+            BG.DeleteFromDatabase(bgnm)
+        End If
     End Sub
 
     Private Sub AddCommunicationType(sender As Object, e As MouseButtonEventArgs)
@@ -1110,6 +1187,8 @@ Public Class BGCRM
         End If
         Return True
     End Function
+
+
 
 #End Region
 
