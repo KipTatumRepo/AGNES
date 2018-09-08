@@ -24,20 +24,17 @@ Public Class BGCRM
         numEventCount = New NumberBox(189, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(269, 156, 0, 0)}
         num500Events = New NumberBox(189, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(807, 28, 0, 0)}
         numCatered = New NumberBox(189, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(807, 88, 0, 0)}
-        numHeadcount = New NumberBox(108, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(145, 149, 0, 0)}
+        numHeadcount = New NumberBox(108, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(886, 156, 0, 0)}
         numPopMoving = New NumberBox(126, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(798, 162, 0, 0), .IsEnabled = False}
         Dim txtbx As TextBox = numPopMoving.Children(1)
-        txtbx.IsTabStop = True
-        txtbx.TabIndex = 5
 
         Dim tb As TextBox
         tb = numHeadcount.Children(1)
         tb.IsTabStop = True
-        tb.TabIndex = 3
+        tb.TabIndex = 4
 
         tb = numPopMoving.Children(1)
-        tb.IsTabStop = True
-        tb.TabIndex = 1
+        tb.IsTabStop = False
 
         With grdGroup.Children
             .Add(numHeadcount)
@@ -292,7 +289,7 @@ Public Class BGCRM
             GroupID = FormatNumber(c.BusinessGroupID, 0)
         Next
         Dim GetRefreshEvents = From refreshevents In BGC.RefreshEvents
-                               Where refreshevents.BusinessGroupId = GroupID
+                               Where refreshevents.BGId = GroupID
                                Select refreshevents
         For Each c In GetRefreshEvents
             lbxRefreshEvents.Items.Add(c.RefreshEventName)
@@ -322,7 +319,7 @@ Public Class BGCRM
             With newBldg
                 .BuildingName = BldgName
                 .MovePopulation = MovePop
-                .BuildingId = FetchBuildingID(BldgName)
+                .BuildingId = BG.FetchBuildingID(BldgName)
             End With
             NewCr.BuildingsMoving.Add(newBldg)
             Dim NewLbi As New ListBoxItem With {.Content = BldgName}
@@ -340,6 +337,7 @@ Public Class BGCRM
         dtpStartDate.SelectedDate = Now()
         dtpEndDate.SelectedDate = Now()
     End Sub
+
 #End Region
 
 #Region "Field Management"
@@ -739,6 +737,10 @@ Public Class BGCRM
         If dtpEndDate.SelectedDate < dtpStartDate.SelectedDate Then dtpEndDate.SelectedDate = dtpStartDate.SelectedDate
     End Sub
 
+    Private Sub ResetFields()
+        Dim ph As String = ""
+        'TODO : Build field reset routine
+    End Sub
 #End Region
 
 #Region "Context Menu Actions"
@@ -776,6 +778,22 @@ Public Class BGCRM
             cboGroup.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
         End Try
         uni.Close()
+    End Sub
+
+    Private Sub DeleteBusinessGroup(sender As Object, e As MouseButtonEventArgs)
+        If cboGroup.SelectedIndex = -1 Then Exit Sub
+        Dim bgnm As String = cboGroup.SelectedValue
+        Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.YesNo,
+                                        18, False, "Confirm Delete",, "This will delete EVERYTHING related to " & bgnm & ", including refresh events.  Continue?")
+        amsg.ShowDialog()
+        If amsg.ReturnResult = "No" Then
+            amsg.Close()
+        Else
+            Dim cbi As ComboBoxItem = cboGroup.SelectedItem
+            cboGroup.Items.Remove(cbi)
+            cboGroup.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+            BG.DeleteFromDatabase(bgnm)
+        End If
     End Sub
 
     Private Sub AddCommunicationType(sender As Object, e As MouseButtonEventArgs)
@@ -1170,14 +1188,8 @@ Public Class BGCRM
         Return True
     End Function
 
-    Private Function FetchBuildingID(bn) As Integer
-        Dim retval As Integer = 0
-        Dim loq = From bloc In SD.MasterBuildingLists Select bloc Where bloc.BuildingName Is bn
-        For Each bloc In loq
-            retval = bloc.PID
-        Next
-        Return retval
-    End Function
+
+
 #End Region
 
 End Class

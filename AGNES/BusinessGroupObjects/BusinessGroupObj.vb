@@ -123,7 +123,8 @@
     Public Property CREvents As New List(Of RefreshEvent)
     Public Property SaveSuccessful As Boolean
     Public Sub New()
-        Dim ph As String = ""
+        sd = New BIEntities
+        ef = New BGCRMEntity
     End Sub
 
     Public Sub Load()
@@ -141,7 +142,6 @@
         End Try
 
     End Sub
-
     Private Sub UpdateExisting()
         Try
             '// Handle all non-joined first, save, query for PID, and then handle writing to _join tables
@@ -178,7 +178,6 @@
         Catch excep As Exception
         End Try
     End Sub
-
     Private Sub SaveNew()
         Try
             '// Handle all non-joined first, save, query for next business group id, and then handle writing to _join tables
@@ -331,7 +330,7 @@
             For Each i As Long In TopEventTypes
                 Dim ej As New TopEventTypes_Join
                 With ej
-                    .BGGroup = bgid
+                    .BGId = bgid
                     .TypeId = i
                 End With
                 ef.TopEventTypes_Join.Add(ej)
@@ -400,7 +399,7 @@
                 With re
                     .EventID = EID
                     .RefreshEventName = cr.RefreshEventName
-                    .BusinessGroupId = bgid
+                    .BGId = bgid
                     .MoveStartDate = cr.MoveStart
                     .MoveEndDate = cr.MoveEnd
                     .Destination = cr.DestinationBuilding
@@ -414,6 +413,7 @@
                         .EventId = EID
                         .BuildingId = crb.BuildingId
                         .PopMoving = crb.MovePopulation
+                        .BGId = bgid
                     End With
                     ef.RefreshEventOrigins.Add(eob)
                 Next
@@ -423,7 +423,167 @@
             Dim ph1 As String = ""
         End If
     End Sub
-    Public Sub Delete()
-        Dim ph As String = ""
+    Public Sub DeleteFromDatabase(bgnm)
+        Dim bgid As Integer
+        '// Delete from BusinessGroups
+        Dim bgq = From bgrp In ef.BusinessGroups Select bgrp Where bgrp.BusinessGroupName Is bgnm
+        For Each bgrp In bgq
+            bgid = bgrp.BusinessGroupID
+            ef.BusinessGroups.Remove(bgrp)
+        Next
+
+        '// Delete from Communications
+        Try
+            Dim dbq = From FoundItem In ef.Comm_Join Select FoundItem Where FoundItem.BGId = bgid
+            For Each FoundItem In dbq
+                ef.Comm_Join.Remove(FoundItem)
+            Next
+        Catch ex As Exception
+            '// Nothing in table
+        End Try
+
+        '// Delete from Communications
+        Try
+            Dim dbq = From FoundItem In ef.Culture_Join Select FoundItem Where FoundItem.BGId = bgid
+            For Each FoundItem In dbq
+                ef.Culture_Join.Remove(FoundItem)
+            Next
+        Catch ex As Exception
+            '// Nothing in table
+        End Try
+
+        '// Delete from Customers
+        Try
+            Dim dbq = From FoundItem In ef.FreqCust_Join Select FoundItem Where FoundItem.BGId = bgid
+            For Each FoundItem In dbq
+                ef.FreqCust_Join.Remove(FoundItem)
+            Next
+        Catch ex As Exception
+            '// Nothing in table
+        End Try
+
+        '// Delete from Involvements
+        Try
+            Dim dbq = From FoundItem In ef.Involvement_Join Select FoundItem Where FoundItem.BGId = bgid
+            For Each FoundItem In dbq
+                ef.Involvement_Join.Remove(FoundItem)
+            Next
+        Catch ex As Exception
+            '// Nothing in table
+        End Try
+
+        '// Delete from Leaders
+        Try
+            Dim dbq = From FoundItem In ef.Leaders_Join Select FoundItem Where FoundItem.BGId = bgid
+            For Each FoundItem In dbq
+                ef.Leaders_Join.Remove(FoundItem)
+            Next
+        Catch ex As Exception
+            '// Nothing in table
+        End Try
+
+        '// Delete from Locations
+        Try
+            Dim dbq = From FoundItem In ef.Locations_Join Select FoundItem Where FoundItem.BGId = bgid
+            For Each FoundItem In dbq
+                ef.Locations_Join.Remove(FoundItem)
+            Next
+        Catch ex As Exception
+            '// Nothing in table
+        End Try
+
+        '// Delete from Notables
+        Try
+            Dim dbq = From FoundItem In ef.NotableEvents_Join Select FoundItem Where FoundItem.BGId = bgid
+            For Each FoundItem In dbq
+                ef.NotableEvents_Join.Remove(FoundItem)
+            Next
+        Catch ex As Exception
+            '// Nothing in table
+        End Try
+
+        '// Delete from Offsites
+        Try
+            Dim dbq = From FoundItem In ef.Offsites_Join Select FoundItem Where FoundItem.BGId = bgid
+            For Each FoundItem In dbq
+                ef.Offsites_Join.Remove(FoundItem)
+            Next
+        Catch ex As Exception
+            '// Nothing in table
+        End Try
+
+        '// Delete from Planners
+        Try
+            Dim dbq = From FoundItem In ef.Planners_Join Select FoundItem Where FoundItem.BGId = bgid
+            For Each FoundItem In dbq
+                ef.Planners_Join.Remove(FoundItem)
+            Next
+        Catch ex As Exception
+            '// Nothing in table
+        End Try
+
+        '// Delete from Refresh Events
+        Try
+            Dim dbq = From FoundItem In ef.RefreshEvents Select FoundItem Where FoundItem.BGId = bgid
+            For Each FoundItem In dbq
+                ef.RefreshEvents.Remove(FoundItem)
+            Next
+        Catch ex As Exception
+            '// Nothing in table
+        End Try
+
+        '// Delete from Refresh Event Origins
+        Try
+            Dim dbq = From FoundItem In ef.RefreshEventOrigins Select FoundItem Where FoundItem.BGId = bgid
+            For Each FoundItem In dbq
+                ef.RefreshEventOrigins.Remove(FoundItem)
+            Next
+        Catch ex As Exception
+            '// Nothing in table
+        End Try
+
+        '// Delete from Top Event Types
+        Try
+            Dim dbq = From FoundItem In ef.TopEventTypes_Join Select FoundItem Where FoundItem.BGId = bgid
+            For Each FoundItem In dbq
+                ef.TopEventTypes_Join.Remove(FoundItem)
+            Next
+        Catch ex As Exception
+            '// Nothing in table
+        End Try
+
+        '// Delete from Top Event Spaces
+        Try
+            Dim dbq = From FoundItem In ef.TopSpaces_Join Select FoundItem Where FoundItem.BGId = bgid
+            For Each FoundItem In dbq
+                ef.TopSpaces_Join.Remove(FoundItem)
+            Next
+        Catch ex As Exception
+            '// Nothing in table
+        End Try
+
+        ef.SaveChanges()
+        Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                        14, False, "Command Successful",, bgnm & " has been deleted.")
+        amsg.ShowDialog()
+        amsg.Close()
     End Sub
+    Public Function FetchBuildingID(bn) As Integer
+        Dim retval As Integer = 0
+        Dim loq = From bloc In sd.MasterBuildingLists Select bloc Where bloc.BuildingName Is bn
+        For Each bloc In loq
+            retval = bloc.PID
+        Next
+        Return retval
+    End Function
+    Public Function GetGroupID(bn) As Integer
+        Try
+            Dim retval As Integer = 0
+            Dim grp As New BusinessGroup
+            grp = ef.BusinessGroups.Find(bn)
+            Return grp.BusinessGroupID
+        Catch ex As Exception
+            Return 0
+        End Try
+    End Function
 End Class

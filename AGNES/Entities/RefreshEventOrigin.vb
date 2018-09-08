@@ -15,6 +15,6 @@ Partial Public Class RefreshEventOrigin
     Public Property EventId As Long
     Public Property BuildingId As Long
     Public Property PopMoving As Long
-    Public Property BusinessGroupID As Long
+    Public Property BGId As Long
 
 End Class

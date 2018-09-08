@@ -13,11 +13,11 @@ Imports System.Collections.Generic
 Partial Public Class RefreshEvent
     Public Property PID As Long
     Public Property RefreshEventName As String
-    Public Property BusinessGroupId As Long
     Public Property MoveStartDate As Date
     Public Property MoveEndDate As Date
     Public Property MovePopulation As Long
     Public Property Destination As String
     Public Property EventID As Nullable(Of Long)
+    Public Property BGId As Long
 
 End Class
