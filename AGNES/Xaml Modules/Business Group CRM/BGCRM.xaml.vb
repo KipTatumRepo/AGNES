@@ -1,6 +1,7 @@
 ﻿Imports System.ComponentModel
 Imports System.Linq
 'TODO: NEED LOAD ROUTINE
+'TODO: NEED UPDATE ROUTINES
 Public Class BGCRM
     Dim BG As objBusinessGroup
     Dim BGC As BGCRMEntity
@@ -143,8 +144,9 @@ Public Class BGCRM
                          Where c.LeaderName = sl
                          Select c
                 For Each c In ql
-                    BG.OrgLeader = FormatNumber(c.PID, 0)
-                Next
+                        BG.OrgLeader = FormatNumber(c.PID, 0)
+                    Next
+
 
                 '// Populate relationship manager
                 Dim orm As String = cboRelManager.Text
@@ -152,8 +154,10 @@ Public Class BGCRM
                          Where c.CustomerName = orm
                          Select c
                 For Each c In qr
-                    BG.RelationshipMgr = FormatNumber(c.PID, 0)
-                Next
+                        BG.RelationshipMgr = FormatNumber(c.PID, 0)
+                    Next
+
+
 
                 '// Populate chosen leaders into array
                 For Each si In lbxLeadersChosen.Items
@@ -162,8 +166,8 @@ Public Class BGCRM
                             Where c.LeaderName = slt
                             Select c
                     For Each c In q
-                        BG.Leadership.Add(FormatNumber(c.PID, 0))
-                    Next
+                            BG.Leadership.Add(FormatNumber(c.PID, 0))
+                        Next
                 Next
 
                 '// Populate chosen customers into array
@@ -279,6 +283,11 @@ Public Class BGCRM
         End If
     End Sub
 
+    Private Sub LoadExisting()
+        BG.Load(cboGroup.SelectedValue)
+
+        LoadRefreshEvents()
+    End Sub
     Private Sub LoadRefreshEvents()
         lbxRefreshEvents.Items.Clear()
         Dim GroupID As Integer
@@ -506,7 +515,8 @@ Public Class BGCRM
 
     Private Sub GroupChosen(sender As Object, e As SelectionChangedEventArgs) Handles cboGroup.SelectionChanged
         If cboGroup.SelectedIndex = -1 Then Exit Sub
-        LoadRefreshEvents()
+        LoadExisting()
+
     End Sub
 
     Private Sub CommItemMove(sender, eventargs)
@@ -741,9 +751,20 @@ Public Class BGCRM
         Dim ph As String = ""
         'TODO : Build field reset routine
     End Sub
+
 #End Region
 
 #Region "Context Menu Actions"
+    Private Sub BusinessGroupContextMenu(sender As Object, e As ContextMenuEventArgs) Handles cboGroup.ContextMenuOpening
+        If cboGroup.SelectedIndex = -1 Then
+            cbiDeleteBG.IsEnabled = False
+        Else
+            cbiDeleteBG.IsEnabled = True
+        End If
+
+    End Sub
+
+    'TODO: ADD ADDITIONAL CONTEXT_MENU_OPENING ROUTINES TO DISABLE DELETE OPTION; ADD WHEN BUILDING OUT DELETE OPTIONS FOR THE REMAINING CHOICES
     Private Sub AddBusinessGroup(sender As Object, e As MouseButtonEventArgs)
         Dim uni As New SingleUserInput
         With uni
@@ -866,15 +887,17 @@ Public Class BGCRM
             uni.Close()
             Exit Sub
         End If
+        Dim TempBGC As New BGCRMEntity
         Try
-            Dim check = BGC.Leaders.Single(Function(p) p.LeaderName = uni.StringVal.ToString)
+            Dim check = TempBGC.Leaders.Single(Function(p) p.LeaderName = uni.StringVal.ToString)
             Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
                                             12,,,, "Team member already exists")
             amsg.ShowDialog()
             amsg.Close()
         Catch ex As InvalidOperationException
             Dim leader As New Leader With {.LeaderName = uni.StringVal}
-            BGC.Leaders.Add(leader)
+            TempBGC.Leaders.Add(leader)
+            TempBGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
             AddHandler li.MouseDoubleClick, AddressOf LeadTeamMove
             lbxLeadersChosen.Items.Add(li)
@@ -907,15 +930,17 @@ Public Class BGCRM
             uni.Close()
             Exit Sub
         End If
+        Dim TempBGC As New BGCRMEntity
         Try
-            Dim check = BGC.FrequentCustomers.Single(Function(p) p.CustomerName = uni.StringVal.ToString)
+            Dim check = TempBGC.FrequentCustomers.Single(Function(p) p.CustomerName = uni.StringVal.ToString)
             Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
                                             12,,,, "Customer already exists")
             amsg.ShowDialog()
             amsg.Close()
         Catch ex As InvalidOperationException
             Dim customer As New FrequentCustomer With {.CustomerName = uni.StringVal}
-            BGC.FrequentCustomers.Add(customer)
+            TempBGC.FrequentCustomers.Add(customer)
+            TempBGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
             AddHandler li.MouseDoubleClick, AddressOf CustomerMove
             lbxCustomerChosen.Items.Add(li)
@@ -949,15 +974,17 @@ Public Class BGCRM
             uni.Close()
             Exit Sub
         End If
+        Dim TempBGC As New BGCRMEntity
         Try
-            Dim check = BGC.OffsiteLocations.Single(Function(p) p.OffsiteLocName = uni.StringVal.ToString)
+            Dim check = TempBGC.OffsiteLocations.Single(Function(p) p.OffsiteLocName = uni.StringVal.ToString)
             Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
                                             12,,,, "Locations already exists")
             amsg.ShowDialog()
             amsg.Close()
         Catch ex As InvalidOperationException
             Dim Offsite As New OffsiteLocation With {.OffsiteLocName = uni.StringVal}
-            BGC.OffsiteLocations.Add(Offsite)
+            TempBGC.OffsiteLocations.Add(Offsite)
+            TempBGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
             AddHandler li.MouseDoubleClick, AddressOf OffsiteMove
             lbxOffsiteLocsChosen.Items.Add(li)
@@ -978,15 +1005,17 @@ Public Class BGCRM
             uni.Close()
             Exit Sub
         End If
+        Dim TempBGC As New BGCRMEntity
         Try
-            Dim check = BGC.EventTypes.Single(Function(p) p.EventType1 = uni.StringVal.ToString)
+            Dim check = TempBGC.EventTypes.Single(Function(p) p.EventType1 = uni.StringVal.ToString)
             Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
                                             12,,,, "Event type already exists")
             amsg.ShowDialog()
             amsg.Close()
         Catch ex As InvalidOperationException
             Dim EventType As New EventType With {.EventType1 = uni.StringVal}
-            BGC.EventTypes.Add(EventType)
+            TempBGC.EventTypes.Add(EventType)
+            TempBGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
             AddHandler li.MouseDoubleClick, AddressOf TopTypeMove
             lbxTopETypesChosen.Items.Add(li)
@@ -1007,15 +1036,17 @@ Public Class BGCRM
             uni.Close()
             Exit Sub
         End If
+        Dim TempBGC As New BGCRMEntity
         Try
-            Dim check = BGC.EventSpaces.Single(Function(p) p.SpaceName = uni.StringVal.ToString)
+            Dim check = TempBGC.EventSpaces.Single(Function(p) p.SpaceName = uni.StringVal.ToString)
             Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
                                             12,,,, "Event space already exists")
             amsg.ShowDialog()
             amsg.Close()
         Catch ex As InvalidOperationException
             Dim EventSpc As New EventSpace With {.SpaceName = uni.StringVal}
-            BGC.EventSpaces.Add(EventSpc)
+            TempBGC.EventSpaces.Add(EventSpc)
+            TempBGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
             AddHandler li.MouseDoubleClick, AddressOf TopSpaceMove
             lbxTopSpacesChosen.Items.Add(li)
@@ -1036,15 +1067,17 @@ Public Class BGCRM
             uni.Close()
             Exit Sub
         End If
+        Dim TempBGC As New BGCRMEntity
         Try
-            Dim check = BGC.Involvements.Single(Function(p) p.Involvement1 = uni.StringVal.ToString)
+            Dim check = TempBGC.Involvements.Single(Function(p) p.Involvement1 = uni.StringVal.ToString)
             Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
                                             12,,,, "Involvement type already exists")
             amsg.ShowDialog()
             amsg.Close()
         Catch ex As InvalidOperationException
             Dim Involve As New Involvement With {.Involvement1 = uni.StringVal}
-            BGC.Involvements.Add(Involve)
+            TempBGC.Involvements.Add(Involve)
+            TempBGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
             AddHandler li.MouseDoubleClick, AddressOf InvolvementMove
             lbxInvolveChosen.Items.Add(li)
@@ -1065,15 +1098,17 @@ Public Class BGCRM
             uni.Close()
             Exit Sub
         End If
+        Dim TempBGC As New BGCRMEntity
         Try
-            Dim check = BGC.NotableEvents.Single(Function(p) p.EventName = uni.StringVal.ToString)
+            Dim check = TempBGC.NotableEvents.Single(Function(p) p.EventName = uni.StringVal.ToString)
             Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
                                             12,,,, "Event already exists")
             amsg.ShowDialog()
             amsg.Close()
         Catch ex As InvalidOperationException
             Dim Notable As New NotableEvent With {.EventName = uni.StringVal}
-            BGC.NotableEvents.Add(Notable)
+            TempBGC.NotableEvents.Add(Notable)
+            TempBGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
             AddHandler li.MouseDoubleClick, AddressOf NotablesMove
             lbxNotableChosen.Items.Add(li)
@@ -1094,15 +1129,17 @@ Public Class BGCRM
             uni.Close()
             Exit Sub
         End If
+        Dim TempBGC As New BGCRMEntity
         Try
-            Dim check = BGC.Planners.Single(Function(p) p.PlannerName = uni.StringVal.ToString)
+            Dim check = TempBGC.Planners.Single(Function(p) p.PlannerName = uni.StringVal.ToString)
             Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
                                             12,,,, "Planner already exists")
             amsg.ShowDialog()
             amsg.Close()
         Catch ex As InvalidOperationException
             Dim Plannr As New Planner With {.PlannerName = uni.StringVal}
-            BGC.Planners.Add(Plannr)
+            TempBGC.Planners.Add(Plannr)
+            TempBGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
             AddHandler li.MouseDoubleClick, AddressOf PlannerMove
             lbxPlannersChosen.Items.Add(li)
@@ -1187,8 +1224,6 @@ Public Class BGCRM
         End If
         Return True
     End Function
-
-
 
 #End Region
 

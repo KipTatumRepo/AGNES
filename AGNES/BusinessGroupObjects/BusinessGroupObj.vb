@@ -127,7 +127,7 @@
         ef = New BGCRMEntity
     End Sub
 
-    Public Sub Load()
+    Public Sub Load(bgn)
         Dim ph As String = ""
     End Sub
 

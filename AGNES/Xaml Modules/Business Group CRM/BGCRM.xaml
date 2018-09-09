@@ -78,7 +78,7 @@
                             <ListView.ContextMenu>
                                 <ContextMenu>
                                     <ComboBoxItem x:Name ="lbiNewLeader" Content="Add new team member" IsSelected="True" PreviewMouseLeftButtonDown="AddLeadership"/>
-                                    <ComboBoxItem Content="Delete selected team member" IsEnabled="False" />
+                                    <ComboBoxItem x:Name ="lbiDelLeader" Content="Delete selected team member" IsEnabled="False" />
                                 </ContextMenu>
                             </ListView.ContextMenu>
                         </ListView>
