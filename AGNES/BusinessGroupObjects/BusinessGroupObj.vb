@@ -127,8 +127,130 @@
         ef = New BGCRMEntity
     End Sub
 
-    Public Sub Load()
-        Dim ph As String = ""
+    Public Sub Load(bgn)
+        Dim OrgID As Long
+        Dim GetGroupID = From businessgroups In ef.BusinessGroups
+                         Where businessgroups.BusinessGroupName Is bgn
+                         Select businessgroups
+        For Each c In GetGroupID
+            OrgName = c.BusinessGroupName
+            OrgID = c.BusinessGroupID
+            Overview = c.GroupOverview
+            Headcount = c.Headcount
+            WorkTimes = c.WorkTimes
+            OnsiteRemote = c.OnsiteRemote
+            OrgLeader = c.OrgLeader
+            RelationshipMgr = c.RelMgr
+            TotalRevenue = c.Revenue
+            TotalEvents = c.Events
+            Events500 = c.Events500
+            CateredEvents = c.EventsCatered
+            OffSiteSpend = c.OffsiteSpend
+        Next
+        Communications.Clear()
+        Dim GetComms = From cj In ef.Comm_Join
+                       Where cj.BGId = OrgID
+                       Select cj
+        For Each ct In GetComms
+            Communications.Add(ct.CommId)
+        Next
+        Culture.Clear()
+        Dim GetCult = From cj In ef.Culture_Join
+                      Where cj.BGId = OrgID
+                      Select cj
+        For Each ct In GetCult
+            Culture.Add(ct.CultureId)
+        Next
+        Locations.Clear()
+        Dim GetLocs = From lj In ef.Locations_Join
+                      Where lj.BGId = OrgID
+                      Select lj
+        For Each ct In GetLocs
+            Locations.Add(ct.LocId)
+        Next
+        Leadership.Clear()
+        Dim GetLdrs = From lj In ef.Leaders_Join
+                      Where lj.BGId = OrgID
+                      Select lj
+        For Each ct In GetLdrs
+            Leadership.Add(ct.LeaderId)
+        Next
+        FrequentCustomers.Clear()
+        Dim GetCust = From lj In ef.FreqCust_Join
+                      Where lj.BGId = OrgID
+                      Select lj
+        For Each ct In GetCust
+            FrequentCustomers.Add(ct.CustId)
+        Next
+        TopOffsiteLocations.Clear()
+        Dim GetOffsites = From lj In ef.Offsites_Join
+                          Where lj.BGId = OrgID
+                          Select lj
+        For Each ct In GetOffsites
+            TopOffsiteLocations.Add(ct.OffsiteId)
+        Next
+        NotableEvents.Clear()
+        Dim GetNotables = From lj In ef.NotableEvents_Join
+                          Where lj.BGId = OrgID
+                          Select lj
+        For Each ct In GetNotables
+            NotableEvents.Add(ct.EventId)
+        Next
+        TopEventTypes.Clear()
+        Dim GetTopEvents = From lj In ef.TopEventTypes_Join
+                           Where lj.BGId = OrgID
+                           Select lj
+        For Each ct In GetTopEvents
+            TopEventTypes.Add(ct.TypeId)
+        Next
+        TopBookedSpaces.Clear()
+        Dim GetTopSpaces = From lj In ef.TopSpaces_Join
+                           Where lj.BGId = OrgID
+                           Select lj
+        For Each ct In GetTopSpaces
+            TopBookedSpaces.Add(ct.SpaceID)
+        Next
+        EventionsInvolvement.Clear()
+        Dim GetInvolvements = From lj In ef.Involvement_Join
+                              Where lj.BGId = OrgID
+                              Select lj
+        For Each ct In GetInvolvements
+            EventionsInvolvement.Add(ct.InvolveId)
+        Next
+        EmbeddedPlanners.Clear()
+        Dim GetPlanners = From lj In ef.Planners_Join
+                          Where lj.BGId = OrgID
+                          Select lj
+        For Each ct In GetPlanners
+            EmbeddedPlanners.Add(ct.PlannerId)
+        Next
+        CREvents.Clear()
+        Dim GetRefreshEvents = From refreshevents In ef.RefreshEvents
+                               Where refreshevents.BGId = OrgID
+                               Select refreshevents
+        For Each c In GetRefreshEvents
+            Dim ncr As New RefreshEvent
+            With ncr
+                .GroupID = OrgID
+                .MoveStart = c.MoveStartDate
+                .MoveEnd = c.MoveEndDate
+                .TotalPopulation = c.MovePopulation
+                .DestinationBuilding = c.Destination
+            End With
+            Dim GetCROrigins = From refresheventorigins In ef.RefreshEventOrigins
+                               Where refresheventorigins.EventId = c.EventID
+                               Select refresheventorigins
+            For Each d In GetCROrigins
+                Dim ncrb As New CRBuilding
+                With ncrb
+                    .BuildingId = d.BuildingId
+                    .MovePopulation = d.PopMoving
+                    .BuildingName = FetchBuildingName(d.BuildingId)
+                End With
+                ncr.BuildingsMoving.Add(ncrb)
+            Next
+            CREvents.Add(ncr)
+        Next
     End Sub
 
     Public Sub Save(ByRef EnFrModel)
@@ -573,6 +695,14 @@
         Dim loq = From bloc In sd.MasterBuildingLists Select bloc Where bloc.BuildingName Is bn
         For Each bloc In loq
             retval = bloc.PID
+        Next
+        Return retval
+    End Function
+    Public Function FetchBuildingName(bid) As String
+        Dim retval As String = ""
+        Dim loq = From bloc In sd.MasterBuildingLists Select bloc Where bloc.PID = bid
+        For Each bloc In loq
+            retval = bloc.BuildingName
         Next
         Return retval
     End Function
