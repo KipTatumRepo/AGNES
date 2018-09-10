@@ -144,8 +144,8 @@ Public Class BGCRM
                          Where c.LeaderName = sl
                          Select c
                 For Each c In ql
-                        BG.OrgLeader = FormatNumber(c.PID, 0)
-                    Next
+                    BG.OrgLeader = FormatNumber(c.PID, 0)
+                Next
 
 
                 '// Populate relationship manager
@@ -154,8 +154,8 @@ Public Class BGCRM
                          Where c.CustomerName = orm
                          Select c
                 For Each c In qr
-                        BG.RelationshipMgr = FormatNumber(c.PID, 0)
-                    Next
+                    BG.RelationshipMgr = FormatNumber(c.PID, 0)
+                Next
 
 
 
@@ -166,8 +166,8 @@ Public Class BGCRM
                             Where c.LeaderName = slt
                             Select c
                     For Each c In q
-                            BG.Leadership.Add(FormatNumber(c.PID, 0))
-                        Next
+                        BG.Leadership.Add(FormatNumber(c.PID, 0))
+                    Next
                 Next
 
                 '// Populate chosen customers into array
