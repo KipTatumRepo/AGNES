@@ -1,6 +1,5 @@
 ﻿Imports System.ComponentModel
 Imports System.Linq
-'TODO: NEED LOAD ROUTINE
 'TODO: NEED UPDATE ROUTINES
 Public Class BGCRM
     Dim BG As objBusinessGroup
@@ -13,6 +12,7 @@ Public Class BGCRM
     Dim numCatered As NumberBox
     Dim numHeadcount As NumberBox
     Dim numPopMoving As NumberBox
+    Dim AdminSelect As Boolean
 
     Public Sub New()
         InitializeComponent()
@@ -284,26 +284,230 @@ Public Class BGCRM
     End Sub
 
     Private Sub LoadExisting()
+        Dim tempbizgroup = cboGroup.SelectedValue
+        PopulateOptions()
+        AdminSelect = True
+        cboGroup.SelectedValue = tempbizgroup
+        AdminSelect = False
         BG.Load(cboGroup.SelectedValue)
-
-        LoadRefreshEvents()
+        LoadToUI()
     End Sub
-    Private Sub LoadRefreshEvents()
+
+    Private Sub LoadToUI()
+        Dim lbc As Integer, tb As TextBox
+        txtOverview.Text = BG.Overview
+        cboWorkTimes.SelectedIndex = BG.WorkTimes
+        cboWorkspace.SelectedIndex = BG.OnsiteRemote
+        tb = numHeadcount.Children(1)
+        tb.Text = FormatNumber(BG.Headcount, 0)
+        For Each comm As Long In BG.Communications
+            Dim GetCommName = From comms In BGC.Communications
+                              Where comms.PID = comm
+                              Select comms
+            For Each c In GetCommName
+                Dim lbi As New ListBoxItem With {.Content = c.CommType, .Tag = "S"}
+                AddHandler lbi.MouseDoubleClick, AddressOf CommItemMove
+                lbxCommsChosen.Items.Add(lbi)
+                For lbc = (lbxCommSelect.Items.Count - 1) To 0 Step -1
+                    If lbxCommSelect.Items(lbc).Content = lbi.Content Then
+                        lbxCommSelect.Items.RemoveAt(lbc)
+                    End If
+                Next
+            Next
+        Next
+        For Each cult As Long In BG.Culture
+            Dim GetCultName = From cults In BGC.GroupCultures
+                              Where cults.PID = cult
+                              Select cults
+            For Each c In GetCultName
+                Dim lbi As New ListBoxItem With {.Content = c.Culture, .Tag = "S"}
+                AddHandler lbi.MouseDoubleClick, AddressOf CultureItemMove
+                lbxCultureChosen.Items.Add(lbi)
+                For lbc = (lbxCultureSelect.Items.Count - 1) To 0 Step -1
+                    If lbxCultureSelect.Items(lbc).Content = lbi.Content Then
+                        lbxCultureSelect.Items.RemoveAt(lbc)
+                    End If
+                Next
+            Next
+        Next
+        For Each loc As Long In BG.Locations
+            Dim GetLocName = From locs In SD.MasterBuildingLists
+                             Where locs.PID = loc
+                             Select locs
+            For Each c In GetLocName
+                Dim lbi As New ListBoxItem With {.Content = c.BuildingName, .Tag = "S"}
+                AddHandler lbi.MouseDoubleClick, AddressOf LocationItemMove
+                lbxLocationsChosen.Items.Add(lbi)
+                For lbc = (lbxLocationsSelect.Items.Count - 1) To 0 Step -1
+                    If lbxLocationsSelect.Items(lbc).Content = lbi.Content Then
+                        lbxLocationsSelect.Items.RemoveAt(lbc)
+                    End If
+                Next
+            Next
+        Next
+
+        Dim GetOrgLdr = From orgl In BGC.Leaders
+                        Where orgl.PID = BG.OrgLeader
+                        Select orgl
+        For Each c In GetOrgLdr
+            cboLeader.SelectedValue = c.LeaderName
+        Next
+
+        Dim GetRelMgr = From rlm In BGC.FrequentCustomers
+                        Where rlm.PID = BG.RelationshipMgr
+                        Select rlm
+        For Each c In GetRelMgr
+            cboRelManager.SelectedValue = c.CustomerName
+        Next
+
+        For Each ldr As Long In BG.Leadership
+            Dim GetLdrName = From lds In BGC.Leaders
+                             Where lds.PID = ldr
+                             Select lds
+            For Each c In GetLdrName
+                Dim lbi As New ListBoxItem With {.Content = c.LeaderName, .Tag = "S"}
+                AddHandler lbi.MouseDoubleClick, AddressOf LeadTeamMove
+                lbxLeadersChosen.Items.Add(lbi)
+                For lbc = (lbxLeadersSelect.Items.Count - 1) To 0 Step -1
+                    If lbxLeadersSelect.Items(lbc).Content = lbi.Content Then
+                        lbxLeadersSelect.Items.RemoveAt(lbc)
+                    End If
+                Next
+            Next
+        Next
+
+        For Each cust As Long In BG.FrequentCustomers
+            Dim GetCustName = From cst In BGC.FrequentCustomers
+                              Where cst.PID = cust
+                              Select cst
+            For Each c In GetCustName
+                Dim lbi As New ListBoxItem With {.Content = c.CustomerName, .Tag = "S"}
+                AddHandler lbi.MouseDoubleClick, AddressOf CustomerMove
+                lbxCustomerChosen.Items.Add(lbi)
+                For lbc = (lbxCustomerSelect.Items.Count - 1) To 0 Step -1
+                    If lbxCustomerSelect.Items(lbc).Content = lbi.Content Then
+                        lbxCustomerSelect.Items.RemoveAt(lbc)
+                    End If
+                Next
+            Next
+        Next
+
+        tb = curRevenue.Children(1)
+        tb.Text = FormatNumber(BG.TotalRevenue, 2)
+        tb = curOffsite.Children(1)
+        tb.Text = FormatNumber(BG.OffSiteSpend, 2)
+        tb = curRevenue.Children(1)
+        tb.Text = FormatNumber(BG.TotalRevenue, 2)
+        tb = numEventCount.Children(1)
+        tb.Text = FormatNumber(BG.TotalEvents, 0)
+        tb = num500Events.Children(1)
+        tb.Text = FormatNumber(BG.Events500, 0)
+        tb = numCatered.Children(1)
+        tb.Text = FormatNumber(BG.CateredEvents, 0)
+
+        For Each osl As Long In BG.TopOffsiteLocations
+            Dim GetOSLName = From osn In BGC.OffsiteLocations
+                             Where osn.PID = osl
+                             Select osn
+            For Each c In GetOSLName
+                Dim lbi As New ListBoxItem With {.Content = c.OffsiteLocName, .Tag = "S"}
+                AddHandler lbi.MouseDoubleClick, AddressOf OffsiteMove
+                lbxOffsiteLocsChosen.Items.Add(lbi)
+                For lbc = (lbxOffsiteLocsSelect.Items.Count - 1) To 0 Step -1
+                    If lbxOffsiteLocsSelect.Items(lbc).Content = lbi.Content Then
+                        lbxOffsiteLocsSelect.Items.RemoveAt(lbc)
+                    End If
+                Next
+            Next
+        Next
+
+        For Each noe As Long In BG.NotableEvents
+            Dim GetEventName = From ntb In BGC.NotableEvents
+                               Where ntb.PID = noe
+                               Select ntb
+            For Each c In GetEventName
+                Dim lbi As New ListBoxItem With {.Content = c.EventName, .Tag = "S"}
+                AddHandler lbi.MouseDoubleClick, AddressOf NotablesMove
+                lbxNotableChosen.Items.Add(lbi)
+                For lbc = (lbxNotableSelect.Items.Count - 1) To 0 Step -1
+                    If lbxNotableSelect.Items(lbc).Content = lbi.Content Then
+                        lbxNotableSelect.Items.RemoveAt(lbc)
+                    End If
+                Next
+            Next
+        Next
+
+        For Each tet As Long In BG.TopEventTypes
+            Dim GetEventType = From et In BGC.EventTypes
+                               Where et.PID = tet
+                               Select et
+            For Each c In GetEventType
+                Dim lbi As New ListBoxItem With {.Content = c.EventType1, .Tag = "S"}
+                AddHandler lbi.MouseDoubleClick, AddressOf TopTypeMove
+                lbxTopETypesChosen.Items.Add(lbi)
+                For lbc = (lbxTopETypesSelect.Items.Count - 1) To 0 Step -1
+                    If lbxTopETypesSelect.Items(lbc).Content = lbi.Content Then
+                        lbxTopETypesSelect.Items.RemoveAt(lbc)
+                    End If
+                Next
+            Next
+        Next
+
+        For Each tbs As Long In BG.TopBookedSpaces
+            Dim GetBookedSpace = From gbs In BGC.EventSpaces
+                                 Where gbs.PID = tbs
+                                 Select gbs
+            For Each c In GetBookedSpace
+                Dim lbi As New ListBoxItem With {.Content = c.SpaceName, .Tag = "S"}
+                AddHandler lbi.MouseDoubleClick, AddressOf TopSpaceMove
+                lbxTopSpacesChosen.Items.Add(lbi)
+                For lbc = (lbxTopSpacesSelect.Items.Count - 1) To 0 Step -1
+                    If lbxTopSpacesSelect.Items(lbc).Content = lbi.Content Then
+                        lbxTopSpacesSelect.Items.RemoveAt(lbc)
+                    End If
+                Next
+            Next
+        Next
+
+        For Each tei As Long In BG.EventionsInvolvement
+            Dim GetInvolvement = From gei In BGC.Involvements
+                                 Where gei.PID = tei
+                                 Select gei
+            For Each c In GetInvolvement
+                Dim lbi As New ListBoxItem With {.Content = c.Involvement1, .Tag = "S"}
+                AddHandler lbi.MouseDoubleClick, AddressOf InvolvementMove
+                lbxInvolveChosen.Items.Add(lbi)
+                For lbc = (lbxInvolveSelect.Items.Count - 1) To 0 Step -1
+                    If lbxInvolveSelect.Items(lbc).Content = lbi.Content Then
+                        lbxInvolveSelect.Items.RemoveAt(lbc)
+                    End If
+                Next
+            Next
+        Next
+
+        For Each pln As Long In BG.EmbeddedPlanners
+            Dim GetPlanner = From plnr In BGC.Planners
+                             Where plnr.PID = pln
+                             Select plnr
+            For Each c In GetPlanner
+                Dim lbi As New ListBoxItem With {.Content = c.PlannerName, .Tag = "S"}
+                AddHandler lbi.MouseDoubleClick, AddressOf PlannerMove
+                lbxPlannersChosen.Items.Add(lbi)
+                For lbc = (lbxPlannersSelect.Items.Count - 1) To 0 Step -1
+                    If lbxPlannersSelect.Items(lbc).Content = lbi.Content Then
+                        lbxPlannersSelect.Items.RemoveAt(lbc)
+                    End If
+                Next
+            Next
+        Next
+
         lbxRefreshEvents.Items.Clear()
-        Dim GroupID As Integer
-        Dim GetGroupID = From businessgroups In BGC.BusinessGroups
-                         Where businessgroups.BusinessGroupName Is cboGroup.SelectedValue
-                         Select businessgroups
-        For Each c In GetGroupID
-            GroupID = FormatNumber(c.BusinessGroupID, 0)
+        For Each cr As RefreshEvent In BGC.RefreshEvents
+            Dim lbi As New ListBoxItem With {.Content = cr.RefreshEventName}
+            AddHandler lbi.MouseDoubleClick, AddressOf PopulateRefreshEvent
+            lbxRefreshEvents.Items.Add(lbi)
         Next
-        Dim GetRefreshEvents = From refreshevents In BGC.RefreshEvents
-                               Where refreshevents.BGId = GroupID
-                               Select refreshevents
-        For Each c In GetRefreshEvents
-            lbxRefreshEvents.Items.Add(c.RefreshEventName)
-        Next
-        'TODO:  Add routine to load the events into the BGObject CREvents list property
+
     End Sub
 
     Private Sub SaveRefreshEvent(sender As Object, e As EventArgs) Handles btnSaveRefreshEvent.Click
@@ -388,6 +592,7 @@ Public Class BGCRM
 
         '// Populate communication options
         lbxCommSelect.Items.Clear()
+        lbxCommsChosen.Items.Clear()
         Dim cq = From bcomm In BGC.Communications Select bcomm Order By bcomm.CommType
         For Each bcomm In cq
             Dim li As New ListBoxItem
@@ -399,6 +604,7 @@ Public Class BGCRM
 
         '// Populate culture options
         lbxCultureSelect.Items.Clear()
+        lbxCultureChosen.Items.Clear()
         Dim cuq = From bcult In BGC.GroupCultures Select bcult Order By bcult.Culture
         For Each bcult In cuq
             Dim li As New ListBoxItem
@@ -430,6 +636,7 @@ Public Class BGCRM
         '// Populate leader and leadership team options - shared datasource
         cboLeader.Items.Clear()
         lbxLeadersSelect.Items.Clear()
+        lbxLeadersChosen.Items.Clear()
         Dim lq = From bldr In BGC.Leaders Select bldr Order By bldr.LeaderName
         For Each bldr In lq
             cboLeader.Items.Add(New ComboBoxItem With {.Content = bldr.LeaderName})
@@ -441,6 +648,7 @@ Public Class BGCRM
         '// Populate relationship manager and frequent customers options - shared datasource
         cboRelManager.Items.Clear()
         lbxCustomerSelect.Items.Clear()
+        lbxCustomerChosen.Items.Clear()
         Dim rmq = From brlm In BGC.FrequentCustomers Select brlm Order By brlm.CustomerName
         For Each brlm In rmq
             cboRelManager.Items.Add(New ComboBoxItem With {.Content = brlm.CustomerName})
@@ -451,6 +659,7 @@ Public Class BGCRM
 
         '// Populate offsite location options
         lbxOffsiteLocsSelect.Items.Clear()
+        lbxOffsiteLocsChosen.Items.Clear()
         Dim olq = From osl In BGC.OffsiteLocations Select osl Order By osl.OffsiteLocName
         For Each osl In olq
             Dim lbi As New ListBoxItem With {.Content = osl.OffsiteLocName, .Tag = "C", .IsTabStop = False}
@@ -460,6 +669,7 @@ Public Class BGCRM
 
         '// Populate notable event options
         lbxNotableSelect.Items.Clear()
+        lbxNotableChosen.Items.Clear()
         Dim neq = From nev In BGC.NotableEvents Select nev Order By nev.EventName
         For Each nev In neq
             Dim lbi As New ListBoxItem With {.Content = nev.EventName, .Tag = "C"}
@@ -469,6 +679,7 @@ Public Class BGCRM
 
         '// Populate top event type options
         lbxTopETypesSelect.Items.Clear()
+        lbxTopETypesChosen.Items.Clear()
         Dim teq = From tet In BGC.EventTypes Select tet Order By tet.EventType1
         For Each tet In teq
             Dim lbi As New ListBoxItem With {.Content = tet.EventType1, .Tag = "C"}
@@ -478,6 +689,7 @@ Public Class BGCRM
 
         '// Populate top booked spaces options
         lbxTopSpacesSelect.Items.Clear()
+        lbxTopSpacesChosen.Items.Clear()
         Dim tsq = From tsb In BGC.EventSpaces Select tsb Order By tsb.SpaceName
         For Each tsb In tsq
             Dim lbi As New ListBoxItem With {.Content = tsb.SpaceName, .Tag = "C"}
@@ -487,6 +699,7 @@ Public Class BGCRM
 
         '// Populate eventions involvement options
         lbxInvolveSelect.Items.Clear()
+        lbxInvolveChosen.Items.Clear()
         Dim tiq = From tii In BGC.Involvements Select tii Order By tii.Involvement1
         For Each tii In tiq
             Dim lbi As New ListBoxItem With {.Content = tii.Involvement1, .Tag = "C"}
@@ -496,6 +709,7 @@ Public Class BGCRM
 
         '// Populate embedded planner options
         lbxPlannersSelect.Items.Clear()
+        lbxPlannersChosen.Items.Clear()
         Dim epq = From epl In BGC.Planners Select epl Order By epl.PlannerName
         For Each epl In epq
             Dim lbi As New ListBoxItem With {.Content = epl.PlannerName, .Tag = "C"}
@@ -514,9 +728,8 @@ Public Class BGCRM
     End Sub
 
     Private Sub GroupChosen(sender As Object, e As SelectionChangedEventArgs) Handles cboGroup.SelectionChanged
-        If cboGroup.SelectedIndex = -1 Then Exit Sub
+        If (cboGroup.SelectedIndex = -1) Or (AdminSelect = True) Then Exit Sub
         LoadExisting()
-
     End Sub
 
     Private Sub CommItemMove(sender, eventargs)
@@ -740,6 +953,12 @@ Public Class BGCRM
         lbxOriginSelect.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
         lbxOriginChosen.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
 
+    End Sub
+
+    Private Sub PopulateRefreshEvent(sender, EventArgs)
+        'TODO POPULATE REFRESH EVENT DATA CHOSEN BY USER
+        Dim lbi As ListBoxItem = sender
+        MsgBox(lbi.Content)
     End Sub
 
     Private Sub StartDateChanged(sender As Object, e As SelectionChangedEventArgs) Handles dtpStartDate.SelectedDateChanged, dtpEndDate.SelectedDateChanged
