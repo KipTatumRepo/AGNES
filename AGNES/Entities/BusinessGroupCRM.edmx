@@ -223,7 +223,7 @@
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="WorkTime" Type="nchar" MaxLength="32" Nullable="false" />
+          <Property Name="WorkTime" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityContainer Name="BGCRMModelStoreContainer">
           <EntitySet Name="BusinessGroups" EntityType="Self.BusinessGroups" Schema="BizGroupCRM" store:Type="Tables" />
@@ -480,7 +480,7 @@
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="WorkTime1" Type="String" Nullable="false" MaxLength="32" FixedLength="true" Unicode="true" />
+          <Property Name="WorkTime1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="RefreshEvent">
           <Key>
