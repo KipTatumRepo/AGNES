@@ -103,7 +103,7 @@ Public Class BGCRM
                 Next
 
                 '// Populate chosen communications into array
-
+                BG.Communications.Clear()
                 For Each si In lbxCommsChosen.Items
                     Dim sc As String = si.Content
                     Dim query = From comms In BGC.Communications
@@ -115,6 +115,7 @@ Public Class BGCRM
                 Next
 
                 '// Populate chosen culture into array
+                BG.Culture.Clear()
                 For Each si In lbxCultureChosen.Items
                     Dim sc As String = si.Content
                     Dim q = From c In BGC.GroupCultures
@@ -126,6 +127,8 @@ Public Class BGCRM
                 Next
 
                 '// Populate chosen locations into array
+                BG.Locations.Clear()
+
                 For Each si In lbxLocationsChosen.Items
                     Dim sc As String = si.Content
                     Dim q = From c In SD.MasterBuildingLists
@@ -144,9 +147,8 @@ Public Class BGCRM
                          Where c.LeaderName = sl
                          Select c
                 For Each c In ql
-                        BG.OrgLeader = FormatNumber(c.PID, 0)
-                    Next
-
+                    BG.OrgLeader = FormatNumber(c.PID, 0)
+                Next
 
                 '// Populate relationship manager
                 Dim orm As String = cboRelManager.Text
@@ -154,23 +156,23 @@ Public Class BGCRM
                          Where c.CustomerName = orm
                          Select c
                 For Each c In qr
-                        BG.RelationshipMgr = FormatNumber(c.PID, 0)
-                    Next
-
-
+                    BG.RelationshipMgr = FormatNumber(c.PID, 0)
+                Next
 
                 '// Populate chosen leaders into array
+                BG.Leadership.Clear()
                 For Each si In lbxLeadersChosen.Items
                     Dim slt As String = si.Content
                     Dim q = From c In BGC.Leaders
                             Where c.LeaderName = slt
                             Select c
                     For Each c In q
-                            BG.Leadership.Add(FormatNumber(c.PID, 0))
-                        Next
+                        BG.Leadership.Add(FormatNumber(c.PID, 0))
+                    Next
                 Next
 
                 '// Populate chosen customers into array
+                BG.FrequentCustomers.Clear()
                 For Each si In lbxCustomerChosen.Items
                     Dim sfc As String = si.Content
                     Dim q = From c In BGC.FrequentCustomers
@@ -200,6 +202,7 @@ Public Class BGCRM
                 BG.CateredEvents = v
 
                 '// Populate top offsite locations into array
+                BG.TopOffsiteLocations.Clear()
                 For Each si In lbxOffsiteLocsChosen.Items
                     Dim slt As String = si.Content
                     Dim q = From c In BGC.OffsiteLocations
@@ -212,6 +215,7 @@ Public Class BGCRM
 
             Case 3          '======EVENTS PAGE
                 '// Populate notable events into array
+                BG.NotableEvents.Clear()
                 For Each si In lbxNotableChosen.Items
                     Dim slt As String = si.Content
                     Dim q = From c In BGC.NotableEvents
@@ -223,6 +227,7 @@ Public Class BGCRM
                 Next
 
                 '// Populate top event types into array
+                BG.TopEventTypes.Clear()
                 For Each si In lbxTopETypesChosen.Items
                     Dim slt As String = si.Content
                     Dim q = From c In BGC.EventTypes
@@ -234,6 +239,7 @@ Public Class BGCRM
                 Next
 
                 '// Populate top event spaces into array
+                BG.TopBookedSpaces.Clear()
                 For Each si In lbxTopSpacesChosen.Items
                     Dim slt As String = si.Content
                     Dim q = From c In BGC.EventSpaces
@@ -245,6 +251,7 @@ Public Class BGCRM
                 Next
 
                 '// Populate top eventions involvements into array
+                BG.EventionsInvolvement.Clear()
                 For Each si In lbxInvolveChosen.Items
                     Dim slt As String = si.Content
                     Dim q = From c In BGC.Involvements
@@ -256,6 +263,7 @@ Public Class BGCRM
                 Next
 
                 '// Populate embedded planners into array
+                BG.EmbeddedPlanners.Clear()
                 For Each si In lbxPlannersChosen.Items
                     Dim slt As String = si.Content
                     Dim q = From c In BGC.Planners
@@ -273,7 +281,6 @@ Public Class BGCRM
         SavePageToBGObj(tabPages.SelectedIndex)
         BG.Save(BGC)
         If BG.SaveSuccessful = True Then
-            BGC.SaveChanges()
             btnSaveFinish.Content = "Saved"
             btnSaveFinish.IsEnabled = False
         Else
@@ -294,12 +301,34 @@ Public Class BGCRM
     End Sub
 
     Private Sub LoadToUI()
-        Dim lbc As Integer, tb As TextBox
+        Dim lbc As Integer, tb As TextBox, WorkTime As String = "", workspace As String = ""
         txtOverview.Text = BG.Overview
-        cboWorkTimes.SelectedIndex = BG.WorkTimes
         cboWorkspace.SelectedIndex = BG.OnsiteRemote
         tb = numHeadcount.Children(1)
         tb.Text = FormatNumber(BG.Headcount, 0)
+        Dim GetWorkTime = From wt In BGC.WorkTimes
+                          Where wt.PID = BG.WorkTimes
+                          Select wt
+        For Each c In GetWorkTime
+            WorkTime = Trim(c.WorkTime1)
+        Next
+        For ct As Byte = 0 To cboWorkTimes.Items.Count - 1
+            Dim twp As ComboBoxItem = cboWorkTimes.Items(ct)
+            If twp.Content = WorkTime Then cboWorkTimes.SelectedIndex = ct
+        Next
+
+        Dim GetWorkSpace = From ws In BGC.WorkLocations
+                           Where ws.PID = BG.OnsiteRemote
+                           Select ws
+        For Each c In GetWorkSpace
+            workspace = Trim(c.WorkLocation1)
+        Next
+        For ct As Byte = 0 To cboWorkspace.Items.Count - 1
+            Dim twp As ComboBoxItem = cboWorkspace.Items(ct)
+            If twp.Content = workspace Then cboWorkspace.SelectedIndex = ct
+        Next
+
+
         For Each comm As Long In BG.Communications
             Dim GetCommName = From comms In BGC.Communications
                               Where comms.PID = comm
@@ -629,8 +658,10 @@ Public Class BGCRM
             li1.Tag = "C"
             AddHandler li1.MouseDoubleClick, AddressOf OriginMove
             lbxOriginSelect.Items.Add(li1)
-
+            'li2.Content = bloc.BuildingName
+            'li2.Tag = "C"
             lbxDestination.Items.Add(bloc.BuildingName)
+            'li2.Width = lbxDestination.Width - 40
         Next
 
         '// Populate leader and leadership team options - shared datasource
@@ -955,10 +986,41 @@ Public Class BGCRM
 
     End Sub
 
-    Private Sub PopulateRefreshEvent(sender, EventArgs)
-        'TODO POPULATE REFRESH EVENT DATA CHOSEN BY USER
-        Dim lbi As ListBoxItem = sender
-        MsgBox(lbi.Content)
+    Private Sub PopulateRefreshEvent(sender, EventArgs) Handles lbxRefreshEvents.SelectionChanged
+        Dim RefEvent As String, EventID As Long, lbi As ListBoxItem = lbxRefreshEvents.SelectedItem
+        RefEvent = lbi.Content
+        Dim GetEventDetails = From evnt In BGC.RefreshEvents
+                              Where evnt.RefreshEventName = RefEvent
+                              Select evnt
+        For Each c In GetEventDetails
+            EventID = c.EventID
+            txtEventName.Text = RefEvent
+            dtpStartDate.DisplayDate = c.MoveStart
+            Dim tb As TextBox = numPopMoving.Children(1)
+            tb.Text = FormatNumber(c.MovePopulation)
+            dtpEndDate.DisplayDate = c.MoveEnd
+            For ct = 0 To lbxDestination.Items.Count - 1
+                If lbxDestination.Items(ct).ToString = c.Destination Then lbxDestination.SelectedIndex = ct
+            Next
+        Next
+
+        Dim GetEventBuildings = From ebldgs In BGC.RefreshEventOrigins
+                                Where ebldgs.EventId = EventID
+                                Select ebldgs
+
+        For Each c In GetEventBuildings
+            Dim bldgnm As String = BG.FetchBuildingName(FormatNumber(c.BuildingId, 0))
+            Dim lb As ListBoxItem
+            For Each lb In lbxOriginSelect.Items
+                If lb.Content = bldgnm Then
+                    lbxOriginSelect.Items.Remove(lb)
+                    lb.Content = lb.Content & "--" & c.PopMoving & " headcount"
+                    lb.Tag = "S"
+                    lbxOriginChosen.Items.Add(lb)
+                    Exit For
+                End If
+            Next
+        Next
     End Sub
 
     Private Sub StartDateChanged(sender As Object, e As SelectionChangedEventArgs) Handles dtpStartDate.SelectedDateChanged, dtpEndDate.SelectedDateChanged
@@ -1032,7 +1094,7 @@ Public Class BGCRM
             Dim cbi As ComboBoxItem = cboGroup.SelectedItem
             cboGroup.Items.Remove(cbi)
             cboGroup.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
-            BG.DeleteFromDatabase(bgnm)
+            BG.DeleteFromDatabase(BG.GetGroupID(bgnm), bgnm)
         End If
     End Sub
 
