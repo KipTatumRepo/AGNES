@@ -323,12 +323,12 @@
             'ef.SaveChanges()
             SaveRefreshEvents(bgid)
             ef.SaveChanges()
-        SaveSuccessful = True
+            SaveSuccessful = True
         Catch excep As Exception
-        Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly, 14, True, "Save failed.",, "Error : " & excep.Message)
-        amsg.ShowDialog()
-        amsg.Close()
-        SaveSuccessful = False
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly, 14, True, "Save failed.",, "Error : " & excep.Message)
+            amsg.ShowDialog()
+            amsg.Close()
+            SaveSuccessful = False
         End Try
     End Sub
     Private Sub SaveNew()
