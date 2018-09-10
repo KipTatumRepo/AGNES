@@ -539,7 +539,7 @@ Public Class BGCRM
     End Sub
 
     Private Sub SaveRefreshEvent(sender As Object, e As EventArgs) Handles btnSaveRefreshEvent.Click
-        'TODO: ADD ADDITIONAL VALIDATION PRIOR TO SAVING FOR ALL FIELDS/LISTS
+        'TODO: ADD ADDITIONAL VALIDATION PRIOR TO SAVING FOR ALL FIELDS/LISTS!  
         For Each cr As RefreshEvent In BG.CREvents
             If cr.RefreshEventName = txtEventName.Text Then
                 Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly, 12,, "Save failed.",, "An event with this name already exists.")
