@@ -144,8 +144,8 @@ Public Class BGCRM
                          Where c.LeaderName = sl
                          Select c
                 For Each c In ql
-                        BG.OrgLeader = FormatNumber(c.PID, 0)
-                    Next
+                    BG.OrgLeader = FormatNumber(c.PID, 0)
+                Next
 
 
                 '// Populate relationship manager
@@ -154,8 +154,8 @@ Public Class BGCRM
                          Where c.CustomerName = orm
                          Select c
                 For Each c In qr
-                        BG.RelationshipMgr = FormatNumber(c.PID, 0)
-                    Next
+                    BG.RelationshipMgr = FormatNumber(c.PID, 0)
+                Next
 
 
 
@@ -166,8 +166,8 @@ Public Class BGCRM
                             Where c.LeaderName = slt
                             Select c
                     For Each c In q
-                            BG.Leadership.Add(FormatNumber(c.PID, 0))
-                        Next
+                        BG.Leadership.Add(FormatNumber(c.PID, 0))
+                    Next
                 Next
 
                 '// Populate chosen customers into array
@@ -629,8 +629,10 @@ Public Class BGCRM
             li1.Tag = "C"
             AddHandler li1.MouseDoubleClick, AddressOf OriginMove
             lbxOriginSelect.Items.Add(li1)
-
-            lbxDestination.Items.Add(bloc.BuildingName)
+            li2.Content = bloc.BuildingName
+            li2.Tag = "C"
+            lbxDestination.Items.Add(li2)
+            li2.Width = lbxDestination.Width - 40
         Next
 
         '// Populate leader and leadership team options - shared datasource
@@ -955,10 +957,24 @@ Public Class BGCRM
 
     End Sub
 
-    Private Sub PopulateRefreshEvent(sender, EventArgs)
+    Private Sub PopulateRefreshEvent(sender, EventArgs) Handles lbxRefreshEvents.SelectionChanged
         'TODO POPULATE REFRESH EVENT DATA CHOSEN BY USER
-        Dim lbi As ListBoxItem = sender
-        MsgBox(lbi.Content)
+        Dim RefEvent As String, lbi As ListBoxItem = lbxRefreshEvents.SelectedItem, a As ListBoxItem
+        RefEvent = lbi.Content
+        Dim GetEventDetails = From evnt In BGC.RefreshEvents
+                              Where evnt.RefreshEventName = RefEvent
+                              Select evnt
+        For Each c In GetEventDetails
+            txtEventName.Text = RefEvent
+            dtpStartDate.DisplayDate = c.MoveStart
+            dtpEndDate.DisplayDate = c.MoveEnd
+            Dim tb As TextBox = numPopMoving.Children(1)
+            tb.Text = FormatNumber(c.MovePopulation)
+
+            For Each a In lbxDestination.Items
+                If a.Content = c.Destination Then a.IsSelected = True
+            Next
+        Next
     End Sub
 
     Private Sub StartDateChanged(sender As Object, e As SelectionChangedEventArgs) Handles dtpStartDate.SelectedDateChanged, dtpEndDate.SelectedDateChanged
