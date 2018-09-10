@@ -1,7 +1,9 @@
 ﻿Public Class objBusinessGroup
+#Region "Properties"
     Private _orgname As String
     Private ef As BGCRMEntity
     Private sd As BIEntities
+    Public AlreadyExists As Boolean
     Public Property OrgName As String
         Get
             Return _orgname
@@ -122,6 +124,7 @@
     Public Property EventionsInvolvement As New List(Of Long)
     Public Property CREvents As New List(Of RefreshEvent)
     Public Property SaveSuccessful As Boolean
+#End Region
     Public Sub New()
         sd = New BIEntities
         ef = New BGCRMEntity
@@ -132,6 +135,12 @@
         Dim GetGroupID = From businessgroups In ef.BusinessGroups
                          Where businessgroups.BusinessGroupName Is bgn
                          Select businessgroups
+
+        If GetGroupID.Count = 0 Then
+            AlreadyExists = False
+            Exit Sub
+        End If
+        AlreadyExists = True
         For Each c In GetGroupID
             OrgName = c.BusinessGroupName
             OrgID = c.BusinessGroupID
@@ -231,6 +240,7 @@
         For Each c In GetRefreshEvents
             Dim ncr As New RefreshEvent
             With ncr
+                .RefreshEventName = c.RefreshEventName
                 .GroupID = OrgID
                 .MoveStart = c.MoveStartDate
                 .MoveEnd = c.MoveEndDate
@@ -253,6 +263,8 @@
         Next
     End Sub
 
+#Region "Save Methods"
+
     Public Sub Save(ByRef EnFrModel)
         ef = EnFrModel
         Try
@@ -261,6 +273,7 @@
         Catch ex As InvalidOperationException
             SaveNew()
         Catch ex As Exception
+            SaveSuccessful = False
         End Try
 
     End Sub
@@ -268,6 +281,7 @@
         Try
             '// Handle all non-joined first, save, query for PID, and then handle writing to _join tables
             Dim bg = ef.BusinessGroups.Single(Function(p) p.BusinessGroupName = OrgName)
+            Dim bgid As Long = bg.BusinessGroupID
             With bg
                 .BusinessGroupName = OrgName
                 .GroupOverview = Overview
@@ -282,22 +296,39 @@
                 .EventsCatered = CateredEvents
                 .OffsiteSpend = OffSiteSpend
             End With
-
+            DeleteComms(bgid)
+            SaveComms(bgid)
+            DeleteCultures(bgid)
+            SaveCulture(bgid)
+            DeleteLocations(bgid)
+            SaveLocations(bgid)
+            DeleteLeaders(bgid)
+            SaveLeadership(bgid)
+            DeleteCustomers(bgid)
+            SaveCustomers(bgid)
+            DeleteOffsites(bgid)
+            SaveOffsites(bgid)
+            DeleteNotables(bgid)
+            SaveNotables(bgid)
+            DeleteTopEvents(bgid)
+            SaveTypes(bgid)
+            DeleteSpaces(bgid)
+            SaveSpaces(bgid)
+            DeleteInvolvements(bgid)
+            SaveInvolvements(bgid)
+            DeletePlanners(bgid)
+            SavePlanners(bgid)
+            DeleteRefreshEvents(bgid)
+            DeleteOrigins(bgid)
+            'ef.SaveChanges()
+            SaveRefreshEvents(bgid)
             ef.SaveChanges()
-
-            SaveComms(bg.PID, 1)
-            SaveCulture(bg.PID, 1)
-            SaveLocations(bg.PID, 1)
-            SaveLeadership(bg.PID, 1)
-            SaveCustomers(bg.PID, 1)
-            SaveOffsites(bg.PID, 1)
-            SaveNotables(bg.PID, 1)
-            SaveTypes(bg.PID, 1)
-            SaveSpaces(bg.PID, 1)
-            SaveInvolvements(bg.PID, 1)
-            SavePlanners(bg.PID, 1)
-
+        SaveSuccessful = True
         Catch excep As Exception
+        Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly, 14, True, "Save failed.",, "Error : " & excep.Message)
+        amsg.ShowDialog()
+        amsg.Close()
+        SaveSuccessful = False
         End Try
     End Sub
     Private Sub SaveNew()
@@ -308,18 +339,18 @@
             Into Max(c.BusinessGroupID)
 
             Dim NextID As Long = qwl + 1
-            SaveComms(NextID, 0)
-            SaveCulture(NextID, 0)
-            SaveLocations(NextID, 0)
-            SaveLeadership(NextID, 0)
-            SaveCustomers(NextID, 0)
-            SaveOffsites(NextID, 0)
-            SaveNotables(NextID, 0)
-            SaveTypes(NextID, 0)
-            SaveSpaces(NextID, 0)
-            SaveInvolvements(NextID, 0)
-            SavePlanners(NextID, 0)
-            SaveRefreshEvents(NextID, 0)
+            SaveComms(NextID)
+            SaveCulture(NextID)
+            SaveLocations(NextID)
+            SaveLeadership(NextID)
+            SaveCustomers(NextID)
+            SaveOffsites(NextID)
+            SaveNotables(NextID)
+            SaveTypes(NextID)
+            SaveSpaces(NextID)
+            SaveInvolvements(NextID)
+            SavePlanners(NextID)
+            SaveRefreshEvents(NextID)
             Dim bg As New BusinessGroup
             With bg
                 .BusinessGroupID = NextID
@@ -347,213 +378,188 @@
             SaveSuccessful = False
         End Try
     End Sub
-    Private Sub SaveComms(bgid, isnew)
-        If isnew = 0 Then
-            For Each i As Long In Communications
-                Dim cj As New Comm_Join
-                With cj
+    Private Sub SaveComms(bgid As Long)
+        For Each i As Long In Communications
+            Dim cj As New Comm_Join
+            With cj
+                .BGId = bgid
+                .CommId = i
+            End With
+            ef.Comm_Join.Add(cj)
+        Next
+    End Sub
+    Private Sub SaveCulture(bgid As Long)
+        For Each i As Long In Culture
+            Dim cj As New Culture_Join
+            With cj
+                .BGId = bgid
+                .CultureId = i
+            End With
+            ef.Culture_Join.Add(cj)
+        Next
+    End Sub
+    Private Sub SaveLocations(bgid As Long)
+        For Each i As Long In Locations
+            Dim lj As New Locations_Join
+            With lj
+                .BGId = bgid
+                .LocId = i
+            End With
+            ef.Locations_Join.Add(lj)
+        Next
+    End Sub
+    Private Sub SaveLeadership(bgid As Long)
+        For Each i As Long In Leadership
+            Dim lj As New Leaders_Join
+            With lj
+                .BGId = bgid
+                .LeaderId = i
+            End With
+            ef.Leaders_Join.Add(lj)
+        Next
+    End Sub
+    Private Sub SaveOffsites(bgid As Long)
+        For Each i As Long In TopOffsiteLocations
+            Dim oj As New Offsites_Join
+            With oj
+                .BGId = bgid
+                .OffsiteId = i
+            End With
+            ef.Offsites_Join.Add(oj)
+        Next
+    End Sub
+    Private Sub SaveCustomers(bgid As Long)
+        For Each i As Long In FrequentCustomers
+            Dim cj As New FreqCust_Join
+            With cj
+                .BGId = bgid
+                .CustId = i
+            End With
+            ef.FreqCust_Join.Add(cj)
+        Next
+    End Sub
+    Private Sub SaveNotables(bgid As Long)
+        For Each i As Long In NotableEvents
+            Dim nj As New NotableEvents_Join
+            With nj
+                .BGId = bgid
+                .EventId = i
+            End With
+            ef.NotableEvents_Join.Add(nj)
+        Next
+    End Sub
+    Private Sub SaveTypes(bgid As Long)
+        For Each i As Long In TopEventTypes
+            Dim ej As New TopEventTypes_Join
+            With ej
+                .BGId = bgid
+                .TypeId = i
+            End With
+            ef.TopEventTypes_Join.Add(ej)
+        Next
+    End Sub
+    Private Sub SaveSpaces(bgid As Long)
+        For Each i As Long In TopBookedSpaces
+            Dim sj As New TopSpaces_Join
+            With sj
+                .BGId = bgid
+                .SpaceID = i
+            End With
+            ef.TopSpaces_Join.Add(sj)
+        Next
+    End Sub
+    Private Sub SaveInvolvements(bgid As Long)
+        For Each i As Long In EventionsInvolvement
+            Dim ij As New Involvement_Join
+            With ij
+                .BGId = bgid
+                .InvolveId = i
+            End With
+            ef.Involvement_Join.Add(ij)
+        Next
+    End Sub
+    Private Sub SavePlanners(bgid As Long)
+        For Each i As Long In EmbeddedPlanners
+            Dim pj As New Planners_Join
+            With pj
+                .BGId = bgid
+                .PlannerId = i
+            End With
+            ef.Planners_Join.Add(pj)
+        Next
+    End Sub
+    Private Sub SaveRefreshEvents(bgid As Long)
+        Dim EID As Long
+        '// Fetch next event ID
+        Try
+            Dim qwl = Aggregate c In ef.RefreshEvents
+                Into Max(c.EventID)
+            EID = qwl + 1
+        Catch ex As Exception
+            EID = 1
+        End Try
+        Dim a As Byte = CREvents.Count
+        For Each cr As RefreshEvent In CREvents
+            '// Write base event to database
+            Dim re As New RefreshEvent
+            With re
+                .EventID = EID
+                .RefreshEventName = cr.RefreshEventName
+                .BGId = bgid
+                .MoveStartDate = cr.MoveStart
+                .MoveEndDate = cr.MoveEnd
+                .Destination = cr.DestinationBuilding
+                .MovePopulation = cr.TotalPopulation
+            End With
+            ef.RefreshEvents.Add(re)
+            '// for each origin building, write to the Origins database
+            For Each crb As CRBuilding In cr.BuildingsMoving
+                Dim eob As New RefreshEventOrigin
+                With eob
+                    .EventId = EID
+                    .BuildingId = crb.BuildingId
+                    .PopMoving = crb.MovePopulation
                     .BGId = bgid
-                    .CommId = i
                 End With
-                ef.Comm_Join.Add(cj)
+                ef.RefreshEventOrigins.Add(eob)
             Next
-        Else
-            Dim ph1 As String = ""
-        End If
+            EID += 1
+        Next
+    End Sub
 
-    End Sub
-    Private Sub SaveCulture(bgid, isnew)
-        If isnew = 0 Then
-            For Each i As Long In Culture
-                Dim cj As New Culture_Join
-                With cj
-                    .BGId = bgid
-                    .CultureId = i
-                End With
-                ef.Culture_Join.Add(cj)
-            Next
-        Else
-            Dim ph1 As String = ""
-        End If
-    End Sub
-    Private Sub SaveLocations(bgid, isnew)
-        If isnew = 0 Then
-            For Each i As Long In Locations
-                Dim lj As New Locations_Join
-                With lj
-                    .BGId = bgid
-                    .LocId = i
-                End With
-                ef.Locations_Join.Add(lj)
-            Next
-        Else
-            Dim ph1 As String = ""
-        End If
+#End Region
 
+#Region "Deletion Methods"
+    Public Sub DeleteFromDatabase(bgid As Long, Optional bgnm As String = "")
+        DeleteGroup(bgid)
+        DeleteComms(bgid)
+        DeleteCultures(bgid)
+        DeleteLocations(bgid)
+        DeleteLeaders(bgid)
+        DeleteCustomers(bgid)
+        DeleteOffsites(bgid)
+        DeleteNotables(bgid)
+        DeleteTopEvents(bgid)
+        DeleteSpaces(bgid)
+        DeleteInvolvements(bgid)
+        DeletePlanners(bgid)
+        DeleteRefreshEvents(bgid)
+        DeleteOrigins(bgid)
+        ef.SaveChanges()
+        Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                        14, False, "Command Successful",, bgnm & " has been deleted.")
+        amsg.ShowDialog()
+        amsg.Close()
     End Sub
-    Private Sub SaveLeadership(bgid, isnew)
-        If isnew = 0 Then
-            For Each i As Long In Leadership
-                Dim lj As New Leaders_Join
-                With lj
-                    .BGId = bgid
-                    .LeaderId = i
-                End With
-                ef.Leaders_Join.Add(lj)
-            Next
-        Else
-            Dim ph1 As String = ""
-        End If
-    End Sub
-    Private Sub SaveOffsites(bgid, isnew)
-        If isnew = 0 Then
-            For Each i As Long In TopOffsiteLocations
-                Dim oj As New Offsites_Join
-                With oj
-                    .BGId = bgid
-                    .OffsiteId = i
-                End With
-                ef.Offsites_Join.Add(oj)
-            Next
-        Else
-            Dim ph1 As String = ""
-        End If
-    End Sub
-    Private Sub SaveCustomers(bgid, isnew)
-        If isnew = 0 Then
-            For Each i As Long In FrequentCustomers
-                Dim cj As New FreqCust_Join
-                With cj
-                    .BGId = bgid
-                    .CustId = i
-                End With
-                ef.FreqCust_Join.Add(cj)
-            Next
-        Else
-            Dim ph1 As String = ""
-        End If
-    End Sub
-    Private Sub SaveNotables(bgid, isnew)
-        If isnew = 0 Then
-            For Each i As Long In NotableEvents
-                Dim nj As New NotableEvents_Join
-                With nj
-                    .BGId = bgid
-                    .EventId = i
-                End With
-                ef.NotableEvents_Join.Add(nj)
-            Next
-        Else
-            Dim ph1 As String = ""
-        End If
-    End Sub
-    Private Sub SaveTypes(bgid, isnew)
-        If isnew = 0 Then
-            For Each i As Long In TopEventTypes
-                Dim ej As New TopEventTypes_Join
-                With ej
-                    .BGId = bgid
-                    .TypeId = i
-                End With
-                ef.TopEventTypes_Join.Add(ej)
-            Next
-        Else
-            Dim ph1 As String = ""
-        End If
-    End Sub
-    Private Sub SaveSpaces(bgid, isnew)
-        If isnew = 0 Then
-            For Each i As Long In TopBookedSpaces
-                Dim sj As New TopSpaces_Join
-                With sj
-                    .BGId = bgid
-                    .SpaceID = i
-                End With
-                ef.TopSpaces_Join.Add(sj)
-            Next
-        Else
-            Dim ph1 As String = ""
-        End If
-    End Sub
-    Private Sub SaveInvolvements(bgid, isnew)
-        If isnew = 0 Then
-            For Each i As Long In EventionsInvolvement
-                Dim ij As New Involvement_Join
-                With ij
-                    .BGId = bgid
-                    .InvolveId = i
-                End With
-                ef.Involvement_Join.Add(ij)
-            Next
-        Else
-            Dim ph1 As String = ""
-        End If
-    End Sub
-    Private Sub SavePlanners(bgid, isnew)
-        If isnew = 0 Then
-            For Each i As Long In EmbeddedPlanners
-                Dim pj As New Planners_Join
-                With pj
-                    .BGId = bgid
-                    .PlannerId = i
-                End With
-                ef.Planners_Join.Add(pj)
-            Next
-        Else
-            Dim ph1 As String = ""
-        End If
-    End Sub
-    Private Sub SaveRefreshEvents(bgid, isnew)
-        If isnew = 0 Then
-            Dim EID As Long
-            '// Fetch next event ID
-            Try
-                Dim qwl = Aggregate c In ef.RefreshEvents
-                    Into Max(c.EventID)
-                EID = qwl + 1
-            Catch ex As Exception
-                EID = 1
-            End Try
-
-            For Each cr As RefreshEvent In CREvents
-                '// Write base event to database
-                Dim re As New RefreshEvent
-                With re
-                    .EventID = EID
-                    .RefreshEventName = cr.RefreshEventName
-                    .BGId = bgid
-                    .MoveStartDate = cr.MoveStart
-                    .MoveEndDate = cr.MoveEnd
-                    .Destination = cr.DestinationBuilding
-                    .MovePopulation = cr.TotalPopulation
-                End With
-                ef.RefreshEvents.Add(re)
-                '// for each origin building, write to the Origins database
-                For Each crb As CRBuilding In cr.BuildingsMoving
-                    Dim eob As New RefreshEventOrigin
-                    With eob
-                        .EventId = EID
-                        .BuildingId = crb.BuildingId
-                        .PopMoving = crb.MovePopulation
-                        .BGId = bgid
-                    End With
-                    ef.RefreshEventOrigins.Add(eob)
-                Next
-                EID += 1
-            Next
-        Else
-            Dim ph1 As String = ""
-        End If
-    End Sub
-    Public Sub DeleteFromDatabase(bgnm)
-        Dim bgid As Integer
+    Private Sub DeleteGroup(bgid As Long)
         '// Delete from BusinessGroups
-        Dim bgq = From bgrp In ef.BusinessGroups Select bgrp Where bgrp.BusinessGroupName Is bgnm
+        Dim bgq = From bgrp In ef.BusinessGroups Select bgrp Where bgrp.BusinessGroupID = bgid
         For Each bgrp In bgq
             bgid = bgrp.BusinessGroupID
             ef.BusinessGroups.Remove(bgrp)
         Next
-
+    End Sub
+    Private Sub DeleteComms(bgid As Long)
         '// Delete from Communications
         Try
             Dim dbq = From FoundItem In ef.Comm_Join Select FoundItem Where FoundItem.BGId = bgid
@@ -563,8 +569,9 @@
         Catch ex As Exception
             '// Nothing in table
         End Try
-
-        '// Delete from Communications
+    End Sub
+    Private Sub DeleteCultures(bgid As Long)
+        '// Delete from Cultures
         Try
             Dim dbq = From FoundItem In ef.Culture_Join Select FoundItem Where FoundItem.BGId = bgid
             For Each FoundItem In dbq
@@ -573,37 +580,8 @@
         Catch ex As Exception
             '// Nothing in table
         End Try
-
-        '// Delete from Customers
-        Try
-            Dim dbq = From FoundItem In ef.FreqCust_Join Select FoundItem Where FoundItem.BGId = bgid
-            For Each FoundItem In dbq
-                ef.FreqCust_Join.Remove(FoundItem)
-            Next
-        Catch ex As Exception
-            '// Nothing in table
-        End Try
-
-        '// Delete from Involvements
-        Try
-            Dim dbq = From FoundItem In ef.Involvement_Join Select FoundItem Where FoundItem.BGId = bgid
-            For Each FoundItem In dbq
-                ef.Involvement_Join.Remove(FoundItem)
-            Next
-        Catch ex As Exception
-            '// Nothing in table
-        End Try
-
-        '// Delete from Leaders
-        Try
-            Dim dbq = From FoundItem In ef.Leaders_Join Select FoundItem Where FoundItem.BGId = bgid
-            For Each FoundItem In dbq
-                ef.Leaders_Join.Remove(FoundItem)
-            Next
-        Catch ex As Exception
-            '// Nothing in table
-        End Try
-
+    End Sub
+    Private Sub DeleteLocations(bgid As Long)
         '// Delete from Locations
         Try
             Dim dbq = From FoundItem In ef.Locations_Join Select FoundItem Where FoundItem.BGId = bgid
@@ -613,17 +591,30 @@
         Catch ex As Exception
             '// Nothing in table
         End Try
-
-        '// Delete from Notables
+    End Sub
+    Private Sub DeleteLeaders(bgid As Long)
+        '// Delete from Leaders
         Try
-            Dim dbq = From FoundItem In ef.NotableEvents_Join Select FoundItem Where FoundItem.BGId = bgid
+            Dim dbq = From FoundItem In ef.Leaders_Join Select FoundItem Where FoundItem.BGId = bgid
             For Each FoundItem In dbq
-                ef.NotableEvents_Join.Remove(FoundItem)
+                ef.Leaders_Join.Remove(FoundItem)
             Next
         Catch ex As Exception
             '// Nothing in table
         End Try
-
+    End Sub
+    Private Sub DeleteCustomers(bgid As Long)
+        '// Delete from Customers
+        Try
+            Dim dbq = From FoundItem In ef.FreqCust_Join Select FoundItem Where FoundItem.BGId = bgid
+            For Each FoundItem In dbq
+                ef.FreqCust_Join.Remove(FoundItem)
+            Next
+        Catch ex As Exception
+            '// Nothing in table
+        End Try
+    End Sub
+    Private Sub DeleteOffsites(bgid As Long)
         '// Delete from Offsites
         Try
             Dim dbq = From FoundItem In ef.Offsites_Join Select FoundItem Where FoundItem.BGId = bgid
@@ -633,37 +624,19 @@
         Catch ex As Exception
             '// Nothing in table
         End Try
-
-        '// Delete from Planners
+    End Sub
+    Private Sub DeleteNotables(bgid As Long)
+        '// Delete from Notables
         Try
-            Dim dbq = From FoundItem In ef.Planners_Join Select FoundItem Where FoundItem.BGId = bgid
+            Dim dbq = From FoundItem In ef.NotableEvents_Join Select FoundItem Where FoundItem.BGId = bgid
             For Each FoundItem In dbq
-                ef.Planners_Join.Remove(FoundItem)
+                ef.NotableEvents_Join.Remove(FoundItem)
             Next
         Catch ex As Exception
             '// Nothing in table
         End Try
-
-        '// Delete from Refresh Events
-        Try
-            Dim dbq = From FoundItem In ef.RefreshEvents Select FoundItem Where FoundItem.BGId = bgid
-            For Each FoundItem In dbq
-                ef.RefreshEvents.Remove(FoundItem)
-            Next
-        Catch ex As Exception
-            '// Nothing in table
-        End Try
-
-        '// Delete from Refresh Event Origins
-        Try
-            Dim dbq = From FoundItem In ef.RefreshEventOrigins Select FoundItem Where FoundItem.BGId = bgid
-            For Each FoundItem In dbq
-                ef.RefreshEventOrigins.Remove(FoundItem)
-            Next
-        Catch ex As Exception
-            '// Nothing in table
-        End Try
-
+    End Sub
+    Private Sub DeleteTopEvents(bgid As Long)
         '// Delete from Top Event Types
         Try
             Dim dbq = From FoundItem In ef.TopEventTypes_Join Select FoundItem Where FoundItem.BGId = bgid
@@ -674,6 +647,8 @@
             '// Nothing in table
         End Try
 
+    End Sub
+    Private Sub DeleteSpaces(bgid As Long)
         '// Delete from Top Event Spaces
         Try
             Dim dbq = From FoundItem In ef.TopSpaces_Join Select FoundItem Where FoundItem.BGId = bgid
@@ -684,12 +659,55 @@
             '// Nothing in table
         End Try
 
-        ef.SaveChanges()
-        Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
-                                        14, False, "Command Successful",, bgnm & " has been deleted.")
-        amsg.ShowDialog()
-        amsg.Close()
     End Sub
+    Private Sub DeleteInvolvements(bgid As Long)
+        '// Delete from Involvements
+        Try
+            Dim dbq = From FoundItem In ef.Involvement_Join Select FoundItem Where FoundItem.BGId = bgid
+            For Each FoundItem In dbq
+                ef.Involvement_Join.Remove(FoundItem)
+            Next
+        Catch ex As Exception
+            '// Nothing in table
+        End Try
+    End Sub
+    Private Sub DeletePlanners(bgid As Long)
+        '// Delete from Planners
+        Try
+            Dim dbq = From FoundItem In ef.Planners_Join Select FoundItem Where FoundItem.BGId = bgid
+            For Each FoundItem In dbq
+                ef.Planners_Join.Remove(FoundItem)
+            Next
+        Catch ex As Exception
+            '// Nothing in table
+        End Try
+    End Sub
+    Private Sub DeleteRefreshEvents(bgid As Long)
+        '// Delete from Refresh Events
+        Try
+            Dim dbq = From FoundItem In ef.RefreshEvents Select FoundItem Where FoundItem.BGId = bgid
+            For Each FoundItem In dbq
+                ef.RefreshEvents.Remove(FoundItem)
+            Next
+        Catch ex As Exception
+            '// Nothing in table
+        End Try
+    End Sub
+    Private Sub DeleteOrigins(bgid As Long)
+        '// Delete from Refresh Event Origins
+        Try
+            Dim dbq = From FoundItem In ef.RefreshEventOrigins Select FoundItem Where FoundItem.BGId = bgid
+            For Each FoundItem In dbq
+                ef.RefreshEventOrigins.Remove(FoundItem)
+            Next
+        Catch ex As Exception
+            '// Nothing in table
+        End Try
+    End Sub
+
+#End Region
+
+#Region "Functions"
     Public Function FetchBuildingID(bn) As Integer
         Dim retval As Integer = 0
         Dim loq = From bloc In sd.MasterBuildingLists Select bloc Where bloc.BuildingName Is bn
@@ -698,11 +716,11 @@
         Next
         Return retval
     End Function
-    Public Function FetchBuildingName(bid) As String
+    Public Function FetchBuildingName(bid As Integer) As String
         Dim retval As String = ""
-        Dim loq = From bloc In sd.MasterBuildingLists Select bloc Where bloc.PID = bid
-        For Each bloc In loq
-            retval = bloc.BuildingName
+        Dim dbq = From bldg In sd.MasterBuildingLists Select bldg Where bldg.PID = bid
+        For Each bldg In dbq
+            retval = bldg.BuildingName
         Next
         Return retval
     End Function
@@ -716,4 +734,6 @@
             Return 0
         End Try
     End Function
+#End Region
+
 End Class
