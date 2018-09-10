@@ -1,6 +1,5 @@
 ﻿Imports System.ComponentModel
 Imports System.Linq
-'TODO: NEED UPDATE ROUTINES
 Public Class BGCRM
     Dim BG As objBusinessGroup
     Dim BGC As BGCRMEntity
