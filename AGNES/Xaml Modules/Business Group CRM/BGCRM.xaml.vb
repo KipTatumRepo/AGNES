@@ -539,9 +539,14 @@ Public Class BGCRM
     End Sub
 
     Private Sub SaveRefreshEvent(sender As Object, e As EventArgs) Handles btnSaveRefreshEvent.Click
-
-        'TODO: '// Validate refresh event doesn't exist
-
+        For Each cr As RefreshEvent In BG.CREvents
+            If cr.RefreshEventName = txtEventName.Text Then
+                Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly, 12,, "Save failed.",, "An event with this name already exists.")
+                amsg.ShowDialog()
+                amsg.Close()
+                Exit Sub
+            End If
+        Next
         Dim NewCr As New RefreshEvent, tb As TextBox = numPopMoving.Children(1)
         With NewCr
             .RefreshEventName = txtEventName.Text
@@ -570,7 +575,8 @@ Public Class BGCRM
         BG.CREvents.Add(NewCr)
         lbxOriginChosen.Items.Clear()
         lbxOriginSelect.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
-        lbxRefreshEvents.Items.Add(NewCr.RefreshEventName)
+        Dim mainlbi As New ListBoxItem With {.Content = NewCr.RefreshEventName}
+        lbxRefreshEvents.Items.Add(mainlbi)
         lbxDestination.SelectedIndex = -1
         Dim txtb As TextBox = numPopMoving.Children(1)
         txtb.Text = "0"
@@ -986,6 +992,7 @@ Public Class BGCRM
     End Sub
 
     Private Sub PopulateRefreshEvent(sender, EventArgs) Handles lbxRefreshEvents.SelectionChanged
+        'TODO: Refresh selectable listbox and clear chosen listbox prior to populating
         Dim RefEvent As String, EventID As Long, lbi As ListBoxItem = lbxRefreshEvents.SelectedItem
         RefEvent = lbi.Content
         Dim GetEventDetails = From evnt In BGC.RefreshEvents
@@ -996,7 +1003,7 @@ Public Class BGCRM
             txtEventName.Text = RefEvent
             dtpStartDate.DisplayDate = c.MoveStart
             Dim tb As TextBox = numPopMoving.Children(1)
-            tb.Text = FormatNumber(c.MovePopulation)
+            tb.Text = FormatNumber(c.MovePopulation, 0)
             dtpEndDate.DisplayDate = c.MoveEnd
             For ct = 0 To lbxDestination.Items.Count - 1
                 If lbxDestination.Items(ct).ToString = c.Destination Then lbxDestination.SelectedIndex = ct
@@ -1025,11 +1032,6 @@ Public Class BGCRM
     Private Sub StartDateChanged(sender As Object, e As SelectionChangedEventArgs) Handles dtpStartDate.SelectedDateChanged, dtpEndDate.SelectedDateChanged
         '// Validate end date is not before start date
         If dtpEndDate.SelectedDate < dtpStartDate.SelectedDate Then dtpEndDate.SelectedDate = dtpStartDate.SelectedDate
-    End Sub
-
-    Private Sub ResetFields()
-        Dim ph As String = ""
-        'TODO : Build field reset routine
     End Sub
 
 #End Region
