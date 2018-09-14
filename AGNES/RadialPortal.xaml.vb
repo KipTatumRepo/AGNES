@@ -61,7 +61,7 @@
 
         '// IMPERSONATION - Change to whichever userID and Access Level needed to test
         'ULVL = 4
-        'UID = 80
+        'UID = 81
         '// IMPERSONATION
 
         Dim ef As New AGNESSharedData
@@ -121,7 +121,6 @@
                 PlaceMenuItem(ct, c.ModuleName, c.ModuleName, "Resources/" & c.ImgResource & ".png")
             Next
         Next
-
     End Sub
 
     Private Sub DragViaLeftMouse(sender As Object, e As MouseButtonEventArgs)
