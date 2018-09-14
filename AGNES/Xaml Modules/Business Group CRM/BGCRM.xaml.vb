@@ -1075,6 +1075,7 @@ Public Class BGCRM
                 ct += 1
             Next
             Array.Sort(SortArray)
+            Dim a As Byte = cboGroup.Items.Count
             For ct = 0 To SortArray.Length - 1
                 Dim cbi As ComboBoxItem = cboGroup.Items.Item(ct)
                 cbi.Content = SortArray(ct)

@@ -127,6 +127,24 @@
     <Compile Include="Application Objects\NumberBox.vb" />
     <Compile Include="Application Objects\PeriodChooser.vb" />
     <Compile Include="Application Objects\WeekChooser.vb" />
+    <Compile Include="Entities\GeneralSharedData.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GeneralSharedData.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\GeneralSharedData.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GeneralSharedData.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\GeneralSharedData.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GeneralSharedData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\MasterBuildingList.vb">
+      <DependentUpon>GeneralSharedData.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\RefreshEvent.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
@@ -209,21 +227,6 @@
     <Compile Include="Entities\FrequentCustomer.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\GeneralSharedData.Context.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GeneralSharedData.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\GeneralSharedData.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GeneralSharedData.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\GeneralSharedData.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GeneralSharedData.tt</DependentUpon>
-    </Compile>
     <Compile Include="Entities\GroupCulture.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
@@ -244,9 +247,6 @@
     </Compile>
     <Compile Include="Entities\Locations_Join.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\MasterBuildingList.vb">
-      <DependentUpon>GeneralSharedData.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\ModuleGroupList.vb">
       <DependentUpon>AGNESSharedData.tt</DependentUpon>

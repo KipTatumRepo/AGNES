@@ -90,7 +90,7 @@ Partial Friend NotInheritable Class MySettings
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
      Global.System.Configuration.DefaultSettingValueAttribute("Data Source=compasspowerbi;Initial Catalog=AGNES;Persist Security Info=True;User "& _ 
-        "ID=AGNESApplication;Password=Fluoxetine3!")>  _
+        "ID=AGNESApplication;Password=Fluoxetine04!")>  _
     Public ReadOnly Property AGNES() As String
         Get
             Return CType(Me("AGNES"),String)
