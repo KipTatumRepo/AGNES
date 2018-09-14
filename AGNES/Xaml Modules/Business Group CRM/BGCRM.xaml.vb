@@ -74,10 +74,8 @@ Public Class BGCRM
         Dim si As ListBoxItem, tb As TextBox, v As Double
         Select Case p
             Case 0          '====== GROUP PAGE
-                tb = numHeadcount.Children(1)
-                v = FormatNumber(tb.Text, 0)
-                BG.Headcount = v
                 With BG
+                    .Headcount = FormatNumber(numHeadcount.Amount, 0)
                     .OrgName = cboGroup.Text
                     .Overview = txtOverview.Text
                     .OnsiteRemote = cboWorkspace.SelectedIndex
@@ -184,21 +182,13 @@ Public Class BGCRM
 
             Case 2          '======FINANCIAL PAGE
 
-                tb = curRevenue.Children(1)
-                v = FormatNumber(tb.Text, 2)
-                BG.TotalRevenue = v
-                tb = curOffsite.Children(1)
-                v = FormatNumber(tb.Text, 2)
-                BG.OffSiteSpend = v
-                tb = numEventCount.Children(1)
-                v = FormatNumber(tb.Text, numEventCount.NumberOfDecimals)
-                BG.TotalEvents = v
-                tb = num500Events.Children(1)
-                v = FormatNumber(tb.Text, num500Events.NumberOfDecimals)
-                BG.Events500 = v
-                tb = numCatered.Children(1)
-                v = FormatNumber(tb.Text, numCatered.NumberOfDecimals)
-                BG.CateredEvents = v
+                With BG
+                    .TotalRevenue = FormatNumber(curRevenue.Amount, 2)
+                    .OffSiteSpend = FormatNumber(curOffsite.Amount, 2)
+                    .TotalEvents = FormatNumber(numEventCount.Amount, numEventCount.NumberOfDecimals)
+                    .Events500 = FormatNumber(num500Events.Amount, num500Events.NumberOfDecimals)
+                    .CateredEvents = FormatNumber(numCatered.Amount, numCatered.NumberOfDecimals)
+                End With
 
                 '// Populate top offsite locations into array
                 BG.TopOffsiteLocations.Clear()
@@ -303,8 +293,7 @@ Public Class BGCRM
         Dim lbc As Integer, tb As TextBox, WorkTime As String = "", workspace As String = ""
         txtOverview.Text = BG.Overview
         cboWorkspace.SelectedIndex = BG.OnsiteRemote
-        tb = numHeadcount.Children(1)
-        tb.Text = FormatNumber(BG.Headcount, 0)
+        numHeadcount.SetAmount = FormatNumber(BG.Headcount, 0)
         Dim GetWorkTime = From wt In BGC.WorkTimes
                           Where wt.PID = BG.WorkTimes
                           Select wt
@@ -326,7 +315,6 @@ Public Class BGCRM
             Dim twp As ComboBoxItem = cboWorkspace.Items(ct)
             If twp.Content = workspace Then cboWorkspace.SelectedIndex = ct
         Next
-
 
         For Each comm As Long In BG.Communications
             Dim GetCommName = From comms In BGC.Communications
@@ -420,18 +408,13 @@ Public Class BGCRM
             Next
         Next
 
-        tb = curRevenue.Children(1)
-        tb.Text = FormatNumber(BG.TotalRevenue, 2)
-        tb = curOffsite.Children(1)
-        tb.Text = FormatNumber(BG.OffSiteSpend, 2)
-        tb = curRevenue.Children(1)
-        tb.Text = FormatNumber(BG.TotalRevenue, 2)
-        tb = numEventCount.Children(1)
-        tb.Text = FormatNumber(BG.TotalEvents, 0)
-        tb = num500Events.Children(1)
-        tb.Text = FormatNumber(BG.Events500, 0)
-        tb = numCatered.Children(1)
-        tb.Text = FormatNumber(BG.CateredEvents, 0)
+
+        curRevenue.SetAmount = FormatNumber(BG.TotalRevenue, 2)
+        curOffsite.SetAmount = FormatNumber(BG.OffSiteSpend, 2)
+        curRevenue.SetAmount = FormatNumber(BG.TotalRevenue, 2)
+        numEventCount.SetAmount = FormatNumber(BG.TotalEvents, 0)
+        num500Events.SetAmount = FormatNumber(BG.Events500, 0)
+        numCatered.SetAmount = FormatNumber(BG.CateredEvents, 0)
 
         For Each osl As Long In BG.TopOffsiteLocations
             Dim GetOSLName = From osn In BGC.OffsiteLocations
@@ -579,8 +562,7 @@ Public Class BGCRM
         Dim mainlbi As New ListBoxItem With {.Content = NewCr.RefreshEventName}
         lbxRefreshEvents.Items.Add(mainlbi)
         lbxDestination.SelectedIndex = -1
-        Dim txtb As TextBox = numPopMoving.Children(1)
-        txtb.Text = "0"
+        numPopMoving.SetAmount = 0
         txtEventName.Text = ""
         dtpStartDate.SelectedDate = Now()
         dtpEndDate.SelectedDate = Now()
@@ -974,9 +956,8 @@ Public Class BGCRM
                     .ShowDialog()
                 End With
                 li.Content = li.Content & "--" & uni.NumVal & " headcount"
-                Dim txtb As TextBox = numPopMoving.Children(1)
-                Dim curval As Integer = FormatNumber(txtb.Text, 0) + uni.NumVal
-                txtb.Text = curval
+                Dim curval As Integer = numPopMoving.Amount + uni.NumVal
+                numPopMoving.SetAmount = curval
                 uni.Close()
                 lbxOriginChosen.Items.Add(li)
             Case "S"
@@ -1004,8 +985,7 @@ Public Class BGCRM
             EventID = c.EventID
             txtEventName.Text = RefEvent
             dtpStartDate.DisplayDate = c.MoveStart
-            Dim tb As TextBox = numPopMoving.Children(1)
-            tb.Text = FormatNumber(c.MovePopulation, 0)
+            numPopMoving.SetAmount = FormatNumber(c.MovePopulation, 0)
             dtpEndDate.DisplayDate = c.MoveEnd
             For ct = 0 To lbxDestination.Items.Count - 1
                 If lbxDestination.Items(ct).ToString = c.Destination Then lbxDestination.SelectedIndex = ct
