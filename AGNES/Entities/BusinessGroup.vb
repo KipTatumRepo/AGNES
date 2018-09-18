@@ -24,5 +24,6 @@ Partial Public Class BusinessGroup
     Public Property Events500 As Nullable(Of Integer)
     Public Property EventsCatered As Nullable(Of Integer)
     Public Property OffsiteSpend As Nullable(Of Decimal)
+    Public Property BusinessGroupID As Nullable(Of Long)
 
 End Class

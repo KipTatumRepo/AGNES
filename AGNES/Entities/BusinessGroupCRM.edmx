@@ -10,6 +10,7 @@
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BusinessGroupID" Type="bigint" />
           <Property Name="BusinessGroupName" Type="varchar" MaxLength="512" Nullable="false" />
           <Property Name="GroupOverview" Type="varchar" MaxLength="512" />
           <Property Name="Headcount" Type="int" />
@@ -52,7 +53,6 @@
           </Key>
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SpaceName" Type="varchar" MaxLength="512" Nullable="false" />
-          <Property Name="BuildingId" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="EventTypes">
           <Key>
@@ -172,12 +172,14 @@
           <Property Name="PlannerId" Type="bigint" Nullable="false" />
           <Property Name="BGId" Type="bigint" Nullable="false" />
         </EntityType>
-        <EntityType Name="Refresh_Join">
+        <EntityType Name="RefreshEventOrigins">
           <Key>
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="EventId" Type="bigint" Nullable="false" />
+          <Property Name="BuildingId" Type="bigint" Nullable="false" />
+          <Property Name="PopMoving" Type="bigint" Nullable="false" />
           <Property Name="BGId" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="RefreshEvents">
@@ -185,12 +187,13 @@
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="EventName" Type="varchar" MaxLength="512" />
-          <Property Name="BusinessGroupId" Type="bigint" Nullable="false" />
+          <Property Name="EventID" Type="bigint" />
+          <Property Name="RefreshEventName" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="BGId" Type="bigint" Nullable="false" />
           <Property Name="MoveStartDate" Type="date" Nullable="false" />
           <Property Name="MoveEndDate" Type="date" Nullable="false" />
           <Property Name="MovePopulation" Type="bigint" Nullable="false" />
-          <Property Name="Destination" Type="bigint" Nullable="false" />
+          <Property Name="Destination" Type="varchar" MaxLength="64" Nullable="false" />
         </EntityType>
         <EntityType Name="TopEventTypes_Join">
           <Key>
@@ -198,14 +201,14 @@
           </Key>
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TypeId" Type="bigint" Nullable="false" />
-          <Property Name="BGGroup" Type="bigint" Nullable="false" />
+          <Property Name="BGId" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="TopSpaces_Join">
           <Key>
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="EventTypeId" Type="bigint" Nullable="false" />
+          <Property Name="SpaceID" Type="bigint" Nullable="false" />
           <Property Name="BGId" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="WorkLocation">
@@ -213,14 +216,14 @@
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="WorkLocation" Type="nchar" MaxLength="48" Nullable="false" />
+          <Property Name="WorkLocation" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="WorkTimes">
           <Key>
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="WorkTime" Type="nchar" MaxLength="32" Nullable="false" />
+          <Property Name="WorkTime" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityContainer Name="BGCRMModelStoreContainer">
           <EntitySet Name="BusinessGroups" EntityType="Self.BusinessGroups" Schema="BizGroupCRM" store:Type="Tables" />
@@ -243,7 +246,7 @@
           <EntitySet Name="Offsites_Join" EntityType="Self.Offsites_Join" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="Planners" EntityType="Self.Planners" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="Planners_Join" EntityType="Self.Planners_Join" Schema="BizGroupCRM" store:Type="Tables" />
-          <EntitySet Name="Refresh_Join" EntityType="Self.Refresh_Join" Schema="BizGroupCRM" store:Type="Tables" />
+          <EntitySet Name="RefreshEventOrigins" EntityType="Self.RefreshEventOrigins" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="RefreshEvents" EntityType="Self.RefreshEvents" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="TopEventTypes_Join" EntityType="Self.TopEventTypes_Join" Schema="BizGroupCRM" store:Type="Tables" />
           <EntitySet Name="TopSpaces_Join" EntityType="Self.TopSpaces_Join" Schema="BizGroupCRM" store:Type="Tables" />
@@ -271,6 +274,7 @@
           <Property Name="Events500" Type="Int32" />
           <Property Name="EventsCatered" Type="Int32" />
           <Property Name="OffsiteSpend" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="BusinessGroupID" Type="Int64" />
         </EntityType>
         <EntityType Name="Comm_Join">
           <Key>
@@ -301,7 +305,6 @@
           </Key>
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SpaceName" Type="String" MaxLength="512" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="BuildingId" Type="Int64" Nullable="false" />
         </EntityType>
         <EntityType Name="EventType">
           <Key>
@@ -421,41 +424,21 @@
           <Property Name="PlannerId" Type="Int64" Nullable="false" />
           <Property Name="BGId" Type="Int64" Nullable="false" />
         </EntityType>
-        <EntityType Name="Refresh_Join">
-          <Key>
-            <PropertyRef Name="PID" />
-          </Key>
-          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EventId" Type="Int64" Nullable="false" />
-          <Property Name="BGId" Type="Int64" Nullable="false" />
-        </EntityType>
-        <EntityType Name="RefreshEvent">
-          <Key>
-            <PropertyRef Name="PID" />
-          </Key>
-          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EventName" Type="String" MaxLength="512" FixedLength="false" Unicode="false" />
-          <Property Name="BusinessGroupId" Type="Int64" Nullable="false" />
-          <Property Name="MoveStartDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="MoveEndDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="MovePopulation" Type="Int64" Nullable="false" />
-          <Property Name="Destination" Type="Int64" Nullable="false" />
-        </EntityType>
         <EntityType Name="TopEventTypes_Join">
           <Key>
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TypeId" Type="Int64" Nullable="false" />
-          <Property Name="BGGroup" Type="Int64" Nullable="false" />
+          <Property Name="BGId" Type="Int64" Nullable="false" />
         </EntityType>
         <EntityType Name="TopSpaces_Join">
           <Key>
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EventTypeId" Type="Int64" Nullable="false" />
           <Property Name="BGId" Type="Int64" Nullable="false" />
+          <Property Name="SpaceID" Type="Int64" Nullable="false" />
         </EntityType>
         <EntityContainer Name="BGCRMEntity" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="BusinessGroups" EntityType="Self.BusinessGroup" />
@@ -478,26 +461,49 @@
           <EntitySet Name="Offsites_Join" EntityType="Self.Offsites_Join" />
           <EntitySet Name="Planners" EntityType="Self.Planner" />
           <EntitySet Name="Planners_Join" EntityType="Self.Planners_Join" />
-          <EntitySet Name="Refresh_Join" EntityType="Self.Refresh_Join" />
-          <EntitySet Name="RefreshEvents" EntityType="Self.RefreshEvent" />
           <EntitySet Name="TopEventTypes_Join" EntityType="Self.TopEventTypes_Join" />
           <EntitySet Name="TopSpaces_Join" EntityType="Self.TopSpaces_Join" />
           <EntitySet Name="WorkLocations" EntityType="BGCRMModel.WorkLocation" />
           <EntitySet Name="WorkTimes" EntityType="BGCRMModel.WorkTime" />
+          <EntitySet Name="RefreshEvents" EntityType="BGCRMModel.RefreshEvent" />
+          <EntitySet Name="RefreshEventOrigins" EntityType="BGCRMModel.RefreshEventOrigin" />
         </EntityContainer>
         <EntityType Name="WorkLocation">
           <Key>
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="WorkLocation1" Type="String" Nullable="false" MaxLength="48" FixedLength="true" Unicode="true" />
+          <Property Name="WorkLocation1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="WorkTime">
           <Key>
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="WorkTime1" Type="String" Nullable="false" MaxLength="32" FixedLength="true" Unicode="true" />
+          <Property Name="WorkTime1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="RefreshEvent">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RefreshEventName" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="MoveStartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="MoveEndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="MovePopulation" Type="Int64" Nullable="false" />
+          <Property Name="Destination" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="EventID" Type="Int64" />
+          <Property Name="BGId" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RefreshEventOrigin">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EventId" Type="Int64" Nullable="false" />
+          <Property Name="BuildingId" Type="Int64" Nullable="false" />
+          <Property Name="PopMoving" Type="Int64" Nullable="false" />
+          <Property Name="BGId" Type="Int64" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -508,6 +514,7 @@
           <EntitySetMapping Name="BusinessGroups">
             <EntityTypeMapping TypeName="BGCRMModel.BusinessGroup">
               <MappingFragment StoreEntitySet="BusinessGroups">
+                <ScalarProperty Name="BusinessGroupID" ColumnName="BusinessGroupID" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
                 <ScalarProperty Name="BusinessGroupName" ColumnName="BusinessGroupName" />
                 <ScalarProperty Name="GroupOverview" ColumnName="GroupOverview" />
@@ -555,7 +562,6 @@
               <MappingFragment StoreEntitySet="EventSpaces">
                 <ScalarProperty Name="PID" ColumnName="PID" />
                 <ScalarProperty Name="SpaceName" ColumnName="SpaceName" />
-                <ScalarProperty Name="BuildingId" ColumnName="BuildingId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -692,42 +698,20 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Refresh_Join">
-            <EntityTypeMapping TypeName="BGCRMModel.Refresh_Join">
-              <MappingFragment StoreEntitySet="Refresh_Join">
-                <ScalarProperty Name="PID" ColumnName="PID" />
-                <ScalarProperty Name="EventId" ColumnName="EventId" />
-                <ScalarProperty Name="BGId" ColumnName="BGId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="RefreshEvents">
-            <EntityTypeMapping TypeName="BGCRMModel.RefreshEvent">
-              <MappingFragment StoreEntitySet="RefreshEvents">
-                <ScalarProperty Name="PID" ColumnName="PID" />
-                <ScalarProperty Name="EventName" ColumnName="EventName" />
-                <ScalarProperty Name="BusinessGroupId" ColumnName="BusinessGroupId" />
-                <ScalarProperty Name="MoveStartDate" ColumnName="MoveStartDate" />
-                <ScalarProperty Name="MoveEndDate" ColumnName="MoveEndDate" />
-                <ScalarProperty Name="MovePopulation" ColumnName="MovePopulation" />
-                <ScalarProperty Name="Destination" ColumnName="Destination" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TopEventTypes_Join">
             <EntityTypeMapping TypeName="BGCRMModel.TopEventTypes_Join">
               <MappingFragment StoreEntitySet="TopEventTypes_Join">
+                <ScalarProperty Name="BGId" ColumnName="BGId" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
                 <ScalarProperty Name="TypeId" ColumnName="TypeId" />
-                <ScalarProperty Name="BGGroup" ColumnName="BGGroup" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TopSpaces_Join">
             <EntityTypeMapping TypeName="BGCRMModel.TopSpaces_Join">
               <MappingFragment StoreEntitySet="TopSpaces_Join">
+                <ScalarProperty Name="SpaceID" ColumnName="SpaceID" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
-                <ScalarProperty Name="EventTypeId" ColumnName="EventTypeId" />
                 <ScalarProperty Name="BGId" ColumnName="BGId" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -744,6 +728,31 @@
             <EntityTypeMapping TypeName="BGCRMModel.WorkTime">
               <MappingFragment StoreEntitySet="WorkTimes">
                 <ScalarProperty Name="WorkTime1" ColumnName="WorkTime" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RefreshEvents">
+            <EntityTypeMapping TypeName="BGCRMModel.RefreshEvent">
+              <MappingFragment StoreEntitySet="RefreshEvents">
+                <ScalarProperty Name="BGId" ColumnName="BGId" />
+                <ScalarProperty Name="EventID" ColumnName="EventID" />
+                <ScalarProperty Name="Destination" ColumnName="Destination" />
+                <ScalarProperty Name="MovePopulation" ColumnName="MovePopulation" />
+                <ScalarProperty Name="MoveEndDate" ColumnName="MoveEndDate" />
+                <ScalarProperty Name="MoveStartDate" ColumnName="MoveStartDate" />
+                <ScalarProperty Name="RefreshEventName" ColumnName="RefreshEventName" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RefreshEventOrigins">
+            <EntityTypeMapping TypeName="BGCRMModel.RefreshEventOrigin">
+              <MappingFragment StoreEntitySet="RefreshEventOrigins">
+                <ScalarProperty Name="BGId" ColumnName="BGId" />
+                <ScalarProperty Name="PopMoving" ColumnName="PopMoving" />
+                <ScalarProperty Name="BuildingId" ColumnName="BuildingId" />
+                <ScalarProperty Name="EventId" ColumnName="EventId" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
               </MappingFragment>
             </EntityTypeMapping>

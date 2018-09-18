@@ -13,6 +13,6 @@ Imports System.Collections.Generic
 Partial Public Class TopEventTypes_Join
     Public Property PID As Long
     Public Property TypeId As Long
-    Public Property BGGroup As Long
+    Public Property BGId As Long
 
 End Class

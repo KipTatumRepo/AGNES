@@ -4,8 +4,6 @@
     Dim HoverDrop As Effects.DropShadowEffect, LeaveDrop As Effects.DropShadowEffect
 
     Private Sub WCRHello_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
-        'TODO: Map to user table to get short name, etc.
-
         tbHello.Text = "Hi, " & My.Settings.UserShortName & "!  It's me, Agnes, and I'll be guiding you through your WCR entry today." & Chr(13) & Chr(13) & "Let's get started by choosing whether we want to look at a past WCR or create a new one!"
         tbCreateWCR.Visibility = Visibility.Visible
         HoverDrop = New Effects.DropShadowEffect With {.Color = Color.FromRgb(235, 235, 235), .Direction = 200, .Opacity = 100, .ShadowDepth = 6, .BlurRadius = 2, .RenderingBias = Effects.RenderingBias.Performance}
@@ -84,9 +82,8 @@
     End Sub
 
     Private Sub ExitWCR(sender As Object, e As MouseButtonEventArgs) Handles btnExit.MouseDown
-        Dim amsg As New AgnesMessageBox With
-            {.FntSz = 18, .MsgSize = AgnesMessageBox.MsgBoxSize.Small, .MsgType = AgnesMessageBox.MsgBoxType.YesNo,
-            .TextStyle = AgnesMessageBox.MsgBoxLayout.BottomOnly, .BottomSectionText = "Close WCR?"}
+        Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
+                                                18,,,, "Close WCR?")
         amsg.ShowDialog()
         If amsg.ReturnResult = "Yes" Then
             amsg.Close()

@@ -10,7 +10,7 @@
     <Viewbox>
 
         <Grid Width="824" Height="449">
-            <Image x:Name="imgAGNES" HorizontalAlignment="Left" Height="432" VerticalAlignment="Bottom" Width="261" Source="Resources/Full Agnes Image.png" Margin="0,0,0,7"/>
+            <Image x:Name="imgAGNES" HorizontalAlignment="Left" Height="432" VerticalAlignment="Bottom" Width="261" Source="/AGNES;component/Resources/Full Agnes Image.png" Margin="0,0,0,7"/>
             <TextBlock x:Name="tbCam" HorizontalAlignment="Left" Margin="89,312,0,-9" TextWrapping="Wrap"  VerticalAlignment="Top" FontSize="16" Height="139" Width="725" TextAlignment="Center"/>
             <TextBlock x:Name="tbYesCam" HorizontalAlignment="left" Margin="227,406,0,0" TextWrapping="Wrap" Text="Yes" VerticalAlignment="Top" FontSize="18" Width="137" Height="33" TextAlignment="Center">
                 <TextBlock.Effect>

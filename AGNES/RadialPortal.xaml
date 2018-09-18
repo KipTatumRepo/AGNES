@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="RadialPortal" Height="320" Width="320" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="{x:Null}">
     <Canvas x:Name="cnvRadialMenu" Height="216" Width="216">
-        <Ellipse HorizontalAlignment="Left" Height="216"  Stroke="Black" VerticalAlignment="Top" Width="216" Grid.RowSpan="2"/>
+        <Ellipse HorizontalAlignment="Left" Height="216"  Stroke="Black" VerticalAlignment="Top" Width="216" Grid.RowSpan="2" Visibility="Hidden"/>
         <Image HorizontalAlignment="Left" Height="100" Margin="63,58,0,0" VerticalAlignment="Top" Width="90" Source="Resources/RadialUI Agnes Image.png" MouseLeftButtonDown="DragViaLeftMouse" MouseRightButtonDown="CloseAGNES" Grid.RowSpan="2"/>
    </Canvas>
 </Window>

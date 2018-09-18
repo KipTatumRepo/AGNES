@@ -10,9 +10,9 @@
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BuildingName" Type="text" Nullable="false" />
-          <Property Name="MSCampus" Type="text" Nullable="false" />
-          <Property Name="ParticipationCampus" Type="text" Nullable="false" />
+          <Property Name="BuildingName" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="MSCampus" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ParticipationCampus" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="TotalSeats" Type="int" Nullable="false" />
           <Property Name="SqFt" Type="bigint" Nullable="false" />
           <Property Name="Lat" Type="decimal" Precision="12" Scale="6" />
@@ -31,9 +31,9 @@
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BuildingName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="MSCampus" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ParticipationCampus" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BuildingName" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MSCampus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ParticipationCampus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="TotalSeats" Type="Int32" Nullable="false" />
           <Property Name="SqFt" Type="Int64" Nullable="false" />
           <Property Name="Lat" Type="Decimal" Precision="12" Scale="6" />
