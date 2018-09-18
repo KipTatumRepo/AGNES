@@ -71,7 +71,7 @@ Public Class BGCRM
 
 #Region "Data Handling"
     Private Sub SavePageToBGObj(p)
-        Dim si As ListBoxItem, tb As TextBox, v As Double
+        Dim si As ListBoxItem
         Select Case p
             Case 0          '====== GROUP PAGE
                 With BG
@@ -290,7 +290,7 @@ Public Class BGCRM
     End Sub
 
     Private Sub LoadToUI()
-        Dim lbc As Integer, tb As TextBox, WorkTime As String = "", workspace As String = ""
+        Dim lbc As Integer, WorkTime As String = "", workspace As String = ""
         txtOverview.Text = BG.Overview
         cboWorkspace.SelectedIndex = BG.OnsiteRemote
         numHeadcount.SetAmount = FormatNumber(BG.Headcount, 0)
