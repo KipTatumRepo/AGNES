@@ -20,6 +20,26 @@
         End Set
     End Property
 
+    Private _amount As Double
+    Private _setamount As Double
+    Public Property Amount As Double
+        Get
+            Return _amount
+        End Get
+        Set(value As Double)
+            _amount = value
+        End Set
+    End Property
+    Public Property SetAmount As Double
+        Get
+            Return _setamount
+        End Get
+        Set(value As Double)
+            _setamount = value
+            Dim tb As TextBox = Children(1)
+            tb.Text = FormatCurrency(_setamount, 2)
+        End Set
+    End Property
     Private _debitonly As Boolean
     Private _creditonly As Boolean
     Public Highlight As Boolean
@@ -80,14 +100,15 @@
     Private Sub ExitField(sender As Object, e As EventArgs)
         Dim t As TextBox = sender
         Try
-            Dim cval As Double = FormatCurrency(t.Text, 2)
+            Dim cval As Double = FormatNumber(t.Text, 2)
             If (Debit = False And cval > 0) Or (Credit = False And cval < 0) Then
                 SystemChange = True
                 Flare = True
             Else
                 Flare = False
             End If
-            t.Text = FormatCurrency(t.Text, 2)
+            t.Text = FormatCurrency(cval, 2)
+            Amount = FormatNumber(cval, 2)
             SystemChange = False
         Catch ex As Exception
             Flare = True
@@ -95,11 +116,12 @@
         End Try
 
         Try
-            Dim cval As Double = FormatCurrency(t.Text, 2)
+            Dim cval As Double = FormatNumber(t.Text, 2)
             If (_debitonly = True And cval < 0) Or (_creditonly = True And cval > 0) Then
                 SystemChange = True
                 Flare = False
                 t.Text = FormatCurrency(-cval, 2)
+                Amount = FormatNumber(-cval, 2)
                 SystemChange = False
             End If
         Catch ex As Exception

@@ -20,6 +20,26 @@
         End Set
     End Property
 
+    Private _amount As Double
+    Private _setamount As Double
+    Public Property Amount As Double
+        Get
+            Return _amount
+        End Get
+        Set(value As Double)
+            _amount = value
+        End Set
+    End Property
+    Public Property SetAmount As Double
+        Get
+            Return _setamount
+        End Get
+        Set(value As Double)
+            _setamount = value
+            Dim tb As TextBox = Children(1)
+            tb.Text = FormatNumber(_setamount, NumberOfDecimals)
+        End Set
+    End Property
     Private _posonly As Boolean
     Private _negonly As Boolean
     Public NumberOfDecimals As Byte
@@ -86,7 +106,8 @@
             Else
                 Flare = False
             End If
-            t.Text = FormatNumber(t.Text, NumberOfDecimals)
+            t.Text = FormatNumber(cval, NumberOfDecimals)
+            Amount = FormatNumber(cval, NumberOfDecimals)
             SystemChange = False
         Catch ex As Exception
             Flare = True
@@ -99,6 +120,7 @@
                 SystemChange = True
                 Flare = False
                 t.Text = FormatNumber(-cval, NumberOfDecimals)
+                Amount = FormatNumber(-cval, NumberOfDecimals)
                 SystemChange = False
             End If
         Catch ex As Exception
