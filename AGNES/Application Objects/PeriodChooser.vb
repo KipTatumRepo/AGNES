@@ -65,7 +65,7 @@
             Dim brd As Border = sender
             tb = brd.Child
         End If
-        tb.FontSize = 24
+        tb.FontSize = 30
     End Sub
 
     Private Sub LeavePeriod(sender As Object, e As MouseEventArgs)

@@ -15,11 +15,11 @@
             <Separator />
             <Image x:Name="imgPrint" Source="/AGNES;component/Resources/print.png" ToolTip="Print" />
             <Separator />
-            <Image x:Name="imgPTD" Source="/AGNES;component/Resources/PTD.png" ToolTip="View Period to Date" PreviewMouseDown="Image_PreviewMouseDown_4" />
+            <Image x:Name="imgPTD" Source="/AGNES;component/Resources/PTD.png" ToolTip="View Period to Date"  />
             <Separator />
-            <Image x:Name="imgDelegates" Source="/AGNES;component/Resources/Delegates.png" ToolTip="Manage Delegates" PreviewMouseDown="Image_PreviewMouseDown_2" />
+            <Image x:Name="imgDelegates" Source="/AGNES;component/Resources/Delegates.png" ToolTip="Manage Delegates" />
             <Separator />
-            <Image x:Name="imgEscalate" Source="/AGNES;component/Resources/HandWave.png" ToolTip="Call out to DM" PreviewMouseDown="Image_PreviewMouseDown_3" />
+            <Image x:Name="imgEscalate" Source="/AGNES;component/Resources/HandWave.png" ToolTip="Call out to DM"  />
             <Separator />
         </ToolBar>
         <TextBlock HorizontalAlignment="Left" Margin="98,46,0,0" TextWrapping="Wrap" Text="Flash" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16"/>

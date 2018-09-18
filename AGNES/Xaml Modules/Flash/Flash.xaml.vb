@@ -1,17 +1,23 @@
 ﻿Public Class Flash
-    Private Sub Flash_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
-        'TODO: "Me" represents the object that the Chooser(s) is/are in; passing it by reference
-        '      will allow a writeback of the selections period And/Or week to the object.  NEED TO TIE BACK ONCE THE FLASH OBJECT IS DONE.
+    Dim SalesGroup As FlashGroup
+    Dim CamGroup As FlashGroup
+    Dim CafeSalesGroup As FlashGroup
+    Dim CateringSalesGroup As FlashGroup
+    Dim TotalSalesGroup As FlashGroup
+    Dim CogsGroup As FlashGroup
+    Dim LaborGroup As FlashGroup
+    Dim OpexGroup As FlashGroup
+    Dim FeesGroup As FlashGroup
+    Dim SubsidyGroup As FlashGroup
+    Dim TotalGroup As FlashGroup
+    Dim Wk As WeekChooser
+    Dim MSP As PeriodChooser
 
-        Dim Wk As New WeekChooser(Me, 1, 5, 1)
-        Dim MSP As New PeriodChooser(Me, Wk, 1, 12, 3)
-        Dim sep As New Separator
-        With tlbFlash.Items
-            .Add(MSP)
-            .Add(sep)
-            .Add(Wk)
-        End With
+    Public Sub New(FlashType, FlashUnit)
+        InitializeComponent()
+        ConstructTemplate(FlashType)
     End Sub
+
     Private Sub Image_PreviewMouseDown(sender As Object, e As MouseButtonEventArgs)
         tbSaveStatus.Text = "Draft saved"
         barSaveStatus.Background = Brushes.Yellow
@@ -22,64 +28,71 @@
         barSaveStatus.Background = Brushes.LightGreen
     End Sub
 
-    Private Sub Image_PreviewMouseDown_2(sender As Object, e As MouseButtonEventArgs)
+    Private Sub ConstructTemplate(FT)
         grdFlashGroups.Children.Clear()
-        Dim CafeSales As New FlashGroup("Cafe Sales", False, 74, True, False) ' Increments of 47 for flashgroup spacing
-        Dim CateringSales As New FlashGroup("Catering Sales", True, 121, False, False)
-        Dim TotalSales As New FlashGroup("Total Sales", True, 168, True, True)
-        Dim Cogs As New FlashGroup("COGS", True, 215, False, False)
-        Dim Labor As New FlashGroup("Labor", True, 262, True, False)
-        Dim Opex As New FlashGroup("OPEX", True, 309, False, False)
-        Dim Fees As New FlashGroup("Fees", True, 356, True, False)
-        Dim Total As New FlashGroup("Total", True, 403, True, True)
-        With grdFlashGroups.Children
-            .Add(CafeSales)
-            .Add(CateringSales)
-            .Add(TotalSales)
-            .Add(Cogs)
-            .Add(Labor)
-            .Add(Opex)
-            .Add(Fees)
-            .Add(Total)
+        Select Case FT
+            Case "Cafe"
+                SalesGroup = New FlashGroup("Sales", False, 74, True, False) ' Increments of 47 for flashgroup spacing
+                CogsGroup = New FlashGroup("COGS", True, 121, False, False)
+                LaborGroup = New FlashGroup("Labor", True, 168, True, False)
+                OpexGroup = New FlashGroup("OPEX", True, 215, False, False)
+                SubsidyGroup = New FlashGroup("Subsidy", True, 262, True, True)
+                With grdFlashGroups.Children
+                    .Add(SalesGroup)
+                    .Add(CogsGroup)
+                    .Add(LaborGroup)
+                    .Add(OpexGroup)
+                    .Add(SubsidyGroup)
+                End With
+                Height = 510 - 141
+            Case "WCC"
+                CamGroup = New FlashGroup("CAM Revenue", False, 74, True, False) ' Increments of 47 for flashgroup spacing
+                CogsGroup = New FlashGroup("COGS", True, 121, False, False)
+                LaborGroup = New FlashGroup("Labor", True, 168, True, False)
+                OpexGroup = New FlashGroup("OPEX", True, 215, False, False)
+                SubsidyGroup = New FlashGroup("Subsidy", True, 262, True, True)
+                With grdFlashGroups.Children
+                    .Add(CamGroup)
+                    .Add(CogsGroup)
+                    .Add(LaborGroup)
+                    .Add(OpexGroup)
+                    .Add(SubsidyGroup)
+                End With
+                Height = 510 - 141
+            Case "Field"
+                CafeSalesGroup = New FlashGroup("Cafe Sales", False, 74, True, False) ' Increments of 47 for flashgroup spacing
+                CateringSalesGroup = New FlashGroup("Catering Sales", True, 121, False, False)
+                TotalSalesGroup = New FlashGroup("Total Sales", True, 168, True, True)
+                CogsGroup = New FlashGroup("COGS", True, 215, False, False)
+                LaborGroup = New FlashGroup("Labor", True, 262, True, False)
+                OpexGroup = New FlashGroup("OPEX", True, 309, False, False)
+                FeesGroup = New FlashGroup("Fees", True, 356, True, False)
+                TotalGroup = New FlashGroup("Total", True, 403, True, True)
+                With grdFlashGroups.Children
+                    .Add(CafeSalesGroup)
+                    .Add(CateringSalesGroup)
+                    .Add(TotalSalesGroup)
+                    .Add(CogsGroup)
+                    .Add(LaborGroup)
+                    .Add(OpexGroup)
+                    .Add(FeesGroup)
+                    .Add(TotalGroup)
+                End With
+                Height = 510
+
+        End Select
+
+        'TODO: "Me" represents the object that the Chooser(s) is/are in; passing it by reference
+        '      will allow a writeback of the selections period And/Or week to the object.  NEED TO TIE BACK ONCE THE FLASH OBJECT IS DONE.
+
+        Wk = New WeekChooser(Me, 1, 5, 1)
+        MSP = New PeriodChooser(Me, Wk, 1, 12, 3)
+        Dim sep As New Separator
+        With tlbFlash.Items
+            .Add(MSP)
+            .Add(sep)
+            .Add(Wk)
         End With
-        Height = 510
+
     End Sub
-
-    Private Sub Image_PreviewMouseDown_3(sender As Object, e As MouseButtonEventArgs)
-        grdFlashGroups.Children.Clear()
-        Dim Sales As New FlashGroup("Sales", False, 74, True, False) ' Increments of 47 for flashgroup spacing
-        Dim Cogs As New FlashGroup("COGS", True, 121, False, False)
-        Dim Labor As New FlashGroup("Labor", True, 168, True, False)
-        Dim Opex As New FlashGroup("OPEX", True, 215, False, False)
-        Dim Subsidy As New FlashGroup("Subsidy", True, 262, True, True)
-        With grdFlashGroups.Children
-            .Add(Sales)
-            .Add(Cogs)
-            .Add(Labor)
-            .Add(Opex)
-            .Add(Subsidy)
-        End With
-        Height = 510 - 141
-    End Sub
-
-    Private Sub Image_PreviewMouseDown_4(sender As Object, e As MouseButtonEventArgs)
-        grdFlashGroups.Children.Clear()
-        Dim Cam As New FlashGroup("CAM Revenue", False, 74, True, False) ' Increments of 47 for flashgroup spacing
-        Dim Cogs As New FlashGroup("COGS", True, 121, False, False)
-        Dim Labor As New FlashGroup("Labor", True, 168, True, False)
-        Dim Opex As New FlashGroup("OPEX", True, 215, False, False)
-        Dim Subsidy As New FlashGroup("Subsidy", True, 262, True, True)
-
-        'TODO: ADD PROCEDURE AND LIST FOR RELATED SUBTOTALS
-
-        With grdFlashGroups.Children
-            .Add(Cam)
-            .Add(Cogs)
-            .Add(Labor)
-            .Add(Opex)
-            .Add(Subsidy)
-        End With
-        Height = 510 - 141
-    End Sub
-
 End Class
