@@ -10,9 +10,9 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class Leaders_Join
+Partial Public Class UnitsUsers_Join
     Public Property PID As Long
-    Public Property LeaderId As Long
-    Public Property BGId As Long
+    Public Property UnitNumber As Long
+    Public Property UserId As Long
 
 End Class

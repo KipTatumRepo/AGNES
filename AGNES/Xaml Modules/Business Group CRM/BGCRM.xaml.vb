@@ -84,7 +84,7 @@ Public Class BGCRM
                 '// Populate work time
                 Dim wt As String = cboWorkTimes.Text
                 Dim qwt = From c In BGC.WorkTimes
-                          Where c.WorkTime1 = wt
+                          Where c.Time = wt
                           Select c
                 For Each c In qwt
                     BG.WorkTimes = FormatNumber(c.PID, 0)
@@ -93,7 +93,7 @@ Public Class BGCRM
                 '// Populate work locations/environment
                 Dim wl As String = cboWorkspace.Text
                 Dim qwl = From c In BGC.WorkLocations
-                          Where c.WorkLocation1 = wl
+                          Where c.Location = wl
                           Select c
                 For Each c In qwl
                     BG.OnsiteRemote = FormatNumber(c.PID, 0)
@@ -104,7 +104,7 @@ Public Class BGCRM
                 For Each si In lbxCommsChosen.Items
                     Dim sc As String = si.Content
                     Dim query = From comms In BGC.Communications
-                                Where comms.CommType.ToString = sc
+                                Where comms.Communication.ToString = sc
                                 Select comms
                     For Each comm In query
                         BG.Communications.Add(FormatNumber(comm.PID, 0))
@@ -115,7 +115,7 @@ Public Class BGCRM
                 BG.Culture.Clear()
                 For Each si In lbxCultureChosen.Items
                     Dim sc As String = si.Content
-                    Dim q = From c In BGC.GroupCultures
+                    Dim q = From c In BGC.Cultures
                             Where c.Culture = sc
                             Select c
                     For Each c In q
@@ -141,7 +141,7 @@ Public Class BGCRM
                 '// Populate Org leader
                 Dim sl As String = cboLeader.Text
                 Dim ql = From c In BGC.Leaders
-                         Where c.LeaderName = sl
+                         Where c.Leader = sl
                          Select c
                 For Each c In ql
                     BG.OrgLeader = FormatNumber(c.PID, 0)
@@ -149,8 +149,8 @@ Public Class BGCRM
 
                 '// Populate relationship manager
                 Dim orm As String = cboRelManager.Text
-                Dim qr = From c In BGC.FrequentCustomers
-                         Where c.CustomerName = orm
+                Dim qr = From c In BGC.Customers
+                         Where c.Customer = orm
                          Select c
                 For Each c In qr
                     BG.RelationshipMgr = FormatNumber(c.PID, 0)
@@ -161,7 +161,7 @@ Public Class BGCRM
                 For Each si In lbxLeadersChosen.Items
                     Dim slt As String = si.Content
                     Dim q = From c In BGC.Leaders
-                            Where c.LeaderName = slt
+                            Where c.Leader = slt
                             Select c
                     For Each c In q
                         BG.Leadership.Add(FormatNumber(c.PID, 0))
@@ -172,8 +172,8 @@ Public Class BGCRM
                 BG.FrequentCustomers.Clear()
                 For Each si In lbxCustomerChosen.Items
                     Dim sfc As String = si.Content
-                    Dim q = From c In BGC.FrequentCustomers
-                            Where c.CustomerName = sfc
+                    Dim q = From c In BGC.Customers
+                            Where c.Customer = sfc
                             Select c
                     For Each c In q
                         BG.FrequentCustomers.Add(FormatNumber(c.PID, 0))
@@ -195,7 +195,7 @@ Public Class BGCRM
                 For Each si In lbxOffsiteLocsChosen.Items
                     Dim slt As String = si.Content
                     Dim q = From c In BGC.OffsiteLocations
-                            Where c.OffsiteLocName = slt
+                            Where c.Location = slt
                             Select c
                     For Each c In q
                         BG.TopOffsiteLocations.Add(FormatNumber(c.PID, 0))
@@ -208,7 +208,7 @@ Public Class BGCRM
                 For Each si In lbxNotableChosen.Items
                     Dim slt As String = si.Content
                     Dim q = From c In BGC.NotableEvents
-                            Where c.EventName = slt
+                            Where c.Event = slt
                             Select c
                     For Each c In q
                         BG.NotableEvents.Add(FormatNumber(c.PID, 0))
@@ -219,8 +219,8 @@ Public Class BGCRM
                 BG.TopEventTypes.Clear()
                 For Each si In lbxTopETypesChosen.Items
                     Dim slt As String = si.Content
-                    Dim q = From c In BGC.EventTypes
-                            Where c.EventType1 = slt
+                    Dim q = From c In BGC.Events
+                            Where c.Event = slt
                             Select c
                     For Each c In q
                         BG.TopEventTypes.Add(FormatNumber(c.PID, 0))
@@ -231,8 +231,8 @@ Public Class BGCRM
                 BG.TopBookedSpaces.Clear()
                 For Each si In lbxTopSpacesChosen.Items
                     Dim slt As String = si.Content
-                    Dim q = From c In BGC.EventSpaces
-                            Where c.SpaceName = slt
+                    Dim q = From c In BGC.Spaces
+                            Where c.Space = slt
                             Select c
                     For Each c In q
                         BG.TopBookedSpaces.Add(FormatNumber(c.PID, 0))
@@ -244,7 +244,7 @@ Public Class BGCRM
                 For Each si In lbxInvolveChosen.Items
                     Dim slt As String = si.Content
                     Dim q = From c In BGC.Involvements
-                            Where c.Involvement1 = slt
+                            Where c.Involvement = slt
                             Select c
                     For Each c In q
                         BG.EventionsInvolvement.Add(FormatNumber(c.PID, 0))
@@ -256,7 +256,7 @@ Public Class BGCRM
                 For Each si In lbxPlannersChosen.Items
                     Dim slt As String = si.Content
                     Dim q = From c In BGC.Planners
-                            Where c.PlannerName = slt
+                            Where c.Planner = slt
                             Select c
                     For Each c In q
                         BG.EmbeddedPlanners.Add(FormatNumber(c.PID, 0))
@@ -298,7 +298,7 @@ Public Class BGCRM
                           Where wt.PID = BG.WorkTimes
                           Select wt
         For Each c In GetWorkTime
-            WorkTime = Trim(c.WorkTime1)
+            WorkTime = Trim(c.Time)
         Next
         For ct As Byte = 0 To cboWorkTimes.Items.Count - 1
             Dim twp As ComboBoxItem = cboWorkTimes.Items(ct)
@@ -309,7 +309,7 @@ Public Class BGCRM
                            Where ws.PID = BG.OnsiteRemote
                            Select ws
         For Each c In GetWorkSpace
-            workspace = Trim(c.WorkLocation1)
+            workspace = Trim(c.Location)
         Next
         For ct As Byte = 0 To cboWorkspace.Items.Count - 1
             Dim twp As ComboBoxItem = cboWorkspace.Items(ct)
@@ -321,7 +321,7 @@ Public Class BGCRM
                               Where comms.PID = comm
                               Select comms
             For Each c In GetCommName
-                Dim lbi As New ListBoxItem With {.Content = c.CommType, .Tag = "S"}
+                Dim lbi As New ListBoxItem With {.Content = c.Communication, .Tag = "S"}
                 AddHandler lbi.MouseDoubleClick, AddressOf CommItemMove
                 lbxCommsChosen.Items.Add(lbi)
                 For lbc = (lbxCommSelect.Items.Count - 1) To 0 Step -1
@@ -332,7 +332,7 @@ Public Class BGCRM
             Next
         Next
         For Each cult As Long In BG.Culture
-            Dim GetCultName = From cults In BGC.GroupCultures
+            Dim GetCultName = From cults In BGC.Cultures
                               Where cults.PID = cult
                               Select cults
             For Each c In GetCultName
@@ -366,14 +366,14 @@ Public Class BGCRM
                         Where orgl.PID = BG.OrgLeader
                         Select orgl
         For Each c In GetOrgLdr
-            cboLeader.SelectedValue = c.LeaderName
+            cboLeader.SelectedValue = c.Leader
         Next
 
-        Dim GetRelMgr = From rlm In BGC.FrequentCustomers
+        Dim GetRelMgr = From rlm In BGC.Customers
                         Where rlm.PID = BG.RelationshipMgr
                         Select rlm
         For Each c In GetRelMgr
-            cboRelManager.SelectedValue = c.CustomerName
+            cboRelManager.SelectedValue = c.Customer
         Next
 
         For Each ldr As Long In BG.Leadership
@@ -381,7 +381,7 @@ Public Class BGCRM
                              Where lds.PID = ldr
                              Select lds
             For Each c In GetLdrName
-                Dim lbi As New ListBoxItem With {.Content = c.LeaderName, .Tag = "S"}
+                Dim lbi As New ListBoxItem With {.Content = c.Leader, .Tag = "S"}
                 AddHandler lbi.MouseDoubleClick, AddressOf LeadTeamMove
                 lbxLeadersChosen.Items.Add(lbi)
                 For lbc = (lbxLeadersSelect.Items.Count - 1) To 0 Step -1
@@ -393,11 +393,11 @@ Public Class BGCRM
         Next
 
         For Each cust As Long In BG.FrequentCustomers
-            Dim GetCustName = From cst In BGC.FrequentCustomers
+            Dim GetCustName = From cst In BGC.Customers
                               Where cst.PID = cust
                               Select cst
             For Each c In GetCustName
-                Dim lbi As New ListBoxItem With {.Content = c.CustomerName, .Tag = "S"}
+                Dim lbi As New ListBoxItem With {.Content = c.Customer, .Tag = "S"}
                 AddHandler lbi.MouseDoubleClick, AddressOf CustomerMove
                 lbxCustomerChosen.Items.Add(lbi)
                 For lbc = (lbxCustomerSelect.Items.Count - 1) To 0 Step -1
@@ -421,7 +421,7 @@ Public Class BGCRM
                              Where osn.PID = osl
                              Select osn
             For Each c In GetOSLName
-                Dim lbi As New ListBoxItem With {.Content = c.OffsiteLocName, .Tag = "S"}
+                Dim lbi As New ListBoxItem With {.Content = c.Location, .Tag = "S"}
                 AddHandler lbi.MouseDoubleClick, AddressOf OffsiteMove
                 lbxOffsiteLocsChosen.Items.Add(lbi)
                 For lbc = (lbxOffsiteLocsSelect.Items.Count - 1) To 0 Step -1
@@ -437,7 +437,7 @@ Public Class BGCRM
                                Where ntb.PID = noe
                                Select ntb
             For Each c In GetEventName
-                Dim lbi As New ListBoxItem With {.Content = c.EventName, .Tag = "S"}
+                Dim lbi As New ListBoxItem With {.Content = c.Event, .Tag = "S"}
                 AddHandler lbi.MouseDoubleClick, AddressOf NotablesMove
                 lbxNotableChosen.Items.Add(lbi)
                 For lbc = (lbxNotableSelect.Items.Count - 1) To 0 Step -1
@@ -449,11 +449,11 @@ Public Class BGCRM
         Next
 
         For Each tet As Long In BG.TopEventTypes
-            Dim GetEventType = From et In BGC.EventTypes
+            Dim GetEventType = From et In BGC.Events
                                Where et.PID = tet
                                Select et
             For Each c In GetEventType
-                Dim lbi As New ListBoxItem With {.Content = c.EventType1, .Tag = "S"}
+                Dim lbi As New ListBoxItem With {.Content = c.Event, .Tag = "S"}
                 AddHandler lbi.MouseDoubleClick, AddressOf TopTypeMove
                 lbxTopETypesChosen.Items.Add(lbi)
                 For lbc = (lbxTopETypesSelect.Items.Count - 1) To 0 Step -1
@@ -465,11 +465,11 @@ Public Class BGCRM
         Next
 
         For Each tbs As Long In BG.TopBookedSpaces
-            Dim GetBookedSpace = From gbs In BGC.EventSpaces
+            Dim GetBookedSpace = From gbs In BGC.Spaces
                                  Where gbs.PID = tbs
                                  Select gbs
             For Each c In GetBookedSpace
-                Dim lbi As New ListBoxItem With {.Content = c.SpaceName, .Tag = "S"}
+                Dim lbi As New ListBoxItem With {.Content = c.Space, .Tag = "S"}
                 AddHandler lbi.MouseDoubleClick, AddressOf TopSpaceMove
                 lbxTopSpacesChosen.Items.Add(lbi)
                 For lbc = (lbxTopSpacesSelect.Items.Count - 1) To 0 Step -1
@@ -485,7 +485,7 @@ Public Class BGCRM
                                  Where gei.PID = tei
                                  Select gei
             For Each c In GetInvolvement
-                Dim lbi As New ListBoxItem With {.Content = c.Involvement1, .Tag = "S"}
+                Dim lbi As New ListBoxItem With {.Content = c.Involvement, .Tag = "S"}
                 AddHandler lbi.MouseDoubleClick, AddressOf InvolvementMove
                 lbxInvolveChosen.Items.Add(lbi)
                 For lbc = (lbxInvolveSelect.Items.Count - 1) To 0 Step -1
@@ -501,7 +501,7 @@ Public Class BGCRM
                              Where plnr.PID = pln
                              Select plnr
             For Each c In GetPlanner
-                Dim lbi As New ListBoxItem With {.Content = c.PlannerName, .Tag = "S"}
+                Dim lbi As New ListBoxItem With {.Content = c.Planner, .Tag = "S"}
                 AddHandler lbi.MouseDoubleClick, AddressOf PlannerMove
                 lbxPlannersChosen.Items.Add(lbi)
                 For lbc = (lbxPlannersSelect.Items.Count - 1) To 0 Step -1
@@ -514,7 +514,7 @@ Public Class BGCRM
 
         lbxRefreshEvents.Items.Clear()
         For Each cr As RefreshEvent In BGC.RefreshEvents
-            Dim lbi As New ListBoxItem With {.Content = cr.RefreshEventName}
+            Dim lbi As New ListBoxItem With {.Content = cr.EventName}
             AddHandler lbi.MouseDoubleClick, AddressOf PopulateRefreshEvent
             lbxRefreshEvents.Items.Add(lbi)
         Next
@@ -524,7 +524,7 @@ Public Class BGCRM
     Private Sub SaveRefreshEvent(sender As Object, e As EventArgs) Handles btnSaveRefreshEvent.Click
         'TODO: ADD ADDITIONAL VALIDATION PRIOR TO SAVING FOR ALL FIELDS/LISTS!  
         For Each cr As RefreshEvent In BG.CREvents
-            If cr.RefreshEventName = txtEventName.Text Then
+            If cr.EventName = txtEventName.Text Then
                 Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly, 12,, "Save failed.",, "An event with this name already exists.")
                 amsg.ShowDialog()
                 amsg.Close()
@@ -533,7 +533,7 @@ Public Class BGCRM
         Next
         Dim NewCr As New RefreshEvent, tb As TextBox = numPopMoving.Children(1)
         With NewCr
-            .RefreshEventName = txtEventName.Text
+            .EventName = txtEventName.Text
             .MoveStart = dtpStartDate.SelectedDate
             .MoveEnd = dtpEndDate.SelectedDate
             .TotalPopulation = FormatNumber(tb.Text, 0)
@@ -559,7 +559,7 @@ Public Class BGCRM
         BG.CREvents.Add(NewCr)
         lbxOriginChosen.Items.Clear()
         lbxOriginSelect.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
-        Dim mainlbi As New ListBoxItem With {.Content = NewCr.RefreshEventName}
+        Dim mainlbi As New ListBoxItem With {.Content = NewCr.EventName}
         lbxRefreshEvents.Items.Add(mainlbi)
         lbxDestination.SelectedIndex = -1
         numPopMoving.SetAmount = 0
@@ -575,7 +575,7 @@ Public Class BGCRM
 
         '// Populate business group names
         cboGroup.Items.Clear()
-        Dim gq = From bgroup In BGC.BusinessGroups Select bgroup
+        Dim gq = From bgroup In BGC.Groups Select bgroup
         Dim ict As Byte = gq.Count, SortArray(ict - 1) As String, ct As Byte = 0
 
         For Each bgroup In gq
@@ -589,20 +589,20 @@ Public Class BGCRM
 
         '// Populate work times
         cboWorkTimes.Items.Clear()
-        Dim wtq = From worktime In BGC.WorkTimes Select worktime Order By worktime.WorkTime1
+        Dim wtq = From worktime In BGC.WorkTimes Select worktime Order By worktime.Time
         For Each worktime In wtq
             Dim cbi As New ComboBoxItem
-            cbi.Content = worktime.WorkTime1
+            cbi.Content = worktime.Time
             cbi.Tag = "C"
             cboWorkTimes.Items.Add(cbi)
         Next
 
         '// Populate workspace types - hard coded for now (7/15/18)
         cboWorkspace.Items.Clear()
-        Dim wsq = From workloc In BGC.WorkLocations Select workloc Order By workloc.WorkLocation1
+        Dim wsq = From workloc In BGC.WorkLocations Select workloc Order By workloc.Location
         For Each workloc In wsq
             Dim cbi As New ComboBoxItem
-            cbi.Content = workloc.WorkLocation1
+            cbi.Content = workloc.Location
             cbi.Tag = "C"
             cboWorkspace.Items.Add(cbi)
         Next
@@ -610,10 +610,10 @@ Public Class BGCRM
         '// Populate communication options
         lbxCommSelect.Items.Clear()
         lbxCommsChosen.Items.Clear()
-        Dim cq = From bcomm In BGC.Communications Select bcomm Order By bcomm.CommType
+        Dim cq = From bcomm In BGC.Communications Select bcomm Order By bcomm.Communication
         For Each bcomm In cq
             Dim li As New ListBoxItem
-            li.Content = bcomm.CommType
+            li.Content = bcomm.Communication
             li.Tag = "C"
             AddHandler li.MouseDoubleClick, AddressOf CommItemMove
             lbxCommSelect.Items.Add(li)
@@ -622,7 +622,7 @@ Public Class BGCRM
         '// Populate culture options
         lbxCultureSelect.Items.Clear()
         lbxCultureChosen.Items.Clear()
-        Dim cuq = From bcult In BGC.GroupCultures Select bcult Order By bcult.Culture
+        Dim cuq = From bcult In BGC.Cultures Select bcult Order By bcult.Culture
         For Each bcult In cuq
             Dim li As New ListBoxItem
             li.Content = bcult.Culture
@@ -656,10 +656,10 @@ Public Class BGCRM
         cboLeader.Items.Clear()
         lbxLeadersSelect.Items.Clear()
         lbxLeadersChosen.Items.Clear()
-        Dim lq = From bldr In BGC.Leaders Select bldr Order By bldr.LeaderName
+        Dim lq = From bldr In BGC.Leaders Select bldr Order By bldr.Leader
         For Each bldr In lq
-            cboLeader.Items.Add(New ComboBoxItem With {.Content = bldr.LeaderName})
-            Dim lbi As New ListBoxItem With {.Content = bldr.LeaderName, .Tag = "C"}
+            cboLeader.Items.Add(New ComboBoxItem With {.Content = bldr.Leader})
+            Dim lbi As New ListBoxItem With {.Content = bldr.Leader, .Tag = "C"}
             lbxLeadersSelect.Items.Add(lbi)
             AddHandler lbi.MouseDoubleClick, AddressOf LeadTeamMove
         Next
@@ -668,10 +668,10 @@ Public Class BGCRM
         cboRelManager.Items.Clear()
         lbxCustomerSelect.Items.Clear()
         lbxCustomerChosen.Items.Clear()
-        Dim rmq = From brlm In BGC.FrequentCustomers Select brlm Order By brlm.CustomerName
+        Dim rmq = From brlm In BGC.Customers Select brlm Order By brlm.Customer
         For Each brlm In rmq
-            cboRelManager.Items.Add(New ComboBoxItem With {.Content = brlm.CustomerName})
-            Dim lbi As New ListBoxItem With {.Content = brlm.CustomerName, .Tag = "C"}
+            cboRelManager.Items.Add(New ComboBoxItem With {.Content = brlm.Customer})
+            Dim lbi As New ListBoxItem With {.Content = brlm.Customer, .Tag = "C"}
             lbxCustomerSelect.Items.Add(lbi)
             AddHandler lbi.MouseDoubleClick, AddressOf CustomerMove
         Next
@@ -679,9 +679,9 @@ Public Class BGCRM
         '// Populate offsite location options
         lbxOffsiteLocsSelect.Items.Clear()
         lbxOffsiteLocsChosen.Items.Clear()
-        Dim olq = From osl In BGC.OffsiteLocations Select osl Order By osl.OffsiteLocName
+        Dim olq = From osl In BGC.OffsiteLocations Select osl Order By osl.Location
         For Each osl In olq
-            Dim lbi As New ListBoxItem With {.Content = osl.OffsiteLocName, .Tag = "C", .IsTabStop = False}
+            Dim lbi As New ListBoxItem With {.Content = osl.Location, .Tag = "C", .IsTabStop = False}
             lbxOffsiteLocsSelect.Items.Add(lbi)
             AddHandler lbi.MouseDoubleClick, AddressOf OffsiteMove
         Next
@@ -689,9 +689,9 @@ Public Class BGCRM
         '// Populate notable event options
         lbxNotableSelect.Items.Clear()
         lbxNotableChosen.Items.Clear()
-        Dim neq = From nev In BGC.NotableEvents Select nev Order By nev.EventName
+        Dim neq = From nev In BGC.NotableEvents Select nev Order By nev.Event
         For Each nev In neq
-            Dim lbi As New ListBoxItem With {.Content = nev.EventName, .Tag = "C"}
+            Dim lbi As New ListBoxItem With {.Content = nev.Event, .Tag = "C"}
             lbxNotableSelect.Items.Add(lbi)
             AddHandler lbi.MouseDoubleClick, AddressOf NotablesMove
         Next
@@ -699,9 +699,9 @@ Public Class BGCRM
         '// Populate top event type options
         lbxTopETypesSelect.Items.Clear()
         lbxTopETypesChosen.Items.Clear()
-        Dim teq = From tet In BGC.EventTypes Select tet Order By tet.EventType1
+        Dim teq = From tet In BGC.Events Select tet Order By tet.Event
         For Each tet In teq
-            Dim lbi As New ListBoxItem With {.Content = tet.EventType1, .Tag = "C"}
+            Dim lbi As New ListBoxItem With {.Content = tet.Event, .Tag = "C"}
             lbxTopETypesSelect.Items.Add(lbi)
             AddHandler lbi.MouseDoubleClick, AddressOf TopTypeMove
         Next
@@ -709,9 +709,9 @@ Public Class BGCRM
         '// Populate top booked spaces options
         lbxTopSpacesSelect.Items.Clear()
         lbxTopSpacesChosen.Items.Clear()
-        Dim tsq = From tsb In BGC.EventSpaces Select tsb Order By tsb.SpaceName
+        Dim tsq = From tsb In BGC.Spaces Select tsb Order By tsb.Space
         For Each tsb In tsq
-            Dim lbi As New ListBoxItem With {.Content = tsb.SpaceName, .Tag = "C"}
+            Dim lbi As New ListBoxItem With {.Content = tsb.Space, .Tag = "C"}
             lbxTopSpacesSelect.Items.Add(lbi)
             AddHandler lbi.MouseDoubleClick, AddressOf TopSpaceMove
         Next
@@ -719,9 +719,9 @@ Public Class BGCRM
         '// Populate eventions involvement options
         lbxInvolveSelect.Items.Clear()
         lbxInvolveChosen.Items.Clear()
-        Dim tiq = From tii In BGC.Involvements Select tii Order By tii.Involvement1
+        Dim tiq = From tii In BGC.Involvements Select tii Order By tii.Involvement
         For Each tii In tiq
-            Dim lbi As New ListBoxItem With {.Content = tii.Involvement1, .Tag = "C"}
+            Dim lbi As New ListBoxItem With {.Content = tii.Involvement, .Tag = "C"}
             lbxInvolveSelect.Items.Add(lbi)
             AddHandler lbi.MouseDoubleClick, AddressOf InvolvementMove
         Next
@@ -729,9 +729,9 @@ Public Class BGCRM
         '// Populate embedded planner options
         lbxPlannersSelect.Items.Clear()
         lbxPlannersChosen.Items.Clear()
-        Dim epq = From epl In BGC.Planners Select epl Order By epl.PlannerName
+        Dim epq = From epl In BGC.Planners Select epl Order By epl.Planner
         For Each epl In epq
-            Dim lbi As New ListBoxItem With {.Content = epl.PlannerName, .Tag = "C"}
+            Dim lbi As New ListBoxItem With {.Content = epl.Planner, .Tag = "C"}
             lbxPlannersSelect.Items.Add(lbi)
             AddHandler lbi.MouseDoubleClick, AddressOf PlannerMove
         Next
@@ -979,13 +979,13 @@ Public Class BGCRM
         Dim RefEvent As String, EventID As Long, lbi As ListBoxItem = lbxRefreshEvents.SelectedItem
         RefEvent = lbi.Content
         Dim GetEventDetails = From evnt In BGC.RefreshEvents
-                              Where evnt.RefreshEventName = RefEvent
+                              Where evnt.EventName = RefEvent
                               Select evnt
         For Each c In GetEventDetails
             EventID = c.EventID
             txtEventName.Text = RefEvent
             dtpStartDate.DisplayDate = c.MoveStart
-            numPopMoving.SetAmount = FormatNumber(c.MovePopulation, 0)
+            numPopMoving.SetAmount = FormatNumber(c.PopulationMoving, 0)
             dtpEndDate.DisplayDate = c.MoveEnd
             For ct = 0 To lbxDestination.Items.Count - 1
                 If lbxDestination.Items(ct).ToString = c.Destination Then lbxDestination.SelectedIndex = ct
@@ -1002,7 +1002,7 @@ Public Class BGCRM
             For Each lb In lbxOriginSelect.Items
                 If lb.Content = bldgnm Then
                     lbxOriginSelect.Items.Remove(lb)
-                    lb.Content = lb.Content & "--" & c.PopMoving & " headcount"
+                    lb.Content = lb.Content & "--" & c.PopulationMoving & " headcount"
                     lb.Tag = "S"
                     lbxOriginChosen.Items.Add(lb)
                     Exit For
@@ -1042,7 +1042,7 @@ Public Class BGCRM
             Exit Sub
         End If
         Try
-            Dim check = BGC.BusinessGroups.Single(Function(p) p.BusinessGroupName = uni.StringVal.ToString)
+            Dim check = BGC.Groups.Single(Function(p) p.BusinessGroupName = uni.StringVal.ToString)
             Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
                                             12,,,, "Business group already exists")
             amsg.ShowDialog()
@@ -1095,13 +1095,13 @@ Public Class BGCRM
             Exit Sub
         End If
         Try
-            Dim check = BGC.Communications.Single(Function(p) p.CommType = uni.StringVal.ToString)
+            Dim check = BGC.Communications.Single(Function(p) p.Communication = uni.StringVal.ToString)
             Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
                                             12,,,, "Comm type already exists")
             amsg.ShowDialog()
             amsg.Close()
         Catch ex As InvalidOperationException
-            Dim comm As New Communication With {.CommType = uni.StringVal}
+            Dim comm As New Communications With {.Communication = uni.StringVal}
             BGC.Communications.Add(comm)
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
             AddHandler li.MouseDoubleClick, AddressOf CommItemMove
@@ -1124,14 +1124,14 @@ Public Class BGCRM
             Exit Sub
         End If
         Try
-            Dim check = BGC.GroupCultures.Single(Function(p) p.Culture = uni.StringVal.ToString)
+            Dim check = BGC.Cultures.Single(Function(p) p.Culture = uni.StringVal.ToString)
             Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
                                             12,,,, "Culture type already exists")
             amsg.ShowDialog()
             amsg.Close()
         Catch ex As InvalidOperationException
-            Dim cult As New GroupCulture With {.Culture = uni.StringVal}
-            BGC.GroupCultures.Add(cult)
+            Dim cult As New Cultures With {.Culture = uni.StringVal}
+            BGC.Cultures.Add(cult)
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
             AddHandler li.MouseDoubleClick, AddressOf CultureItemMove
             lbxCultureChosen.Items.Add(li)
@@ -1154,13 +1154,13 @@ Public Class BGCRM
         End If
         Dim TempBGC As New BGCRMEntity
         Try
-            Dim check = TempBGC.Leaders.Single(Function(p) p.LeaderName = uni.StringVal.ToString)
+            Dim check = TempBGC.Leaders.Single(Function(p) p.Leader = uni.StringVal.ToString)
             Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
                                             12,,,, "Team member already exists")
             amsg.ShowDialog()
             amsg.Close()
         Catch ex As InvalidOperationException
-            Dim leader As New Leader With {.LeaderName = uni.StringVal}
+            Dim leader As New Leaders With {.Leader = uni.StringVal}
             TempBGC.Leaders.Add(leader)
             TempBGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
@@ -1197,14 +1197,14 @@ Public Class BGCRM
         End If
         Dim TempBGC As New BGCRMEntity
         Try
-            Dim check = TempBGC.FrequentCustomers.Single(Function(p) p.CustomerName = uni.StringVal.ToString)
+            Dim check = TempBGC.Customers.Single(Function(p) p.Customer = uni.StringVal.ToString)
             Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
                                             12,,,, "Customer already exists")
             amsg.ShowDialog()
             amsg.Close()
         Catch ex As InvalidOperationException
-            Dim customer As New FrequentCustomer With {.CustomerName = uni.StringVal}
-            TempBGC.FrequentCustomers.Add(customer)
+            Dim customer As New Customers With {.Customer = uni.StringVal}
+            TempBGC.Customers.Add(customer)
             TempBGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
             AddHandler li.MouseDoubleClick, AddressOf CustomerMove
@@ -1241,13 +1241,13 @@ Public Class BGCRM
         End If
         Dim TempBGC As New BGCRMEntity
         Try
-            Dim check = TempBGC.OffsiteLocations.Single(Function(p) p.OffsiteLocName = uni.StringVal.ToString)
+            Dim check = TempBGC.OffsiteLocations.Single(Function(p) p.Location = uni.StringVal.ToString)
             Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
                                             12,,,, "Locations already exists")
             amsg.ShowDialog()
             amsg.Close()
         Catch ex As InvalidOperationException
-            Dim Offsite As New OffsiteLocation With {.OffsiteLocName = uni.StringVal}
+            Dim Offsite As New OffsiteLocations With {.Location = uni.StringVal}
             TempBGC.OffsiteLocations.Add(Offsite)
             TempBGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
@@ -1272,14 +1272,14 @@ Public Class BGCRM
         End If
         Dim TempBGC As New BGCRMEntity
         Try
-            Dim check = TempBGC.EventTypes.Single(Function(p) p.EventType1 = uni.StringVal.ToString)
+            Dim check = TempBGC.Events.Single(Function(p) p.Event = uni.StringVal.ToString)
             Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
                                             12,,,, "Event type already exists")
             amsg.ShowDialog()
             amsg.Close()
         Catch ex As InvalidOperationException
-            Dim EventType As New EventType With {.EventType1 = uni.StringVal}
-            TempBGC.EventTypes.Add(EventType)
+            Dim EventType As New Events With {.Event = uni.StringVal}
+            TempBGC.Events.Add(EventType)
             TempBGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
             AddHandler li.MouseDoubleClick, AddressOf TopTypeMove
@@ -1303,14 +1303,14 @@ Public Class BGCRM
         End If
         Dim TempBGC As New BGCRMEntity
         Try
-            Dim check = TempBGC.EventSpaces.Single(Function(p) p.SpaceName = uni.StringVal.ToString)
+            Dim check = TempBGC.Spaces.Single(Function(p) p.Space = uni.StringVal.ToString)
             Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
                                             12,,,, "Event space already exists")
             amsg.ShowDialog()
             amsg.Close()
         Catch ex As InvalidOperationException
-            Dim EventSpc As New EventSpace With {.SpaceName = uni.StringVal}
-            TempBGC.EventSpaces.Add(EventSpc)
+            Dim EventSpc As New Spaces With {.Space = uni.StringVal}
+            TempBGC.Spaces.Add(EventSpc)
             TempBGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
             AddHandler li.MouseDoubleClick, AddressOf TopSpaceMove
@@ -1334,13 +1334,13 @@ Public Class BGCRM
         End If
         Dim TempBGC As New BGCRMEntity
         Try
-            Dim check = TempBGC.Involvements.Single(Function(p) p.Involvement1 = uni.StringVal.ToString)
+            Dim check = TempBGC.Involvements.Single(Function(p) p.Involvement = uni.StringVal.ToString)
             Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
                                             12,,,, "Involvement type already exists")
             amsg.ShowDialog()
             amsg.Close()
         Catch ex As InvalidOperationException
-            Dim Involve As New Involvement With {.Involvement1 = uni.StringVal}
+            Dim Involve As New Involvements With {.Involvement = uni.StringVal}
             TempBGC.Involvements.Add(Involve)
             TempBGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
@@ -1365,13 +1365,13 @@ Public Class BGCRM
         End If
         Dim TempBGC As New BGCRMEntity
         Try
-            Dim check = TempBGC.NotableEvents.Single(Function(p) p.EventName = uni.StringVal.ToString)
+            Dim check = TempBGC.NotableEvents.Single(Function(p) p.Event = uni.StringVal.ToString)
             Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
                                             12,,,, "Event already exists")
             amsg.ShowDialog()
             amsg.Close()
         Catch ex As InvalidOperationException
-            Dim Notable As New NotableEvent With {.EventName = uni.StringVal}
+            Dim Notable As New NotableEvents With {.Event = uni.StringVal}
             TempBGC.NotableEvents.Add(Notable)
             TempBGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}
@@ -1396,13 +1396,13 @@ Public Class BGCRM
         End If
         Dim TempBGC As New BGCRMEntity
         Try
-            Dim check = TempBGC.Planners.Single(Function(p) p.PlannerName = uni.StringVal.ToString)
+            Dim check = TempBGC.Planners.Single(Function(p) p.Planner = uni.StringVal.ToString)
             Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
                                             12,,,, "Planner already exists")
             amsg.ShowDialog()
             amsg.Close()
         Catch ex As InvalidOperationException
-            Dim Plannr As New Planner With {.PlannerName = uni.StringVal}
+            Dim Plannr As New Planners With {.Planner = uni.StringVal}
             TempBGC.Planners.Add(Plannr)
             TempBGC.SaveChanges()
             Dim li As New ListBoxItem With {.Content = uni.StringVal, .Tag = "S"}

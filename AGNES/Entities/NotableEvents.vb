@@ -10,9 +10,11 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class Planners_Join
+Partial Public Class NotableEvents
     Public Property PID As Long
-    Public Property PlannerId As Long
-    Public Property BGId As Long
+    Public Property [Event] As String
+    Public Property DateStart As Date
+    Public Property DateEnd As Date
+    Public Property RecurringEvent As Boolean
 
 End Class

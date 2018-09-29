@@ -10,9 +10,9 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class Offsites_Join
+Partial Public Class ModulesUsers_Join
     Public Property PID As Long
-    Public Property OffsiteId As Long
-    Public Property BGId As Long
+    Public Property ModuleId As Long
+    Public Property UserId As Long
 
 End Class

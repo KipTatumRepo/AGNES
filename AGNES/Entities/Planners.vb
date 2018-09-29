@@ -10,9 +10,10 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class FreqCust_Join
+Partial Public Class Planners
     Public Property PID As Long
-    Public Property CustId As Long
-    Public Property BGId As Long
+    Public Property Planner As String
+    Public Property Phone As String
+    Public Property Email As String
 
 End Class

@@ -10,8 +10,8 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class EventSpace
+Partial Public Class Customers
     Public Property PID As Long
-    Public Property SpaceName As String
+    Public Property Customer As String
 
 End Class

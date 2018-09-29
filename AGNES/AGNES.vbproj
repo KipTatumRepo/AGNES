@@ -128,6 +128,21 @@
     <Compile Include="Application Objects\PeriodChooser.vb" />
     <Compile Include="Application Objects\UnitChooser.vb" />
     <Compile Include="Application Objects\WeekChooser.vb" />
+    <Compile Include="Entities\AccessLevel.vb">
+      <DependentUpon>AGNESSharedData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Communications.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Cultures.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Customers.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Events.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\GeneralSharedData.Context.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -143,14 +158,83 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Group.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\GroupsCommunications_Join.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\GroupsCultures_Join.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\GroupsCustomers_Join.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\GroupsEvents_Join.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\GroupsInvolvements_Join.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\GroupsLeaders_Join.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\GroupsLocations_Join.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\GroupsNotableEvents_Join.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\GroupsOffsiteLocations_Join.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\GroupsPlanners_Join.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\GroupsSpaces_Join.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Involvements.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Leaders.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\MasterBuildingList.vb">
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Module.vb">
+      <DependentUpon>AGNESSharedData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ModuleGroup.vb">
+      <DependentUpon>AGNESSharedData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ModulesUsers_Join.vb">
+      <DependentUpon>AGNESSharedData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\NotableEvents.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\OffsiteLocations.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Planners.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\RefreshEvent.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\RefreshEventOrigin.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Spaces.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\UnitsUsers_Join.vb">
+      <DependentUpon>AGNESSharedData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\User.vb">
+      <DependentUpon>AGNESSharedData.tt</DependentUpon>
     </Compile>
     <Compile Include="Flash Objects\FlashGroup.vb" />
     <Compile Include="Flash Objects\UnitFlash.vb" />
@@ -170,9 +254,6 @@
     <Compile Include="BusinessGroupObjects\SingleUserInput.xaml.vb">
       <DependentUpon>SingleUserInput.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Entities\AccessLevelList.vb">
-      <DependentUpon>AGNESSharedData.tt</DependentUpon>
-    </Compile>
     <Compile Include="Entities\AGNESSharedData.Context.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -187,9 +268,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AGNESSharedData.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\BusinessGroup.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\BusinessGroupCRM.Context.vb">
       <AutoGen>True</AutoGen>
@@ -209,74 +287,8 @@
     <Compile Include="Entities\CAMWithholdingType.vb">
       <DependentUpon>WCRModule.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\Communication.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\Comm_Join.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\Culture_Join.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\EventSpace.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\EventType.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\FreqCust_Join.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\FrequentCustomer.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\GroupCulture.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\Involvement.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\Involvement_Join.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
     <Compile Include="Entities\KPIWithholdingType.vb">
       <DependentUpon>WCRModule.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\Leader.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\Leaders_Join.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\Locations_Join.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\ModuleGroupList.vb">
-      <DependentUpon>AGNESSharedData.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\ModuleList.vb">
-      <DependentUpon>AGNESSharedData.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\ModuleUser_Join.vb">
-      <DependentUpon>AGNESSharedData.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\NotableEvent.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\NotableEvents_Join.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\OffsiteLocation.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\Offsites_Join.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\Planner.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\Planners_Join.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\ReceivedCAMCheck.vb">
       <DependentUpon>WCRModule.tt</DependentUpon>
@@ -286,18 +298,6 @@
     </Compile>
     <Compile Include="Entities\Tender_GL_Mapping.vb">
       <DependentUpon>WCRModule.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\TopEventTypes_Join.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\TopSpaces_Join.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\UnitUser_Join.vb">
-      <DependentUpon>AGNESSharedData.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\UserList.vb">
-      <DependentUpon>AGNESSharedData.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\VendorInfo.vb">
       <DependentUpon>WCRModule.tt</DependentUpon>

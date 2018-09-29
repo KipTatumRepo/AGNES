@@ -10,11 +10,8 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class NotableEvent
+Partial Public Class Spaces
     Public Property PID As Long
-    Public Property EventName As String
-    Public Property DateStart As Date
-    Public Property DateEnd As Date
-    Public Property RecurringEvent As Byte
+    Public Property Space As String
 
 End Class

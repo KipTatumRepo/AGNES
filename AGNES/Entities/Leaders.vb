@@ -10,8 +10,8 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class OffsiteLocation
+Partial Public Class Leaders
     Public Property PID As Long
-    Public Property OffsiteLocName As String
+    Public Property Leader As String
 
 End Class

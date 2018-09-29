@@ -10,10 +10,9 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class Planner
+Partial Public Class GroupsLeaders_Join
     Public Property PID As Long
-    Public Property PlannerName As String
-    Public Property PhoneNum As String
-    Public Property Email As String
+    Public Property LeaderId As Long
+    Public Property GroupId As Long
 
 End Class

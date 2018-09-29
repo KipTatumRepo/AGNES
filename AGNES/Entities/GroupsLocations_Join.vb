@@ -10,8 +10,9 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class Leader
+Partial Public Class GroupsLocations_Join
     Public Property PID As Long
-    Public Property LeaderName As String
+    Public Property LocationId As Long
+    Public Property GroupId As Long
 
 End Class

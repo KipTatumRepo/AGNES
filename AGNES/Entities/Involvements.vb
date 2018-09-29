@@ -10,9 +10,8 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class TopEventTypes_Join
+Partial Public Class Involvements
     Public Property PID As Long
-    Public Property TypeId As Long
-    Public Property BGId As Long
+    Public Property Involvement As String
 
 End Class

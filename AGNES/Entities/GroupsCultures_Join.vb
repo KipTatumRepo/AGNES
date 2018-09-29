@@ -10,9 +10,9 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class Locations_Join
+Partial Public Class GroupsCultures_Join
     Public Property PID As Long
-    Public Property LocId As Long
-    Public Property BGId As Long
+    Public Property CultureId As Long
+    Public Property GroupId As Long
 
 End Class

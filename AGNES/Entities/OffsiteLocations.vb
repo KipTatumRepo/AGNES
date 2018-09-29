@@ -10,9 +10,8 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class ModuleList
+Partial Public Class OffsiteLocations
     Public Property PID As Long
-    Public Property ModuleName As String
-    Public Property ImgResource As String
+    Public Property Location As String
 
 End Class

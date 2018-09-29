@@ -10,8 +10,9 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class BusinessGroup
+Partial Public Class Group
     Public Property PID As Long
+    Public Property BusinessGroupID As Nullable(Of Long)
     Public Property BusinessGroupName As String
     Public Property GroupOverview As String
     Public Property Headcount As Nullable(Of Integer)
@@ -24,6 +25,5 @@ Partial Public Class BusinessGroup
     Public Property Events500 As Nullable(Of Integer)
     Public Property EventsCatered As Nullable(Of Integer)
     Public Property OffsiteSpend As Nullable(Of Decimal)
-    Public Property BusinessGroupID As Nullable(Of Long)
 
 End Class

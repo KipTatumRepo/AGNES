@@ -10,9 +10,9 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class TopSpaces_Join
+Partial Public Class AccessLevel
     Public Property PID As Long
-    Public Property BGId As Long
-    Public Property SpaceID As Long
+    Public Property AccessLevel1 As String
+    Public Property AccessDescription As String
 
 End Class

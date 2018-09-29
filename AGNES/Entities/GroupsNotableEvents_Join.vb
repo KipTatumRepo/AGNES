@@ -10,9 +10,9 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class UnitUser_Join
+Partial Public Class GroupsNotableEvents_Join
     Public Property PID As Long
-    Public Property UnitNumber As Long
-    Public Property UserId As Long
+    Public Property NotableEventId As Long
+    Public Property GroupId As Long
 
 End Class

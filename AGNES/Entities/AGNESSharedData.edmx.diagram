@@ -5,12 +5,12 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="a37d2cec8f444beb89a6457025fed69d" Name="Diagram1">
-        <EntityTypeShape EntityType="AGNESSharedModel.AccessLevelList" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AGNESSharedModel.ModuleGroupList" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AGNESSharedModel.ModuleList" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AGNESSharedModel.ModuleUser_Join" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AGNESSharedModel.UnitUser_Join" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AGNESSharedModel.UserList" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AGNESSharedModel.AccessLevel" Width="1.5" PointX="4.375" PointY="0.5" />
+        <EntityTypeShape EntityType="AGNESSharedModel.ModuleGroup" Width="1.5" PointX="0.5" PointY="0.5" />
+        <EntityTypeShape EntityType="AGNESSharedModel.Module" Width="1.5" PointX="0.5" PointY="2.375" />
+        <EntityTypeShape EntityType="AGNESSharedModel.ModulesUsers_Join" Width="1.5" PointX="2.375" PointY="1.625" />
+        <EntityTypeShape EntityType="AGNESSharedModel.UnitsUsers_Join" Width="1.5" PointX="2.5" PointY="4.375" />
+        <EntityTypeShape EntityType="AGNESSharedModel.User" Width="1.5" PointX="4.375" PointY="2.375" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

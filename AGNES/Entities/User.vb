@@ -10,9 +10,15 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class ModuleGroupList
+Partial Public Class User
     Public Property PID As Long
-    Public Property GroupName As String
-    Public Property GroupDesc As String
+    Public Property UserName As String
+    Public Property UserAlias As String
+    Public Property FirstName As String
+    Public Property LastName As String
+    Public Property SpokenName As String
+    Public Property AccessLevelId As Long
+    Public Property DateAdded As Date
+    Public Property SavedBy As String
 
 End Class

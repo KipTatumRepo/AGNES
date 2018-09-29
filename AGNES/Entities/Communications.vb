@@ -10,9 +10,8 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class EventType
+Partial Public Class Communications
     Public Property PID As Long
-    Public Property EventType1 As String
-    Public Property TypeDescription As String
+    Public Property Communication As String
 
 End Class

@@ -10,8 +10,9 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class FrequentCustomer
+Partial Public Class ModuleGroup
     Public Property PID As Long
-    Public Property CustomerName As String
+    Public Property GroupName As String
+    Public Property GroupDesc As String
 
 End Class

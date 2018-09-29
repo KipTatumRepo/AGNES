@@ -10,9 +10,9 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class ModuleUser_Join
+Partial Public Class Events
     Public Property PID As Long
-    Public Property ModuleId As Long
-    Public Property UserId As Long
+    Public Property [Event] As String
+    Public Property Description As String
 
 End Class

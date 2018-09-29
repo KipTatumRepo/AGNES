@@ -10,15 +10,9 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class UserList
+Partial Public Class GroupsEvents_Join
     Public Property PID As Long
-    Public Property UserName As String
-    Public Property UserAlias As String
-    Public Property FirstName As String
-    Public Property LastName As String
-    Public Property SpokenName As String
-    Public Property AccessLevelId As Long
-    Public Property DateAdded As Date
-    Public Property AddedBy As String
+    Public Property TypeId As Long
+    Public Property GroupId As Long
 
 End Class
