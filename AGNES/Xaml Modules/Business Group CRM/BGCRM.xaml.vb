@@ -513,8 +513,8 @@ Public Class BGCRM
         Next
 
         lbxRefreshEvents.Items.Clear()
-        For Each cr As RefreshEvent In BGC.RefreshEvents
-            Dim lbi As New ListBoxItem With {.Content = cr.EventName}
+        For Each cr As RefreshEvents In BGC.RefreshEvents
+            Dim lbi As New ListBoxItem With {.Content = cr.Event}
             AddHandler lbi.MouseDoubleClick, AddressOf PopulateRefreshEvent
             lbxRefreshEvents.Items.Add(lbi)
         Next
@@ -979,14 +979,14 @@ Public Class BGCRM
         Dim RefEvent As String, EventID As Long, lbi As ListBoxItem = lbxRefreshEvents.SelectedItem
         RefEvent = lbi.Content
         Dim GetEventDetails = From evnt In BGC.RefreshEvents
-                              Where evnt.EventName = RefEvent
+                              Where evnt.Event = RefEvent
                               Select evnt
         For Each c In GetEventDetails
             EventID = c.EventID
             txtEventName.Text = RefEvent
-            dtpStartDate.DisplayDate = c.MoveStart
+            dtpStartDate.DisplayDate = c.MoveStartDate
             numPopMoving.SetAmount = FormatNumber(c.PopulationMoving, 0)
-            dtpEndDate.DisplayDate = c.MoveEnd
+            dtpEndDate.DisplayDate = c.MoveEndDate
             For ct = 0 To lbxDestination.Items.Count - 1
                 If lbxDestination.Items(ct).ToString = c.Destination Then lbxDestination.SelectedIndex = ct
             Next

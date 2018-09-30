@@ -10,9 +10,14 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class Tender_GL_Mapping
+Partial Public Class ReceivedCAMChecks
     Public Property PID As Long
-    Public Property Tender_ID As Long
-    Public Property GL_Account As Long
+    Public Property VendorId As Long
+    Public Property Name As String
+    Public Property CheckNumber As String
+    Public Property [Date] As Date
+    Public Property DayofWeek As Short
+    Public Property Amount As Decimal
+    Public Property Notes As String
 
 End Class

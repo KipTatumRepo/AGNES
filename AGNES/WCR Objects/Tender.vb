@@ -20,13 +20,13 @@ Public Class Tender
     End Sub
 
     Private Sub GetGLCode(tid As Integer)
-        Dim q = From c In WCRE.Tender_GL_Mapping
-                Where c.Tender_ID = tid
+        Dim q = From c In WCRE.GLsTenders_Join
+                Where c.TenderId = tid
                 Select c
         GL = 999
         Dim ct As Integer = q.Count
         For Each c In q
-            GL = c.GL_Account
+            GL = c.GLId
         Next
     End Sub
 

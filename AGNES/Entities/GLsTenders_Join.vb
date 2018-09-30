@@ -10,8 +10,9 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class KPIWithholdingType
+Partial Public Class GLsTenders_Join
     Public Property PID As Long
-    Public Property WithholdingType As String
+    Public Property TenderId As Long
+    Public Property GLId As Long
 
 End Class

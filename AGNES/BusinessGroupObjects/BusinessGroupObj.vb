@@ -234,13 +234,13 @@
             EmbeddedPlanners.Add(ct.PlannerId)
         Next
         CREvents.Clear()
-        Dim GetRefreshEvents = From refreshevents In ef.RefreshEvents
-                               Where refreshevents.GroupID = OrgID
-                               Select refreshevents
+        Dim GetRefreshEvents = From re In ef.RefreshEvents
+                               Where re.GroupID = OrgID
+                               Select re
         For Each c In GetRefreshEvents
             Dim ncr As New RefreshEvent
             With ncr
-                .EventName = c.EventName
+                .EventName = c.Event
                 .GroupID = OrgID
                 .MoveStart = c.MoveStartDate
                 .MoveEnd = c.MoveEndDate
@@ -501,10 +501,10 @@
         Dim a As Byte = CREvents.Count
         For Each cr As RefreshEvent In CREvents
             '// Write base event to database
-            Dim re As New RefreshEvent
+            Dim re As New RefreshEvents
             With re
-                .EventID = EID
-                .EventName = cr.EventName
+                .EventId = EID
+                .Event = cr.EventName
                 .GroupID = bgid
                 .MoveStartDate = cr.MoveStart
                 .MoveEndDate = cr.MoveEnd

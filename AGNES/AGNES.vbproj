@@ -131,6 +131,9 @@
     <Compile Include="Entities\AccessLevel.vb">
       <DependentUpon>AGNESSharedData.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\CAMWithholdings.vb">
+      <DependentUpon>WCRModule.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Communications.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
@@ -157,6 +160,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\GLsTenders_Join.vb">
+      <DependentUpon>WCRModule.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Group.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
@@ -197,6 +203,9 @@
     <Compile Include="Entities\Involvements.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\KPIWithholdings.vb">
+      <DependentUpon>WCRModule.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Leaders.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
@@ -221,14 +230,20 @@
     <Compile Include="Entities\Planners.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\RefreshEvent.vb">
-      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    <Compile Include="Entities\ReceivedCAMChecks.vb">
+      <DependentUpon>WCRModule.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\RefreshEventOrigin.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\RefreshEvents.vb">
+      <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Spaces.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Tenders.vb">
+      <DependentUpon>WCRModule.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\UnitsUsers_Join.vb">
       <DependentUpon>AGNESSharedData.tt</DependentUpon>
@@ -283,21 +298,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\CAMWithholdingType.vb">
-      <DependentUpon>WCRModule.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\KPIWithholdingType.vb">
-      <DependentUpon>WCRModule.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\ReceivedCAMCheck.vb">
-      <DependentUpon>WCRModule.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\TenderID_TenderType_Mapping.vb">
-      <DependentUpon>WCRModule.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\Tender_GL_Mapping.vb">
-      <DependentUpon>WCRModule.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\VendorInfo.vb">
       <DependentUpon>WCRModule.tt</DependentUpon>

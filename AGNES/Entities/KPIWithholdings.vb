@@ -10,9 +10,8 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class TenderID_TenderType_Mapping
+Partial Public Class KPIWithholdings
     Public Property PID As Long
-    Public Property TenderID As Long
-    Public Property TenderType As String
+    Public Property Withholding As String
 
 End Class

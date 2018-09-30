@@ -10,8 +10,14 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class CAMWithholdingType
+Partial Public Class RefreshEvents
     Public Property PID As Long
-    Public Property WithholdingType As String
+    Public Property EventID As Nullable(Of Long)
+    Public Property [Event] As String
+    Public Property GroupId As Long
+    Public Property MoveStartDate As Date
+    Public Property MoveEndDate As Date
+    Public Property PopulationMoving As Long
+    Public Property Destination As String
 
 End Class

@@ -279,7 +279,7 @@
           <EntitySet Name="OffsiteLocations" EntityType="BGCRMModel.OffsiteLocations" />
           <EntitySet Name="Planners" EntityType="BGCRMModel.Planners" />
           <EntitySet Name="RefreshEventOrigins" EntityType="BGCRMModel.RefreshEventOrigin" />
-          <EntitySet Name="RefreshEvents" EntityType="BGCRMModel.RefreshEvent" />
+          <EntitySet Name="RefreshEvents" EntityType="BGCRMModel.RefreshEvents" />
           <EntitySet Name="Spaces" EntityType="BGCRMModel.Spaces" />
           <EntitySet Name="WorkLocations" EntityType="BGCRMModel.WorkLocation" />
           <EntitySet Name="WorkTimes" EntityType="BGCRMModel.WorkTime" />
@@ -463,7 +463,7 @@
           <Property Name="PopulationMoving" Type="Int64" Nullable="false" />
           <Property Name="GroupId" Type="Int64" Nullable="false" />
         </EntityType>
-        <EntityType Name="RefreshEvent">
+        <EntityType Name="RefreshEvents">
           <Key>
             <PropertyRef Name="PID" />
           </Key>
@@ -711,7 +711,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RefreshEvents">
-            <EntityTypeMapping TypeName="BGCRMModel.RefreshEvent">
+            <EntityTypeMapping TypeName="BGCRMModel.RefreshEvents">
               <MappingFragment StoreEntitySet="RefreshEvents">
                 <ScalarProperty Name="Destination" ColumnName="Destination" />
                 <ScalarProperty Name="PopulationMoving" ColumnName="PopulationMoving" />

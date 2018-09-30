@@ -26,7 +26,7 @@
         <EntityTypeShape EntityType="BGCRMModel.OffsiteLocations" Width="1.5" PointX="9.625" PointY="4" />
         <EntityTypeShape EntityType="BGCRMModel.Planners" Width="1.5" PointX="9.625" PointY="7.5" />
         <EntityTypeShape EntityType="BGCRMModel.RefreshEventOrigin" Width="1.5" PointX="6" PointY="9" />
-        <EntityTypeShape EntityType="BGCRMModel.RefreshEvent" Width="1.5" PointX="6" PointY="6.375" />
+        <EntityTypeShape EntityType="BGCRMModel.RefreshEvents" Width="1.5" PointX="6" PointY="6.375" />
         <EntityTypeShape EntityType="BGCRMModel.Spaces" Width="1.5" PointX="9.625" PointY="9.375" />
         <EntityTypeShape EntityType="BGCRMModel.WorkLocation" Width="1.5" PointX="2.625" PointY="4" />
         <EntityTypeShape EntityType="BGCRMModel.WorkTime" Width="1.5" PointX="6" PointY="0.625" />

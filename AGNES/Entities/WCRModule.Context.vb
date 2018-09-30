@@ -22,11 +22,11 @@ Partial Public Class WCREntities
         Throw New UnintentionalCodeFirstException()
     End Sub
 
-    Public Overridable Property Tender_GL_Mapping() As DbSet(Of Tender_GL_Mapping)
-    Public Overridable Property TenderID_TenderType_Mapping() As DbSet(Of TenderID_TenderType_Mapping)
-    Public Overridable Property VendorInfoes() As DbSet(Of VendorInfo)
-    Public Overridable Property CAMWithholdingTypes() As DbSet(Of CAMWithholdingType)
-    Public Overridable Property KPIWithholdingTypes() As DbSet(Of KPIWithholdingType)
-    Public Overridable Property ReceivedCAMChecks() As DbSet(Of ReceivedCAMCheck)
+    Public Overridable Property GLsTenders_Join() As DbSet(Of GLsTenders_Join)
+    Public Overridable Property Tenders() As DbSet(Of Tenders)
+    Public Overridable Property CAMWithholdings() As DbSet(Of CAMWithholdings)
+    Public Overridable Property KPIWithholdings() As DbSet(Of KPIWithholdings)
+    Public Overridable Property ReceivedCAMChecks() As DbSet(Of ReceivedCAMChecks)
+    Public Overridable Property VendorInfo() As DbSet(Of VendorInfo)
 
 End Class

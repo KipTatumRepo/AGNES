@@ -43,7 +43,7 @@ Partial Public Class BGCRMEntity
     Public Overridable Property OffsiteLocations() As DbSet(Of OffsiteLocations)
     Public Overridable Property Planners() As DbSet(Of Planners)
     Public Overridable Property RefreshEventOrigins() As DbSet(Of RefreshEventOrigin)
-    Public Overridable Property RefreshEvents() As DbSet(Of RefreshEvent)
+    Public Overridable Property RefreshEvents() As DbSet(Of RefreshEvents)
     Public Overridable Property Spaces() As DbSet(Of Spaces)
     Public Overridable Property WorkLocations() As DbSet(Of WorkLocation)
     Public Overridable Property WorkTimes() As DbSet(Of WorkTime)

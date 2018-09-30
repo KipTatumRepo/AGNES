@@ -18,12 +18,12 @@ Public Class WCRCam
         AddHandler dt.Tick, AddressOf PauseForMinimizing
         dt.Interval = New TimeSpan(0, 0, 1)
         dt.Start()
-        Dim q = From c In WCRE.VendorInfoes
+        Dim q = From c In WCRE.VendorInfo
                 Where c.VendorType = 1 And c.Active = True
                 Select c
         Dim ct As Integer = q.Count
         For Each c In q
-            cboVendor.Items.Add(Trim(c.VendorName))
+            cboVendor.Items.Add(Trim(c.Name))
         Next
         cboVendor.SelectedValuePath = Content.ToString
         HoverDrop = New Effects.DropShadowEffect With {.Color = Color.FromRgb(235, 235, 235), .Direction = 200, .Opacity = 100, .ShadowDepth = 6, .BlurRadius = 2, .RenderingBias = Effects.RenderingBias.Performance}
