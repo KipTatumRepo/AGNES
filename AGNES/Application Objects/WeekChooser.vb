@@ -73,7 +73,11 @@
             Dim brd As Border = sender
             tb = brd.Child
         End If
-        If FormatNumber(tb.Tag, 0) <> CurrentWeek Then tb.FontSize = 16
+        If FormatNumber(tb.Tag, 0) <> CurrentWeek Then
+            tb.FontSize = 16
+        Else
+            tb.FontSize = 24
+        End If
     End Sub
 
     Private Sub ChooseWeek(sender As Object, e As MouseEventArgs)

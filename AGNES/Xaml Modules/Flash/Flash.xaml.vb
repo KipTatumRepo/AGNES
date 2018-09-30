@@ -31,59 +31,59 @@
 
     Private Sub ConstructTemplate(FT)
         grdFlashGroups.Children.Clear()
-        'Select Case FT
-        '    Case "Cafe"
-        '        SalesGroup = New FlashGroup("Sales", False, 74, True, False) ' Increments of 47 for flashgroup spacing
-        '        CogsGroup = New FlashGroup("COGS", True, 121, False, False)
-        '        LaborGroup = New FlashGroup("Labor", True, 168, True, False)
-        '        OpexGroup = New FlashGroup("OPEX", True, 215, False, False)
-        '        SubsidyGroup = New FlashGroup("Subsidy", True, 262, True, True)
-        '        With grdFlashGroups.Children
-        '            .Add(SalesGroup)
-        '            .Add(CogsGroup)
-        '            .Add(LaborGroup)
-        '            .Add(OpexGroup)
-        '            .Add(SubsidyGroup)
-        '        End With
-        '        Height = 510 - 141
-        '        Title = "Cafe Weekly Financial Flash"
-        '    Case "WCC"
-        '        CamGroup = New FlashGroup("CAM Revenue", False, 74, True, False) ' Increments of 47 for flashgroup spacing
-        '        CogsGroup = New FlashGroup("COGS", True, 121, False, False)
-        '        LaborGroup = New FlashGroup("Labor", True, 168, True, False)
-        '        OpexGroup = New FlashGroup("OPEX", True, 215, False, False)
-        '        SubsidyGroup = New FlashGroup("Subsidy", True, 262, True, True)
-        '        With grdFlashGroups.Children
-        '            .Add(CamGroup)
-        '            .Add(CogsGroup)
-        '            .Add(LaborGroup)
-        '            .Add(OpexGroup)
-        '            .Add(SubsidyGroup)
-        '        End With
-        '        Height = 510 - 141
-        '        Title = "WCC Weekly Financial Flash"
-        '    Case "Field"
-        '        CafeSalesGroup = New FlashGroup("Cafe Sales", False, 74, True, False) ' Increments of 47 for flashgroup spacing
-        '        CateringSalesGroup = New FlashGroup("Catering Sales", True, 121, False, False)
-        '        TotalSalesGroup = New FlashGroup("Total Sales", True, 168, True, True)
-        '        CogsGroup = New FlashGroup("COGS", True, 215, False, False)
-        '        LaborGroup = New FlashGroup("Labor", True, 262, True, False)
-        '        OpexGroup = New FlashGroup("OPEX", True, 309, False, False)
-        '        FeesGroup = New FlashGroup("Fees", True, 356, True, False)
-        '        TotalGroup = New FlashGroup("Total", True, 403, True, True)
-        '        With grdFlashGroups.Children
-        '            .Add(CafeSalesGroup)
-        '            .Add(CateringSalesGroup)
-        '            .Add(TotalSalesGroup)
-        '            .Add(CogsGroup)
-        '            .Add(LaborGroup)
-        '            .Add(OpexGroup)
-        '            .Add(FeesGroup)
-        '            .Add(TotalGroup)
-        '        End With
-        '        Height = 510
-        '        Title = "Field Weekly Financial Flash"
-        'End Select
+        Select Case FT
+            Case "Cafe"
+                SalesGroup = New FlashGroup("Sales", False, 74, True, False) ' Increments of 47 for flashgroup spacing
+                CogsGroup = New FlashGroup("COGS", True, 121, False, False)
+                LaborGroup = New FlashGroup("Labor", True, 168, True, False)
+                OpexGroup = New FlashGroup("OPEX", True, 215, False, False)
+                SubsidyGroup = New FlashGroup("Subsidy", True, 262, True, True)
+                With grdFlashGroups.Children
+                    .Add(SalesGroup)
+                    .Add(CogsGroup)
+                    .Add(LaborGroup)
+                    .Add(OpexGroup)
+                    .Add(SubsidyGroup)
+                End With
+                Height = 510 - 141
+                Title = "Cafe Weekly Financial Flash"
+            Case "WCC"
+                CamGroup = New FlashGroup("CAM Revenue", False, 74, True, False) ' Increments of 47 for flashgroup spacing
+                CogsGroup = New FlashGroup("COGS", True, 121, False, False)
+                LaborGroup = New FlashGroup("Labor", True, 168, True, False)
+                OpexGroup = New FlashGroup("OPEX", True, 215, False, False)
+                SubsidyGroup = New FlashGroup("Subsidy", True, 262, True, True)
+                With grdFlashGroups.Children
+                    .Add(CamGroup)
+                    .Add(CogsGroup)
+                    .Add(LaborGroup)
+                    .Add(OpexGroup)
+                    .Add(SubsidyGroup)
+                End With
+                Height = 510 - 141
+                Title = "WCC Weekly Financial Flash"
+            Case "Field"
+                CafeSalesGroup = New FlashGroup("Cafe Sales", False, 74, True, False) ' Increments of 47 for flashgroup spacing
+                CateringSalesGroup = New FlashGroup("Catering Sales", True, 121, False, False)
+                TotalSalesGroup = New FlashGroup("Total Sales", True, 168, True, True)
+                CogsGroup = New FlashGroup("COGS", True, 215, False, False)
+                LaborGroup = New FlashGroup("Labor", True, 262, True, False)
+                OpexGroup = New FlashGroup("OPEX", True, 309, False, False)
+                FeesGroup = New FlashGroup("Fees", True, 356, True, False)
+                TotalGroup = New FlashGroup("Total", True, 403, True, True)
+                With grdFlashGroups.Children
+                    .Add(CafeSalesGroup)
+                    .Add(CateringSalesGroup)
+                    .Add(TotalSalesGroup)
+                    .Add(CogsGroup)
+                    .Add(LaborGroup)
+                    .Add(OpexGroup)
+                    .Add(FeesGroup)
+                    .Add(TotalGroup)
+                End With
+                Height = 510
+                Title = "Field Weekly Financial Flash"
+        End Select
 
         'TODO: "Me" represents the object that the Chooser(s) is/are in; passing it by reference
         '      will allow a writeback of the selections period And/Or week to the object.  NEED TO TIE BACK ONCE THE FLASH OBJECT IS DONE.

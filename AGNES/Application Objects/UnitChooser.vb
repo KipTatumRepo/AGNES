@@ -40,7 +40,7 @@
             Dim brdUnit As New Border With {.BorderBrush = Brushes.Black, .Width = 64, .VerticalAlignment = VerticalAlignment.Center,
             .Name = "brd" & unitnumber}
             Dim tbUnit As New TextBlock With {.Text = unitnumber, .TextAlignment = TextAlignment.Center, .HorizontalAlignment = HorizontalAlignment.Center,
-                .FontSize = 14, .Tag = unitnumber, .Name = "tbP" & unitnumber}
+                .FontSize = 12, .Tag = unitnumber, .Name = "tbP" & unitnumber}
             AddHandler brdUnit.MouseEnter, AddressOf HoverOverUnit
             AddHandler tbUnit.MouseEnter, AddressOf HoverOverUnit
             AddHandler brdUnit.MouseLeave, AddressOf LeaveUnit
@@ -72,7 +72,11 @@
             Dim brd As Border = sender
             tb = brd.Child
         End If
-        If FormatNumber(tb.Tag, 0) <> CurrentUnit Then tb.FontSize = 14
+        If FormatNumber(tb.Tag, 0) <> CurrentUnit Then
+            tb.FontSize = 12
+        Else
+            tb.FontSize = 16
+        End If
     End Sub
 
     Private Sub ChooseUnit(sender As Object, e As MouseEventArgs)
@@ -101,4 +105,5 @@
             End If
         Next
     End Sub
+
 End Class
