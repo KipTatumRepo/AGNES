@@ -1,5 +1,6 @@
 ﻿Public Class FlashGroup
     Inherits DockPanel
+    Public GroupCategory As String
     Public FlashVal As CurrencyBox
     Public FlashPercent As TextBox
     Public BudgetVal As CurrencyBox
@@ -9,6 +10,9 @@
     Public ForecastPercent As TextBox
     Public ForecastVariance As CurrencyBox
     Public Notes As Expander
+    Public WeekChooseObject As WeekChooser
+    Public PeriodChooseObject As PeriodChooser
+    Public UnitChooseObject As UnitChooser
     Private _flashcontent As Double
     Private _heldflashcontent As Double
     Private _budgetcontent As Double
@@ -54,7 +58,8 @@
         End Set
     End Property
     Public Property SubtotalGroups As List(Of FlashGroup)
-    Public Sub New(GroupName As String, ShowPercentages As Boolean, Top As Integer, Highlight As Boolean, Subtotal As Boolean)
+    Public Sub New(PC As PeriodChooser, WC As WeekChooser, UC As UnitChooser, GroupName As String, ShowPercentages As Boolean, Top As Integer, Highlight As Boolean, Subtotal As Boolean)
+        GroupCategory = GroupName
         HorizontalAlignment = HorizontalAlignment.Left
         VerticalAlignment = VerticalAlignment.Top
         Height = 42
@@ -75,7 +80,6 @@
             {.Margin = New Thickness(4, 4, 0, 0)}
 
         '// Create expander for notes
-
         Notes = New Expander With {.Height = 32, .ExpandDirection = ExpandDirection.Right, .ToolTip = "Add Notes"}
         Notes.Content = New TextBox With {.MaxLength = 130, .Width = 700}
 
@@ -131,13 +135,88 @@
             .Add(ForecastVariance)
         End With
         If IsSubTotal = True Then Notes.Visibility = Visibility.Hidden
+
+        WeekChooseObject = WC
+        AddHandler WeekChooseObject.PropertyChanged, AddressOf WeekChanged
+
+        PeriodChooseObject = PC
+        AddHandler PeriodChooseObject.PropertyChanged, AddressOf PeriodChanged
+
+        UnitChooseObject = UC
+        AddHandler UnitChooseObject.PropertyChanged, AddressOf UnitChanged
+
+    End Sub
+#Region "Private Event Listeners"
+    Private Sub PeriodChanged()
+        Load()
     End Sub
 
-    Private Sub EnterNotes()
-        MsgBox("Enter notes")
+    Private Sub WeekChanged()
+        Load()
     End Sub
 
+    Private Sub UnitChanged()
+        Load()
+    End Sub
+#End Region
+
+#Region "Public Methods"
+    Public Sub Load()
+        Dim unitbrd As Border, weekbrd As Border, unittb As TextBlock, weektb As TextBlock
+        Dim CalculateBudget As Double = 0
+        If IsSubTotal = True Then Exit Sub
+        For Each unitbrd In UnitChooseObject.Children
+            If unitbrd.Tag <> "Label" Then
+                unittb = unitbrd.Child
+                If unittb.FontWeight = FontWeights.SemiBold Then
+                    For Each weekbrd In WeekChooseObject.Children
+                        If weekbrd.Tag <> "Label" Then
+                            weektb = weekbrd.Child
+                            If weektb.FontWeight = FontWeights.SemiBold And FormatNumber(weektb.Tag, 0) <= WeekChooseObject.MaxWeek Then
+                                CalculateBudget += LoadSingleWeekAndUnitBudget(FormatNumber(unittb.Tag, 0), 2019, PeriodChooseObject.CurrentPeriod,
+                                                                      getweekoperatingdays(PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0)),
+                                                                      getperiodoperatingdays(PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0)))
+                            End If
+                        End If
+                    Next
+                End If
+            End If
+        Next
+        BudgetContent = CalculateBudget
+        ' LoadSingleWeekAndUnitBudget(UnitChooseObject.CurrentUnit, 2019, PeriodChooseObject.CurrentPeriod, 5, 19)
+    End Sub
+    Public Sub Save()
+        Dim ph As String = ""
+    End Sub
     Public Sub Update()
         Dim ph As String = ""
     End Sub
+#End Region
+
+#Region "Private Methods"
+    Private Function getweekoperatingdays(p, w) As Byte
+        Return 5    'TODO: TEST ONLY
+    End Function
+    Private Function getperiodoperatingdays(p, w) As Byte
+        Return 25   'TODO: TEST ONLY
+    End Function
+    Private Function LoadSingleWeekandUnitFlash(category, unit, year, period, week) As Double
+        Return 0
+    End Function
+
+    Private Function LoadSingleWeekAndUnitBudget(unit As Int64, yr As Int16, period As Byte, weekoperatingdays As Byte, periodoperatingdays As Byte) As Double
+        Dim bf = From b In FlashBudgets.Budgets
+                 Where b.Category = GroupCategory And
+                     b.MSFY = yr And
+                     b.MSP = period And
+                     b.UnitNumber = unit
+                 Select b
+        For Each b In bf
+            Return (b.Budget1 / periodoperatingdays) * weekoperatingdays
+            Exit Function
+        Next
+        Return 0
+    End Function
+#End Region
+
 End Class

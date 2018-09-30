@@ -1,7 +1,11 @@
 ﻿Module FlashModule
     Public UserClosed As Boolean
     Public AvailableUnits As UnitGroup
+    Public FlashBudgets As BudgetEntity
+    Public SharedDataGroup As BIEntities
     Public Sub Runmodule()
+        FlashBudgets = New BudgetEntity
+        SharedDataGroup = New BIEntities
         '///TEST
         Dim FlashType As String = "WCC" 'TODO: REMOVE PLACEHOLDER FLASH TYPE
         '// Determine which flash, or flashes, user has access to.  If multiple, give them a choice.  If not, move forward
@@ -40,11 +44,46 @@
             .Add(testFlash12)
             .Add(testFlash13)
         End With
-
         '///TEST
 
         Dim FlashPage As New Flash(FlashType, FlashUnit)
         FlashPage.ShowDialog()
         If UserClosed = True Then Exit Sub
     End Sub
+    Public Function GetCurrentPeriod(dt As Date) As Byte
+        dt = dt.AddDays(1)
+        Dim df = From d In SharedDataGroup.Dates
+                 Where d.Date_ID = dt
+                 Select d
+        For Each d In df
+            Return (d.MS_Period)
+            Exit Function
+        Next
+        Return 12
+    End Function
+
+    Public Function GetCurrentWeek(dt As Date) As Byte
+        dt = dt.AddDays(1)
+        Dim df = From d In SharedDataGroup.Dates
+                 Where d.Date_ID = dt
+                 Select d
+        For Each d In df
+            Return (d.Week)
+            Exit Function
+        Next
+        Return 5
+    End Function
+
+    Public Function GetMaxWeeks(p As Byte) As Byte
+        Dim df = From d In SharedDataGroup.Dates
+                 Where d.MS_FY = 2019 And
+                     d.MS_Period = p And
+                     d.Week = 5
+                 Select d
+        If df.Count = 0 Then
+            Return 4
+            Exit Function
+        End If
+        Return 5
+    End Function
 End Module

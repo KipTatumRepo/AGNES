@@ -131,6 +131,24 @@
     <Compile Include="Entities\AccessLevel.vb">
       <DependentUpon>AGNESSharedData.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\BudgetModel.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BudgetModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\BudgetModel.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BudgetModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\BudgetModel.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BudgetModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Budgets.vb">
+      <DependentUpon>BudgetModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\CAMWithholdings.vb">
       <DependentUpon>WCRModule.tt</DependentUpon>
     </Compile>
@@ -142,6 +160,9 @@
     </Compile>
     <Compile Include="Entities\Customers.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Dates.vb">
+      <DependentUpon>GeneralSharedData.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Events.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
@@ -439,6 +460,13 @@
     <None Include="Entities\AGNESSharedData.edmx.diagram">
       <DependentUpon>AGNESSharedData.edmx</DependentUpon>
     </None>
+    <EntityDeploy Include="Entities\BudgetModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>BudgetModel.Designer.vb</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Entities\BudgetModel.edmx.diagram">
+      <DependentUpon>BudgetModel.edmx</DependentUpon>
+    </None>
     <None Include="Entities\BusinessGroupCRM.edmx.diagram">
       <DependentUpon>BusinessGroupCRM.edmx</DependentUpon>
     </None>
@@ -541,6 +569,16 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>AGNESSharedData.edmx</DependentUpon>
       <LastGenOutput>AGNESSharedData.vb</LastGenOutput>
+    </Content>
+    <Content Include="Entities\BudgetModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BudgetModel.edmx</DependentUpon>
+      <LastGenOutput>BudgetModel.Context.vb</LastGenOutput>
+    </Content>
+    <Content Include="Entities\BudgetModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BudgetModel.edmx</DependentUpon>
+      <LastGenOutput>BudgetModel.vb</LastGenOutput>
     </Content>
     <Content Include="Entities\BusinessGroupCRM.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

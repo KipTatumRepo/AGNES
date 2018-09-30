@@ -11,18 +11,17 @@ Imports System
 Imports System.Data.Entity
 Imports System.Data.Entity.Infrastructure
 
-Partial Public Class BIEntities
+Partial Public Class BudgetEntity
     Inherits DbContext
 
     Public Sub New()
-        MyBase.New("name=BIEntities")
+        MyBase.New("name=BudgetEntity")
     End Sub
 
     Protected Overrides Sub OnModelCreating(modelBuilder As DbModelBuilder)
         Throw New UnintentionalCodeFirstException()
     End Sub
 
-    Public Overridable Property MasterBuildingLists() As DbSet(Of MasterBuildingList)
-    Public Overridable Property Dates() As DbSet(Of Dates)
+    Public Overridable Property Budgets() As DbSet(Of Budgets)
 
 End Class
