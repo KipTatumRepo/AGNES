@@ -146,6 +146,7 @@
         AddHandler UnitChooseObject.PropertyChanged, AddressOf UnitChanged
 
     End Sub
+
 #Region "Private Event Listeners"
     Private Sub PeriodChanged()
         Load()
@@ -162,6 +163,21 @@
 
 #Region "Public Methods"
     Public Sub Load()
+        LoadFlash()
+        LoadBudget()
+
+
+    End Sub
+    Public Sub Save()
+        Dim ph As String = ""
+    End Sub
+    Public Sub Update()
+        Dim ph As String = ""
+    End Sub
+#End Region
+
+#Region "Private Methods"
+    Private Sub LoadBudget()
         Dim unitbrd As Border, weekbrd As Border, unittb As TextBlock, weektb As TextBlock
         Dim CalculateBudget As Double = 0
         If IsSubTotal = True Then Exit Sub
@@ -173,7 +189,7 @@
                         If weekbrd.Tag <> "Label" Then
                             weektb = weekbrd.Child
                             If weektb.FontWeight = FontWeights.SemiBold And FormatNumber(weektb.Tag, 0) <= WeekChooseObject.MaxWeek Then
-                                CalculateBudget += LoadSingleWeekAndUnitBudget(FormatNumber(unittb.Tag, 0), 2019, PeriodChooseObject.CurrentPeriod,
+                                CalculateBudget += LoadSingleWeekAndUnitBudget(GroupCategory, FormatNumber(unittb.Tag, 0), 2019, PeriodChooseObject.CurrentPeriod,
                                                                       getweekoperatingdays(PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0)),
                                                                       getperiodoperatingdays(PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0)))
                             End If
@@ -183,40 +199,38 @@
             End If
         Next
         BudgetContent = CalculateBudget
-        ' LoadSingleWeekAndUnitBudget(UnitChooseObject.CurrentUnit, 2019, PeriodChooseObject.CurrentPeriod, 5, 19)
     End Sub
-    Public Sub Save()
-        Dim ph As String = ""
-    End Sub
-    Public Sub Update()
-        Dim ph As String = ""
-    End Sub
-#End Region
 
-#Region "Private Methods"
-    Private Function getweekoperatingdays(p, w) As Byte
-        Return 5    'TODO: TEST ONLY
-    End Function
-    Private Function getperiodoperatingdays(p, w) As Byte
-        Return 25   'TODO: TEST ONLY
-    End Function
-    Private Function LoadSingleWeekandUnitFlash(category, unit, year, period, week) As Double
-        Return 0
-    End Function
+    Private Sub LoadFlash()
+        'TODO:  CAPTURE INSTANCE WHERE USER IS RETURNING TO CURRENT WEEK FROM PTD VIEW
+        Dim CurrVal As Double = 0 'FlashContent
+        Dim unitbrd As Border, weekbrd As Border, unittb As TextBlock, weektb As TextBlock
+        Dim CalculateFlash As Double = 0
+        If IsSubTotal = True Then Exit Sub
+        For Each unitbrd In UnitChooseObject.Children
+            If unitbrd.Tag <> "Label" Then
+                unittb = unitbrd.Child
+                If unittb.FontWeight = FontWeights.SemiBold Then
+                    For Each weekbrd In WeekChooseObject.Children
+                        If weekbrd.Tag <> "Label" Then
+                            weektb = weekbrd.Child
+                            If weektb.FontWeight = FontWeights.SemiBold And FormatNumber(weektb.Tag, 0) <= WeekChooseObject.MaxWeek Then
+                                CalculateFlash += LoadSingleWeekAndUnitFlash(GroupCategory, FormatNumber(unittb.Tag, 0), 2019, PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0))
 
-    Private Function LoadSingleWeekAndUnitBudget(unit As Int64, yr As Int16, period As Byte, weekoperatingdays As Byte, periodoperatingdays As Byte) As Double
-        Dim bf = From b In FlashBudgets.Budgets
-                 Where b.Category = GroupCategory And
-                     b.MSFY = yr And
-                     b.MSP = period And
-                     b.UnitNumber = unit
-                 Select b
-        For Each b In bf
-            Return (b.Budget1 / periodoperatingdays) * weekoperatingdays
-            Exit Function
+                            End If
+                        End If
+                    Next
+                End If
+            End If
         Next
-        Return 0
-    End Function
+        CalculateFlash += CurrVal
+        FlashContent = CalculateFlash
+        Dim tb As TextBox = Notes.Content
+
+        'TODO: PROOF AGAINST OVERWRITING OF UNSAVED FLASH NOTES
+        If tb.Text = "" Then tb.Text = SharedFunctions.FlashNotes
+    End Sub
+
 #End Region
 
 End Class
