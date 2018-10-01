@@ -31,7 +31,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="642,87,0,0" TextWrapping="Wrap" Text="Forecast" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" />
         <TextBlock HorizontalAlignment="Left" Margin="783,87,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Width="34" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16"/>
         <TextBlock HorizontalAlignment="Left" Margin="826,87,0,0" TextWrapping="Wrap" Text="Variance to Forecast" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" />
-        <Grid x:Name="grdFlashGroups"></Grid>
+        <Grid x:Name="grdFlashGroups"/>
         <StatusBar x:Name="barSaveStatus" Height="24" VerticalAlignment="Bottom" Background="#FFFD6C72">
             <TextBlock x:Name="tbSaveStatus" Text="SAVE STATUS" Width="972" TextAlignment="Center" FontWeight="SemiBold" />
         </StatusBar>

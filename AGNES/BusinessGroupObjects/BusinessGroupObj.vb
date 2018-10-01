@@ -132,7 +132,7 @@
 
     Public Sub Load(bgn)
         Dim OrgID As Long
-        Dim GetGroupID = From businessgroups In ef.BusinessGroups
+        Dim GetGroupID = From businessgroups In ef.Groups
                          Where businessgroups.BusinessGroupName Is bgn
                          Select businessgroups
 
@@ -157,94 +157,94 @@
             OffSiteSpend = c.OffsiteSpend
         Next
         Communications.Clear()
-        Dim GetComms = From cj In ef.Comm_Join
-                       Where cj.BGId = OrgID
+        Dim GetComms = From cj In ef.GroupsCommunications_Join
+                       Where cj.GroupId = OrgID
                        Select cj
         For Each ct In GetComms
-            Communications.Add(ct.CommId)
+            Communications.Add(ct.CommunicationId)
         Next
         Culture.Clear()
-        Dim GetCult = From cj In ef.Culture_Join
-                      Where cj.BGId = OrgID
+        Dim GetCult = From cj In ef.GroupsCultures_Join
+                      Where cj.GroupId = OrgID
                       Select cj
         For Each ct In GetCult
             Culture.Add(ct.CultureId)
         Next
         Locations.Clear()
-        Dim GetLocs = From lj In ef.Locations_Join
-                      Where lj.BGId = OrgID
+        Dim GetLocs = From lj In ef.GroupsLocations_Join
+                      Where lj.GroupId = OrgID
                       Select lj
         For Each ct In GetLocs
-            Locations.Add(ct.LocId)
+            Locations.Add(ct.LocationId)
         Next
         Leadership.Clear()
-        Dim GetLdrs = From lj In ef.Leaders_Join
-                      Where lj.BGId = OrgID
+        Dim GetLdrs = From lj In ef.GroupsLeaders_Join
+                      Where lj.GroupId = OrgID
                       Select lj
         For Each ct In GetLdrs
             Leadership.Add(ct.LeaderId)
         Next
         FrequentCustomers.Clear()
-        Dim GetCust = From lj In ef.FreqCust_Join
-                      Where lj.BGId = OrgID
+        Dim GetCust = From lj In ef.GroupsCustomers_Join
+                      Where lj.GroupId = OrgID
                       Select lj
         For Each ct In GetCust
-            FrequentCustomers.Add(ct.CustId)
+            FrequentCustomers.Add(ct.CustomerId)
         Next
         TopOffsiteLocations.Clear()
-        Dim GetOffsites = From lj In ef.Offsites_Join
-                          Where lj.BGId = OrgID
+        Dim GetOffsites = From lj In ef.GroupsOffsiteLocations_Join
+                          Where lj.GroupId = OrgID
                           Select lj
         For Each ct In GetOffsites
-            TopOffsiteLocations.Add(ct.OffsiteId)
+            TopOffsiteLocations.Add(ct.LocationId)
         Next
         NotableEvents.Clear()
-        Dim GetNotables = From lj In ef.NotableEvents_Join
-                          Where lj.BGId = OrgID
+        Dim GetNotables = From lj In ef.GroupsNotableEvents_Join
+                          Where lj.GroupId = OrgID
                           Select lj
         For Each ct In GetNotables
-            NotableEvents.Add(ct.EventId)
+            NotableEvents.Add(ct.NotableEventId)
         Next
         TopEventTypes.Clear()
-        Dim GetTopEvents = From lj In ef.TopEventTypes_Join
-                           Where lj.BGId = OrgID
+        Dim GetTopEvents = From lj In ef.GroupsEvents_Join
+                           Where lj.GroupId = OrgID
                            Select lj
         For Each ct In GetTopEvents
             TopEventTypes.Add(ct.TypeId)
         Next
         TopBookedSpaces.Clear()
-        Dim GetTopSpaces = From lj In ef.TopSpaces_Join
-                           Where lj.BGId = OrgID
+        Dim GetTopSpaces = From lj In ef.GroupsSpaces_Join
+                           Where lj.GroupId = OrgID
                            Select lj
         For Each ct In GetTopSpaces
             TopBookedSpaces.Add(ct.SpaceID)
         Next
         EventionsInvolvement.Clear()
-        Dim GetInvolvements = From lj In ef.Involvement_Join
-                              Where lj.BGId = OrgID
+        Dim GetInvolvements = From lj In ef.GroupsInvolvements_Join
+                              Where lj.GroupId = OrgID
                               Select lj
         For Each ct In GetInvolvements
-            EventionsInvolvement.Add(ct.InvolveId)
+            EventionsInvolvement.Add(ct.InvolvementId)
         Next
         EmbeddedPlanners.Clear()
-        Dim GetPlanners = From lj In ef.Planners_Join
-                          Where lj.BGId = OrgID
+        Dim GetPlanners = From lj In ef.GroupsPlanners_Join
+                          Where lj.GroupId = OrgID
                           Select lj
         For Each ct In GetPlanners
             EmbeddedPlanners.Add(ct.PlannerId)
         Next
         CREvents.Clear()
-        Dim GetRefreshEvents = From refreshevents In ef.RefreshEvents
-                               Where refreshevents.BGId = OrgID
-                               Select refreshevents
+        Dim GetRefreshEvents = From re In ef.RefreshEvents
+                               Where re.GroupID = OrgID
+                               Select re
         For Each c In GetRefreshEvents
             Dim ncr As New RefreshEvent
             With ncr
-                .RefreshEventName = c.RefreshEventName
+                .EventName = c.Event
                 .GroupID = OrgID
                 .MoveStart = c.MoveStartDate
                 .MoveEnd = c.MoveEndDate
-                .TotalPopulation = c.MovePopulation
+                .TotalPopulation = c.PopulationMoving
                 .DestinationBuilding = c.Destination
             End With
             Dim GetCROrigins = From refresheventorigins In ef.RefreshEventOrigins
@@ -254,7 +254,7 @@
                 Dim ncrb As New CRBuilding
                 With ncrb
                     .BuildingId = d.BuildingId
-                    .MovePopulation = d.PopMoving
+                    .MovePopulation = d.PopulationMoving
                     .BuildingName = FetchBuildingName(d.BuildingId)
                 End With
                 ncr.BuildingsMoving.Add(ncrb)
@@ -268,7 +268,7 @@
     Public Sub Save(ByRef EnFrModel)
         ef = EnFrModel
         Try
-            Dim IsNew = ef.BusinessGroups.Single(Function(p) p.BusinessGroupName = OrgName)
+            Dim IsNew = ef.Groups.Single(Function(p) p.BusinessGroupName = OrgName)
             UpdateExisting()
         Catch ex As InvalidOperationException
             SaveNew()
@@ -280,7 +280,7 @@
     Private Sub UpdateExisting()
         Try
             '// Handle all non-joined first, save, query for PID, and then handle writing to _join tables
-            Dim bg = ef.BusinessGroups.Single(Function(p) p.BusinessGroupName = OrgName)
+            Dim bg = ef.Groups.Single(Function(p) p.BusinessGroupName = OrgName)
             Dim bgid As Long = bg.BusinessGroupID
             With bg
                 .BusinessGroupName = OrgName
@@ -335,7 +335,7 @@
         Try
             '// Handle all non-joined first, save, query for next business group id, and then handle writing to _join tables
             '// Determine if the business group already exists
-            Dim qwl = Aggregate c In ef.BusinessGroups
+            Dim qwl = Aggregate c In ef.Groups
             Into Max(c.BusinessGroupID)
 
             Dim NextID As Long = qwl + 1
@@ -351,7 +351,7 @@
             SaveInvolvements(NextID)
             SavePlanners(NextID)
             SaveRefreshEvents(NextID)
-            Dim bg As New BusinessGroup
+            Dim bg As New Group
             With bg
                 .BusinessGroupID = NextID
                 .BusinessGroupName = OrgName
@@ -367,7 +367,7 @@
                 .EventsCatered = CateredEvents
                 .OffsiteSpend = OffSiteSpend
             End With
-            ef.BusinessGroups.Add(bg)
+            ef.Groups.Add(bg)
             Try
                 ef.SaveChanges()
                 SaveSuccessful = True
@@ -380,112 +380,112 @@
     End Sub
     Private Sub SaveComms(bgid As Long)
         For Each i As Long In Communications
-            Dim cj As New Comm_Join
+            Dim cj As New GroupsCommunications_Join
             With cj
-                .BGId = bgid
-                .CommId = i
+                .GroupId = bgid
+                .CommunicationId = i
             End With
-            ef.Comm_Join.Add(cj)
+            ef.GroupsCommunications_Join.Add(cj)
         Next
     End Sub
     Private Sub SaveCulture(bgid As Long)
         For Each i As Long In Culture
-            Dim cj As New Culture_Join
+            Dim cj As New GroupsCultures_Join
             With cj
-                .BGId = bgid
+                .GroupId = bgid
                 .CultureId = i
             End With
-            ef.Culture_Join.Add(cj)
+            ef.GroupsCultures_Join.Add(cj)
         Next
     End Sub
     Private Sub SaveLocations(bgid As Long)
         For Each i As Long In Locations
-            Dim lj As New Locations_Join
+            Dim lj As New GroupsLocations_Join
             With lj
-                .BGId = bgid
-                .LocId = i
+                .GroupId = bgid
+                .LocationId = i
             End With
-            ef.Locations_Join.Add(lj)
+            ef.GroupsLocations_Join.Add(lj)
         Next
     End Sub
     Private Sub SaveLeadership(bgid As Long)
         For Each i As Long In Leadership
-            Dim lj As New Leaders_Join
+            Dim lj As New GroupsLeaders_Join
             With lj
-                .BGId = bgid
+                .GroupId = bgid
                 .LeaderId = i
             End With
-            ef.Leaders_Join.Add(lj)
+            ef.GroupsLeaders_Join.Add(lj)
         Next
     End Sub
     Private Sub SaveOffsites(bgid As Long)
         For Each i As Long In TopOffsiteLocations
-            Dim oj As New Offsites_Join
+            Dim oj As New GroupsOffsiteLocations_Join
             With oj
-                .BGId = bgid
-                .OffsiteId = i
+                .GroupId = bgid
+                .LocationId = i
             End With
-            ef.Offsites_Join.Add(oj)
+            ef.GroupsOffsiteLocations_Join.Add(oj)
         Next
     End Sub
     Private Sub SaveCustomers(bgid As Long)
         For Each i As Long In FrequentCustomers
-            Dim cj As New FreqCust_Join
+            Dim cj As New GroupsCustomers_Join
             With cj
-                .BGId = bgid
-                .CustId = i
+                .GroupId = bgid
+                .CustomerId = i
             End With
-            ef.FreqCust_Join.Add(cj)
+            ef.GroupsCustomers_Join.Add(cj)
         Next
     End Sub
     Private Sub SaveNotables(bgid As Long)
         For Each i As Long In NotableEvents
-            Dim nj As New NotableEvents_Join
+            Dim nj As New GroupsNotableEvents_Join
             With nj
-                .BGId = bgid
-                .EventId = i
+                .GroupId = bgid
+                .NotableEventId = i
             End With
-            ef.NotableEvents_Join.Add(nj)
+            ef.GroupsNotableEvents_Join.Add(nj)
         Next
     End Sub
     Private Sub SaveTypes(bgid As Long)
         For Each i As Long In TopEventTypes
-            Dim ej As New TopEventTypes_Join
+            Dim ej As New GroupsEvents_Join
             With ej
-                .BGId = bgid
+                .GroupId = bgid
                 .TypeId = i
             End With
-            ef.TopEventTypes_Join.Add(ej)
+            ef.GroupsEvents_Join.Add(ej)
         Next
     End Sub
     Private Sub SaveSpaces(bgid As Long)
         For Each i As Long In TopBookedSpaces
-            Dim sj As New TopSpaces_Join
+            Dim sj As New GroupsSpaces_Join
             With sj
-                .BGId = bgid
+                .GroupId = bgid
                 .SpaceID = i
             End With
-            ef.TopSpaces_Join.Add(sj)
+            ef.GroupsSpaces_Join.Add(sj)
         Next
     End Sub
     Private Sub SaveInvolvements(bgid As Long)
         For Each i As Long In EventionsInvolvement
-            Dim ij As New Involvement_Join
+            Dim ij As New GroupsInvolvements_Join
             With ij
-                .BGId = bgid
-                .InvolveId = i
+                .GroupId = bgid
+                .InvolvementId = i
             End With
-            ef.Involvement_Join.Add(ij)
+            ef.GroupsInvolvements_Join.Add(ij)
         Next
     End Sub
     Private Sub SavePlanners(bgid As Long)
         For Each i As Long In EmbeddedPlanners
-            Dim pj As New Planners_Join
+            Dim pj As New GroupsPlanners_Join
             With pj
-                .BGId = bgid
+                .GroupId = bgid
                 .PlannerId = i
             End With
-            ef.Planners_Join.Add(pj)
+            ef.GroupsPlanners_Join.Add(pj)
         Next
     End Sub
     Private Sub SaveRefreshEvents(bgid As Long)
@@ -501,15 +501,15 @@
         Dim a As Byte = CREvents.Count
         For Each cr As RefreshEvent In CREvents
             '// Write base event to database
-            Dim re As New RefreshEvent
+            Dim re As New RefreshEvents
             With re
-                .EventID = EID
-                .RefreshEventName = cr.RefreshEventName
-                .BGId = bgid
+                .EventId = EID
+                .Event = cr.EventName
+                .GroupID = bgid
                 .MoveStartDate = cr.MoveStart
                 .MoveEndDate = cr.MoveEnd
                 .Destination = cr.DestinationBuilding
-                .MovePopulation = cr.TotalPopulation
+                .PopulationMoving = cr.TotalPopulation
             End With
             ef.RefreshEvents.Add(re)
             '// for each origin building, write to the Origins database
@@ -518,8 +518,8 @@
                 With eob
                     .EventId = EID
                     .BuildingId = crb.BuildingId
-                    .PopMoving = crb.MovePopulation
-                    .BGId = bgid
+                    .PopulationMoving = crb.MovePopulation
+                    .GroupId = bgid
                 End With
                 ef.RefreshEventOrigins.Add(eob)
             Next
@@ -553,18 +553,18 @@
     End Sub
     Private Sub DeleteGroup(bgid As Long)
         '// Delete from BusinessGroups
-        Dim bgq = From bgrp In ef.BusinessGroups Select bgrp Where bgrp.BusinessGroupID = bgid
+        Dim bgq = From bgrp In ef.Groups Select bgrp Where bgrp.BusinessGroupID = bgid
         For Each bgrp In bgq
             bgid = bgrp.BusinessGroupID
-            ef.BusinessGroups.Remove(bgrp)
+            ef.Groups.Remove(bgrp)
         Next
     End Sub
     Private Sub DeleteComms(bgid As Long)
         '// Delete from Communications
         Try
-            Dim dbq = From FoundItem In ef.Comm_Join Select FoundItem Where FoundItem.BGId = bgid
+            Dim dbq = From FoundItem In ef.GroupsCommunications_Join Select FoundItem Where FoundItem.GroupId = bgid
             For Each FoundItem In dbq
-                ef.Comm_Join.Remove(FoundItem)
+                ef.GroupsCommunications_Join.Remove(FoundItem)
             Next
         Catch ex As Exception
             '// Nothing in table
@@ -573,9 +573,9 @@
     Private Sub DeleteCultures(bgid As Long)
         '// Delete from Cultures
         Try
-            Dim dbq = From FoundItem In ef.Culture_Join Select FoundItem Where FoundItem.BGId = bgid
+            Dim dbq = From FoundItem In ef.GroupsCultures_Join Select FoundItem Where FoundItem.GroupId = bgid
             For Each FoundItem In dbq
-                ef.Culture_Join.Remove(FoundItem)
+                ef.GroupsCultures_Join.Remove(FoundItem)
             Next
         Catch ex As Exception
             '// Nothing in table
@@ -584,9 +584,9 @@
     Private Sub DeleteLocations(bgid As Long)
         '// Delete from Locations
         Try
-            Dim dbq = From FoundItem In ef.Locations_Join Select FoundItem Where FoundItem.BGId = bgid
+            Dim dbq = From FoundItem In ef.GroupsLocations_Join Select FoundItem Where FoundItem.GroupId = bgid
             For Each FoundItem In dbq
-                ef.Locations_Join.Remove(FoundItem)
+                ef.GroupsLocations_Join.Remove(FoundItem)
             Next
         Catch ex As Exception
             '// Nothing in table
@@ -595,9 +595,9 @@
     Private Sub DeleteLeaders(bgid As Long)
         '// Delete from Leaders
         Try
-            Dim dbq = From FoundItem In ef.Leaders_Join Select FoundItem Where FoundItem.BGId = bgid
+            Dim dbq = From FoundItem In ef.GroupsLeaders_Join Select FoundItem Where FoundItem.GroupId = bgid
             For Each FoundItem In dbq
-                ef.Leaders_Join.Remove(FoundItem)
+                ef.GroupsLeaders_Join.Remove(FoundItem)
             Next
         Catch ex As Exception
             '// Nothing in table
@@ -606,9 +606,9 @@
     Private Sub DeleteCustomers(bgid As Long)
         '// Delete from Customers
         Try
-            Dim dbq = From FoundItem In ef.FreqCust_Join Select FoundItem Where FoundItem.BGId = bgid
+            Dim dbq = From FoundItem In ef.GroupsCustomers_Join Select FoundItem Where FoundItem.GroupId = bgid
             For Each FoundItem In dbq
-                ef.FreqCust_Join.Remove(FoundItem)
+                ef.GroupsCustomers_Join.Remove(FoundItem)
             Next
         Catch ex As Exception
             '// Nothing in table
@@ -617,9 +617,9 @@
     Private Sub DeleteOffsites(bgid As Long)
         '// Delete from Offsites
         Try
-            Dim dbq = From FoundItem In ef.Offsites_Join Select FoundItem Where FoundItem.BGId = bgid
+            Dim dbq = From FoundItem In ef.GroupsOffsiteLocations_Join Select FoundItem Where FoundItem.GroupId = bgid
             For Each FoundItem In dbq
-                ef.Offsites_Join.Remove(FoundItem)
+                ef.GroupsOffsiteLocations_Join.Remove(FoundItem)
             Next
         Catch ex As Exception
             '// Nothing in table
@@ -628,9 +628,9 @@
     Private Sub DeleteNotables(bgid As Long)
         '// Delete from Notables
         Try
-            Dim dbq = From FoundItem In ef.NotableEvents_Join Select FoundItem Where FoundItem.BGId = bgid
+            Dim dbq = From FoundItem In ef.GroupsNotableEvents_Join Select FoundItem Where FoundItem.GroupId = bgid
             For Each FoundItem In dbq
-                ef.NotableEvents_Join.Remove(FoundItem)
+                ef.GroupsNotableEvents_Join.Remove(FoundItem)
             Next
         Catch ex As Exception
             '// Nothing in table
@@ -639,9 +639,9 @@
     Private Sub DeleteTopEvents(bgid As Long)
         '// Delete from Top Event Types
         Try
-            Dim dbq = From FoundItem In ef.TopEventTypes_Join Select FoundItem Where FoundItem.BGId = bgid
+            Dim dbq = From FoundItem In ef.GroupsEvents_Join Select FoundItem Where FoundItem.GroupId = bgid
             For Each FoundItem In dbq
-                ef.TopEventTypes_Join.Remove(FoundItem)
+                ef.GroupsEvents_Join.Remove(FoundItem)
             Next
         Catch ex As Exception
             '// Nothing in table
@@ -651,9 +651,9 @@
     Private Sub DeleteSpaces(bgid As Long)
         '// Delete from Top Event Spaces
         Try
-            Dim dbq = From FoundItem In ef.TopSpaces_Join Select FoundItem Where FoundItem.BGId = bgid
+            Dim dbq = From FoundItem In ef.GroupsSpaces_Join Select FoundItem Where FoundItem.GroupId = bgid
             For Each FoundItem In dbq
-                ef.TopSpaces_Join.Remove(FoundItem)
+                ef.GroupsSpaces_Join.Remove(FoundItem)
             Next
         Catch ex As Exception
             '// Nothing in table
@@ -663,9 +663,9 @@
     Private Sub DeleteInvolvements(bgid As Long)
         '// Delete from Involvements
         Try
-            Dim dbq = From FoundItem In ef.Involvement_Join Select FoundItem Where FoundItem.BGId = bgid
+            Dim dbq = From FoundItem In ef.GroupsInvolvements_Join Select FoundItem Where FoundItem.GroupId = bgid
             For Each FoundItem In dbq
-                ef.Involvement_Join.Remove(FoundItem)
+                ef.GroupsInvolvements_Join.Remove(FoundItem)
             Next
         Catch ex As Exception
             '// Nothing in table
@@ -674,9 +674,9 @@
     Private Sub DeletePlanners(bgid As Long)
         '// Delete from Planners
         Try
-            Dim dbq = From FoundItem In ef.Planners_Join Select FoundItem Where FoundItem.BGId = bgid
+            Dim dbq = From FoundItem In ef.GroupsPlanners_Join Select FoundItem Where FoundItem.GroupId = bgid
             For Each FoundItem In dbq
-                ef.Planners_Join.Remove(FoundItem)
+                ef.GroupsPlanners_Join.Remove(FoundItem)
             Next
         Catch ex As Exception
             '// Nothing in table
@@ -685,7 +685,7 @@
     Private Sub DeleteRefreshEvents(bgid As Long)
         '// Delete from Refresh Events
         Try
-            Dim dbq = From FoundItem In ef.RefreshEvents Select FoundItem Where FoundItem.BGId = bgid
+            Dim dbq = From FoundItem In ef.RefreshEvents Select FoundItem Where FoundItem.GroupID = bgid
             For Each FoundItem In dbq
                 ef.RefreshEvents.Remove(FoundItem)
             Next
@@ -696,7 +696,7 @@
     Private Sub DeleteOrigins(bgid As Long)
         '// Delete from Refresh Event Origins
         Try
-            Dim dbq = From FoundItem In ef.RefreshEventOrigins Select FoundItem Where FoundItem.BGId = bgid
+            Dim dbq = From FoundItem In ef.RefreshEventOrigins Select FoundItem Where FoundItem.GroupId = bgid
             For Each FoundItem In dbq
                 ef.RefreshEventOrigins.Remove(FoundItem)
             Next
@@ -727,8 +727,8 @@
     Public Function GetGroupID(bn) As Integer
         Try
             Dim retval As Integer = 0
-            Dim grp As New BusinessGroup
-            grp = ef.BusinessGroups.Find(bn)
+            Dim grp As New Group
+            grp = ef.Groups.Find(bn)
             Return grp.BusinessGroupID
         Catch ex As Exception
             Return 0

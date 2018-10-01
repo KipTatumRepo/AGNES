@@ -1,4 +1,23 @@
 ﻿Public Class RefreshEvent
+    Private _eventname As String
+    Public Property EventName As String
+        Get
+            Return _eventname
+        End Get
+        Set(value As String)
+            _eventname = value
+        End Set
+    End Property
+
+    Private _eventid As Long
+    Public Property EventId As Long
+        Get
+            Return _eventid
+        End Get
+        Set(value As Long)
+            _eventid = value
+        End Set
+    End Property
     Private _groupid As Integer
     Public Property GroupID As Integer
         Get

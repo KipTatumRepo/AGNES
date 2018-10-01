@@ -1,30 +1,38 @@
-﻿Public Class UnitChooser
+﻿Imports System.ComponentModel
+Public Class UnitChooser
+    'TODO:  ADD MULTISELECT FUNCTIONALITY TO UNIT CHOOSER
     Inherits DockPanel
+    Implements INotifyPropertyChanged
     Private _currentunit As Long
     Private Week As WeekChooser
+    Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
     Public Property CurrentUnit As Long
         Get
             Return _currentunit
         End Get
         Set(value As Long)
             _currentunit = value
-            For Each b As Border In Children
-                If b.Tag <> "Label" Then
-                    Dim tb As TextBlock = b.Child
-                    If FormatNumber(tb.Text, 0) <> value Then
-                        tb.Foreground = Brushes.LightGray
-                        tb.FontSize = 12
-                        tb.FontWeight = FontWeights.Normal
-                    Else
-                        tb.FontWeight = FontWeights.SemiBold
-                        tb.Foreground = Brushes.Black
-                        tb.FontSize = 16
+            If value > 0 Then
+                For Each b As Border In Children
+                    If b.Tag <> "Label" Then
+                        Dim tb As TextBlock = b.Child
+                        If FormatNumber(tb.Text, 0) <> value Then
+                            tb.Foreground = Brushes.LightGray
+                            tb.FontSize = 12
+                            tb.FontWeight = FontWeights.Normal
+                        Else
+                            tb.FontWeight = FontWeights.SemiBold
+                            tb.Foreground = Brushes.Black
+                            tb.FontSize = 16
+                        End If
                     End If
-                End If
-            Next
+                Next
+            End If
+            RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(“Unit”))
         End Set
     End Property
     Public Property NumberOfAvailableUnits As Byte
+    Public Property AllowMultiSelect As Boolean
     Public Sub New(ByRef ListOfUnits As UnitGroup)
         Dim ct As Byte
         '// Create chooser label
@@ -40,7 +48,7 @@
             Dim brdUnit As New Border With {.BorderBrush = Brushes.Black, .Width = 64, .VerticalAlignment = VerticalAlignment.Center,
             .Name = "brd" & unitnumber}
             Dim tbUnit As New TextBlock With {.Text = unitnumber, .TextAlignment = TextAlignment.Center, .HorizontalAlignment = HorizontalAlignment.Center,
-                .FontSize = 14, .Tag = unitnumber, .Name = "tbP" & unitnumber}
+                .FontSize = 12, .Tag = unitnumber, .Name = "tbP" & unitnumber}
             AddHandler brdUnit.MouseEnter, AddressOf HoverOverUnit
             AddHandler tbUnit.MouseEnter, AddressOf HoverOverUnit
             AddHandler brdUnit.MouseLeave, AddressOf LeaveUnit
@@ -72,7 +80,11 @@
             Dim brd As Border = sender
             tb = brd.Child
         End If
-        If FormatNumber(tb.Tag, 0) <> CurrentUnit Then tb.FontSize = 14
+        If FormatNumber(tb.Tag, 0) <> CurrentUnit Then
+            tb.FontSize = 12
+        Else
+            tb.FontSize = 16
+        End If
     End Sub
 
     Private Sub ChooseUnit(sender As Object, e As MouseEventArgs)
@@ -91,14 +103,15 @@
     End Sub
 
     Public Sub Reset()
-        CurrentUnit = 0
         For Each brd As Border In Children
             Dim tb As TextBlock = brd.Child
             If brd.Tag <> "Label" Then
                 tb.Foreground = Brushes.Black
                 tb.FontSize = 14
-                tb.FontWeight = FontWeights.Normal
+                tb.FontWeight = FontWeights.SemiBold
             End If
         Next
+        CurrentUnit = 0
     End Sub
+
 End Class

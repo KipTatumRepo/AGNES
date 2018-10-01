@@ -25,7 +25,7 @@
     Private Sub GetUserInfo()
         Dim ef As New AGNESSharedData
         Dim usr As String = Environment.UserName
-        Dim qwl = From c In ef.UserLists
+        Dim qwl = From c In ef.Users
                   Where c.UserAlias = usr
                   Select c
         If qwl.Count = 0 Then
@@ -67,7 +67,7 @@
         Dim ef As New AGNESSharedData
         Select Case ULVL
             Case 1
-                Dim qwl = From c In ef.ModuleLists
+                Dim qwl = From c In ef.Modules
                           Select c
                 ItemCount = qwl.Count
                 ReDim Modules(ItemCount - 1)
@@ -77,7 +77,7 @@
                     ct += 1
                 Next
             Case 2
-                Dim qwl = From c In ef.ModuleLists
+                Dim qwl = From c In ef.Modules
                           Select c
                 ItemCount = qwl.Count
                 ReDim Modules(ItemCount - 1)
@@ -87,7 +87,7 @@
                     ct += 1
                 Next
             Case 3
-                Dim qwl = From c In ef.ModuleLists
+                Dim qwl = From c In ef.Modules
                           Where c.PID > 1
                           Select c
                 ItemCount = qwl.Count
@@ -98,7 +98,7 @@
                     ct += 1
                 Next
             Case Else
-                Dim qwl = From c In ef.ModuleUser_Join
+                Dim qwl = From c In ef.ModulesUsers_Join
                           Where c.UserId = UID
                           Select c
                 ItemCount = qwl.Count
@@ -112,7 +112,7 @@
 
         For ct = 0 To ItemCount - 1
             Dim m As Long = Modules(ct)
-            Dim modul = From c In ef.ModuleLists
+            Dim modul = From c In ef.Modules
                         Where c.PID = m
                         Select c
 

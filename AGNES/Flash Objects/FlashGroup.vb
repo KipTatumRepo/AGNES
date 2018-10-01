@@ -1,7 +1,65 @@
 ﻿Public Class FlashGroup
     Inherits DockPanel
-
-    Public Sub New(GroupName As String, ShowPercentages As Boolean, Top As Integer, Highlight As Boolean, Subtotal As Boolean)
+    Public GroupCategory As String
+    Public FlashVal As CurrencyBox
+    Public FlashPercent As TextBox
+    Public BudgetVal As CurrencyBox
+    Public BudgetPercent As TextBox
+    Public BudgetVariance As CurrencyBox
+    Public ForecastVal As CurrencyBox
+    Public ForecastPercent As TextBox
+    Public ForecastVariance As CurrencyBox
+    Public Notes As Expander
+    Public WeekChooseObject As WeekChooser
+    Public PeriodChooseObject As PeriodChooser
+    Public UnitChooseObject As UnitChooser
+    Private _flashcontent As Double
+    Private _heldflashcontent As Double
+    Private _budgetcontent As Double
+    Private _forecastcontent As Double
+    Public Property FlashContent As Double
+        Get
+            Return _flashcontent
+        End Get
+        Set(value As Double)
+            _flashcontent = value
+            FlashVal.SetAmount = value
+            Update()
+        End Set
+    End Property
+    Public Property BudgetContent As Double
+        Get
+            Return _budgetcontent
+        End Get
+        Set(value As Double)
+            _budgetcontent = value
+            BudgetVal.SetAmount = value
+            Update()
+        End Set
+    End Property
+    Public Property ForecastContent As Double
+        Get
+            Return _forecastcontent
+        End Get
+        Set(value As Double)
+            _forecastcontent = value
+            ForecastVal.SetAmount = value
+            Update()
+        End Set
+    End Property
+    Private _subtotal As Boolean
+    Private Property IsSubTotal As Boolean
+        Get
+            Return _subtotal
+        End Get
+        Set(value As Boolean)
+            _subtotal = value
+            If value = True Then Background = Brushes.LightGray
+        End Set
+    End Property
+    Public Property SubtotalGroups As List(Of FlashGroup)
+    Public Sub New(PC As PeriodChooser, WC As WeekChooser, UC As UnitChooser, GroupName As String, ShowPercentages As Boolean, Top As Integer, Highlight As Boolean, Subtotal As Boolean)
+        GroupCategory = GroupName
         HorizontalAlignment = HorizontalAlignment.Left
         VerticalAlignment = VerticalAlignment.Top
         Height = 42
@@ -9,7 +67,7 @@
         LastChildFill = False
         Margin = New Thickness(10, Top, 0, 0)
         If Highlight = True Then Background = Brushes.WhiteSmoke
-        If Subtotal = True Then Background = Brushes.LightGray
+        IsSubTotal = Subtotal
         '// Create Flash group header label
         Dim GroupLabel As New Border
         Dim tb As New TextBlock With {.Text = GroupName, .LineHeight = 16, .TextAlignment = TextAlignment.Center,
@@ -18,45 +76,56 @@
         GroupLabel.Child = tb
 
         '// Create Flash value input field
-        Dim FlashVal As New CurrencyBox(140, False, True, False, False, True, AgnesBaseInput.FontSz.Medium) With {.Margin = New Thickness(4, 4, 0, 0)}
+        FlashVal = New CurrencyBox(140, False, True, False, False, True, AgnesBaseInput.FontSz.Medium) With
+            {.Margin = New Thickness(4, 4, 0, 0)}
 
-        '// Create image for notes
-        Dim NoteImage As New Image With {.Height = 32, .Width = 32, .Stretch = Stretch.UniformToFill, .HorizontalAlignment = Windows.HorizontalAlignment.Center,
-            .VerticalAlignment = VerticalAlignment.Center, .Opacity = 0.33, .ToolTip = "Add Notes", .Margin = New Thickness(0, 1, 0, 0),
-            .Source = New BitmapImage(New Uri("pack://application:,,,/Resources/Notes-icon.png"))}
-        AddHandler NoteImage.PreviewMouseDown, AddressOf EnterNotes
+        '// Create expander for notes
+        Notes = New Expander With {.Height = 32, .ExpandDirection = ExpandDirection.Right, .ToolTip = "Add Notes"}
+        Notes.Content = New TextBox With {.MaxLength = 130, .Width = 700}
 
         '// Create flash percentage textbox.  Hide if it doesn't belong with this group (preserving spacing)
-        Dim FlashPercent As New TextBox With {.Text = "95%", .FontSize = 16, .VerticalAlignment = VerticalAlignment.Center, .HorizontalAlignment = Windows.HorizontalAlignment.Center,
-            .BorderBrush = Brushes.LightGray, .IsEnabled = False, .Height = 26, .Margin = New Thickness(4, 0, 0, 0)}
+        FlashPercent = New TextBox With
+            {.Text = "95%", .FontSize = 16, .VerticalAlignment = VerticalAlignment.Center,
+            .HorizontalAlignment = Windows.HorizontalAlignment.Center, .BorderBrush = Brushes.LightGray, .IsEnabled = False,
+            .Height = 26, .Margin = New Thickness(4, 0, 0, 0)}
         If ShowPercentages = False Then FlashPercent.Visibility = Visibility.Hidden
 
         '// Create budget value field
-        Dim BudgetVal As New CurrencyBox(140, True, False, True, False, True, AgnesBaseInput.FontSz.Medium) With {.Margin = New Thickness(4, 4, 0, 0), .IsEnabled = False}
+        BudgetVal = New CurrencyBox(140, True, False, True, False, True, AgnesBaseInput.FontSz.Medium) With
+            {.Margin = New Thickness(4, 4, 0, 0), .IsEnabled = False}
 
         '// Create budget percentage textbox.  Hide if it doesn't belong with this group (preserving spacing)
-        Dim BudgetPercent As New TextBox With {.Text = "85%", .FontSize = 16, .VerticalAlignment = VerticalAlignment.Center, .HorizontalAlignment = Windows.HorizontalAlignment.Center,
-            .BorderBrush = Brushes.LightGray, .IsEnabled = False, .Height = 26, .Margin = New Thickness(4, 0, 0, 0)}
+        BudgetPercent = New TextBox With
+            {.Text = "85%", .FontSize = 16, .VerticalAlignment = VerticalAlignment.Center,
+            .HorizontalAlignment = Windows.HorizontalAlignment.Center, .BorderBrush = Brushes.LightGray, .IsEnabled = False,
+            .Height = 26, .Margin = New Thickness(4, 0, 0, 0)}
+
         If ShowPercentages = False Then BudgetPercent.Visibility = Visibility.Hidden
 
         '// Create variance value field
-        Dim BudgetVariance As New CurrencyBox(140, True, False, True, False, True, AgnesBaseInput.FontSz.Medium) With {.Margin = New Thickness(4, 4, 0, 0), .IsEnabled = False}
+        BudgetVariance = New CurrencyBox(140, True, False, True, False, True, AgnesBaseInput.FontSz.Medium) With
+            {.Margin = New Thickness(4, 4, 0, 0), .IsEnabled = False}
 
         '// Create forecast value field
-        Dim ForecastVal As New CurrencyBox(140, True, False, True, False, True, AgnesBaseInput.FontSz.Medium) With {.Margin = New Thickness(4, 4, 0, 0), .IsEnabled = False}
+        ForecastVal = New CurrencyBox(140, True, False, True, False, True, AgnesBaseInput.FontSz.Medium) With
+            {.Margin = New Thickness(4, 4, 0, 0), .IsEnabled = False}
 
         '// Create forecast percentage textbox.  Hide if it doesn't belong with this group (preserving spacing)
-        Dim ForecastPercent As New TextBox With {.Text = "75%", .FontSize = 16, .VerticalAlignment = VerticalAlignment.Center, .HorizontalAlignment = Windows.HorizontalAlignment.Center,
-            .BorderBrush = Brushes.LightGray, .IsEnabled = False, .Height = 26, .Margin = New Thickness(4, 0, 0, 0)}
+        ForecastPercent = New TextBox With
+            {.Text = "75%", .FontSize = 16, .VerticalAlignment = VerticalAlignment.Center,
+            .HorizontalAlignment = Windows.HorizontalAlignment.Center, .BorderBrush = Brushes.LightGray, .IsEnabled = False,
+            .Height = 26, .Margin = New Thickness(4, 0, 0, 0)}
+
         If ShowPercentages = False Then ForecastPercent.Visibility = Visibility.Hidden
 
         '// Create forecast variance value field
-        Dim ForecastVariance As New CurrencyBox(140, True, False, True, False, True, AgnesBaseInput.FontSz.Medium) With {.Margin = New Thickness(4, 4, 0, 0), .IsEnabled = False}
+        ForecastVariance = New CurrencyBox(140, True, False, True, False, True, AgnesBaseInput.FontSz.Medium) With
+            {.Margin = New Thickness(4, 4, 0, 0), .IsEnabled = False}
 
         With Children
             .Add(GroupLabel)
             .Add(FlashVal)
-            .Add(NoteImage)
+            .Add(Notes)
             .Add(FlashPercent)
             .Add(BudgetVal)
             .Add(BudgetPercent)
@@ -65,57 +134,103 @@
             .Add(ForecastPercent)
             .Add(ForecastVariance)
         End With
+        If IsSubTotal = True Then Notes.Visibility = Visibility.Hidden
 
+        WeekChooseObject = WC
+        AddHandler WeekChooseObject.PropertyChanged, AddressOf WeekChanged
+
+        PeriodChooseObject = PC
+        AddHandler PeriodChooseObject.PropertyChanged, AddressOf PeriodChanged
+
+        UnitChooseObject = UC
+        AddHandler UnitChooseObject.PropertyChanged, AddressOf UnitChanged
 
     End Sub
 
-    Private Sub EnterNotes()
-        MsgBox("Enter notes")
+#Region "Private Event Listeners"
+    Private Sub PeriodChanged()
+        Load()
     End Sub
 
+    Private Sub WeekChanged()
+        Load()
+    End Sub
+
+    Private Sub UnitChanged()
+        Load()
+    End Sub
+#End Region
+
+#Region "Public Methods"
+    Public Sub Load()
+        LoadFlash()
+        LoadBudget()
 
 
-    '        <TextBox Height="26" Margin="4,0,0,0" />
-    '       
-    '<Grid HorizontalAlignment = "Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
-    '            <Rectangle Fill = "#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
-    '                <Rectangle.Effect>
-    '<BlurEffect Radius = "10    " />
-    '                </Rectangle.Effect>
-    '                </Rectangle>
-    '            <TextBox HorizontalAlignment = "Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
-    '        </Grid>
-    '        <TextBox Text = "85%" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFD6D8DE" IsEnabled="False" Height="26" Margin="4,0,0,0" />
-    '        <Grid HorizontalAlignment = "Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
-    '            <Rectangle Fill = "#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
-    '                <Rectangle.Effect>
-    '<BlurEffect Radius = "10    " />
-    '                </Rectangle.Effect>
-    '                </Rectangle>
-    '            <TextBox HorizontalAlignment = "Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
-    '        </Grid>
-    '        <Grid HorizontalAlignment = "Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
-    '            <Rectangle Fill = "#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
-    '                <Rectangle.Effect>
-    '<BlurEffect Radius = "10    " />
-    '                </Rectangle.Effect>
-    '                </Rectangle>
-    '            <TextBox HorizontalAlignment = "Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
-    '        </Grid>
-    '        <TextBox Text = "85%" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFD6D8DE" IsEnabled="False" Height="26" Margin="4,0,0,0" />
+    End Sub
+    Public Sub Save()
+        Dim ph As String = ""
+    End Sub
+    Public Sub Update()
+        Dim ph As String = ""
+    End Sub
+#End Region
 
-    '        <Grid HorizontalAlignment = "Left" Height="34" Margin="4,4,0,0" VerticalAlignment="Top" Width="140 " IsEnabled="False">
-    '            <Rectangle Fill = "#FFFD092A" Opacity="0.33" RadiusX="5" RadiusY="5" Visibility="Hidden">
-    '                <Rectangle.Effect>
-    '<BlurEffect Radius = "10    " />
-    '                </Rectangle.Effect>
-    '                </Rectangle>
-    '            <TextBox HorizontalAlignment = "Left" TextAlignment="Right" Height="26" Margin="4,4,0,0" TextWrapping="Wrap" Text="($999,999,999.99)" VerticalAlignment="Top" Width="132" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" Opacity="0.75" FontSize="16"/>
-    '        </Grid>
-    '    </DockPanel>
+#Region "Private Methods"
+    Private Sub LoadBudget()
+        Dim unitbrd As Border, weekbrd As Border, unittb As TextBlock, weektb As TextBlock
+        Dim CalculateBudget As Double = 0
+        If IsSubTotal = True Then Exit Sub
+        For Each unitbrd In UnitChooseObject.Children
+            If unitbrd.Tag <> "Label" Then
+                unittb = unitbrd.Child
+                If unittb.FontWeight = FontWeights.SemiBold Then
+                    For Each weekbrd In WeekChooseObject.Children
+                        If weekbrd.Tag <> "Label" Then
+                            weektb = weekbrd.Child
+                            If weektb.FontWeight = FontWeights.SemiBold And FormatNumber(weektb.Tag, 0) <= WeekChooseObject.MaxWeek Then
+                                CalculateBudget += LoadSingleWeekAndUnitBudget(GroupCategory, FormatNumber(unittb.Tag, 0), 2019, PeriodChooseObject.CurrentPeriod,
+                                                                      getweekoperatingdays(PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0)),
+                                                                      getperiodoperatingdays(PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0)))
+                            End If
+                        End If
+                    Next
+                End If
+            End If
+        Next
+        BudgetContent = CalculateBudget
+    End Sub
 
+    Private Sub LoadFlash()
+        'TODO:  CAPTURE INSTANCE WHERE USER IS RETURNING TO CURRENT WEEK FROM PTD VIEW
+        Dim CurrVal As Double = 0 'FlashContent
+        Dim unitbrd As Border, weekbrd As Border, unittb As TextBlock, weektb As TextBlock
+        Dim CalculateFlash As Double = 0
+        If IsSubTotal = True Then Exit Sub
+        For Each unitbrd In UnitChooseObject.Children
+            If unitbrd.Tag <> "Label" Then
+                unittb = unitbrd.Child
+                If unittb.FontWeight = FontWeights.SemiBold Then
+                    For Each weekbrd In WeekChooseObject.Children
+                        If weekbrd.Tag <> "Label" Then
+                            weektb = weekbrd.Child
+                            If weektb.FontWeight = FontWeights.SemiBold And FormatNumber(weektb.Tag, 0) <= WeekChooseObject.MaxWeek Then
+                                CalculateFlash += LoadSingleWeekAndUnitFlash(GroupCategory, FormatNumber(unittb.Tag, 0), 2019, PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0))
 
+                            End If
+                        End If
+                    Next
+                End If
+            End If
+        Next
+        CalculateFlash += CurrVal
+        FlashContent = CalculateFlash
+        Dim tb As TextBox = Notes.Content
 
+        'TODO: PROOF AGAINST OVERWRITING OF UNSAVED FLASH NOTES
+        If tb.Text = "" Then tb.Text = SharedFunctions.FlashNotes
+    End Sub
 
+#End Region
 
 End Class

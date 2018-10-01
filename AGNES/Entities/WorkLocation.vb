@@ -12,6 +12,6 @@ Imports System.Collections.Generic
 
 Partial Public Class WorkLocation
     Public Property PID As Long
-    Public Property WorkLocation1 As String
+    Public Property Location As String
 
 End Class

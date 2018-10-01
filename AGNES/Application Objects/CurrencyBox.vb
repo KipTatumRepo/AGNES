@@ -45,7 +45,6 @@
     Public Highlight As Boolean
     Private SystemChange As Boolean
 
-
     Public Sub New(FieldWidth As Integer, AllowCredit As Boolean, AllowDebit As Boolean, ForceCredit As Boolean, ForceDebit As Boolean, SelectAllUponEnteringField As Boolean, FontSize As AgnesBaseInput.FontSz, Optional ByVal DefaultText As String = "$0.00")
         MyBase.New(FieldWidth, VerticalAlignment.Top, HorizontalAlignment.Left, FontSize, TextAlignment.Right, DefaultText, TextWrapping.NoWrap)
         Credit = AllowCredit
