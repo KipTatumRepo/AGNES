@@ -167,6 +167,24 @@
     <Compile Include="Entities\Events.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\FlashActualData.vb">
+      <DependentUpon>FlashActualsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\FlashActualsModel.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FlashActualsModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\FlashActualsModel.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FlashActualsModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\FlashActualsModel.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FlashActualsModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\GeneralSharedData.Context.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -273,6 +291,7 @@
       <DependentUpon>AGNESSharedData.tt</DependentUpon>
     </Compile>
     <Compile Include="Flash Objects\FlashGroup.vb" />
+    <Compile Include="Flash Objects\SharedFunctions.vb" />
     <Compile Include="Flash Objects\UnitFlash.vb" />
     <Compile Include="Flash Objects\UnitGroup.vb" />
     <Compile Include="Module Orchestrators\FlashModule.vb" />
@@ -457,6 +476,7 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>AGNESSharedData.Designer.vb</LastGenOutput>
     </EntityDeploy>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Entities\AGNESSharedData.edmx.diagram">
       <DependentUpon>AGNESSharedData.edmx</DependentUpon>
     </None>
@@ -478,6 +498,13 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>GeneralSharedData.Designer.vb</LastGenOutput>
     </EntityDeploy>
+    <EntityDeploy Include="Entities\FlashActualsModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>FlashActualsModel.Designer.vb</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Entities\FlashActualsModel.edmx.diagram">
+      <DependentUpon>FlashActualsModel.edmx</DependentUpon>
+    </None>
     <None Include="Entities\GeneralSharedData.edmx.diagram">
       <DependentUpon>GeneralSharedData.edmx</DependentUpon>
     </None>
@@ -589,6 +616,16 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>BusinessGroupCRM.edmx</DependentUpon>
       <LastGenOutput>BusinessGroupCRM.vb</LastGenOutput>
+    </Content>
+    <Content Include="Entities\FlashActualsModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>FlashActualsModel.edmx</DependentUpon>
+      <LastGenOutput>FlashActualsModel.Context.vb</LastGenOutput>
+    </Content>
+    <Content Include="Entities\FlashActualsModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>FlashActualsModel.edmx</DependentUpon>
+      <LastGenOutput>FlashActualsModel.vb</LastGenOutput>
     </Content>
     <Content Include="Entities\GeneralSharedData.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
