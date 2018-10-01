@@ -22,11 +22,11 @@ Partial Public Class AGNESSharedData
         Throw New UnintentionalCodeFirstException()
     End Sub
 
-    Public Overridable Property AccessLevelLists() As DbSet(Of AccessLevelList)
-    Public Overridable Property ModuleGroupLists() As DbSet(Of ModuleGroupList)
-    Public Overridable Property ModuleLists() As DbSet(Of ModuleList)
-    Public Overridable Property ModuleUser_Join() As DbSet(Of ModuleUser_Join)
-    Public Overridable Property UnitUser_Join() As DbSet(Of UnitUser_Join)
-    Public Overridable Property UserLists() As DbSet(Of UserList)
+    Public Overridable Property AccessLevels() As DbSet(Of AccessLevel)
+    Public Overridable Property ModuleGroups() As DbSet(Of ModuleGroup)
+    Public Overridable Property Modules() As DbSet(Of [Module])
+    Public Overridable Property ModulesUsers_Join() As DbSet(Of ModulesUsers_Join)
+    Public Overridable Property UnitsUsers_Join() As DbSet(Of UnitsUsers_Join)
+    Public Overridable Property Users() As DbSet(Of User)
 
 End Class

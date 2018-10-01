@@ -159,15 +159,15 @@ Public Class WCRObject
     Public Sub AddCamCheck(VID As Integer, VNm As String, Num As String, Amt As Double, Dte As Date, Dow As Byte, Nts As String)
         Dim c As New CamCheck With {.VendorID = VID, .VendorName = VNm, .CheckNumber = Num, .CheckAmt = Amt, .DepositDate = Dte, .DayofWeek = Dow, .Notes = Nts}
         Try
-            Dim cc As New ReceivedCAMCheck
+            Dim cc As New ReceivedCAMChecks
             With cc
-                .VID = c.VendorID
-                .VendorName = c.VendorName
+                .VendorId = c.VendorID
+                .Name = c.VendorName
                 .CheckNumber = c.CheckNumber
-                .DepositDate = c.DepositDate
+                .Date = c.DepositDate
                 .DayofWeek = c.DayofWeek
-                .CheckAmount = c.CheckAmt
-                .CheckNotes = c.Notes
+                .Amount = c.CheckAmt
+                .Notes = c.Notes
             End With
             WCRE.ReceivedCAMChecks.Add(cc)
         Catch excep As Exception
@@ -820,11 +820,11 @@ Public Class WCRObject
         Dim si As Integer = vn.IndexOf("(")
         Dim li As Integer = vn.IndexOf(")")
         Dim vnum As Integer = FormatNumber(vn.Substring(si + 1, (li - si) - 1))
-        Dim q = From c In WCRE.VendorInfoes
+        Dim q = From c In WCRE.VendorInfo
                 Where c.StoreId = vnum
                 Select c
         For Each c In q
-            vn = Trim(c.VendorName)
+            vn = Trim(c.Name)
         Next
         Return vn
     End Function
@@ -840,8 +840,8 @@ Public Class WCRObject
 
     Public Function GetVendorID(vnm)
         Dim vid As Integer
-        Dim q = From c In WCRE.VendorInfoes
-                Where c.VendorName Is vnm
+        Dim q = From c In WCRE.VendorInfo
+                Where c.Name Is vnm
                 Select c
         For Each c In q
             vid = c.PID
@@ -854,7 +854,7 @@ Public Class WCRObject
         Dim vid1 As Integer = vid
         Try
             Dim IsNew = ef.ReceivedCAMChecks.Single(Function(p) p.CheckNumber Is cn)     ' If check number exists,
-            Dim DoubleCheck = ef.ReceivedCAMChecks.Single(Function(p) p.VID = vid1)      ' see if it's for the same vendor.  If so, throw an error; if not, create new entry
+            Dim DoubleCheck = ef.ReceivedCAMChecks.Single(Function(p) p.VendorId = vid1)      ' see if it's for the same vendor.  If so, throw an error; if not, create new entry
             Return False
         Catch ex As InvalidOperationException
             Return True

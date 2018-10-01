@@ -12,6 +12,6 @@ Imports System.Collections.Generic
 
 Partial Public Class WorkTime
     Public Property PID As Long
-    Public Property WorkTime1 As String
+    Public Property Time As String
 
 End Class

@@ -12,9 +12,10 @@ Imports System.Collections.Generic
 
 Partial Public Class VendorInfo
     Public Property PID As Long
-    Public Property VendorName As String
-    Public Property InvoiceName As String
-    Public Property SupplierCode As Long
+    Public Property Name As String
+    Public Property Invoice As String
+    Public Property Supplier As Long
+    Public Property StoreId As Nullable(Of Long)
     Public Property VendorType As Short
     Public Property Active As Boolean
     Public Property FoodType As Nullable(Of Integer)
@@ -23,11 +24,10 @@ Partial Public Class VendorInfo
     Public Property CAMStart As Nullable(Of Date)
     Public Property CAMAmount As Nullable(Of Decimal)
     Public Property KPIType As Nullable(Of Short)
+    Public Property KPIStart As Nullable(Of Date)
     Public Property KPIAmount As Nullable(Of Decimal)
     Public Property RequiresHood As Boolean
     Public Property InsuranceExpiration As Nullable(Of Date)
     Public Property ContractExpiration As Nullable(Of Date)
-    Public Property StoreId As Nullable(Of Long)
-    Public Property KPIStart As Nullable(Of Date)
 
 End Class

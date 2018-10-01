@@ -6,29 +6,29 @@
         End Get
         Set(value As String)
             _vendorname = value
-            Dim q = From c In WCRE.VendorInfoes
-                    Where c.VendorName = value
+            Dim q = From c In WCRE.VendorInfo
+                    Where c.Name = value
                     Select c
             For Each c In q
-                InvoiceName = Trim(c.InvoiceName)
-                VendorNumber = Trim(c.SupplierCode)
+                InvoiceName = Trim(c.Invoice)
+                VendorNumber = Trim(c.Supplier)
                 '// CAM and KPI >>>
                 CAM = FormatNumber(c.CAMAmount, 4)
                 KPI = FormatNumber(c.KPIAmount, 4)
-                Dim q1 = From c1 In WCRE.CAMWithholdingTypes
+                Dim q1 = From c1 In WCRE.CAMWithholdings
                          Where c1.PID = c.CAMType
                          Select c1
                 For Each c1 In q1
-                    CAMType = Trim(c1.WithholdingType)
+                    CAMType = Trim(c1.Withholding)
                 Next
                 If Now() < c.CAMStart Then
                     CAMType = "None" : CAM = 0
                 End If
-                Dim q2 = From c2 In WCRE.KPIWithholdingTypes
+                Dim q2 = From c2 In WCRE.KPIWithholdings
                          Where c2.PID = c.KPIType
                          Select c2
                 For Each c2 In q2
-                    KPIType = Trim(c2.WithholdingType)
+                    KPIType = Trim(c2.Withholding)
                 Next
                 If Now() < c.KPIStart Then
                     KPIType = "None" : KPI = 0
@@ -308,7 +308,7 @@
             gs += t.TenderAmt
             GrossSales = gs
             tt = ""
-            Dim q = From c In WCRE.TenderID_TenderType_Mapping
+            Dim q = From c In WCRE.Tenders
                     Where c.TenderID = t.TenderId
                     Select c
             Dim ct As Integer = q.Count

@@ -4,7 +4,24 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="BIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="BIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DATES">
+          <Key>
+            <PropertyRef Name="Busines" />
+            <PropertyRef Name="Date_ID" />
+          </Key>
+          <Property Name="Busines" Type="int" Nullable="false" />
+          <Property Name="Date_ID" Type="datetime" Nullable="false" />
+          <Property Name="MS_FY" Type="smallint" Nullable="false" />
+          <Property Name="MS_Quarter" Type="tinyint" Nullable="false" />
+          <Property Name="MS_Period" Type="tinyint" Nullable="false" />
+          <Property Name="CG_FY" Type="int" Nullable="false" />
+          <Property Name="CG_Quarter" Type="tinyint" Nullable="false" />
+          <Property Name="CG_Period" Type="tinyint" Nullable="false" />
+          <Property Name="Week" Type="int" Nullable="false" />
+          <Property Name="Weekend_Holiday_Flag" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="IS_WEEKEND_HOLIDAY" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="MasterBuildingList">
           <Key>
             <PropertyRef Name="PID" />
@@ -19,10 +36,10 @@
           <Property Name="Long" Type="decimal" Precision="12" Scale="6" />
         </EntityType>
         <EntityContainer Name="BIModelStoreContainer">
+          <EntitySet Name="DATES" EntityType="Self.DATES" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MasterBuildingList" EntityType="Self.MasterBuildingList" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -41,7 +58,25 @@
         </EntityType>
         <EntityContainer Name="BIEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="MasterBuildingLists" EntityType="Self.MasterBuildingList" />
+          <EntitySet Name="Dates" EntityType="BIModel.Dates" />
         </EntityContainer>
+        <EntityType Name="Dates">
+          <Key>
+            <PropertyRef Name="Busines" />
+            <PropertyRef Name="Date_ID" />
+          </Key>
+          <Property Name="Busines" Type="Int32" Nullable="false" />
+          <Property Name="Date_ID" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MS_FY" Type="Int16" Nullable="false" />
+          <Property Name="MS_Quarter" Type="Byte" Nullable="false" />
+          <Property Name="MS_Period" Type="Byte" Nullable="false" />
+          <Property Name="CG_FY" Type="Int32" Nullable="false" />
+          <Property Name="CG_Quarter" Type="Byte" Nullable="false" />
+          <Property Name="CG_Period" Type="Byte" Nullable="false" />
+          <Property Name="Week" Type="Int32" Nullable="false" />
+          <Property Name="Weekend_Holiday_Flag" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="IS_WEEKEND_HOLIDAY" Type="Boolean" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -59,6 +94,23 @@
                 <ScalarProperty Name="SqFt" ColumnName="SqFt" />
                 <ScalarProperty Name="Lat" ColumnName="Lat" />
                 <ScalarProperty Name="Long" ColumnName="Long" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Dates">
+            <EntityTypeMapping TypeName="BIModel.Dates">
+              <MappingFragment StoreEntitySet="DATES">
+                <ScalarProperty Name="IS_WEEKEND_HOLIDAY" ColumnName="IS_WEEKEND_HOLIDAY" />
+                <ScalarProperty Name="Weekend_Holiday_Flag" ColumnName="Weekend_Holiday_Flag" />
+                <ScalarProperty Name="Week" ColumnName="Week" />
+                <ScalarProperty Name="CG_Period" ColumnName="CG_Period" />
+                <ScalarProperty Name="CG_Quarter" ColumnName="CG_Quarter" />
+                <ScalarProperty Name="CG_FY" ColumnName="CG_FY" />
+                <ScalarProperty Name="MS_Period" ColumnName="MS_Period" />
+                <ScalarProperty Name="MS_Quarter" ColumnName="MS_Quarter" />
+                <ScalarProperty Name="MS_FY" ColumnName="MS_FY" />
+                <ScalarProperty Name="Date_ID" ColumnName="Date_ID" />
+                <ScalarProperty Name="Busines" ColumnName="Busines" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
