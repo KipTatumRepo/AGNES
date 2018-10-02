@@ -8,7 +8,6 @@
                  Select d
         For Each d In df
             Return (d.MS_Period)
-            Exit Function
         Next
         Return 12
     End Function
@@ -20,7 +19,6 @@
                  Select d
         For Each d In df
             Return (d.Week)
-            Exit Function
         Next
         Return 5
     End Function
@@ -33,17 +31,30 @@
                  Select d
         If df.Count = 0 Then
             Return 4
-            Exit Function
         End If
         Return 5
     End Function
 
-    Public Function getweekoperatingdays(p, w) As Byte
-        Return 5    'TODO: TEST ONLY
+    Public Function getweekoperatingdays(p As Byte, w As Byte) As Byte
+        Dim df = From d In SharedDataGroup.Dates
+                 Where d.MS_FY = 2019 And
+                     d.MS_Period = p And
+                     d.Week = w And
+                     d.IS_WEEKEND_HOLIDAY = 0
+                 Select d
+
+        Dim dayz As Byte = df.Count
+        Return df.Count
     End Function
 
-    Public Function getperiodoperatingdays(p, w) As Byte
-        Return 25   'TODO: TEST ONLY
+    Public Function getperiodoperatingdays(p As Byte) As Byte
+        Dim df = From d In SharedDataGroup.Dates
+                 Where d.MS_FY = 2019 And
+                     d.MS_Period = p And
+                     d.IS_WEEKEND_HOLIDAY = 0
+                 Select d
+        Dim dayz As Byte = df.Count
+        Return df.Count
     End Function
 
     Public Function LoadSingleWeekAndUnitFlash(category As String, unit As Int64, yr As Int16, period As Byte, wk As Byte) As Double

@@ -153,10 +153,12 @@
     End Sub
 
     Private Sub WeekChanged()
+        'MsgBox(WeekChooseObject.SelectedCount)
         Load()
     End Sub
 
     Private Sub UnitChanged()
+        ' MsgBox(UnitChooseObject.SelectedCount)
         Load()
     End Sub
 #End Region
@@ -165,8 +167,6 @@
     Public Sub Load()
         LoadFlash()
         LoadBudget()
-
-
     End Sub
     Public Sub Save()
         Dim ph As String = ""
@@ -191,7 +191,7 @@
                             If weektb.FontWeight = FontWeights.SemiBold And FormatNumber(weektb.Tag, 0) <= WeekChooseObject.MaxWeek Then
                                 CalculateBudget += LoadSingleWeekAndUnitBudget(GroupCategory, FormatNumber(unittb.Tag, 0), 2019, PeriodChooseObject.CurrentPeriod,
                                                                       getweekoperatingdays(PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0)),
-                                                                      getperiodoperatingdays(PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0)))
+                                                                      getperiodoperatingdays(PeriodChooseObject.CurrentPeriod))
                             End If
                         End If
                     Next

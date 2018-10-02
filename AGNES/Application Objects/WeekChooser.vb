@@ -13,6 +13,7 @@ Public Class WeekChooser
         Set(value As Byte)
             _currentweek = value
             If value > 0 Then
+                SelectedCount = 0
                 For Each b As Border In Children
                     If b.Tag <> "Label" Then
                         Dim tb As TextBlock = b.Child
@@ -24,6 +25,7 @@ Public Class WeekChooser
                             tb.FontWeight = FontWeights.SemiBold
                             tb.Foreground = Brushes.Black
                             tb.FontSize = 24
+                            If b.IsEnabled = True Then SelectedCount += 1
                         End If
                     End If
                 Next
@@ -35,7 +37,7 @@ Public Class WeekChooser
     Public Property MinWeek As Byte
     Public Property MaxWeek As Byte
     Public Property ChooserParent As Object
-
+    Public Property SelectedCount As Byte
     Public Sub New(MinW As Byte, MaxW As Byte, CurW As Byte)
         Dim ct As Byte
         MinWeek = MinW
@@ -91,6 +93,7 @@ Public Class WeekChooser
     End Sub
 
     Private Sub ChooseWeek(sender As Object, e As MouseEventArgs)
+        SelectedCount = 0
         Dim tb As TextBlock
         If TypeOf (sender) Is TextBlock Then
             tb = sender
@@ -112,6 +115,7 @@ Public Class WeekChooser
                 tb.Foreground = Brushes.Black
                 tb.FontSize = 16
                 tb.FontWeight = FontWeights.SemiBold
+                If brd.IsEnabled = True Then SelectedCount += 1
             End If
         Next
         CurrentWeek = 0

@@ -33,6 +33,7 @@ Public Class PeriodChooser
     Public Property MaxPeriod As Byte
     Public SelectAllEnabled As Boolean
     Public RelatedWeekObject As Object
+    Public Property SelectedCount As Byte
     Public Sub New(ByRef RelatedWeekObject As WeekChooser, MinP As Byte, MaxP As Byte, CurP As Byte)
         Dim ct As Byte
         Week = RelatedWeekObject
@@ -117,7 +118,7 @@ Public Class PeriodChooser
             If brd.Tag <> "Label" Then
                 tb.Foreground = Brushes.Black
                 tb.FontSize = 16
-                tb.FontWeight = FontWeights.Normal
+                tb.FontWeight = FontWeights.SemiBold
             End If
         Next
     End Sub

@@ -13,6 +13,7 @@ Public Class UnitChooser
         Set(value As Long)
             _currentunit = value
             If value > 0 Then
+                SelectedCount = 0
                 For Each b As Border In Children
                     If b.Tag <> "Label" Then
                         Dim tb As TextBlock = b.Child
@@ -24,6 +25,7 @@ Public Class UnitChooser
                             tb.FontWeight = FontWeights.SemiBold
                             tb.Foreground = Brushes.Black
                             tb.FontSize = 16
+                            If b.IsEnabled = True Then SelectedCount += 1
                         End If
                     End If
                 Next
@@ -33,6 +35,7 @@ Public Class UnitChooser
     End Property
     Public Property NumberOfAvailableUnits As Byte
     Public Property AllowMultiSelect As Boolean
+    Public Property SelectedCount As Byte
     Public Sub New(ByRef ListOfUnits As UnitGroup)
         Dim ct As Byte
         '// Create chooser label
@@ -88,6 +91,7 @@ Public Class UnitChooser
     End Sub
 
     Private Sub ChooseUnit(sender As Object, e As MouseEventArgs)
+        SelectedCount = 0
         Dim tb As TextBlock
         If TypeOf (sender) Is TextBlock Then
             tb = sender
@@ -109,6 +113,7 @@ Public Class UnitChooser
                 tb.Foreground = Brushes.Black
                 tb.FontSize = 14
                 tb.FontWeight = FontWeights.SemiBold
+                If brd.IsEnabled = True Then SelectedCount += 1
             End If
         Next
         CurrentUnit = 0

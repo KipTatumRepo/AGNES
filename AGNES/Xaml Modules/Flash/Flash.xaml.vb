@@ -32,9 +32,6 @@
     Private Sub ConstructTemplate(FT)
         grdFlashGroups.Children.Clear()
         '// Add period, week, and unit chooser controls 
-
-        'TODO: "Me" represents the object that the Chooser(s) is/are in; passing it by reference
-        '      will allow a writeback of the selections period And/Or week to the object.  NEED TO TIE BACK ONCE THE FLASH OBJECT IS DONE.
         Dim currmsp As Byte = GetCurrentPeriod(FormatDateTime(Now(), DateFormat.ShortDate))
         Dim currwk As Byte = GetCurrentWeek(FormatDateTime(Now(), DateFormat.ShortDate))
         Wk = New WeekChooser(1, currwk, currwk)

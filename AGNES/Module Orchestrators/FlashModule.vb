@@ -52,5 +52,4 @@
         FlashPage.ShowDialog()
         If UserClosed = True Then Exit Sub
     End Sub
-
 End Module
