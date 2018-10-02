@@ -86,4 +86,17 @@
         Return 0
     End Function
 
+    Public Function LoadSingleWeekAndUnitForecast(category As String, unit As Int64, yr As Int16, period As Byte, wk As Byte) As Double
+        Dim fo = From f In FlashForecasts.Forecasts
+                 Where f.GLCategory = category And
+                     f.MSFY = yr And
+                     f.MSP = period And
+                     f.Week = wk And
+                     f.UnitNumber = unit
+                 Select f
+        For Each f In fo
+            Return (f.ForecastValue)
+        Next
+        Return 0
+    End Function
 End Module

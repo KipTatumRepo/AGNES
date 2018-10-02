@@ -1,5 +1,8 @@
-﻿Public Class CurrencyBox
+﻿Imports System.ComponentModel
+Public Class CurrencyBox
     Inherits AgnesBaseInput
+    Implements INotifyPropertyChanged
+    Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
     Private _credit As Boolean
     Public Property Credit As Boolean
         Get
@@ -20,16 +23,7 @@
         End Set
     End Property
 
-    Private _amount As Double
     Private _setamount As Double
-    Public Property Amount As Double
-        Get
-            Return _amount
-        End Get
-        Set(value As Double)
-            _amount = value
-        End Set
-    End Property
     Public Property SetAmount As Double
         Get
             Return _setamount
@@ -44,6 +38,7 @@
     Private _creditonly As Boolean
     Public Highlight As Boolean
     Private SystemChange As Boolean
+    Private HeldValue As String
 
     Public Sub New(FieldWidth As Integer, AllowCredit As Boolean, AllowDebit As Boolean, ForceCredit As Boolean, ForceDebit As Boolean, SelectAllUponEnteringField As Boolean, FontSize As AgnesBaseInput.FontSz, Optional ByVal DefaultText As String = "$0.00")
         MyBase.New(FieldWidth, VerticalAlignment.Top, HorizontalAlignment.Left, FontSize, TextAlignment.Right, DefaultText, TextWrapping.NoWrap)
@@ -94,10 +89,12 @@
             t.CaretIndex = t.Text.Length
         End If
         SystemChange = False
+        HeldValue = t.Text
     End Sub
 
     Private Sub ExitField(sender As Object, e As EventArgs)
         Dim t As TextBox = sender
+        If t.Text = HeldValue Then Exit Sub
         Try
             Dim cval As Double = FormatNumber(t.Text, 2)
             If (Debit = False And cval > 0) Or (Credit = False And cval < 0) Then
@@ -107,7 +104,7 @@
                 Flare = False
             End If
             t.Text = FormatCurrency(cval, 2)
-            Amount = FormatNumber(cval, 2)
+            SetAmount = FormatNumber(cval, 2)
             SystemChange = False
         Catch ex As Exception
             Flare = True
@@ -120,14 +117,14 @@
                 SystemChange = True
                 Flare = False
                 t.Text = FormatCurrency(-cval, 2)
-                Amount = FormatNumber(-cval, 2)
+                SetAmount = FormatNumber(-cval, 2)
                 SystemChange = False
             End If
         Catch ex As Exception
             Flare = True
             Me.Focus()
         End Try
-
+        RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(“Amountchanged”))
     End Sub
 
 End Class

@@ -183,8 +183,8 @@ Public Class BGCRM
             Case 2          '======FINANCIAL PAGE
 
                 With BG
-                    .TotalRevenue = FormatNumber(curRevenue.Amount, 2)
-                    .OffSiteSpend = FormatNumber(curOffsite.Amount, 2)
+                    .TotalRevenue = FormatNumber(curRevenue.SetAmount, 2)
+                    .OffSiteSpend = FormatNumber(curOffsite.SetAmount, 2)
                     .TotalEvents = FormatNumber(numEventCount.Amount, numEventCount.NumberOfDecimals)
                     .Events500 = FormatNumber(num500Events.Amount, num500Events.NumberOfDecimals)
                     .CateredEvents = FormatNumber(numCatered.Amount, numCatered.NumberOfDecimals)

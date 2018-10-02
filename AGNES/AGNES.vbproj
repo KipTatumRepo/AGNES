@@ -12,7 +12,7 @@
     <MyType>Custom</MyType>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>\\compasspowerbi\businessintelligence\AGNES V2\</PublishUrl>
+    <PublishUrl>\\compasspowerbi\CompassBIApplications\AGNES\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -25,7 +25,7 @@
     <ProductName>AGNES</ProductName>
     <PublisherName>Compass Business Intelligence</PublisherName>
     <SuiteName>Compass Business Intelligence Application Suite</SuiteName>
-    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationRevision>4</ApplicationRevision>
     <ApplicationVersion>1.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -184,6 +184,27 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>FlashActualsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\FlashForecastModel.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FlashForecastModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\FlashForecastModel.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FlashForecastModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\FlashForecastModel.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FlashForecastModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ForecastAudits.vb">
+      <DependentUpon>FlashForecastModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Forecasts.vb">
+      <DependentUpon>FlashForecastModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\GeneralSharedData.Context.vb">
       <AutoGen>True</AutoGen>
@@ -505,6 +526,13 @@
     <None Include="Entities\FlashActualsModel.edmx.diagram">
       <DependentUpon>FlashActualsModel.edmx</DependentUpon>
     </None>
+    <EntityDeploy Include="Entities\FlashForecastModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>FlashForecastModel.Designer.vb</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Entities\FlashForecastModel.edmx.diagram">
+      <DependentUpon>FlashForecastModel.edmx</DependentUpon>
+    </None>
     <None Include="Entities\GeneralSharedData.edmx.diagram">
       <DependentUpon>GeneralSharedData.edmx</DependentUpon>
     </None>
@@ -626,6 +654,16 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>FlashActualsModel.edmx</DependentUpon>
       <LastGenOutput>FlashActualsModel.vb</LastGenOutput>
+    </Content>
+    <Content Include="Entities\FlashForecastModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>FlashForecastModel.edmx</DependentUpon>
+      <LastGenOutput>FlashForecastModel.Context.vb</LastGenOutput>
+    </Content>
+    <Content Include="Entities\FlashForecastModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>FlashForecastModel.edmx</DependentUpon>
+      <LastGenOutput>FlashForecastModel.vb</LastGenOutput>
     </Content>
     <Content Include="Entities\GeneralSharedData.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

@@ -3,10 +3,12 @@
     Public AvailableUnits As UnitGroup
     Public FlashBudgets As BudgetEntity
     Public FlashActuals As FlashActualsEntity
+    Public FlashForecasts As ForecastEntity
     Public SharedDataGroup As BIEntities
     Public Sub Runmodule()
         FlashBudgets = New BudgetEntity
         FlashActuals = New FlashActualsEntity
+        FlashForecasts = New ForecastEntity
         SharedDataGroup = New BIEntities
         '///TEST
         Dim FlashType As String = "WCC" 'TODO: REMOVE PLACEHOLDER FLASH TYPE
