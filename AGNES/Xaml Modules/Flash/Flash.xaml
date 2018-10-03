@@ -9,9 +9,9 @@
 
     <Grid x:Name="grdMain">
         <ToolBar x:Name="tlbFlash" Height="41" VerticalAlignment="Top" UseLayoutRounding="False">
-            <Image x:Name="imgDraft" Source="/AGNES;component/Resources/draft.png" ToolTip="Save Draft" PreviewMouseDown="Image_PreviewMouseDown" />
+            <Image x:Name="imgDraft" Source="/AGNES;component/Resources/draft.png" ToolTip="Save Draft" />
             <Separator />
-            <Image x:Name="imgSave" Source="/AGNES;component/Resources/save.png" ToolTip="Save Final" PreviewMouseDown="Image_PreviewMouseDown_1" />
+            <Image x:Name="imgSave" Source="/AGNES;component/Resources/save.png" ToolTip="Save Final" />
             <Separator />
             <Image x:Name="imgPrint" Source="/AGNES;component/Resources/print.png" ToolTip="Print" />
             <Separator />
@@ -32,8 +32,8 @@
         <TextBlock x:Name="lblForecastPercentage" HorizontalAlignment="Left" Margin="771,87,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Width="34" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Percentage against forecasted revenue"/>
         <TextBlock x:Name="lblForecastVariance" HorizontalAlignment="Left" Margin="817,87,0,0" TextWrapping="Wrap" Text="Variance to Forecast" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Variance of flash to forecast"/>
         <Grid x:Name="grdFlashGroups"/>
-        <StatusBar x:Name="barSaveStatus" Height="24" VerticalAlignment="Bottom" Background="#FFFD6C72">
-            <TextBlock x:Name="tbSaveStatus" Text="SAVE STATUS" Width="972" TextAlignment="Center" FontWeight="SemiBold" />
+        <StatusBar x:Name="barSaveStatus" Height="24" VerticalAlignment="Bottom" Background="#FF19F30E">
+            <TextBlock x:Name="tbSaveStatus" Text="Saved" Width="972" TextAlignment="Center" FontWeight="SemiBold" />
         </StatusBar>
     </Grid>
 

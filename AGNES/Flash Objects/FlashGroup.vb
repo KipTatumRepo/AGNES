@@ -79,7 +79,7 @@
     End Property
     Private Property GroupHasForecast As Boolean
     Private Property GroupHasPercentages As Boolean
-    Public Sub New(PC As PeriodChooser, WC As WeekChooser, UC As UnitChooser, GroupName As String, ShowPercentages As Boolean, Top As Integer, Highlight As Boolean, Subtotal As Boolean, HasForecast As Boolean, Optional SubtotalGroupList As List(Of FlashGroup) = Nothing)
+    Public Sub New(PC As PeriodChooser, WC As WeekChooser, UC As UnitChooser, GroupName As String, ShowPercentages As Boolean, Top As Integer, Highlight As Boolean, Subtotal As Boolean, HasForecast As Boolean, CreditOnly As Boolean, DebitOnly As Boolean, Optional SubtotalGroupList As List(Of FlashGroup) = Nothing)
         GroupCategory = GroupName
         GroupHasForecast = HasForecast
         GroupHasPercentages = ShowPercentages
@@ -99,7 +99,7 @@
         GroupLabel.Child = tb
 
         '// Create Flash value input field
-        FlashVal = New CurrencyBox(140, True, False, True, False, True, AgnesBaseInput.FontSz.Medium) With
+        FlashVal = New CurrencyBox(140, True, AgnesBaseInput.FontSz.Medium,, CreditOnly, DebitOnly) With
             {.Margin = New Thickness(4, 4, 0, 0)}
 
         If GroupIsSubTotal = True Then FlashVal.IsEnabled = False
@@ -116,7 +116,7 @@
         If GroupHasPercentages = False Then FlashPercent.Visibility = Visibility.Hidden
 
         '// Create budget value field
-        BudgetVal = New CurrencyBox(140, True, False, True, False, True, AgnesBaseInput.FontSz.Medium) With
+        BudgetVal = New CurrencyBox(140, True, AgnesBaseInput.FontSz.Medium,, CreditOnly, DebitOnly) With
             {.Margin = New Thickness(4, 4, 0, 0), .IsEnabled = False}
 
         '// Create budget percentage textbox.  Hide if it doesn't belong with this group (preserving spacing)
@@ -128,12 +128,12 @@
         If GroupHasPercentages = False Then BudgetPercent.Visibility = Visibility.Hidden
 
         '// Create variance value field
-        BudgetVariance = New CurrencyBox(140, True, False, True, False, True, AgnesBaseInput.FontSz.Medium) With
+        BudgetVariance = New CurrencyBox(140, True, AgnesBaseInput.FontSz.Medium) With
             {.Margin = New Thickness(4, 4, 0, 0), .IsEnabled = False}
 
 
         '// Create forecast value field
-        ForecastVal = New CurrencyBox(140, True, False, True, False, True, AgnesBaseInput.FontSz.Medium) With
+        ForecastVal = New CurrencyBox(140, True, AgnesBaseInput.FontSz.Medium,, CreditOnly, DebitOnly) With
             {.Margin = New Thickness(4, 4, 0, 0), .IsEnabled = False}
 
         '// Create forecast percentage textbox.  Hide if it doesn't belong with this group (preserving spacing)
@@ -145,7 +145,7 @@
         If GroupHasPercentages = False Then ForecastPercent.Visibility = Visibility.Hidden
 
         '// Create forecast variance value field
-        ForecastVariance = New CurrencyBox(140, True, False, True, False, True, AgnesBaseInput.FontSz.Medium) With
+        ForecastVariance = New CurrencyBox(140, True, AgnesBaseInput.FontSz.Medium) With
             {.Margin = New Thickness(4, 4, 0, 0), .IsEnabled = False}
 
         With Children
@@ -206,6 +206,7 @@
     Private Sub FlashChanged()
         Update(Me)
         UpdateSubtotals()
+        FlashPage.SaveStatus = 0
     End Sub
 #End Region
 

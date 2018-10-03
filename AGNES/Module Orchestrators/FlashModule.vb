@@ -5,6 +5,7 @@
     Public FlashActuals As FlashActualsEntity
     Public FlashForecasts As ForecastEntity
     Public SharedDataGroup As BIEntities
+    Public FlashPage As Flash
     Public Sub Runmodule()
         FlashBudgets = New BudgetEntity
         FlashActuals = New FlashActualsEntity
@@ -50,7 +51,7 @@
         End With
         '///TEST
 
-        Dim FlashPage As New Flash(FlashType, FlashUnit)
+        FlashPage = New Flash(FlashType, FlashUnit)
         FlashPage.ShowDialog()
         If UserClosed = True Then Exit Sub
     End Sub
