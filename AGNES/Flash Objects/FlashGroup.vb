@@ -110,7 +110,9 @@
 
         '// Create expander for notes
         Notes = New Expander With {.Height = 32, .ExpandDirection = ExpandDirection.Right, .IsExpanded = False, .ToolTip = "Add Notes"}
-        Notes.Content = New TextBox With {.MaxLength = 130, .Width = 715}
+        Dim NotesText As New TextBox With {.MaxLength = 130, .Width = 715}
+        AddHandler NotesText.LostFocus, AddressOf LeaveNoteField
+        Notes.Content = NotesText
 
         '// Create flash percentage textbox.  Hide if it doesn't belong with this group (preserving spacing)
         FlashPercent = New TextBox With
@@ -196,13 +198,11 @@
     End Sub
 
     Private Sub WeekChanged()
-        'MsgBox(WeekChooseObject.SelectedCount)
         Load()
         Update(Me)
     End Sub
 
     Private Sub UnitChanged()
-        ' MsgBox(UnitChooseObject.SelectedCount)
         Load()
         Update(Me)
     End Sub
@@ -443,7 +443,10 @@
             End With
             FlashActuals.FlashActualData.Add(nf)
             FlashActuals.SaveChanges()
-            If SaveType = "Final" Then FlashVal.IsEnabled = False
+            If SaveType = "Final" Then
+                FlashVal.IsEnabled = False
+                tb.IsEnabled = False
+            End If
             Return True
         Catch ex As Exception
             Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
@@ -455,11 +458,40 @@
     End Function
 
     Private Function UpdateFlash(SaveType) As Boolean
-        Dim ph As String = ""
-        Return True
+        Dim tb As TextBox = Notes.Content
+        Try
+
+            Dim uf = (From cust In FlashActuals.FlashActualData
+                      Where cust.UnitNumber = UnitChooseObject.CurrentUnit And
+                                            cust.MSFY = CurrentFiscalYear And
+                                            cust.MSP = PeriodChooseObject.CurrentPeriod And
+                                            cust.Week = WeekChooseObject.CurrentWeek And
+                                            cust.GLCategory = GroupCategory).ToList()(0)
+            With uf
+                .Status = SaveType
+                .FlashValue = FlashVal.SetAmount
+                .FlashNotes = tb.Text
+                .OpDaysWeek = getweekoperatingdays(PeriodChooseObject.CurrentPeriod, WeekChooseObject.CurrentWeek)
+                .OpDaysPeriod = getperiodoperatingdays(PeriodChooseObject.CurrentPeriod)
+                .SavedBy = My.Settings.UserName
+            End With
+            FlashActuals.SaveChanges()
+
+            If SaveType = "Final" Then
+                FlashVal.IsEnabled = False
+                tb.IsEnabled = False
+            End If
+            Return True
+        Catch ex As Exception
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                        18, True, "Unexpected error!",, ex.Message)
+            amsg.ShowDialog()
+            amsg.Close()
+            Return False
+        End Try
     End Function
 
-    Public Function CheckIfMultipleAreSelected() As Byte
+    Private Function CheckIfMultipleAreSelected() As Byte
         Dim unitbrd As Border, periodbrd As Border, weekbrd As Border, unittb As TextBlock, periodtb As TextBlock, weektb As TextBlock, InternalCounter As Byte = 0
         For Each unitbrd In UnitChooseObject.Children
             If unitbrd.Tag <> "Label" Then
@@ -484,6 +516,9 @@
         Return InternalCounter
     End Function
 
+    Private Sub LeaveNoteField()
+        Notes.IsExpanded = False
+    End Sub
 #End Region
 
 End Class
