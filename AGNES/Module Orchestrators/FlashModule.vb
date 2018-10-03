@@ -7,6 +7,7 @@
     Public SharedDataGroup As BIEntities
     Public FlashPage As Flash
     Public InitialLoadStatus As Byte = 0
+    Public CurrentFiscalYear As Integer = 2019
     Public Sub Runmodule()
         FlashBudgets = New BudgetEntity
         FlashActuals = New FlashActualsEntity

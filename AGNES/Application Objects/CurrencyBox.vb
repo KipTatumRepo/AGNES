@@ -72,6 +72,7 @@ Public Class CurrencyBox
 
     Private Sub EnterField(sender As Object, e As EventArgs)
         Dim t As TextBox = sender
+        HeldValue = t.Text
         SystemChange = True
         '// Remove currency symbol, if present  
         t.Text = t.Text.Replace("$", "")
@@ -89,7 +90,7 @@ Public Class CurrencyBox
             t.CaretIndex = t.Text.Length
         End If
         SystemChange = False
-        HeldValue = t.Text
+
     End Sub
 
     Private Sub ExitField(sender As Object, e As EventArgs)

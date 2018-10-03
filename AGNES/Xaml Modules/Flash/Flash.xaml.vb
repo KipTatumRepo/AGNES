@@ -42,6 +42,37 @@
         ConstructTemplate(FlashType)
     End Sub
 
+#Region "Toolbar Controls"
+    Private Sub SaveDraft(sender As Object, e As MouseButtonEventArgs) Handles imgDraft.MouseLeftButtonDown
+        If SaveStatus > 0 Then Exit Sub
+
+        For Each fg As FlashGroup In grdFlashGroups.Children
+            If fg.GroupIsSubTotal = False Then
+                If fg.Save("Draft") = False Then
+                    SaveStatus = 0
+                    Exit Sub
+                End If
+            End If
+        Next
+        SaveStatus = 1
+    End Sub
+
+    Private Sub SaveFinal(sender As Object, e As MouseButtonEventArgs) Handles imgSave.MouseLeftButtonDown
+        If SaveStatus > 1 Then Exit Sub
+        For Each fg As FlashGroup In grdFlashGroups.Children
+            If fg.GroupIsSubTotal = False Then
+                If fg.Save("Final") = False Then
+                    SaveStatus = 0
+                    Exit Sub
+                End If
+            End If
+        Next
+        SaveStatus = 3
+    End Sub
+
+#End Region
+
+#Region "Private Functions"
     Private Sub ConstructTemplate(FT)
         grdFlashGroups.Children.Clear()
         '// Add period, week, and unit chooser controls 
@@ -125,8 +156,8 @@
             fg.Load()
             If fg.GroupIsSubTotal = True Then fg.Update(fg)
         Next
-
-
     End Sub
+
+#End Region
 
 End Class
