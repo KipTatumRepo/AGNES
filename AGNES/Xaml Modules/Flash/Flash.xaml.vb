@@ -27,8 +27,11 @@
                 Case 1      '   Draft
                     tbSaveStatus.Text = "Draft saved"
                     barSaveStatus.Background = Brushes.Yellow
-                Case 2      '   Final
+                Case 2      '   Saved
                     tbSaveStatus.Text = "Flash saved"
+                    barSaveStatus.Background = Brushes.LightGreen
+                Case 3      '   Final
+                    tbSaveStatus.Text = "Flash Locked"
                     barSaveStatus.Background = Brushes.LightGreen
             End Select
         End Set
@@ -117,6 +120,12 @@
                 Height = 510
                 Title = "Field Weekly Financial Flash"
         End Select
+
+        For Each fg As FlashGroup In grdFlashGroups.Children
+            fg.Load()
+            If fg.GroupIsSubTotal = True Then fg.Update(fg)
+        Next
+
 
     End Sub
 

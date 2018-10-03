@@ -57,7 +57,7 @@
         Return df.Count
     End Function
 
-    Public Function LoadSingleWeekAndUnitFlash(category As String, unit As Int64, yr As Int16, period As Byte, wk As Byte) As Double
+    Public Function LoadSingleWeekAndUnitFlash(category As String, unit As Int64, yr As Int16, period As Byte, wk As Byte) As (fv As Double, Stts As String)
         FlashNotes = ""
         Dim ff = From f In FlashActuals.FlashActualData
                  Where f.GLCategory = category And
@@ -68,9 +68,9 @@
                  Select f
         For Each f In ff
             FlashNotes = f.FlashNotes
-            Return (f.FlashValue)
+            Return (f.FlashValue, f.Status)
         Next
-        Return 0
+        Return (999999.99, "")
     End Function
 
     Public Function LoadSingleWeekAndUnitBudget(category As String, unit As Int64, yr As Int16, period As Byte, weekoperatingdays As Byte, periodoperatingdays As Byte) As Double

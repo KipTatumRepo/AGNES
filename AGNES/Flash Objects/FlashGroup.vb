@@ -1,5 +1,6 @@
 ﻿Public Class FlashGroup
     Inherits DockPanel
+#Region "Properties"
     Public GroupCategory As String
     Public FlashVal As CurrencyBox
     Public FlashPercent As TextBox
@@ -49,7 +50,7 @@
         End Set
     End Property
     Private _subtotal As Boolean
-    Private Property GroupIsSubTotal As Boolean
+    Public Property GroupIsSubTotal As Boolean
         Get
             Return _subtotal
         End Get
@@ -79,6 +80,9 @@
     End Property
     Private Property GroupHasForecast As Boolean
     Private Property GroupHasPercentages As Boolean
+
+#End Region
+
     Public Sub New(PC As PeriodChooser, WC As WeekChooser, UC As UnitChooser, GroupName As String, ShowPercentages As Boolean, Top As Integer, Highlight As Boolean, Subtotal As Boolean, HasForecast As Boolean, CreditOnly As Boolean, DebitOnly As Boolean, Optional SubtotalGroupList As List(Of FlashGroup) = Nothing)
         GroupCategory = GroupName
         GroupHasForecast = HasForecast
@@ -102,11 +106,11 @@
         FlashVal = New CurrencyBox(140, True, AgnesBaseInput.FontSz.Medium,, CreditOnly, DebitOnly) With
             {.Margin = New Thickness(4, 4, 0, 0)}
 
-        If GroupIsSubTotal = True Then FlashVal.IsEnabled = False
+        If GroupIsSubTotal = True Then IsEnabled = False
 
         '// Create expander for notes
-        Notes = New Expander With {.Height = 32, .ExpandDirection = ExpandDirection.Right, .ToolTip = "Add Notes"}
-        Notes.Content = New TextBox With {.MaxLength = 130, .Width = 700}
+        Notes = New Expander With {.Height = 32, .ExpandDirection = ExpandDirection.Right, .IsExpanded = False, .ToolTip = "Add Notes"}
+        Notes.Content = New TextBox With {.MaxLength = 130, .Width = 715}
 
         '// Create flash percentage textbox.  Hide if it doesn't belong with this group (preserving spacing)
         FlashPercent = New TextBox With
@@ -185,7 +189,7 @@
         AddHandler FlashVal.PropertyChanged, AddressOf FlashChanged
     End Sub
 
-#Region "Private Event Listeners"
+#Region "Event Listeners"
     Private Sub PeriodChanged()
         Load()
         Update(Me)
@@ -231,6 +235,7 @@
             TargetFlashGroup.FlashVal.SetAmount = flashsub
             TargetFlashGroup.BudgetVal.SetAmount = budgetsub
             If TargetFlashGroup.GroupHasForecast = True Then TargetFlashGroup.ForecastVal.SetAmount = forecastsub
+            TargetFlashGroup.IsEnabled = False
         End If
 
         '//     Recalculate variances
@@ -274,6 +279,7 @@
             End If
         End If
     End Sub
+
 #End Region
 
 #Region "Private Methods"
@@ -303,22 +309,48 @@
 
     Private Sub LoadFlash()
         'TODO:  CAPTURE INSTANCE WHERE USER IS RETURNING TO CURRENT WEEK FROM PTD VIEW
-        Dim CurrVal As Double = 0 'FlashContent
-        Dim unitbrd As Border, weekbrd As Border, unittb As TextBlock, weektb As TextBlock
+        FlashVal.IsEnabled = True
+        Dim CurrVal As Double = 0, WeekCount As Byte, UnitCount As Byte
+        Dim unitbrd As Border, weekbrd As Border, unittb As TextBlock, weektb As TextBlock, tmpsavestatus As Byte, notestb As TextBox = Notes.Content
+        notestb.Text = ""
         Dim CalculateFlash As Double = 0
         If GroupIsSubTotal = True Then Exit Sub
         For Each unitbrd In UnitChooseObject.Children
             If unitbrd.Tag <> "Label" Then
                 unittb = unitbrd.Child
                 If unittb.FontWeight = FontWeights.SemiBold Then
+                    UnitCount += 1
                     For Each weekbrd In WeekChooseObject.Children
                         If weekbrd.Tag <> "Label" Then
                             weektb = weekbrd.Child
                             If weektb.FontWeight = FontWeights.SemiBold And FormatNumber(weektb.Tag, 0) <= WeekChooseObject.MaxWeek Then
-                                CalculateFlash += LoadSingleWeekAndUnitFlash(GroupCategory, FormatNumber(unittb.Tag, 0), 2019, PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0))
-
+                                WeekCount += 1
+                                Dim AddValue = LoadSingleWeekAndUnitFlash(GroupCategory, FormatNumber(unittb.Tag, 0), 2019, PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0))
+                                '// Lock flash fields during PTD or Multiple Unit views, regardless of individual save statuses
+                                If (WeekCount > 1) Or (UnitCount > 1) Or (AddValue.fv <> 999999.99) Then FlashVal.IsEnabled = False
+                                Select Case AddValue.Stts
+                                    Case "Flash"
+                                        FlashVal.IsEnabled = False
+                                        notestb.IsEnabled = False
+                                        tmpsavestatus = 3
+                                    Case "Draft"
+                                        FlashVal.IsEnabled = True
+                                        notestb.IsEnabled = True
+                                        tmpsavestatus = 1
+                                    Case Else
+                                        FlashVal.IsEnabled = True
+                                        notestb.IsEnabled = True
+                                        tmpsavestatus = 2
+                                End Select
+                                Try
+                                    FlashPage.SaveStatus = tmpsavestatus
+                                Catch ex As Exception
+                                    InitialLoadStatus = tmpsavestatus
+                                End Try
+                                If AddValue.fv = 999999.99 Then AddValue.fv = 0
+                                CalculateFlash += AddValue.fv
                             End If
-                        End If
+                            End If
                     Next
                 End If
             End If
@@ -357,7 +389,7 @@
     Private Sub UpdateSubtotals()
         Dim grd As Grid = Parent
         For Each fg As FlashGroup In grd.Children
-            If fg.GroupIsSubTotal Then Update(fg)
+            If fg.GroupIsSubTotal = True Then Update(fg)
         Next
     End Sub
 #End Region
