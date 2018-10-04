@@ -70,7 +70,7 @@
             FlashNotes = f.FlashNotes
             Return (f.FlashValue, f.Status)
         Next
-        Return (999999.99, "")
+        Return (0, "")
     End Function
 
     Public Function LoadSingleWeekAndUnitBudget(category As String, unit As Int64, yr As Int16, period As Byte, weekoperatingdays As Byte, periodoperatingdays As Byte) As Double

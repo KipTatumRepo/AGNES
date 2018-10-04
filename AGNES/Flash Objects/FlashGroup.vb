@@ -341,7 +341,7 @@
     End Sub
 
     Private Sub LoadFlash()
-        'TODO:  CAPTURE INSTANCE WHERE USER IS RETURNING TO CURRENT WEEK FROM PTD VIEW
+        'TODO: REFACTOR FLASH LOAD ROUTINES
         IsEnabled = True
         Dim CurrVal As Double = 0, WeekCount As Byte, UnitCount As Byte
         Dim unitbrd As Border, weekbrd As Border, unittb As TextBlock, weektb As TextBlock, tmpsavestatus As Byte, notestb As TextBox = Notes.Content
@@ -360,7 +360,8 @@
                                 WeekCount += 1
                                 Dim AddValue = LoadSingleWeekAndUnitFlash(GroupCategory, FormatNumber(unittb.Tag, 0), CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0))
                                 '// Lock flash fields during PTD or Multiple Unit views, regardless of individual save statuses
-                                If (WeekCount > 1) Or (UnitCount > 1) Or (AddValue.fv <> 999999.99) Then IsEnabled = False 'FlashVal.IsEnabled = False
+                                If CheckIfMultipleAreSelected() Then FlashVal.IsEnabled = False
+
                                 Select Case AddValue.Stts
                                     Case "Final"
                                         FlashVal.IsEnabled = False
@@ -383,7 +384,7 @@
                                 If AddValue.fv = 999999.99 Then AddValue.fv = 0
                                 CalculateFlash += AddValue.fv
                             End If
-                            End If
+                        End If
                     Next
                 End If
             End If
@@ -391,7 +392,6 @@
         CalculateFlash += CurrVal
         FlashContent = CalculateFlash
         Dim tb As TextBox = Notes.Content
-        'TODO: PROOF AGAINST OVERWRITING OF UNSAVED FLASH NOTES
         If tb.Text = "" Then tb.Text = SharedFunctions.FlashNotes
     End Sub
 
