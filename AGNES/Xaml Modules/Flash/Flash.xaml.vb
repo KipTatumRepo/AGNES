@@ -94,14 +94,20 @@
         tlbUnits.Items.Add(Units)
         If Units.NumberOfAvailableUnits = 1 Then Units.IsEnabled = False
 
-
         Select Case FT
             Case "Cafe"
-                SalesGroup = New FlashGroup(MSP, Wk, Units, "Sales", False, 74, True, False, True, True, False) ' Increments of 47 for flashgroup spacing
-                CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", True, 121, False, False, True, False, True) With {.SalesFlashGroup = SalesGroup}
-                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", True, 168, True, False, True, False, True) With {.SalesFlashGroup = SalesGroup}
-                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", True, 215, False, False, True, False, True) With {.SalesFlashGroup = SalesGroup}
-                SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", True, 262, True, True, True, False, False) With {.SalesFlashGroup = SalesGroup}
+                Title = "Cafe Weekly Financial Flash"
+                Height = 369
+                tlbUnits.Visibility = Visibility.Hidden
+
+                grdColumnLabels.Margin = New Thickness(0, 42, 0, 0)
+                grdFlashGroups.Margin = New Thickness(0, 74, 0, 0)
+
+                SalesGroup = New FlashGroup(MSP, Wk, Units, "Sales", False, 0, True, False, True, True, False) ' Increments of 47 for flashgroup spacing
+                CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", True, 47, False, False, True, False, True) With {.SalesFlashGroup = SalesGroup}
+                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", True, 94, True, False, True, False, True) With {.SalesFlashGroup = SalesGroup}
+                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", True, 141, False, False, True, False, True) With {.SalesFlashGroup = SalesGroup}
+                SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", True, 188, True, True, True, False, False) With {.SalesFlashGroup = SalesGroup}
                 With grdFlashGroups.Children
                     .Add(SalesGroup)
                     .Add(CogsGroup)
@@ -109,17 +115,20 @@
                     .Add(OpexGroup)
                     .Add(SubsidyGroup)
                 End With
-                Height = 510 - 141
-                Title = "Cafe Weekly Financial Flash"
+
             Case "WCC"
-                lblForecast.Visibility = Visibility.Visible
-                lblForecastPercentage.Visibility = Visibility.Visible
-                lblForecastVariance.Visibility = Visibility.Visible
-                CamGroup = New FlashGroup(MSP, Wk, Units, "CAM Revenue", False, 112, True, False, True, True, False) ' Increments of 47 for flashgroup spacing
-                CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", True, 159, False, False, True, False, True) With {.SalesFlashGroup = CamGroup}
-                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", True, 206, True, False, True, False, True) With {.SalesFlashGroup = CamGroup}
-                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", True, 253, False, False, True, False, True) With {.SalesFlashGroup = CamGroup}
-                SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", True, 300, True, True, True, False, False, New List(Of FlashGroup) From {CamGroup, CogsGroup, LaborGroup, OpexGroup}) With {.SalesFlashGroup = CamGroup}
+                Title = "WCC Weekly Financial Flash"
+                Height = 369
+                tlbUnits.Visibility = Visibility.Hidden
+
+                grdColumnLabels.Margin = New Thickness(0, 42, 0, 0)
+                grdFlashGroups.Margin = New Thickness(0, 74, 0, 0)
+
+                CamGroup = New FlashGroup(MSP, Wk, Units, "CAM Revenue", False, 0, True, False, True, True, False) ' Increments of 47 for flashgroup spacing 
+                CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", True, 47, False, False, True, False, True) With {.SalesFlashGroup = CamGroup}
+                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", True, 94, True, False, True, False, True) With {.SalesFlashGroup = CamGroup}
+                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", True, 141, False, False, True, False, True) With {.SalesFlashGroup = CamGroup}
+                SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", True, 188, True, True, True, False, False, New List(Of FlashGroup) From {CamGroup, CogsGroup, LaborGroup, OpexGroup}) With {.SalesFlashGroup = CamGroup}
                 With grdFlashGroups.Children
                     .Add(CamGroup)
                     .Add(CogsGroup)
@@ -127,8 +136,7 @@
                     .Add(OpexGroup)
                     .Add(SubsidyGroup)
                 End With
-                Height = 510 - 141 + 40
-                Title = "WCC Weekly Financial Flash"
+
             Case "Field"
                 TotalSalesGroup = New FlashGroup(MSP, Wk, Units, "Cafe Sales", False, 74, True, False, True, True, False) ' Increments of 47 for flashgroup spacing
                 CateringSalesGroup = New FlashGroup(MSP, Wk, Units, "Catering Sales", True, 121, False, False, True, True, False)

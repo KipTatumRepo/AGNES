@@ -8,6 +8,7 @@
         Title="Weekly Financial Flash" Height="561" Width="990" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
 
     <Grid x:Name="grdMain">
+
         <ToolBar x:Name="tlbFlash" Height="41" VerticalAlignment="Top" UseLayoutRounding="False">
             <Image x:Name="imgDraft" Source="/AGNES;component/Resources/draft.png" ToolTip="Save Draft" />
             <Separator />
@@ -15,23 +16,25 @@
             <Separator />
             <Image x:Name="imgPrint" Source="/AGNES;component/Resources/print.png" ToolTip="Print" />
             <Separator />
-            <Image x:Name="imgPTD" Source="/AGNES;component/Resources/PTD.png" ToolTip="View Period to Date"  />
-            <Separator />
             <Image x:Name="imgDelegates" Source="/AGNES;component/Resources/Delegates.png" ToolTip="Manage Delegates" />
             <Separator />
             <Image x:Name="imgEscalate" Source="/AGNES;component/Resources/HandWave.png" ToolTip="Call out to DM"  />
             <Separator />
         </ToolBar>
         <ToolBar x:Name="tlbUnits" Height="41" VerticalAlignment="Top" UseLayoutRounding="False" Margin="0,38.896,0,0"/>
-        <TextBlock HorizontalAlignment="Left" Margin="98,87,0,0" TextWrapping="Wrap" Text="Flash" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
-        <TextBlock HorizontalAlignment="Left" Margin="265,87,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Width="34" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Percentage against flashed revenue"/>
-        <TextBlock HorizontalAlignment="Left" Margin="314,87,0,0" TextWrapping="Wrap" Text="Budget" VerticalAlignment="Top" Width="124" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Budget amount"/>
-        <TextBlock HorizontalAlignment="Left" Margin="443,87,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Width="34" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Percentage against budgeted revenue"/>
-        <TextBlock HorizontalAlignment="Left" Margin="488,87,0,0" TextWrapping="Wrap" Text="Variance to Budget" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Variance of flash to budget"/>
-        <TextBlock x:Name="lblForecast" HorizontalAlignment="Left" Margin="631,87,0,0" TextWrapping="Wrap" Text="Forecast" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Forecast amount" />
-        <TextBlock x:Name="lblForecastPercentage" HorizontalAlignment="Left" Margin="771,87,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Width="34" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Percentage against forecasted revenue"/>
-        <TextBlock x:Name="lblForecastVariance" HorizontalAlignment="Left" Margin="817,87,0,0" TextWrapping="Wrap" Text="Variance to Forecast" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Variance of flash to forecast"/>
-        <Grid x:Name="grdFlashGroups"/>
+        <Grid x:Name="grdColumnLabels" Margin="0,87,0,0" Height="27" VerticalAlignment="Top">
+            <TextBlock HorizontalAlignment = "Left" Margin="100,0,0,0" TextWrapping="Wrap" Text="Flash" VerticalAlignment="Top" Width="124" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
+            <TextBlock Margin="265,87,0,0" TextWrapping="Wrap" Text="%" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Percentage against flashed revenue" HorizontalAlignment="Left" Width="34" Height="24" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment = "Left" Margin="314,0,0,0" TextWrapping="Wrap" Text="Budget" VerticalAlignment="Top" Width="124" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Budget amount"/>
+            <TextBlock HorizontalAlignment = "Left" Margin="443,0,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Width="34" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Percentage against budgeted revenue"/>
+            <TextBlock HorizontalAlignment = "Left" Margin="488,0,0,0" TextWrapping="Wrap" Text="Variance to Budget" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Variance of flash to budget"/>
+            <TextBlock x:Name = "lblForecast" HorizontalAlignment="Left" Margin="631,0,0,0" TextWrapping="Wrap" Text="Forecast" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Forecast amount" />
+            <TextBlock x:Name = "lblForecastPercentage" HorizontalAlignment="Left" Margin="771,0,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Width="34" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Percentage against forecasted revenue"/>
+            <TextBlock x:Name = "lblForecastVariance" HorizontalAlignment="Left" Margin="817,0,0,0" TextWrapping="Wrap" Text="Variance to Forecast" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Variance of flash to forecast"/>
+        </Grid>
+
+        <Grid x:Name="grdFlashGroups" Height="394" VerticalAlignment="Top" Margin="0,114,0,0">
+        </Grid>
         <StatusBar x:Name="barSaveStatus" Height="24" VerticalAlignment="Bottom" Background="#FF19F30E">
             <TextBlock x:Name="tbSaveStatus" Text="Saved" Width="972" TextAlignment="Center" FontWeight="SemiBold" />
         </StatusBar>
