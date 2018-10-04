@@ -1,4 +1,5 @@
 ﻿Public Class Flash
+    'TODO:  PUSH FLASH/FORECAST UNLOCK FUNCTIONALITY TO DM FLASH STATUS UI, ALONG WITH ALERTS
     Dim SalesGroup As FlashGroup
     Dim CamGroup As FlashGroup
     Dim CafeSalesGroup As FlashGroup
