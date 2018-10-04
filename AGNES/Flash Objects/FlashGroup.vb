@@ -316,16 +316,18 @@
 #Region "Private Methods"
     Private Sub LoadBudget()
         Dim unitbrd As Border, weekbrd As Border, unittb As TextBlock, weektb As TextBlock
-        Dim CalculateBudget As Double = 0
+        Dim CalculateBudget As Double = 0, WeekCount As Byte, UnitCount As Byte
         If GroupIsSubTotal = True Then Exit Sub
         For Each unitbrd In UnitChooseObject.Children
             If unitbrd.Tag <> "Label" Then
                 unittb = unitbrd.Child
                 If unittb.FontWeight = FontWeights.SemiBold Then
+                    UnitCount += 1
                     For Each weekbrd In WeekChooseObject.Children
                         If weekbrd.Tag <> "Label" Then
                             weektb = weekbrd.Child
                             If weektb.FontWeight = FontWeights.SemiBold And FormatNumber(weektb.Tag, 0) <= WeekChooseObject.MaxWeek Then
+                                WeekCount += 1
                                 CalculateBudget += LoadSingleWeekAndUnitBudget(GroupCategory, FormatNumber(unittb.Tag, 0), CurrentFiscalYear, PeriodChooseObject.CurrentPeriod,
                                                                       getweekoperatingdays(PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0)),
                                                                       getperiodoperatingdays(PeriodChooseObject.CurrentPeriod))
@@ -340,7 +342,7 @@
 
     Private Sub LoadFlash()
         'TODO:  CAPTURE INSTANCE WHERE USER IS RETURNING TO CURRENT WEEK FROM PTD VIEW
-        FlashVal.IsEnabled = True
+        IsEnabled = True
         Dim CurrVal As Double = 0, WeekCount As Byte, UnitCount As Byte
         Dim unitbrd As Border, weekbrd As Border, unittb As TextBlock, weektb As TextBlock, tmpsavestatus As Byte, notestb As TextBox = Notes.Content
         notestb.Text = ""
@@ -358,7 +360,7 @@
                                 WeekCount += 1
                                 Dim AddValue = LoadSingleWeekAndUnitFlash(GroupCategory, FormatNumber(unittb.Tag, 0), CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0))
                                 '// Lock flash fields during PTD or Multiple Unit views, regardless of individual save statuses
-                                If (WeekCount > 1) Or (UnitCount > 1) Or (AddValue.fv <> 999999.99) Then FlashVal.IsEnabled = False
+                                If (WeekCount > 1) Or (UnitCount > 1) Or (AddValue.fv <> 999999.99) Then IsEnabled = False 'FlashVal.IsEnabled = False
                                 Select Case AddValue.Stts
                                     Case "Final"
                                         FlashVal.IsEnabled = False
