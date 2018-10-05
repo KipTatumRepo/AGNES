@@ -1,4 +1,5 @@
 ﻿Public Class Flash
+    'TODO:  PUSH FLASH/FORECAST UNLOCK FUNCTIONALITY TO DM FLASH STATUS UI, ALONG WITH ALERTS
     Dim SalesGroup As FlashGroup
     Dim CamGroup As FlashGroup
     Dim CafeSalesGroup As FlashGroup
@@ -13,28 +14,69 @@
     Dim Wk As WeekChooser
     Dim MSP As PeriodChooser
     Dim Units As UnitChooser
+    Private _savestatus As Byte
+    Public Property SaveStatus As Byte
+        Get
+            Return _savestatus
+        End Get
+        Set(value As Byte)
+            _savestatus = value
+            Select Case value
+                Case 0      '   Unsaved
+                    tbSaveStatus.Text = "Changes not saved"
+                    barSaveStatus.Background = Brushes.Red
+                Case 1      '   Draft
+                    tbSaveStatus.Text = "Draft saved"
+                    barSaveStatus.Background = Brushes.Yellow
+                Case 2      '   Saved
+                    tbSaveStatus.Text = "Flash saved"
+                    barSaveStatus.Background = Brushes.LightGreen
+                Case 3      '   Final
+                    tbSaveStatus.Text = "Flash Locked"
+                    barSaveStatus.Background = Brushes.LightGreen
+            End Select
+        End Set
+    End Property
 
     Public Sub New(FlashType, FlashUnit)
         InitializeComponent()
         ConstructTemplate(FlashType)
     End Sub
 
-    Private Sub Image_PreviewMouseDown(sender As Object, e As MouseButtonEventArgs)
-        tbSaveStatus.Text = "Draft saved"
-        barSaveStatus.Background = Brushes.Yellow
+#Region "Toolbar Controls"
+    Private Sub SaveDraft(sender As Object, e As MouseButtonEventArgs) Handles imgDraft.MouseLeftButtonDown
+        If SaveStatus > 0 Then Exit Sub
+
+        For Each fg As FlashGroup In grdFlashGroups.Children
+            If fg.GroupIsSubTotal = False Then
+                If fg.Save("Draft") = False Then
+                    SaveStatus = 0
+                    Exit Sub
+                End If
+            End If
+        Next
+        SaveStatus = 1
     End Sub
 
-    Private Sub Image_PreviewMouseDown_1(sender As Object, e As MouseButtonEventArgs)
-        tbSaveStatus.Text = "Flash saved"
-        barSaveStatus.Background = Brushes.LightGreen
+    Private Sub SaveFinal(sender As Object, e As MouseButtonEventArgs) Handles imgSave.MouseLeftButtonDown
+        If SaveStatus > 1 Then Exit Sub
+        For Each fg As FlashGroup In grdFlashGroups.Children
+            If fg.GroupIsSubTotal = False Then
+                If fg.Save("Final") = False Then
+                    SaveStatus = 0
+                    Exit Sub
+                End If
+            End If
+        Next
+        SaveStatus = 3
     End Sub
 
+#End Region
+
+#Region "Private Functions"
     Private Sub ConstructTemplate(FT)
         grdFlashGroups.Children.Clear()
         '// Add period, week, and unit chooser controls 
-
-        'TODO: "Me" represents the object that the Chooser(s) is/are in; passing it by reference
-        '      will allow a writeback of the selections period And/Or week to the object.  NEED TO TIE BACK ONCE THE FLASH OBJECT IS DONE.
         Dim currmsp As Byte = GetCurrentPeriod(FormatDateTime(Now(), DateFormat.ShortDate))
         Dim currwk As Byte = GetCurrentWeek(FormatDateTime(Now(), DateFormat.ShortDate))
         Wk = New WeekChooser(1, currwk, currwk)
@@ -53,14 +95,20 @@
         tlbUnits.Items.Add(Units)
         If Units.NumberOfAvailableUnits = 1 Then Units.IsEnabled = False
 
-
         Select Case FT
             Case "Cafe"
-                SalesGroup = New FlashGroup(MSP, Wk, Units, "Sales", False, 74, True, False) ' Increments of 47 for flashgroup spacing
-                CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", True, 121, False, False)
-                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", True, 168, True, False)
-                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", True, 215, False, False)
-                SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", True, 262, True, True)
+                Title = "Cafe Weekly Financial Flash"
+                Height = 369
+                tlbUnits.Visibility = Visibility.Hidden
+
+                grdColumnLabels.Margin = New Thickness(0, 42, 0, 0)
+                grdFlashGroups.Margin = New Thickness(0, 74, 0, 0)
+
+                SalesGroup = New FlashGroup(MSP, Wk, Units, "Sales", False, 0, True, False, True, True, False) ' Increments of 47 for flashgroup spacing
+                CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", True, 47, False, False, True, False, True) With {.SalesFlashGroup = SalesGroup}
+                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", True, 94, True, False, True, False, True) With {.SalesFlashGroup = SalesGroup}
+                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", True, 141, False, False, True, False, True) With {.SalesFlashGroup = SalesGroup}
+                SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", True, 188, True, True, True, False, False) With {.SalesFlashGroup = SalesGroup}
                 With grdFlashGroups.Children
                     .Add(SalesGroup)
                     .Add(CogsGroup)
@@ -68,14 +116,20 @@
                     .Add(OpexGroup)
                     .Add(SubsidyGroup)
                 End With
-                Height = 510 - 141
-                Title = "Cafe Weekly Financial Flash"
+
             Case "WCC"
-                CamGroup = New FlashGroup(MSP, Wk, Units, "CAM Revenue", False, 74, True, False) ' Increments of 47 for flashgroup spacing
-                CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", True, 121, False, False)
-                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", True, 168, True, False)
-                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", True, 215, False, False)
-                SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", True, 262, True, True)
+                Title = "WCC Weekly Financial Flash"
+                Height = 369
+                tlbUnits.Visibility = Visibility.Hidden
+
+                grdColumnLabels.Margin = New Thickness(0, 42, 0, 0)
+                grdFlashGroups.Margin = New Thickness(0, 74, 0, 0)
+
+                CamGroup = New FlashGroup(MSP, Wk, Units, "CAM Revenue", False, 0, True, False, True, True, False) ' Increments of 47 for flashgroup spacing 
+                CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", True, 47, False, False, True, False, True) With {.SalesFlashGroup = CamGroup}
+                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", True, 94, True, False, True, False, True) With {.SalesFlashGroup = CamGroup}
+                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", True, 141, False, False, True, False, True) With {.SalesFlashGroup = CamGroup}
+                SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", True, 188, True, True, True, False, False, New List(Of FlashGroup) From {CamGroup, CogsGroup, LaborGroup, OpexGroup}) With {.SalesFlashGroup = CamGroup}
                 With grdFlashGroups.Children
                     .Add(CamGroup)
                     .Add(CogsGroup)
@@ -83,17 +137,16 @@
                     .Add(OpexGroup)
                     .Add(SubsidyGroup)
                 End With
-                Height = 510 - 141
-                Title = "WCC Weekly Financial Flash"
+
             Case "Field"
-                CafeSalesGroup = New FlashGroup(MSP, Wk, Units, "Cafe Sales", False, 74, True, False) ' Increments of 47 for flashgroup spacing
-                CateringSalesGroup = New FlashGroup(MSP, Wk, Units, "Catering Sales", True, 121, False, False)
-                TotalSalesGroup = New FlashGroup(MSP, Wk, Units, "Total Sales", True, 168, True, True)
-                CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", True, 215, False, False)
-                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", True, 262, True, False)
-                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", True, 309, False, False)
-                FeesGroup = New FlashGroup(MSP, Wk, Units, "Fees", True, 356, True, False)
-                TotalGroup = New FlashGroup(MSP, Wk, Units, "Total", True, 403, True, True)
+                TotalSalesGroup = New FlashGroup(MSP, Wk, Units, "Cafe Sales", False, 74, True, False, True, True, False) ' Increments of 47 for flashgroup spacing
+                CateringSalesGroup = New FlashGroup(MSP, Wk, Units, "Catering Sales", True, 121, False, False, True, True, False)
+                SalesGroup = New FlashGroup(MSP, Wk, Units, "Total Sales", True, 168, True, True, True, True, False)
+                CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", True, 215, False, False, True, False, True) With {.SalesFlashGroup = TotalSalesGroup}
+                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", True, 262, True, False, True, False, True) With {.SalesFlashGroup = TotalSalesGroup}
+                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", True, 309, False, False, True, False, True) With {.SalesFlashGroup = TotalSalesGroup}
+                FeesGroup = New FlashGroup(MSP, Wk, Units, "Fees", True, 356, True, False, True, False, True) With {.SalesFlashGroup = TotalSalesGroup}
+                TotalGroup = New FlashGroup(MSP, Wk, Units, "Total", True, 403, True, True, True, False, False) With {.SalesFlashGroup = TotalSalesGroup}
                 With grdFlashGroups.Children
                     .Add(CafeSalesGroup)
                     .Add(CateringSalesGroup)
@@ -108,5 +161,12 @@
                 Title = "Field Weekly Financial Flash"
         End Select
 
+        For Each fg As FlashGroup In grdFlashGroups.Children
+            fg.Load()
+            If fg.GroupIsSubTotal = True Then fg.Update(fg)
+        Next
     End Sub
+
+#End Region
+
 End Class

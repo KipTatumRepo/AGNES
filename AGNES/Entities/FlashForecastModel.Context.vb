@@ -11,22 +11,18 @@ Imports System
 Imports System.Data.Entity
 Imports System.Data.Entity.Infrastructure
 
-Partial Public Class AGNESSharedData
+Partial Public Class ForecastEntity
     Inherits DbContext
 
     Public Sub New()
-        MyBase.New("name=AGNESSharedData")
+        MyBase.New("name=ForecastEntity")
     End Sub
 
     Protected Overrides Sub OnModelCreating(modelBuilder As DbModelBuilder)
         Throw New UnintentionalCodeFirstException()
     End Sub
 
-    Public Overridable Property AccessLevels() As DbSet(Of AccessLevel)
-    Public Overridable Property ModuleGroups() As DbSet(Of ModuleGroup)
-    Public Overridable Property Modules() As DbSet(Of [Module])
-    Public Overridable Property ModulesUsers_Join() As DbSet(Of ModulesUsers_Join)
-    Public Overridable Property UnitsUsers_Join() As DbSet(Of UnitsUsers_Join)
-    Public Overridable Property Users() As DbSet(Of User)
+    Public Overridable Property ForecastAudits() As DbSet(Of ForecastAudits)
+    Public Overridable Property Forecasts() As DbSet(Of Forecasts)
 
 End Class
