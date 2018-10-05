@@ -19,20 +19,15 @@
     Public Sub New()
         InitializeComponent()
         GetUserInfo()
-        MsgBox("Step 1 Ok")
         ConstructRadialMenu()
     End Sub
 
     Private Sub GetUserInfo()
-        Dim ef As New AGNESSharedData
+        Dim ef As New AGNESSharedDataEntity
         Dim usr As String = Environment.UserName
-        MsgBox("Step 2 Ok - " & usr)
-        'usr = "v-nipage"
         Dim qwl = From c In ef.Users
                   Where c.UserAlias = usr
                   Select c
-
-        MsgBox("Step 2a Ok - EDM accessed with " & qwl.Count & " record returned")
 
         For Each c In qwl
             MsgBox(c.UserName)
@@ -50,7 +45,6 @@
             GC.Collect()
             Close()
         Else
-            MsgBox("Step 1b Ok")
             For Each c In qwl
                 With My.Settings
                     .UserName = c.UserName
@@ -58,10 +52,6 @@
                     .UserID = c.PID
                     .UserLevel = c.AccessLevelId
                 End With
-                MsgBox("c.UserName")
-                MsgBox("c.FirstName")
-                MsgBox("c.PID")
-                MsgBox("c.AccessLevelId")
             Next
         End If
     End Sub
@@ -82,7 +72,7 @@
         'UID = 81
         '// IMPERSONATION
 
-        Dim ef As New AGNESSharedData
+        Dim ef As New AGNESSharedDataEntity
         Select Case ULVL
             Case 1
                 Dim qwl = From c In ef.Modules
@@ -116,7 +106,6 @@
                     ct += 1
                 Next
             Case Else
-                MsgBox("Step 3 Ok")
                 Dim qwl = From c In ef.ModulesUsers_Join
                           Where c.UserId = UID
                           Select c
@@ -129,7 +118,6 @@
                 Next
         End Select
 
-        MsgBox("Step 4 Ok - " & ItemCount & " modules available")
         For ct = 0 To ItemCount - 1
             Dim m As Long = Modules(ct)
             Dim modul = From c In ef.Modules

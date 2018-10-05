@@ -25,7 +25,7 @@
     <ProductName>AGNES</ProductName>
     <PublisherName>Compass Business Intelligence</PublisherName>
     <SuiteName>Compass Business Intelligence Application Suite</SuiteName>
-    <ApplicationRevision>18</ApplicationRevision>
+    <ApplicationRevision>20</ApplicationRevision>
     <ApplicationVersion>1.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -129,7 +129,22 @@
     <Compile Include="Application Objects\UnitChooser.vb" />
     <Compile Include="Application Objects\WeekChooser.vb" />
     <Compile Include="Entities\AccessLevel.vb">
-      <DependentUpon>AGNESSharedData.tt</DependentUpon>
+      <DependentUpon>AgnesSharedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AgnesSharedDataModel.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AgnesSharedDataModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AgnesSharedDataModel.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AgnesSharedDataModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AgnesSharedDataModel.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AgnesSharedDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\BudgetModel.Context.vb">
       <AutoGen>True</AutoGen>
@@ -273,13 +288,13 @@
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Module.vb">
-      <DependentUpon>AGNESSharedData.tt</DependentUpon>
+      <DependentUpon>AgnesSharedDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\ModuleGroup.vb">
-      <DependentUpon>AGNESSharedData.tt</DependentUpon>
+      <DependentUpon>AgnesSharedDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\ModulesUsers_Join.vb">
-      <DependentUpon>AGNESSharedData.tt</DependentUpon>
+      <DependentUpon>AgnesSharedDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\NotableEvents.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
@@ -306,10 +321,10 @@
       <DependentUpon>WCRModule.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\UnitsUsers_Join.vb">
-      <DependentUpon>AGNESSharedData.tt</DependentUpon>
+      <DependentUpon>AgnesSharedDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\User.vb">
-      <DependentUpon>AGNESSharedData.tt</DependentUpon>
+      <DependentUpon>AgnesSharedDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Flash Objects\FlashGroup.vb" />
     <Compile Include="Flash Objects\SharedFunctions.vb" />
@@ -329,21 +344,6 @@
     <Compile Include="BusinessGroupObjects\RefreshEvent.vb" />
     <Compile Include="BusinessGroupObjects\SingleUserInput.xaml.vb">
       <DependentUpon>SingleUserInput.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\AGNESSharedData.Context.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AGNESSharedData.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\AGNESSharedData.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AGNESSharedData.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\AGNESSharedData.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AGNESSharedData.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\BusinessGroupCRM.Context.vb">
       <AutoGen>True</AutoGen>
@@ -493,18 +493,18 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>BusinessGroupCRM.Designer.vb</LastGenOutput>
     </EntityDeploy>
-    <EntityDeploy Include="Entities\AGNESSharedData.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>AGNESSharedData.Designer.vb</LastGenOutput>
-    </EntityDeploy>
     <None Include="ClassDiagram1.cd" />
-    <None Include="Entities\AGNESSharedData.edmx.diagram">
-      <DependentUpon>AGNESSharedData.edmx</DependentUpon>
-    </None>
     <EntityDeploy Include="Entities\BudgetModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>BudgetModel.Designer.vb</LastGenOutput>
     </EntityDeploy>
+    <EntityDeploy Include="Entities\AgnesSharedDataModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>AgnesSharedDataModel.Designer.vb</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Entities\AgnesSharedDataModel.edmx.diagram">
+      <DependentUpon>AgnesSharedDataModel.edmx</DependentUpon>
+    </None>
     <None Include="Entities\BudgetModel.edmx.diagram">
       <DependentUpon>BudgetModel.edmx</DependentUpon>
     </None>
@@ -615,15 +615,15 @@
     <Resource Include="Resources\Commons.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Entities\AGNESSharedData.Context.tt">
+    <Content Include="Entities\AgnesSharedDataModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AGNESSharedData.edmx</DependentUpon>
-      <LastGenOutput>AGNESSharedData.Context.vb</LastGenOutput>
+      <DependentUpon>AgnesSharedDataModel.edmx</DependentUpon>
+      <LastGenOutput>AgnesSharedDataModel.Context.vb</LastGenOutput>
     </Content>
-    <Content Include="Entities\AGNESSharedData.tt">
+    <Content Include="Entities\AgnesSharedDataModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AGNESSharedData.edmx</DependentUpon>
-      <LastGenOutput>AGNESSharedData.vb</LastGenOutput>
+      <DependentUpon>AgnesSharedDataModel.edmx</DependentUpon>
+      <LastGenOutput>AgnesSharedDataModel.vb</LastGenOutput>
     </Content>
     <Content Include="Entities\BudgetModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
