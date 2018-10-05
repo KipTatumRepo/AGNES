@@ -19,15 +19,28 @@
     Public Sub New()
         InitializeComponent()
         GetUserInfo()
+        MsgBox("Step 1 Ok")
         ConstructRadialMenu()
     End Sub
 
     Private Sub GetUserInfo()
         Dim ef As New AGNESSharedData
         Dim usr As String = Environment.UserName
+        MsgBox("Step 2 Ok - " & usr)
+        'usr = "v-nipage"
         Dim qwl = From c In ef.Users
                   Where c.UserAlias = usr
                   Select c
+
+        MsgBox("Step 2a Ok - EDM accessed with " & qwl.Count & " record returned")
+
+        For Each c In qwl
+            MsgBox(c.UserName)
+            MsgBox(c.FirstName)
+            MsgBox(c.PID)
+            MsgBox(c.AccessLevelId)
+        Next
+
         If qwl.Count = 0 Then
             Dim amsg1 = New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText,
                                             AgnesMessageBox.MsgBoxType.OkOnly, 18,, "Access denied",, "It appears that you don't have any access.  Please let your manager know that you need to be added.")
@@ -37,13 +50,18 @@
             GC.Collect()
             Close()
         Else
+            MsgBox("Step 1b Ok")
             For Each c In qwl
                 With My.Settings
-                    .UserName = Trim(c.UserName)
-                    .UserShortName = Trim(c.FirstName)
+                    .UserName = c.UserName
+                    .UserShortName = c.FirstName
                     .UserID = c.PID
                     .UserLevel = c.AccessLevelId
                 End With
+                MsgBox("c.UserName")
+                MsgBox("c.FirstName")
+                MsgBox("c.PID")
+                MsgBox("c.AccessLevelId")
             Next
         End If
     End Sub
@@ -98,6 +116,7 @@
                     ct += 1
                 Next
             Case Else
+                MsgBox("Step 3 Ok")
                 Dim qwl = From c In ef.ModulesUsers_Join
                           Where c.UserId = UID
                           Select c
@@ -110,6 +129,7 @@
                 Next
         End Select
 
+        MsgBox("Step 4 Ok - " & ItemCount & " modules available")
         For ct = 0 To ItemCount - 1
             Dim m As Long = Modules(ct)
             Dim modul = From c In ef.Modules
