@@ -23,11 +23,19 @@
     End Sub
 
     Private Sub GetUserInfo()
-        Dim ef As New AGNESSharedData
+        Dim ef As New AGNESSharedDataEntity
         Dim usr As String = Environment.UserName
         Dim qwl = From c In ef.Users
                   Where c.UserAlias = usr
                   Select c
+
+        For Each c In qwl
+            MsgBox(c.UserName)
+            MsgBox(c.FirstName)
+            MsgBox(c.PID)
+            MsgBox(c.AccessLevelId)
+        Next
+
         If qwl.Count = 0 Then
             Dim amsg1 = New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText,
                                             AgnesMessageBox.MsgBoxType.OkOnly, 18,, "Access denied",, "It appears that you don't have any access.  Please let your manager know that you need to be added.")
@@ -39,8 +47,8 @@
         Else
             For Each c In qwl
                 With My.Settings
-                    .UserName = Trim(c.UserName)
-                    .UserShortName = Trim(c.FirstName)
+                    .UserName = c.UserName
+                    .UserShortName = c.FirstName
                     .UserID = c.PID
                     .UserLevel = c.AccessLevelId
                 End With
@@ -64,7 +72,7 @@
         'UID = 81
         '// IMPERSONATION
 
-        Dim ef As New AGNESSharedData
+        Dim ef As New AGNESSharedDataEntity
         Select Case ULVL
             Case 1
                 Dim qwl = From c In ef.Modules

@@ -11,11 +11,11 @@ Imports System
 Imports System.Data.Entity
 Imports System.Data.Entity.Infrastructure
 
-Partial Public Class AGNESSharedData
+Partial Public Class AGNESSharedDataEntity
     Inherits DbContext
 
     Public Sub New()
-        MyBase.New("name=AGNESSharedData")
+        MyBase.New("name=AGNESSharedDataEntity")
     End Sub
 
     Protected Overrides Sub OnModelCreating(modelBuilder As DbModelBuilder)
