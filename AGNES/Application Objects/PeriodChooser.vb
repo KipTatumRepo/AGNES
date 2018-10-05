@@ -6,11 +6,13 @@ Public Class PeriodChooser
     Private _currentperiod As Byte
     Private Week As WeekChooser
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
+    Public Property HeldPeriod As Byte
     Public Property CurrentPeriod As Byte
         Get
             Return _currentperiod
         End Get
         Set(value As Byte)
+            HeldPeriod = _currentperiod
             _currentperiod = value
             For Each b As Border In Children
                 If b.Tag <> "Label" Then

@@ -29,13 +29,6 @@
                   Where c.UserAlias = usr
                   Select c
 
-        For Each c In qwl
-            MsgBox(c.UserName)
-            MsgBox(c.FirstName)
-            MsgBox(c.PID)
-            MsgBox(c.AccessLevelId)
-        Next
-
         If qwl.Count = 0 Then
             Dim amsg1 = New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText,
                                             AgnesMessageBox.MsgBoxType.OkOnly, 18,, "Access denied",, "It appears that you don't have any access.  Please let your manager know that you need to be added.")

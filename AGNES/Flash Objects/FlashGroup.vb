@@ -193,16 +193,58 @@
 
 #Region "Event Listeners"
     Private Sub PeriodChanged()
+        If FlashPage.SaveStatus = 0 Then
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
+                                                18,,,, "Discard unsaved changes?")
+            amsg.ShowDialog()
+            If amsg.ReturnResult = "No" Then
+                Dim TempWkHold As Byte = WeekChooseObject.CurrentWeek
+                FlashPage.SaveStatus = 2
+                PeriodChooseObject.CurrentPeriod = PeriodChooseObject.HeldPeriod
+                WeekChooseObject.CurrentWeek = TempWkHold
+                WeekChooseObject.HeldWeek = TempWkHold
+                amsg.Close()
+                Exit Sub
+            Else
+                amsg.Close()
+            End If
+        End If
         Load()
         Update(Me)
     End Sub
 
     Private Sub WeekChanged()
+        If FlashPage.SaveStatus = 0 Then
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
+                                                18,,,, "Discard unsaved changes?")
+            amsg.ShowDialog()
+            If amsg.ReturnResult = "No" Then
+                FlashPage.SaveStatus = 2
+                WeekChooseObject.CurrentWeek = WeekChooseObject.HeldWeek
+                amsg.Close()
+                Exit Sub
+            Else
+                amsg.Close()
+            End If
+        End If
         Load()
         Update(Me)
     End Sub
 
     Private Sub UnitChanged()
+        If FlashPage.SaveStatus = 0 Then
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
+                                                18,,,, "Discard unsaved changes?")
+            amsg.ShowDialog()
+            If amsg.ReturnResult = "No" Then
+                FlashPage.SaveStatus = 2
+                UnitChooseObject.CurrentUnit = UnitChooseObject.HeldUnit
+                amsg.Close()
+                Exit Sub
+            Else
+                amsg.Close()
+            End If
+        End If
         Load()
         Update(Me)
     End Sub

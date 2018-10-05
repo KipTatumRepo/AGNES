@@ -11,6 +11,7 @@ Public Class WeekChooser
             Return _currentweek
         End Get
         Set(value As Byte)
+            HeldWeek = _currentweek
             _currentweek = value
             If value > 0 Then
                 SelectedCount = 0
@@ -36,6 +37,7 @@ Public Class WeekChooser
     End Property
     Public Property MinWeek As Byte
     Public Property MaxWeek As Byte
+    Public Property HeldWeek As Byte
     Public Property ChooserParent As Object
     Public Property SelectedCount As Byte
     Public Sub New(MinW As Byte, MaxW As Byte, CurW As Byte)
