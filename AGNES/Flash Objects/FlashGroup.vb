@@ -1,5 +1,6 @@
 ﻿Public Class FlashGroup
     Inherits DockPanel
+#Region "Properties"
     Public GroupCategory As String
     Public FlashVal As CurrencyBox
     Public FlashPercent As TextBox
@@ -49,7 +50,7 @@
         End Set
     End Property
     Private _subtotal As Boolean
-    Private Property GroupIsSubTotal As Boolean
+    Public Property GroupIsSubTotal As Boolean
         Get
             Return _subtotal
         End Get
@@ -79,7 +80,10 @@
     End Property
     Private Property GroupHasForecast As Boolean
     Private Property GroupHasPercentages As Boolean
-    Public Sub New(PC As PeriodChooser, WC As WeekChooser, UC As UnitChooser, GroupName As String, ShowPercentages As Boolean, Top As Integer, Highlight As Boolean, Subtotal As Boolean, HasForecast As Boolean, Optional SubtotalGroupList As List(Of FlashGroup) = Nothing)
+
+#End Region
+
+    Public Sub New(PC As PeriodChooser, WC As WeekChooser, UC As UnitChooser, GroupName As String, ShowPercentages As Boolean, Top As Integer, Highlight As Boolean, Subtotal As Boolean, HasForecast As Boolean, CreditOnly As Boolean, DebitOnly As Boolean, Optional SubtotalGroupList As List(Of FlashGroup) = Nothing)
         GroupCategory = GroupName
         GroupHasForecast = HasForecast
         GroupHasPercentages = ShowPercentages
@@ -99,14 +103,16 @@
         GroupLabel.Child = tb
 
         '// Create Flash value input field
-        FlashVal = New CurrencyBox(140, True, False, True, False, True, AgnesBaseInput.FontSz.Medium) With
+        FlashVal = New CurrencyBox(140, True, AgnesBaseInput.FontSz.Medium,, CreditOnly, DebitOnly) With
             {.Margin = New Thickness(4, 4, 0, 0)}
 
-        If GroupIsSubTotal = True Then FlashVal.IsEnabled = False
+        If GroupIsSubTotal = True Then IsEnabled = False
 
         '// Create expander for notes
-        Notes = New Expander With {.Height = 32, .ExpandDirection = ExpandDirection.Right, .ToolTip = "Add Notes"}
-        Notes.Content = New TextBox With {.MaxLength = 130, .Width = 700}
+        Notes = New Expander With {.Height = 32, .ExpandDirection = ExpandDirection.Right, .IsExpanded = False, .ToolTip = "Add Notes"}
+        Dim NotesText As New TextBox With {.MaxLength = 130, .Width = 715}
+        AddHandler NotesText.LostFocus, AddressOf LeaveNoteField
+        Notes.Content = NotesText
 
         '// Create flash percentage textbox.  Hide if it doesn't belong with this group (preserving spacing)
         FlashPercent = New TextBox With
@@ -116,7 +122,7 @@
         If GroupHasPercentages = False Then FlashPercent.Visibility = Visibility.Hidden
 
         '// Create budget value field
-        BudgetVal = New CurrencyBox(140, True, False, True, False, True, AgnesBaseInput.FontSz.Medium) With
+        BudgetVal = New CurrencyBox(140, True, AgnesBaseInput.FontSz.Medium,, CreditOnly, DebitOnly) With
             {.Margin = New Thickness(4, 4, 0, 0), .IsEnabled = False}
 
         '// Create budget percentage textbox.  Hide if it doesn't belong with this group (preserving spacing)
@@ -128,12 +134,12 @@
         If GroupHasPercentages = False Then BudgetPercent.Visibility = Visibility.Hidden
 
         '// Create variance value field
-        BudgetVariance = New CurrencyBox(140, True, False, True, False, True, AgnesBaseInput.FontSz.Medium) With
+        BudgetVariance = New CurrencyBox(140, True, AgnesBaseInput.FontSz.Medium) With
             {.Margin = New Thickness(4, 4, 0, 0), .IsEnabled = False}
 
 
         '// Create forecast value field
-        ForecastVal = New CurrencyBox(140, True, False, True, False, True, AgnesBaseInput.FontSz.Medium) With
+        ForecastVal = New CurrencyBox(140, True, AgnesBaseInput.FontSz.Medium,, CreditOnly, DebitOnly) With
             {.Margin = New Thickness(4, 4, 0, 0), .IsEnabled = False}
 
         '// Create forecast percentage textbox.  Hide if it doesn't belong with this group (preserving spacing)
@@ -145,7 +151,7 @@
         If GroupHasPercentages = False Then ForecastPercent.Visibility = Visibility.Hidden
 
         '// Create forecast variance value field
-        ForecastVariance = New CurrencyBox(140, True, False, True, False, True, AgnesBaseInput.FontSz.Medium) With
+        ForecastVariance = New CurrencyBox(140, True, AgnesBaseInput.FontSz.Medium) With
             {.Margin = New Thickness(4, 4, 0, 0), .IsEnabled = False}
 
         With Children
@@ -185,20 +191,18 @@
         AddHandler FlashVal.PropertyChanged, AddressOf FlashChanged
     End Sub
 
-#Region "Private Event Listeners"
+#Region "Event Listeners"
     Private Sub PeriodChanged()
         Load()
         Update(Me)
     End Sub
 
     Private Sub WeekChanged()
-        'MsgBox(WeekChooseObject.SelectedCount)
         Load()
         Update(Me)
     End Sub
 
     Private Sub UnitChanged()
-        ' MsgBox(UnitChooseObject.SelectedCount)
         Load()
         Update(Me)
     End Sub
@@ -206,6 +210,7 @@
     Private Sub FlashChanged()
         Update(Me)
         UpdateSubtotals()
+        FlashPage.SaveStatus = 0
     End Sub
 #End Region
 
@@ -215,9 +220,40 @@
         LoadBudget()
         LoadForecast()
     End Sub
-    Public Sub Save()
-        Dim ph As String = ""
-    End Sub
+    Public Function Save(SaveType) As Boolean
+        Dim SaveOkay As Boolean
+        '// SaveType only influences the value saved to the status field; the status bar is updated via the Flashpage that calls this routine
+
+        '// Check to see if multiple units, weeks, or periods are selected. If so, kill routine 
+        If CheckIfMultipleAreSelected() > 3 Then
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly, 8, True, "Cannot save with multiple periods/weeks/units selected")
+            amsg.ShowDialog()
+            Return False
+            Exit Function
+        End If
+
+        '// Perform check to see if the record already exists; this defines which save function (new or update) is called
+        Dim ff = From f In FlashActuals.FlashActualData
+                 Where f.MSFY = CurrentFiscalYear And
+                     f.MSP = PeriodChooseObject.CurrentPeriod And
+                     f.Week = WeekChooseObject.CurrentWeek And
+                     f.UnitNumber = UnitChooseObject.CurrentUnit And
+                     f.GLCategory = GroupCategory
+
+        Try
+            If ff.Count = 0 Then
+                SaveOkay = SaveNewFlash(SaveType)
+            Else
+                SaveOkay = UpdateFlash(SaveType)
+            End If
+        Catch ex As Exception
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly, 8, True, "Unable to save!",, "Error: " & ex.Message)
+            amsg.ShowDialog()
+            Return False
+            Exit Function
+        End Try
+        Return True
+    End Function
     Public Sub Update(TargetFlashGroup As FlashGroup)
         '//     Recalculate subtotals, if applicable
         If TargetFlashGroup.GroupIsSubTotal = True Then
@@ -230,6 +266,7 @@
             TargetFlashGroup.FlashVal.SetAmount = flashsub
             TargetFlashGroup.BudgetVal.SetAmount = budgetsub
             If TargetFlashGroup.GroupHasForecast = True Then TargetFlashGroup.ForecastVal.SetAmount = forecastsub
+            TargetFlashGroup.IsEnabled = False
         End If
 
         '//     Recalculate variances
@@ -273,22 +310,25 @@
             End If
         End If
     End Sub
+
 #End Region
 
 #Region "Private Methods"
     Private Sub LoadBudget()
         Dim unitbrd As Border, weekbrd As Border, unittb As TextBlock, weektb As TextBlock
-        Dim CalculateBudget As Double = 0
+        Dim CalculateBudget As Double = 0, WeekCount As Byte, UnitCount As Byte
         If GroupIsSubTotal = True Then Exit Sub
         For Each unitbrd In UnitChooseObject.Children
             If unitbrd.Tag <> "Label" Then
                 unittb = unitbrd.Child
                 If unittb.FontWeight = FontWeights.SemiBold Then
+                    UnitCount += 1
                     For Each weekbrd In WeekChooseObject.Children
                         If weekbrd.Tag <> "Label" Then
                             weektb = weekbrd.Child
                             If weektb.FontWeight = FontWeights.SemiBold And FormatNumber(weektb.Tag, 0) <= WeekChooseObject.MaxWeek Then
-                                CalculateBudget += LoadSingleWeekAndUnitBudget(GroupCategory, FormatNumber(unittb.Tag, 0), 2019, PeriodChooseObject.CurrentPeriod,
+                                WeekCount += 1
+                                CalculateBudget += LoadSingleWeekAndUnitBudget(GroupCategory, FormatNumber(unittb.Tag, 0), CurrentFiscalYear, PeriodChooseObject.CurrentPeriod,
                                                                       getweekoperatingdays(PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0)),
                                                                       getperiodoperatingdays(PeriodChooseObject.CurrentPeriod))
                             End If
@@ -301,21 +341,48 @@
     End Sub
 
     Private Sub LoadFlash()
-        'TODO:  CAPTURE INSTANCE WHERE USER IS RETURNING TO CURRENT WEEK FROM PTD VIEW
-        Dim CurrVal As Double = 0 'FlashContent
-        Dim unitbrd As Border, weekbrd As Border, unittb As TextBlock, weektb As TextBlock
+        'TODO: REFACTOR FLASH LOAD ROUTINES
+        IsEnabled = True
+        Dim CurrVal As Double = 0, WeekCount As Byte, UnitCount As Byte
+        Dim unitbrd As Border, weekbrd As Border, unittb As TextBlock, weektb As TextBlock, tmpsavestatus As Byte, notestb As TextBox = Notes.Content
+        notestb.Text = ""
         Dim CalculateFlash As Double = 0
         If GroupIsSubTotal = True Then Exit Sub
         For Each unitbrd In UnitChooseObject.Children
             If unitbrd.Tag <> "Label" Then
                 unittb = unitbrd.Child
                 If unittb.FontWeight = FontWeights.SemiBold Then
+                    UnitCount += 1
                     For Each weekbrd In WeekChooseObject.Children
                         If weekbrd.Tag <> "Label" Then
                             weektb = weekbrd.Child
                             If weektb.FontWeight = FontWeights.SemiBold And FormatNumber(weektb.Tag, 0) <= WeekChooseObject.MaxWeek Then
-                                CalculateFlash += LoadSingleWeekAndUnitFlash(GroupCategory, FormatNumber(unittb.Tag, 0), 2019, PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0))
+                                WeekCount += 1
+                                Dim AddValue = LoadSingleWeekAndUnitFlash(GroupCategory, FormatNumber(unittb.Tag, 0), CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0))
+                                '// Lock flash fields during PTD or Multiple Unit views, regardless of individual save statuses
+                                If CheckIfMultipleAreSelected() Then FlashVal.IsEnabled = False
 
+                                Select Case AddValue.Stts
+                                    Case "Final"
+                                        FlashVal.IsEnabled = False
+                                        notestb.IsEnabled = False
+                                        tmpsavestatus = 3
+                                    Case "Draft"
+                                        FlashVal.IsEnabled = True
+                                        notestb.IsEnabled = True
+                                        tmpsavestatus = 1
+                                    Case Else
+                                        FlashVal.IsEnabled = True
+                                        notestb.IsEnabled = True
+                                        tmpsavestatus = 2
+                                End Select
+                                Try
+                                    FlashPage.SaveStatus = tmpsavestatus
+                                Catch ex As Exception
+                                    InitialLoadStatus = tmpsavestatus
+                                End Try
+                                If AddValue.fv = 999999.99 Then AddValue.fv = 0
+                                CalculateFlash += AddValue.fv
                             End If
                         End If
                     Next
@@ -325,8 +392,6 @@
         CalculateFlash += CurrVal
         FlashContent = CalculateFlash
         Dim tb As TextBox = Notes.Content
-
-        'TODO: PROOF AGAINST OVERWRITING OF UNSAVED FLASH NOTES
         If tb.Text = "" Then tb.Text = SharedFunctions.FlashNotes
     End Sub
 
@@ -343,7 +408,7 @@
                         If weekbrd.Tag <> "Label" Then
                             weektb = weekbrd.Child
                             If weektb.FontWeight = FontWeights.SemiBold And FormatNumber(weektb.Tag, 0) <= WeekChooseObject.MaxWeek Then
-                                CalculateForecast += LoadSingleWeekAndUnitForecast(GroupCategory, FormatNumber(unittb.Tag, 0), 2019, PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0))
+                                CalculateForecast += LoadSingleWeekAndUnitForecast(GroupCategory, FormatNumber(unittb.Tag, 0), CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0))
                             End If
                         End If
                     Next
@@ -356,8 +421,105 @@
     Private Sub UpdateSubtotals()
         Dim grd As Grid = Parent
         For Each fg As FlashGroup In grd.Children
-            If fg.GroupIsSubTotal Then Update(fg)
+            If fg.GroupIsSubTotal = True Then Update(fg)
         Next
+    End Sub
+
+    Private Function SaveNewFlash(SaveType) As Boolean
+        Dim tb As TextBox = Notes.Content
+        Try
+            Dim nf As New FlashActualData
+            With nf
+                .MSFY = CurrentFiscalYear
+                .MSP = PeriodChooseObject.CurrentPeriod
+                .Week = WeekChooseObject.CurrentWeek
+                .UnitNumber = UnitChooseObject.CurrentUnit
+                .Status = SaveType
+                .GL = 0
+                .GLCategory = GroupCategory
+                .FlashValue = FlashVal.SetAmount
+                .FlashNotes = tb.Text
+                .OpDaysWeek = getweekoperatingdays(PeriodChooseObject.CurrentPeriod, WeekChooseObject.CurrentWeek)
+                .OpDaysPeriod = getperiodoperatingdays(PeriodChooseObject.CurrentPeriod)
+                .SavedBy = My.Settings.UserName
+            End With
+            FlashActuals.FlashActualData.Add(nf)
+            FlashActuals.SaveChanges()
+            If SaveType = "Final" Then
+                FlashVal.IsEnabled = False
+                tb.IsEnabled = False
+            End If
+            Return True
+        Catch ex As Exception
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                                    18, True, "Unexpected error!",, ex.Message)
+            amsg.ShowDialog()
+            amsg.Close()
+            Return False
+        End Try
+    End Function
+
+    Private Function UpdateFlash(SaveType) As Boolean
+        Dim tb As TextBox = Notes.Content
+        Try
+
+            Dim uf = (From cust In FlashActuals.FlashActualData
+                      Where cust.UnitNumber = UnitChooseObject.CurrentUnit And
+                                            cust.MSFY = CurrentFiscalYear And
+                                            cust.MSP = PeriodChooseObject.CurrentPeriod And
+                                            cust.Week = WeekChooseObject.CurrentWeek And
+                                            cust.GLCategory = GroupCategory).ToList()(0)
+            With uf
+                .Status = SaveType
+                .FlashValue = FlashVal.SetAmount
+                .FlashNotes = tb.Text
+                .OpDaysWeek = getweekoperatingdays(PeriodChooseObject.CurrentPeriod, WeekChooseObject.CurrentWeek)
+                .OpDaysPeriod = getperiodoperatingdays(PeriodChooseObject.CurrentPeriod)
+                .SavedBy = My.Settings.UserName
+            End With
+            FlashActuals.SaveChanges()
+
+            If SaveType = "Final" Then
+                FlashVal.IsEnabled = False
+                tb.IsEnabled = False
+            End If
+            Return True
+        Catch ex As Exception
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                        18, True, "Unexpected error!",, ex.Message)
+            amsg.ShowDialog()
+            amsg.Close()
+            Return False
+        End Try
+    End Function
+
+    Private Function CheckIfMultipleAreSelected() As Byte
+        Dim unitbrd As Border, periodbrd As Border, weekbrd As Border, unittb As TextBlock, periodtb As TextBlock, weektb As TextBlock, InternalCounter As Byte = 0
+        For Each unitbrd In UnitChooseObject.Children
+            If unitbrd.Tag <> "Label" Then
+                unittb = unitbrd.Child
+                If unittb.FontWeight = FontWeights.SemiBold Then InternalCounter += 1
+            End If
+        Next
+
+        For Each periodbrd In WeekChooseObject.Children
+            If periodbrd.Tag <> "Label" Then
+                periodtb = periodbrd.Child
+                If periodtb.FontWeight = FontWeights.SemiBold Then InternalCounter += 1
+            End If
+        Next
+
+        For Each weekbrd In WeekChooseObject.Children
+            If weekbrd.Tag <> "Label" Then
+                weektb = weekbrd.Child
+                If weektb.FontWeight = FontWeights.SemiBold Then InternalCounter += 1
+            End If
+        Next
+        Return InternalCounter
+    End Function
+
+    Private Sub LeaveNoteField()
+        Notes.IsExpanded = False
     End Sub
 #End Region
 

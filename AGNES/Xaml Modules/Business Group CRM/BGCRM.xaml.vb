@@ -19,8 +19,8 @@ Public Class BGCRM
         BGC = New BGCRMEntity
         SD = New BIEntities
         PopulateOptions()
-        curRevenue = New CurrencyBox(189, False, True, False, True, True, AgnesBaseInput.FontSz.Medium) With {.Margin = New Thickness(269, 28, 0, 0)}
-        curOffsite = New CurrencyBox(189, False, True, False, True, True, AgnesBaseInput.FontSz.Medium) With {.Margin = New Thickness(269, 88, 0, 0)}
+        curRevenue = New CurrencyBox(189, True, AgnesBaseInput.FontSz.Medium) With {.Margin = New Thickness(269, 28, 0, 0)}
+        curOffsite = New CurrencyBox(189, True, AgnesBaseInput.FontSz.Medium) With {.Margin = New Thickness(269, 88, 0, 0)}
         numEventCount = New NumberBox(189, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(269, 156, 0, 0)}
         num500Events = New NumberBox(189, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(807, 28, 0, 0)}
         numCatered = New NumberBox(189, True, False, True, False, True, AgnesBaseInput.FontSz.Medium, 0, "0") With {.Margin = New Thickness(807, 88, 0, 0)}

@@ -40,10 +40,10 @@ Public Class CurrencyBox
     Private SystemChange As Boolean
     Private HeldValue As String
 
-    Public Sub New(FieldWidth As Integer, AllowCredit As Boolean, AllowDebit As Boolean, ForceCredit As Boolean, ForceDebit As Boolean, SelectAllUponEnteringField As Boolean, FontSize As AgnesBaseInput.FontSz, Optional ByVal DefaultText As String = "$0.00")
+    Public Sub New(FieldWidth As Integer, SelectAllUponEnteringField As Boolean, FontSize As AgnesBaseInput.FontSz, Optional ByVal DefaultText As String = "$0.00", Optional ForceCredit As Boolean = False, Optional ForceDebit As Boolean = False)
         MyBase.New(FieldWidth, VerticalAlignment.Top, HorizontalAlignment.Left, FontSize, TextAlignment.Right, DefaultText, TextWrapping.NoWrap)
-        Credit = AllowCredit
-        Debit = AllowDebit
+        Credit = Not ForceDebit
+        Debit = Not ForceCredit
         _debitonly = ForceDebit
         _creditonly = ForceCredit
         Highlight = SelectAllUponEnteringField
@@ -72,6 +72,7 @@ Public Class CurrencyBox
 
     Private Sub EnterField(sender As Object, e As EventArgs)
         Dim t As TextBox = sender
+        HeldValue = t.Text
         SystemChange = True
         '// Remove currency symbol, if present  
         t.Text = t.Text.Replace("$", "")
@@ -89,12 +90,12 @@ Public Class CurrencyBox
             t.CaretIndex = t.Text.Length
         End If
         SystemChange = False
-        HeldValue = t.Text
+
     End Sub
 
     Private Sub ExitField(sender As Object, e As EventArgs)
         Dim t As TextBox = sender
-        If t.Text = HeldValue Then Exit Sub
+
         Try
             Dim cval As Double = FormatNumber(t.Text, 2)
             If (Debit = False And cval > 0) Or (Credit = False And cval < 0) Then
@@ -124,6 +125,7 @@ Public Class CurrencyBox
             Flare = True
             Me.Focus()
         End Try
+        If t.Text = HeldValue Then Exit Sub
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(“Amountchanged”))
     End Sub
 

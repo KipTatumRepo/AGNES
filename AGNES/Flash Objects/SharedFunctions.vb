@@ -25,7 +25,7 @@
 
     Public Function GetMaxWeeks(p As Byte) As Byte
         Dim df = From d In SharedDataGroup.Dates
-                 Where d.MS_FY = 2019 And
+                 Where d.MS_FY = CurrentFiscalYear And
                      d.MS_Period = p And
                      d.Week = 5
                  Select d
@@ -37,7 +37,7 @@
 
     Public Function getweekoperatingdays(p As Byte, w As Byte) As Byte
         Dim df = From d In SharedDataGroup.Dates
-                 Where d.MS_FY = 2019 And
+                 Where d.MS_FY = CurrentFiscalYear And
                      d.MS_Period = p And
                      d.Week = w And
                      d.IS_WEEKEND_HOLIDAY = 0
@@ -49,7 +49,7 @@
 
     Public Function getperiodoperatingdays(p As Byte) As Byte
         Dim df = From d In SharedDataGroup.Dates
-                 Where d.MS_FY = 2019 And
+                 Where d.MS_FY = CurrentFiscalYear And
                      d.MS_Period = p And
                      d.IS_WEEKEND_HOLIDAY = 0
                  Select d
@@ -57,7 +57,7 @@
         Return df.Count
     End Function
 
-    Public Function LoadSingleWeekAndUnitFlash(category As String, unit As Int64, yr As Int16, period As Byte, wk As Byte) As Double
+    Public Function LoadSingleWeekAndUnitFlash(category As String, unit As Int64, yr As Int16, period As Byte, wk As Byte) As (fv As Double, Stts As String)
         FlashNotes = ""
         Dim ff = From f In FlashActuals.FlashActualData
                  Where f.GLCategory = category And
@@ -68,9 +68,9 @@
                  Select f
         For Each f In ff
             FlashNotes = f.FlashNotes
-            Return (f.FlashValue)
+            Return (f.FlashValue, f.Status)
         Next
-        Return 0
+        Return (0, "")
     End Function
 
     Public Function LoadSingleWeekAndUnitBudget(category As String, unit As Int64, yr As Int16, period As Byte, weekoperatingdays As Byte, periodoperatingdays As Byte) As Double
@@ -99,4 +99,7 @@
         Next
         Return 0
     End Function
+
+
+
 End Module

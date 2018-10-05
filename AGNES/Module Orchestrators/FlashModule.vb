@@ -5,6 +5,9 @@
     Public FlashActuals As FlashActualsEntity
     Public FlashForecasts As ForecastEntity
     Public SharedDataGroup As BIEntities
+    Public FlashPage As Flash
+    Public InitialLoadStatus As Byte = 0
+    Public CurrentFiscalYear As Integer = 2019
     Public Sub Runmodule()
         FlashBudgets = New BudgetEntity
         FlashActuals = New FlashActualsEntity
@@ -17,6 +20,7 @@
         '// Determine which unit, or units, user has access to.  If multiple, give them a choice.  If not, move forward
         '// Populate FlashGroup with applicable units
         'TODO: REMOVE PLACEHOLDER FLASH TYPE
+
         AvailableUnits = New UnitGroup With {.UnitGroupName = "WCC"}
         Dim testFlash As New UnitFlash With {.FlashType = FlashType, .UnitNumber = FlashUnit}
         Dim testFlash1 As New UnitFlash With {.FlashType = FlashType, .UnitNumber = 19838}
@@ -50,7 +54,8 @@
         End With
         '///TEST
 
-        Dim FlashPage As New Flash(FlashType, FlashUnit)
+        FlashPage = New Flash(FlashType, FlashUnit)
+        FlashPage.SaveStatus = InitialLoadStatus
         FlashPage.ShowDialog()
         If UserClosed = True Then Exit Sub
     End Sub
