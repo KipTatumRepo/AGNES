@@ -1,5 +1,4 @@
 ﻿Module FlashModule
-    Public UserClosed As Boolean
     Public AvailableUnits As UnitGroup
     Public FlashBudgets As BudgetEntity
     Public FlashActuals As FlashActualsEntity
@@ -57,6 +56,8 @@
         FlashPage = New Flash(FlashType, FlashUnit)
         FlashPage.SaveStatus = InitialLoadStatus
         FlashPage.ShowDialog()
-        If UserClosed = True Then Exit Sub
+
+        '// Additional follow up modules, such as Sick/OT, etc., are invoked here
+
     End Sub
 End Module

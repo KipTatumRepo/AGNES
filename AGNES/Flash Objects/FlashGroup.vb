@@ -11,6 +11,8 @@
     Public ForecastPercent As TextBox
     Public ForecastVariance As CurrencyBox
     Public Notes As Expander
+    Private NotesText As TextBox
+    Public NoteContent As String = ""
     Public WeekChooseObject As WeekChooser
     Public PeriodChooseObject As PeriodChooser
     Public UnitChooseObject As UnitChooser
@@ -110,8 +112,10 @@
 
         '// Create expander for notes
         Notes = New Expander With {.Height = 32, .ExpandDirection = ExpandDirection.Right, .IsExpanded = False, .ToolTip = "Add Notes"}
-        Dim NotesText As New TextBox With {.MaxLength = 130, .Width = 715}
+        NotesText = New TextBox With {.MaxLength = 130, .Width = 715}
+        AddHandler NotesText.GotFocus, AddressOf EnterNoteField
         AddHandler NotesText.LostFocus, AddressOf LeaveNoteField
+        AddHandler NotesText.TextChanged, AddressOf NotesChanged
         Notes.Content = NotesText
 
         '// Create flash percentage textbox.  Hide if it doesn't belong with this group (preserving spacing)
@@ -403,7 +407,8 @@
                                 Dim AddValue = LoadSingleWeekAndUnitFlash(GroupCategory, FormatNumber(unittb.Tag, 0), CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0))
                                 '// Lock flash fields during PTD or Multiple Unit views, regardless of individual save statuses
                                 If CheckIfMultipleAreSelected() Then FlashVal.IsEnabled = False
-
+                                NoteContent = AddValue.Notes
+                                notestb.Text = NoteContent
                                 Select Case AddValue.Stts
                                     Case "Final"
                                         FlashVal.IsEnabled = False
@@ -562,7 +567,17 @@
 
     Private Sub LeaveNoteField()
         Notes.IsExpanded = False
+        NoteContent = NotesText.Text
     End Sub
+
+    Private Sub EnterNoteField()
+        NoteContent = NotesText.Text
+    End Sub
+
+    Private Sub NotesChanged()
+        If NotesText.Text <> NoteContent Then FlashPage.SaveStatus = 0
+    End Sub
+
 #End Region
 
 End Class
