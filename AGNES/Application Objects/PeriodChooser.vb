@@ -106,11 +106,12 @@ Public Class PeriodChooser
         End If
         If CurrentPeriod < MaxPeriod Then
             Week.MaxWeek = GetMaxWeeks(CurrentPeriod)
+            Week.CurrentWeek = 1
         Else
             Week.MaxWeek = GetCurrentWeek(FormatDateTime(Now(), DateFormat.ShortDate))
+            Week.CurrentWeek = GetCurrentWeek(FormatDateTime(Now(), DateFormat.ShortDate))
         End If
         Week.EnableWeeks()
-        Week.CurrentWeek = 1
     End Sub
 
     Public Sub Reset()
