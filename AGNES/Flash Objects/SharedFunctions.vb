@@ -99,4 +99,86 @@
         Return 0
     End Function
 
+    Public Function SelectFlashForecastTypeAndUnit() As (flashselection As Byte, unitselection As Long)
+        Dim fs As Byte, us As Long, availableflashtypes As New List(Of Long), availableunits As New List(Of Long), usr As Integer, ulvl As Byte
+        Dim LocalAGNESShared As AGNESSharedDataEntity = New AGNESSharedDataEntity
+        usr = My.Settings.UserID : ulvl = My.Settings.UserLevel
+
+        'TEST
+        ' fs = 2 ': usr = 81 : ulvl = 4
+        'TEST
+
+        Select Case ulvl
+            Case 4      '// Construct availableflashtypes wih flash types available to user
+                Dim qaf = From c In LocalAGNESShared.FlashTypesUsers_Join
+                          Where c.UserId = usr
+                          Select c
+
+                For Each c In qaf
+                    Dim qft = From d In LocalAGNESShared.FlashTypes
+                              Where d.PID = c.FlashId
+                              Select d
+                    For Each d In qft
+                        availableflashtypes.Add(d.PID)
+                    Next
+                Next
+            Case Else   '// Super user or above - Construct availableflashtypes with all flash types
+                Dim qft = From c In LocalAGNESShared.FlashTypes
+                          Select c
+                For Each c In qft
+                    availableflashtypes.Add(c.PID)
+                Next
+
+        End Select
+        If availableflashtypes.Count > 1 Then
+            '// Offer choice popup for which type the user wants; this is assigned to fs
+            Dim flchs As New FlashForecastChooser With {.ChooserType = 0}
+            flchs.Populate(availableflashtypes)
+            flchs.ShowDialog()
+            fs = flchs.UserChoice
+            flchs.Close()
+        Else
+            fs = availableflashtypes(0)
+        End If
+
+        Select Case ulvl
+            Case 4      '// Construct availableunits wih units available to user within the selected flash type
+                Dim qau = From c In LocalAGNESShared.UnitsUsers_Join
+                          Where c.UserId = usr
+                          Select c
+
+                For Each c In qau
+                    Dim qun = From f In SharedDataGroup.LOCATIONS
+                              Where f.Unit_Number = c.UnitNumber And
+                                  f.FlashType = fs
+                              Select f
+
+                    For Each f In qun
+                        availableunits.Add(f.Unit_Number)
+                    Next
+                Next
+
+            Case Else   '// Super user or above - Construct availableunits with all units within the selected flash type
+                Dim qun = From f In SharedDataGroup.LOCATIONS
+                          Where f.FlashType = fs
+                          Select f
+
+                For Each f In qun
+                    availableunits.Add(f.Unit_Number)
+                Next
+        End Select
+
+        If availableunits.Count > 1 Then
+            '// Offer choice popup for which unit the user wants; this is assigned to us
+            Dim flchs As New FlashForecastChooser With {.ChooserType = 1}
+            flchs.Populate(availableunits)
+            flchs.ShowDialog()
+            us = flchs.UserChoice
+            flchs.Close()
+        Else
+            us = availableunits(0)
+        End If
+
+        Return (fs, us)
+    End Function
 End Module
