@@ -82,6 +82,7 @@
     End Property
     Private Property GroupHasForecast As Boolean
     Private Property GroupHasPercentages As Boolean
+    Public Property SpreadByWeeks As Boolean
 
 #End Region
 
@@ -374,9 +375,17 @@
                             weektb = weekbrd.Child
                             If weektb.FontWeight = FontWeights.SemiBold And FormatNumber(weektb.Tag, 0) <= WeekChooseObject.MaxWeek Then
                                 WeekCount += 1
-                                CalculateBudget += LoadSingleWeekAndUnitBudget(GroupCategory, FormatNumber(unittb.Tag, 0), CurrentFiscalYear, PeriodChooseObject.CurrentPeriod,
-                                                                      getweekoperatingdays(PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0)),
-                                                                      getperiodoperatingdays(PeriodChooseObject.CurrentPeriod))
+                                If SpreadByWeeks = False Then
+                                    CalculateBudget += LoadSingleWeekAndUnitBudget(GroupCategory, FormatNumber(unittb.Tag, 0), CurrentFiscalYear, PeriodChooseObject.CurrentPeriod,
+                                                                          getweekoperatingdays(PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0)),
+                                                                          getperiodoperatingdays(PeriodChooseObject.CurrentPeriod))
+                                Else
+                                    Dim tempopdays = 4
+                                    If getperiodoperatingdays(PeriodChooseObject.CurrentPeriod) > 20 Then tempopdays = 5
+                                    CalculateBudget += LoadSingleWeekAndUnitBudget(GroupCategory, FormatNumber(unittb.Tag, 0), CurrentFiscalYear,
+                                                                                   PeriodChooseObject.CurrentPeriod, 1, tempopdays)
+                                End If
+
                             End If
                         End If
                     Next

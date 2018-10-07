@@ -140,45 +140,52 @@
         Else
             fs = availableflashtypes(0)
         End If
+        Select Case fs
+            Case 1, 2, 4    ' Cafes, Commons, Fields
+                Select Case ulvl
+                    Case 4      '// Construct availableunits wih units available to user within the selected flash type
+                        Dim qau = From c In LocalAGNESShared.UnitsUsers_Join
+                                  Where c.UserId = usr
+                                  Select c
 
-        Select Case ulvl
-            Case 4      '// Construct availableunits wih units available to user within the selected flash type
-                Dim qau = From c In LocalAGNESShared.UnitsUsers_Join
-                          Where c.UserId = usr
-                          Select c
+                        For Each c In qau
+                            Dim qun = From f In SharedDataGroup.LOCATIONS
+                                      Where f.Unit_Number = c.UnitNumber And
+                                          f.FlashType = fs
+                                      Select f
 
-                For Each c In qau
-                    Dim qun = From f In SharedDataGroup.LOCATIONS
-                              Where f.Unit_Number = c.UnitNumber And
-                                  f.FlashType = fs
-                              Select f
+                            For Each f In qun
+                                availableunits.Add(f.Unit_Number)
+                            Next
+                        Next
 
-                    For Each f In qun
-                        availableunits.Add(f.Unit_Number)
-                    Next
-                Next
+                    Case Else   '// Super user or above - Construct availableunits with all units within the selected flash type
+                        Dim qun = From f In SharedDataGroup.LOCATIONS
+                                  Where f.FlashType = fs
+                                  Select f
 
-            Case Else   '// Super user or above - Construct availableunits with all units within the selected flash type
-                Dim qun = From f In SharedDataGroup.LOCATIONS
-                          Where f.FlashType = fs
-                          Select f
+                        For Each f In qun
+                            availableunits.Add(f.Unit_Number)
+                        Next
+                End Select
 
-                For Each f In qun
-                    availableunits.Add(f.Unit_Number)
-                Next
+                If availableunits.Count > 1 Then
+                    '// Offer choice popup for which unit the user wants; this is assigned to us
+                    Dim flchs As New FlashForecastChooser With {.ChooserType = 1}
+                    flchs.Populate(availableunits)
+                    flchs.ShowDialog()
+                    us = flchs.UserChoice
+                    flchs.Close()
+                Else
+                    us = availableunits(0)
+                End If
+            Case 3  ' AV
+
+            Case 5  ' Beverage
+            Case 6  ' Catering
+            Case 7  ' Overhead
+                us = 1852
         End Select
-
-        If availableunits.Count > 1 Then
-            '// Offer choice popup for which unit the user wants; this is assigned to us
-            Dim flchs As New FlashForecastChooser With {.ChooserType = 1}
-            flchs.Populate(availableunits)
-            flchs.ShowDialog()
-            us = flchs.UserChoice
-            flchs.Close()
-        Else
-            us = availableunits(0)
-        End If
-
         Return (fs, us)
     End Function
 End Module
