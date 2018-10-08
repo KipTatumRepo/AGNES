@@ -124,6 +124,9 @@
       <DependentUpon>AgnesMessageBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Application Objects\CurrencyBox.vb" />
+    <Compile Include="Application Objects\FlashForecastChooser.xaml.vb">
+      <DependentUpon>FlashForecastChooser.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Application Objects\NumberBox.vb" />
     <Compile Include="Application Objects\PeriodChooser.vb" />
     <Compile Include="Application Objects\UnitChooser.vb" />
@@ -215,6 +218,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FlashForecastModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\FlashType.vb">
+      <DependentUpon>AgnesSharedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\FlashTypesUsers_Join.vb">
+      <DependentUpon>AgnesSharedDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\ForecastAudits.vb">
       <DependentUpon>FlashForecastModel.tt</DependentUpon>
     </Compile>
@@ -283,6 +292,9 @@
     </Compile>
     <Compile Include="Entities\Leaders.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\LOCATION.vb">
+      <DependentUpon>GeneralSharedData.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\MasterBuildingList.vb">
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
@@ -410,6 +422,10 @@
     </Compile>
     <Compile Include="WCR Objects\WCRObject.vb" />
     <Page Include="Application Objects\AgnesMessageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Application Objects\FlashForecastChooser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
