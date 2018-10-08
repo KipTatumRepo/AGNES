@@ -46,6 +46,22 @@ Public Class Flash
         ConstructTemplate(FlashType, FlashUnit)
     End Sub
 
+    Public Sub ToggleAlert(onoff)
+        If onoff = 0 Then
+            With imgEscalate
+                .Tag = "On"
+                .Source = New BitmapImage(New Uri("/AGNES;component/Resources/HandWaveOn.png", UriKind.Relative))
+                .ToolTip = "Deactive alert to DM"
+            End With
+        Else
+            With imgEscalate
+                .Tag = "Off"
+                .Source = New BitmapImage(New Uri("/AGNES;component/Resources/HandWave.png", UriKind.Relative))
+                .ToolTip = "Call out Flash to DM"
+            End With
+        End If
+    End Sub
+
 #Region "Toolbar Controls"
     Private Sub SaveDraft(sender As Object, e As MouseButtonEventArgs) Handles imgDraft.MouseLeftButtonDown
         If SaveStatus > 0 Then Exit Sub
@@ -72,6 +88,15 @@ Public Class Flash
             End If
         Next
         SaveStatus = 3
+    End Sub
+
+    Private Sub ToggleAlertButton(sender As Object, e As MouseButtonEventArgs) Handles imgEscalate.MouseLeftButtonDown
+        If imgEscalate.Tag = "On" Then
+            ToggleAlert(1)
+        Else
+            ToggleAlert(0)
+        End If
+        SaveStatus = 0
     End Sub
 
 #End Region
@@ -368,6 +393,8 @@ Public Class Flash
         End If
 
     End Sub
+
+
 
 #End Region
 

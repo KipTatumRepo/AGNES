@@ -432,15 +432,26 @@
                                         notestb.IsEnabled = True
                                         tmpsavestatus = 2
                                 End Select
+
                                 Try
-                                    FlashPage.SaveStatus = tmpsavestatus
+                                    If AddValue.alert = True Then
+                                        FlashPage.ToggleAlert(0)
+                                    Else
+                                        FlashPage.ToggleAlert(1)
+                                    End If
                                 Catch ex As Exception
-                                    InitialLoadStatus = tmpsavestatus
+                                    ' Initial load or legitimate error
                                 End Try
-                                If AddValue.fv = 999999.99 Then AddValue.fv = 0
-                                CalculateFlash += AddValue.fv
+
+                                Try
+                                        FlashPage.SaveStatus = tmpsavestatus
+                                    Catch ex As Exception
+                                        InitialLoadStatus = tmpsavestatus
+                                    End Try
+                                    If AddValue.fv = 999999.99 Then AddValue.fv = 0
+                                    CalculateFlash += AddValue.fv
+                                End If
                             End If
-                        End If
                     Next
                 End If
             End If
@@ -499,6 +510,11 @@
                 .OpDaysPeriod = getperiodoperatingdays(PeriodChooseObject.CurrentPeriod)
                 .SavedBy = My.Settings.UserName
             End With
+            If FlashPage.imgEscalate.Tag = "On" Then
+                nf.Alert = True
+            Else
+                nf.Alert = False
+            End If
             FlashActuals.FlashActualData.Add(nf)
             FlashActuals.SaveChanges()
             If SaveType = "Final" Then
@@ -533,6 +549,12 @@
                 .OpDaysPeriod = getperiodoperatingdays(PeriodChooseObject.CurrentPeriod)
                 .SavedBy = My.Settings.UserName
             End With
+            If FlashPage.imgEscalate.Tag = "On" Then
+                uf.Alert = True
+            Else
+                uf.Alert = False
+            End If
+
             FlashActuals.SaveChanges()
 
             If SaveType = "Final" Then

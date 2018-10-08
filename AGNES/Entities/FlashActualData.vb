@@ -24,5 +24,6 @@ Partial Public Class FlashActualData
     Public Property OpDaysWeek As Byte
     Public Property OpDaysPeriod As Byte
     Public Property SavedBy As String
+    Public Property Alert As Boolean
 
 End Class

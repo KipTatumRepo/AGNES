@@ -704,6 +704,7 @@
       <DependentUpon>WCRModule.edmx</DependentUpon>
       <LastGenOutput>WCRModule.vb</LastGenOutput>
     </Content>
+    <Resource Include="Resources\HandWaveOn.png" />
     <Resource Include="Resources\print.png" />
     <Resource Include="Resources\PTD.png" />
     <Resource Include="Resources\draft.png" />
