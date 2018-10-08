@@ -52,6 +52,16 @@
           <Property Name="ModuleId" Type="bigint" Nullable="false" />
           <Property Name="UserId" Type="bigint" Nullable="false" />
         </EntityType>
+        <EntityType Name="UnitsSubunits">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UnitNumber" Type="bigint" Nullable="false" />
+          <Property Name="SubUnitNumber" Type="bigint" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="50" />
+          <Property Name="Grouping" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="UnitsUsers_Join">
           <Key>
             <PropertyRef Name="PID" />
@@ -81,6 +91,7 @@
           <EntitySet Name="ModuleGroups" EntityType="Self.ModuleGroups" Schema="agnes" store:Type="Tables" />
           <EntitySet Name="Modules" EntityType="Self.Modules" Schema="agnes" store:Type="Tables" />
           <EntitySet Name="ModulesUsers_Join" EntityType="Self.ModulesUsers_Join" Schema="agnes" store:Type="Tables" />
+          <EntitySet Name="UnitsSubunits" EntityType="Self.UnitsSubunits" Schema="agnes" store:Type="Tables" />
           <EntitySet Name="UnitsUsers_Join" EntityType="Self.UnitsUsers_Join" Schema="agnes" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="agnes" store:Type="Tables" />
         </EntityContainer>
@@ -151,6 +162,7 @@
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="FlashTypes" EntityType="AGNESSharedDataModel.FlashType" />
           <EntitySet Name="FlashTypesUsers_Join" EntityType="AGNESSharedDataModel.FlashTypesUsers_Join" />
+          <EntitySet Name="UnitsSubunits" EntityType="AGNESSharedDataModel.UnitsSubunit" />
         </EntityContainer>
         <EntityType Name="FlashType">
           <Key>
@@ -166,6 +178,16 @@
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FlashId" Type="Int64" Nullable="false" />
           <Property Name="UserId" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UnitsSubunit">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UnitNumber" Type="Int64" Nullable="false" />
+          <Property Name="SubUnitNumber" Type="Int64" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Grouping" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -246,6 +268,17 @@
               <MappingFragment StoreEntitySet="FlashTypesUsers_Join">
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="FlashId" ColumnName="FlashId" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UnitsSubunits">
+            <EntityTypeMapping TypeName="AGNESSharedDataModel.UnitsSubunit">
+              <MappingFragment StoreEntitySet="UnitsSubunits">
+                <ScalarProperty Name="Grouping" ColumnName="Grouping" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="SubUnitNumber" ColumnName="SubUnitNumber" />
+                <ScalarProperty Name="UnitNumber" ColumnName="UnitNumber" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
               </MappingFragment>
             </EntityTypeMapping>

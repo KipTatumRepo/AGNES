@@ -332,6 +332,9 @@
     <Compile Include="Entities\Tenders.vb">
       <DependentUpon>WCRModule.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\UnitsSubunit.vb">
+      <DependentUpon>AgnesSharedDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\UnitsUsers_Join.vb">
       <DependentUpon>AgnesSharedDataModel.tt</DependentUpon>
     </Compile>

@@ -180,12 +180,14 @@
                     us = availableunits(0)
                 End If
             Case 3  ' AV
-
+                us = 30954
             Case 5  ' Beverage
+                us = 2627
             Case 6  ' Catering
             Case 7  ' Overhead
                 us = 1852
         End Select
         Return (fs, us)
     End Function
+
 End Module
