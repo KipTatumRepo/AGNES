@@ -6,11 +6,13 @@ Public Class UnitChooser
     Private _currentunit As Long
     Private Week As WeekChooser
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
+    Public Property HeldUnit As Long
     Public Property CurrentUnit As Long
         Get
             Return _currentunit
         End Get
         Set(value As Long)
+            HeldUnit = _currentunit
             _currentunit = value
             If value > 0 Then
                 SelectedCount = 0

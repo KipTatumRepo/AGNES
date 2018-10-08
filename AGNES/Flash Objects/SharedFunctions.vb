@@ -13,7 +13,7 @@
     End Function
 
     Public Function GetCurrentWeek(dt As Date) As Byte
-        dt = dt.AddDays(1)
+        dt = dt.AddDays(-1)
         Dim df = From d In SharedDataGroup.Dates
                  Where d.Date_ID = dt
                  Select d
@@ -57,7 +57,7 @@
         Return df.Count
     End Function
 
-    Public Function LoadSingleWeekAndUnitFlash(category As String, unit As Int64, yr As Int16, period As Byte, wk As Byte) As (fv As Double, Stts As String)
+    Public Function LoadSingleWeekAndUnitFlash(category As String, unit As Int64, yr As Int16, period As Byte, wk As Byte) As (fv As Double, Stts As String, Notes As String)
         FlashNotes = ""
         Dim ff = From f In FlashActuals.FlashActualData
                  Where f.GLCategory = category And
@@ -67,10 +67,9 @@
                      f.UnitNumber = unit
                  Select f
         For Each f In ff
-            FlashNotes = f.FlashNotes
-            Return (f.FlashValue, f.Status)
+            Return (f.FlashValue, f.Status, f.FlashNotes)
         Next
-        Return (0, "")
+        Return (0, "", "")
     End Function
 
     Public Function LoadSingleWeekAndUnitBudget(category As String, unit As Int64, yr As Int16, period As Byte, weekoperatingdays As Byte, periodoperatingdays As Byte) As Double
@@ -100,6 +99,93 @@
         Return 0
     End Function
 
+    Public Function SelectFlashForecastTypeAndUnit() As (flashselection As Byte, unitselection As Long)
+        Dim fs As Byte, us As Long, availableflashtypes As New List(Of Long), availableunits As New List(Of Long), usr As Integer, ulvl As Byte
+        Dim LocalAGNESShared As AGNESSharedDataEntity = New AGNESSharedDataEntity
+        usr = My.Settings.UserID : ulvl = My.Settings.UserLevel
 
+        'TEST
+        ' fs = 2 ': usr = 81 : ulvl = 4
+        'TEST
 
+        Select Case ulvl
+            Case 4      '// Construct availableflashtypes wih flash types available to user
+                Dim qaf = From c In LocalAGNESShared.FlashTypesUsers_Join
+                          Where c.UserId = usr
+                          Select c
+
+                For Each c In qaf
+                    Dim qft = From d In LocalAGNESShared.FlashTypes
+                              Where d.PID = c.FlashId
+                              Select d
+                    For Each d In qft
+                        availableflashtypes.Add(d.PID)
+                    Next
+                Next
+            Case Else   '// Super user or above - Construct availableflashtypes with all flash types
+                Dim qft = From c In LocalAGNESShared.FlashTypes
+                          Select c
+                For Each c In qft
+                    availableflashtypes.Add(c.PID)
+                Next
+
+        End Select
+        If availableflashtypes.Count > 1 Then
+            '// Offer choice popup for which type the user wants; this is assigned to fs
+            Dim flchs As New FlashForecastChooser With {.ChooserType = 0}
+            flchs.Populate(availableflashtypes)
+            flchs.ShowDialog()
+            fs = flchs.UserChoice
+            flchs.Close()
+        Else
+            fs = availableflashtypes(0)
+        End If
+        Select Case fs
+            Case 1, 2, 4    ' Cafes, Commons, Fields
+                Select Case ulvl
+                    Case 4      '// Construct availableunits wih units available to user within the selected flash type
+                        Dim qau = From c In LocalAGNESShared.UnitsUsers_Join
+                                  Where c.UserId = usr
+                                  Select c
+
+                        For Each c In qau
+                            Dim qun = From f In SharedDataGroup.LOCATIONS
+                                      Where f.Unit_Number = c.UnitNumber And
+                                          f.FlashType = fs
+                                      Select f
+
+                            For Each f In qun
+                                availableunits.Add(f.Unit_Number)
+                            Next
+                        Next
+
+                    Case Else   '// Super user or above - Construct availableunits with all units within the selected flash type
+                        Dim qun = From f In SharedDataGroup.LOCATIONS
+                                  Where f.FlashType = fs
+                                  Select f
+
+                        For Each f In qun
+                            availableunits.Add(f.Unit_Number)
+                        Next
+                End Select
+
+                If availableunits.Count > 1 Then
+                    '// Offer choice popup for which unit the user wants; this is assigned to us
+                    Dim flchs As New FlashForecastChooser With {.ChooserType = 1}
+                    flchs.Populate(availableunits)
+                    flchs.ShowDialog()
+                    us = flchs.UserChoice
+                    flchs.Close()
+                Else
+                    us = availableunits(0)
+                End If
+            Case 3  ' AV
+
+            Case 5  ' Beverage
+            Case 6  ' Catering
+            Case 7  ' Overhead
+                us = 1852
+        End Select
+        Return (fs, us)
+    End Function
 End Module

@@ -33,8 +33,7 @@
             <TextBlock x:Name = "lblForecastVariance" HorizontalAlignment="Left" Margin="817,0,0,0" TextWrapping="Wrap" Text="Variance to Forecast" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Variance of flash to forecast"/>
         </Grid>
 
-        <Grid x:Name="grdFlashGroups" Height="394" VerticalAlignment="Top" Margin="0,114,0,0">
-        </Grid>
+        <Grid x:Name="grdFlashGroups" Margin="0,114,0,24"/>
         <StatusBar x:Name="barSaveStatus" Height="24" VerticalAlignment="Bottom" Background="#FF19F30E">
             <TextBlock x:Name="tbSaveStatus" Text="Saved" Width="972" TextAlignment="Center" FontWeight="SemiBold" />
         </StatusBar>

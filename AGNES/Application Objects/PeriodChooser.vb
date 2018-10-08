@@ -6,11 +6,13 @@ Public Class PeriodChooser
     Private _currentperiod As Byte
     Private Week As WeekChooser
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
+    Public Property HeldPeriod As Byte
     Public Property CurrentPeriod As Byte
         Get
             Return _currentperiod
         End Get
         Set(value As Byte)
+            HeldPeriod = _currentperiod
             _currentperiod = value
             For Each b As Border In Children
                 If b.Tag <> "Label" Then
@@ -104,11 +106,12 @@ Public Class PeriodChooser
         End If
         If CurrentPeriod < MaxPeriod Then
             Week.MaxWeek = GetMaxWeeks(CurrentPeriod)
+            Week.CurrentWeek = 1
         Else
             Week.MaxWeek = GetCurrentWeek(FormatDateTime(Now(), DateFormat.ShortDate))
+            Week.CurrentWeek = GetCurrentWeek(FormatDateTime(Now(), DateFormat.ShortDate))
         End If
         Week.EnableWeeks()
-        Week.CurrentWeek = 1
     End Sub
 
     Public Sub Reset()

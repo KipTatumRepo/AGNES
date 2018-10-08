@@ -24,5 +24,6 @@ Partial Public Class BIEntities
 
     Public Overridable Property MasterBuildingLists() As DbSet(Of MasterBuildingList)
     Public Overridable Property Dates() As DbSet(Of Dates)
+    Public Overridable Property LOCATIONS() As DbSet(Of LOCATION)
 
 End Class

@@ -7,6 +7,7 @@
       <Diagram DiagramId="35aa7c12bed2409b89c8d43f4f2acbde" Name="Diagram1">
         <EntityTypeShape EntityType="BIModel.MasterBuildingList" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BIModel.Dates" Width="1.5" PointX="3.375" PointY="0.75" />
+        <EntityTypeShape EntityType="BIModel.LOCATION" Width="1.5" PointX="6.125" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

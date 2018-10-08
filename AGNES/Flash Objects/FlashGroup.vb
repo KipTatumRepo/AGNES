@@ -11,6 +11,8 @@
     Public ForecastPercent As TextBox
     Public ForecastVariance As CurrencyBox
     Public Notes As Expander
+    Private NotesText As TextBox
+    Public NoteContent As String = ""
     Public WeekChooseObject As WeekChooser
     Public PeriodChooseObject As PeriodChooser
     Public UnitChooseObject As UnitChooser
@@ -80,6 +82,7 @@
     End Property
     Private Property GroupHasForecast As Boolean
     Private Property GroupHasPercentages As Boolean
+    Public Property SpreadByWeeks As Boolean
 
 #End Region
 
@@ -110,8 +113,10 @@
 
         '// Create expander for notes
         Notes = New Expander With {.Height = 32, .ExpandDirection = ExpandDirection.Right, .IsExpanded = False, .ToolTip = "Add Notes"}
-        Dim NotesText As New TextBox With {.MaxLength = 130, .Width = 715}
+        NotesText = New TextBox With {.MaxLength = 130, .Width = 715}
+        AddHandler NotesText.GotFocus, AddressOf EnterNoteField
         AddHandler NotesText.LostFocus, AddressOf LeaveNoteField
+        AddHandler NotesText.TextChanged, AddressOf NotesChanged
         Notes.Content = NotesText
 
         '// Create flash percentage textbox.  Hide if it doesn't belong with this group (preserving spacing)
@@ -193,16 +198,58 @@
 
 #Region "Event Listeners"
     Private Sub PeriodChanged()
+        If FlashPage.SaveStatus = 0 Then
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
+                                                18,,,, "Discard unsaved changes?")
+            amsg.ShowDialog()
+            If amsg.ReturnResult = "No" Then
+                Dim TempWkHold As Byte = WeekChooseObject.CurrentWeek
+                FlashPage.SaveStatus = 2
+                PeriodChooseObject.CurrentPeriod = PeriodChooseObject.HeldPeriod
+                WeekChooseObject.CurrentWeek = TempWkHold
+                WeekChooseObject.HeldWeek = TempWkHold
+                amsg.Close()
+                Exit Sub
+            Else
+                amsg.Close()
+            End If
+        End If
         Load()
         Update(Me)
     End Sub
 
     Private Sub WeekChanged()
+        If FlashPage.SaveStatus = 0 Then
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
+                                                18,,,, "Discard unsaved changes?")
+            amsg.ShowDialog()
+            If amsg.ReturnResult = "No" Then
+                FlashPage.SaveStatus = 2
+                WeekChooseObject.CurrentWeek = WeekChooseObject.HeldWeek
+                amsg.Close()
+                Exit Sub
+            Else
+                amsg.Close()
+            End If
+        End If
         Load()
         Update(Me)
     End Sub
 
     Private Sub UnitChanged()
+        If FlashPage.SaveStatus = 0 Then
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
+                                                18,,,, "Discard unsaved changes?")
+            amsg.ShowDialog()
+            If amsg.ReturnResult = "No" Then
+                FlashPage.SaveStatus = 2
+                UnitChooseObject.CurrentUnit = UnitChooseObject.HeldUnit
+                amsg.Close()
+                Exit Sub
+            Else
+                amsg.Close()
+            End If
+        End If
         Load()
         Update(Me)
     End Sub
@@ -328,9 +375,17 @@
                             weektb = weekbrd.Child
                             If weektb.FontWeight = FontWeights.SemiBold And FormatNumber(weektb.Tag, 0) <= WeekChooseObject.MaxWeek Then
                                 WeekCount += 1
-                                CalculateBudget += LoadSingleWeekAndUnitBudget(GroupCategory, FormatNumber(unittb.Tag, 0), CurrentFiscalYear, PeriodChooseObject.CurrentPeriod,
-                                                                      getweekoperatingdays(PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0)),
-                                                                      getperiodoperatingdays(PeriodChooseObject.CurrentPeriod))
+                                If SpreadByWeeks = False Then
+                                    CalculateBudget += LoadSingleWeekAndUnitBudget(GroupCategory, FormatNumber(unittb.Tag, 0), CurrentFiscalYear, PeriodChooseObject.CurrentPeriod,
+                                                                          getweekoperatingdays(PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0)),
+                                                                          getperiodoperatingdays(PeriodChooseObject.CurrentPeriod))
+                                Else
+                                    Dim tempopdays = 4
+                                    If getperiodoperatingdays(PeriodChooseObject.CurrentPeriod) > 20 Then tempopdays = 5
+                                    CalculateBudget += LoadSingleWeekAndUnitBudget(GroupCategory, FormatNumber(unittb.Tag, 0), CurrentFiscalYear,
+                                                                                   PeriodChooseObject.CurrentPeriod, 1, tempopdays)
+                                End If
+
                             End If
                         End If
                     Next
@@ -361,7 +416,8 @@
                                 Dim AddValue = LoadSingleWeekAndUnitFlash(GroupCategory, FormatNumber(unittb.Tag, 0), CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0))
                                 '// Lock flash fields during PTD or Multiple Unit views, regardless of individual save statuses
                                 If CheckIfMultipleAreSelected() Then FlashVal.IsEnabled = False
-
+                                NoteContent = AddValue.Notes
+                                notestb.Text = NoteContent
                                 Select Case AddValue.Stts
                                     Case "Final"
                                         FlashVal.IsEnabled = False
@@ -520,7 +576,17 @@
 
     Private Sub LeaveNoteField()
         Notes.IsExpanded = False
+        NoteContent = NotesText.Text
     End Sub
+
+    Private Sub EnterNoteField()
+        NoteContent = NotesText.Text
+    End Sub
+
+    Private Sub NotesChanged()
+        If NotesText.Text <> NoteContent Then FlashPage.SaveStatus = 0
+    End Sub
+
 #End Region
 
 End Class
