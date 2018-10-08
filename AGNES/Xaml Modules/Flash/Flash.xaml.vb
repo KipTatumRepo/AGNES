@@ -1,7 +1,7 @@
 ﻿Imports System.ComponentModel
 
 Public Class Flash
-    'TODO:  PUSH FLASH/FORECAST UNLOCK FUNCTIONALITY TO DM FLASH STATUS UI, ALONG WITH ALERTS
+    'TODO:  PUSH FLASH/FORECAST UNLOCK FUNCTIONALITY TO DM FLASH STATUS UI, ALONG WITH ALERTS (AND SUPRESSION OF ALERTS)
     Dim SalesGroup As FlashGroup
     Dim CamGroup As FlashGroup
     Dim CafeSalesGroup As FlashGroup
@@ -97,6 +97,10 @@ Public Class Flash
             ToggleAlert(0)
         End If
         SaveStatus = 0
+    End Sub
+
+    Private Sub PrintFlash(sender As Object, e As MouseButtonEventArgs) Handles imgPrint.MouseLeftButtonDown
+        Dim ph As String = "Placeholder"
     End Sub
 
 #End Region
@@ -393,8 +397,6 @@ Public Class Flash
         End If
 
     End Sub
-
-
 
 #End Region
 
