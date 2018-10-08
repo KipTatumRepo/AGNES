@@ -100,6 +100,12 @@ Public Class Flash
     End Sub
 
     Private Sub PrintFlash(sender As Object, e As MouseButtonEventArgs) Handles imgPrint.MouseLeftButtonDown
+        'TODO: BUILD PRINT FUNCTIONALITY
+        Dim ph As String = "Placeholder"
+    End Sub
+
+    Private Sub OpenDelegatesUI(sender As Object, e As MouseButtonEventArgs) Handles imgDelegates.MouseLeftButtonDown
+        'TODO: BUILD DELEGATE FUNCTIONALITY
         Dim ph As String = "Placeholder"
     End Sub
 
