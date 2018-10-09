@@ -512,7 +512,6 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>BusinessGroupCRM.Designer.vb</LastGenOutput>
     </EntityDeploy>
-    <None Include="ClassDiagram1.cd" />
     <EntityDeploy Include="Entities\BudgetModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>BudgetModel.Designer.vb</LastGenOutput>
