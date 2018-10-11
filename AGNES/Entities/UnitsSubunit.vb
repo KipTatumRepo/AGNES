@@ -10,20 +10,11 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class FlashActualData
+Partial Public Class UnitsSubunit
     Public Property PID As Long
-    Public Property MSFY As Short
-    Public Property MSP As Byte
-    Public Property Week As Byte
     Public Property UnitNumber As Long
-    Public Property Status As String
-    Public Property GL As Long
-    Public Property GLCategory As String
-    Public Property FlashValue As Decimal
-    Public Property FlashNotes As String
-    Public Property OpDaysWeek As Byte
-    Public Property OpDaysPeriod As Byte
-    Public Property SavedBy As String
-    Public Property Alert As Boolean
+    Public Property SubUnitNumber As Long
+    Public Property Description As String
+    Public Property Grouping As String
 
 End Class

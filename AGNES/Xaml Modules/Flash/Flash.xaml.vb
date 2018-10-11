@@ -1,7 +1,7 @@
 ﻿Imports System.ComponentModel
 
 Public Class Flash
-    'TODO:  PUSH FLASH/FORECAST UNLOCK FUNCTIONALITY TO DM FLASH STATUS UI, ALONG WITH ALERTS
+    'TODO:  PUSH FLASH/FORECAST UNLOCK FUNCTIONALITY TO DM FLASH STATUS UI, ALONG WITH ALERTS (AND SUPRESSION OF ALERTS)
     Dim SalesGroup As FlashGroup
     Dim CamGroup As FlashGroup
     Dim CafeSalesGroup As FlashGroup
@@ -46,6 +46,22 @@ Public Class Flash
         ConstructTemplate(FlashType, FlashUnit)
     End Sub
 
+    Public Sub ToggleAlert(onoff)
+        If onoff = 0 Then
+            With imgEscalate
+                .Tag = "On"
+                .Source = New BitmapImage(New Uri("/AGNES;component/Resources/HandWaveOn.png", UriKind.Relative))
+                .ToolTip = "Deactive alert to DM"
+            End With
+        Else
+            With imgEscalate
+                .Tag = "Off"
+                .Source = New BitmapImage(New Uri("/AGNES;component/Resources/HandWave.png", UriKind.Relative))
+                .ToolTip = "Call out Flash to DM"
+            End With
+        End If
+    End Sub
+
 #Region "Toolbar Controls"
     Private Sub SaveDraft(sender As Object, e As MouseButtonEventArgs) Handles imgDraft.MouseLeftButtonDown
         If SaveStatus > 0 Then Exit Sub
@@ -74,10 +90,29 @@ Public Class Flash
         SaveStatus = 3
     End Sub
 
+    Private Sub ToggleAlertButton(sender As Object, e As MouseButtonEventArgs) Handles imgEscalate.MouseLeftButtonDown
+        If imgEscalate.Tag = "On" Then
+            ToggleAlert(1)
+        Else
+            ToggleAlert(0)
+        End If
+        SaveStatus = 0
+    End Sub
+
+    Private Sub PrintFlash(sender As Object, e As MouseButtonEventArgs) Handles imgPrint.MouseLeftButtonDown
+        'TODO: BUILD PRINT FUNCTIONALITY
+        Dim ph As String = "Placeholder"
+    End Sub
+
+    Private Sub OpenDelegatesUI(sender As Object, e As MouseButtonEventArgs) Handles imgDelegates.MouseLeftButtonDown
+        'TODO: BUILD DELEGATE FUNCTIONALITY
+        Dim ph As String = "Placeholder"
+    End Sub
+
 #End Region
 
 #Region "Private Functions"
-    Private Sub ConstructTemplate(FT, FU)
+    Private Sub ConstructTemplate(FT As Byte, FU As Long)
         grdFlashGroups.Children.Clear()
         '// Add period, week, and unit chooser controls 
         Dim currmsp As Byte = GetCurrentPeriod(FormatDateTime(Now(), DateFormat.ShortDate))
@@ -91,15 +126,29 @@ Public Class Flash
                 Title = "WCC Weekly Financial Flash - Unit " & FU
                 Height = 369
                 AvailableUnits = New UnitGroup With {.UnitGroupName = "WCC"}
-                Dim FlashUnit As New UnitFlash With {.FlashType = "WCC", .UnitNumber = FU}
-                AvailableUnits.UnitsInGroup.Add(FlashUnit)
-                tlbUnits.Visibility = Visibility.Hidden
+
+                '// Add Unit and/or Subunits
+                Dim qsu = From su In AGNESShared.UnitsSubunits
+                          Where su.UnitNumber = FU
+                          Select su
+
+                If qsu.Count > 0 Then
+                    For Each su In qsu
+                        Dim subunit As New UnitFlash With {.FlashType = AvailableUnits.UnitGroupName, .UnitNumber = su.SubUnitNumber}
+                        AvailableUnits.UnitsInGroup.Add(subunit)
+                        tlbUnits.Visibility = Visibility.Visible
+                    Next
+                Else
+                    Dim FlashUnit As New UnitFlash With {.FlashType = AvailableUnits.UnitGroupName, .UnitNumber = FU}
+                    AvailableUnits.UnitsInGroup.Add(FlashUnit)
+                    tlbUnits.Visibility = Visibility.Hidden
+                    grdColumnLabels.Margin = New Thickness(0, 42, 0, 0)
+                    grdFlashGroups.Margin = New Thickness(0, 74, 0, 0)
+                End If
                 Units = New UnitChooser(AvailableUnits)
-                Units.AllowMultiSelect = True
+                If qsu.Count > 0 Then Units.AllowMultiSelect = True
 
-                grdColumnLabels.Margin = New Thickness(0, 42, 0, 0)
-                grdFlashGroups.Margin = New Thickness(0, 74, 0, 0)
-
+                '// Add flash-specific flashgroups (categories)
                 CamGroup = New FlashGroup(MSP, Wk, Units, "CAM Revenue", False, 0, True, False, True, True, False) ' Increments of 47 for flashgroup spacing 
                 CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", True, 47, False, False, True, False, True) With {.SalesFlashGroup = CamGroup}
                 LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", True, 94, True, False, True, False, True) With {.SalesFlashGroup = CamGroup}
@@ -117,15 +166,29 @@ Public Class Flash
                 Title = "Cafe Weekly Financial Flash - Unit " & FU
                 Height = 369
                 AvailableUnits = New UnitGroup With {.UnitGroupName = "Cafes"}
-                Dim FlashUnit As New UnitFlash With {.FlashType = "Cafes", .UnitNumber = FU}
-                AvailableUnits.UnitsInGroup.Add(FlashUnit)
-                tlbUnits.Visibility = Visibility.Hidden
+
+                '// Add Unit and/or Subunits
+                Dim qsu = From su In AGNESShared.UnitsSubunits
+                          Where su.UnitNumber = FU
+                          Select su
+
+                If qsu.Count > 0 Then
+                    For Each su In qsu
+                        Dim subunit As New UnitFlash With {.FlashType = AvailableUnits.UnitGroupName, .UnitNumber = su.SubUnitNumber}
+                        AvailableUnits.UnitsInGroup.Add(subunit)
+                        tlbUnits.Visibility = Visibility.Visible
+                    Next
+                Else
+                    Dim FlashUnit As New UnitFlash With {.FlashType = AvailableUnits.UnitGroupName, .UnitNumber = FU}
+                    AvailableUnits.UnitsInGroup.Add(FlashUnit)
+                    tlbUnits.Visibility = Visibility.Hidden
+                    grdColumnLabels.Margin = New Thickness(0, 42, 0, 0)
+                    grdFlashGroups.Margin = New Thickness(0, 74, 0, 0)
+                End If
                 Units = New UnitChooser(AvailableUnits)
-                Units.AllowMultiSelect = True
+                If qsu.Count > 0 Then Units.AllowMultiSelect = True
 
-                grdColumnLabels.Margin = New Thickness(0, 42, 0, 0)
-                grdFlashGroups.Margin = New Thickness(0, 74, 0, 0)
-
+                '// Add flash-specific flashgroups (categories)
                 SalesGroup = New FlashGroup(MSP, Wk, Units, "Sales", False, 0, True, False, True, True, False) ' Increments of 47 for flashgroup spacing
                 CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", True, 47, False, False, True, False, True) With {.SalesFlashGroup = SalesGroup}
                 LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", True, 94, True, False, True, False, True) With {.SalesFlashGroup = SalesGroup}
@@ -140,45 +203,36 @@ Public Class Flash
                 End With
 
             Case 3      ' A/V Flash
-                'TODO:  FIGURE OUT A BETTER WAY OF TYING THE OH UNITS TOGETHER VS. HARD CODING
                 Title = "A/V Weekly Financial Flash"
                 Height = 410
                 AvailableUnits = New UnitGroup With {.UnitGroupName = "AV"}
-                Dim AVUnit1 As New UnitFlash With {.FlashType = "AV", .UnitNumber = 30954}
-                AvailableUnits.UnitsInGroup.Add(AVUnit1)
-                Dim AVUnit2 As New UnitFlash With {.FlashType = "AV", .UnitNumber = 13797}
-                AvailableUnits.UnitsInGroup.Add(AVUnit2)
-                Dim AVUnit3 As New UnitFlash With {.FlashType = "AV", .UnitNumber = 13333}
-                AvailableUnits.UnitsInGroup.Add(AVUnit3)
-                Dim AVUnit4 As New UnitFlash With {.FlashType = "AV", .UnitNumber = 13331}
-                AvailableUnits.UnitsInGroup.Add(AVUnit4)
-                Dim AVUnit5 As New UnitFlash With {.FlashType = "AV", .UnitNumber = 13335}
-                AvailableUnits.UnitsInGroup.Add(AVUnit5)
-                Dim AVUnit6 As New UnitFlash With {.FlashType = "AV", .UnitNumber = 22443}
-                AvailableUnits.UnitsInGroup.Add(AVUnit6)
-                Dim AVUnit7 As New UnitFlash With {.FlashType = "AV", .UnitNumber = 23403}
-                AvailableUnits.UnitsInGroup.Add(AVUnit7)
-                Dim AVUnit8 As New UnitFlash With {.FlashType = "AV", .UnitNumber = 28503}
-                AvailableUnits.UnitsInGroup.Add(AVUnit8)
-                Dim AVUnit9 As New UnitFlash With {.FlashType = "AV", .UnitNumber = 32436}
-                AvailableUnits.UnitsInGroup.Add(AVUnit9)
-                Dim AVUnit10 As New UnitFlash With {.FlashType = "AV", .UnitNumber = 13332}
-                AvailableUnits.UnitsInGroup.Add(AVUnit10)
-                Dim AVUnit11 As New UnitFlash With {.FlashType = "AV", .UnitNumber = 30946}
-                AvailableUnits.UnitsInGroup.Add(AVUnit11)
-                Dim AVUnit12 As New UnitFlash With {.FlashType = "AV", .UnitNumber = 28505}
-                AvailableUnits.UnitsInGroup.Add(AVUnit12)
-                Dim AVUnit13 As New UnitFlash With {.FlashType = "AV", .UnitNumber = 13335}
-                AvailableUnits.UnitsInGroup.Add(AVUnit13)
 
-                tlbUnits.Visibility = Visibility.Visible
+                '// Add Unit and/or Subunits
+                Dim qsu = From su In AGNESShared.UnitsSubunits
+                          Where su.UnitNumber = FU
+                          Select su
+
+                If qsu.Count > 0 Then
+                    For Each su In qsu
+                        Dim subunit As New UnitFlash With {.FlashType = AvailableUnits.UnitGroupName, .UnitNumber = su.SubUnitNumber}
+                        AvailableUnits.UnitsInGroup.Add(subunit)
+                        tlbUnits.Visibility = Visibility.Visible
+                    Next
+                Else
+                    Dim FlashUnit As New UnitFlash With {.FlashType = AvailableUnits.UnitGroupName, .UnitNumber = FU}
+                    AvailableUnits.UnitsInGroup.Add(FlashUnit)
+                    tlbUnits.Visibility = Visibility.Hidden
+                    grdColumnLabels.Margin = New Thickness(0, 42, 0, 0)
+                    grdFlashGroups.Margin = New Thickness(0, 74, 0, 0)
+                End If
                 Units = New UnitChooser(AvailableUnits)
-                Units.AllowMultiSelect = True
+                If qsu.Count > 0 Then Units.AllowMultiSelect = True
 
-                SalesGroup = New FlashGroup(MSP, Wk, Units, "Sales", False, 0, True, False, True, False, True)
-                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", False, 47, False, False, True, False, True)
-                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", False, 94, True, False, True, False, True)
-                FeesGroup = New FlashGroup(MSP, Wk, Units, "Fees", False, 141, False, False, True, False, True)
+                '// Add flash-specific flashgroups (categories)
+                SalesGroup = New FlashGroup(MSP, Wk, Units, "Sales", False, 0, True, False, True, False, True) With {.SpreadByWeeks = True}
+                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", False, 47, False, False, True, False, True) With {.SpreadByWeeks = True}
+                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", False, 94, True, False, True, False, True) With {.SpreadByWeeks = True}
+                FeesGroup = New FlashGroup(MSP, Wk, Units, "Fees", False, 141, False, False, True, False, True) With {.SpreadByWeeks = True}
                 SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", False, 188, True, True, True, False, False, New List(Of FlashGroup) From {SalesGroup, LaborGroup, OpexGroup, FeesGroup})
                 With grdFlashGroups.Children
                     .Add(SalesGroup)
@@ -191,40 +245,30 @@ Public Class Flash
             Case 4      ' Field Site Flash
                 Title = "Field Site Weekly Financial Flash"
                 Height = 600
-
                 AvailableUnits = New UnitGroup With {.UnitGroupName = "Cafes"}
-                Dim FlashUnit As New UnitFlash With {.FlashType = "Cafes", .UnitNumber = FU}
-                AvailableUnits.UnitsInGroup.Add(FlashUnit)
-                'TODO:  FIGURE OUT A BETTER WAY OF TYING THE FIELD & CC/BEVERAGE UNITS TOGETHER VS. HARD CODING
-                Select Case FU
-                    Case 21716
-                        Dim BevUnit As New UnitFlash With {.FlashType = "Cafes", .UnitNumber = 13067}
-                        AvailableUnits.UnitsInGroup.Add(BevUnit)
-                    Case 2612
-                        Dim BevUnit As New UnitFlash With {.FlashType = "Cafes", .UnitNumber = 7150}
-                        AvailableUnits.UnitsInGroup.Add(BevUnit)
-                    Case 2618
-                        Dim BevUnit As New UnitFlash With {.FlashType = "Cafes", .UnitNumber = 8656}
-                        AvailableUnits.UnitsInGroup.Add(BevUnit)
-                    Case 32444
-                        Dim BevUnit As New UnitFlash With {.FlashType = "Cafes", .UnitNumber = 32445}
-                        AvailableUnits.UnitsInGroup.Add(BevUnit)
-                    Case 1808
-                        Dim BevUnit As New UnitFlash With {.FlashType = "Cafes", .UnitNumber = 1869}
-                        Dim CCUnit As New UnitFlash With {.FlashType = "Cafes", .UnitNumber = 3068}
-                        AvailableUnits.UnitsInGroup.Add(BevUnit)
-                        AvailableUnits.UnitsInGroup.Add(CCUnit)
-                    Case 25653
-                        Dim BevUnit As New UnitFlash With {.FlashType = "Cafes", .UnitNumber = 25655}
-                        Dim CCUnit As New UnitFlash With {.FlashType = "Cafes", .UnitNumber = 25657}
-                        AvailableUnits.UnitsInGroup.Add(BevUnit)
-                        AvailableUnits.UnitsInGroup.Add(CCUnit)
-                End Select
 
-                tlbUnits.Visibility = Visibility.Visible
+                '// Add Unit and/or Subunits
+                Dim qsu = From su In AGNESShared.UnitsSubunits
+                          Where su.UnitNumber = FU
+                          Select su
+
+                If qsu.Count > 0 Then
+                    For Each su In qsu
+                        Dim subunit As New UnitFlash With {.FlashType = AvailableUnits.UnitGroupName, .UnitNumber = su.SubUnitNumber}
+                        AvailableUnits.UnitsInGroup.Add(subunit)
+                        tlbUnits.Visibility = Visibility.Visible
+                    Next
+                Else
+                    Dim FlashUnit As New UnitFlash With {.FlashType = AvailableUnits.UnitGroupName, .UnitNumber = FU}
+                    AvailableUnits.UnitsInGroup.Add(FlashUnit)
+                    tlbUnits.Visibility = Visibility.Hidden
+                    grdColumnLabels.Margin = New Thickness(0, 42, 0, 0)
+                    grdFlashGroups.Margin = New Thickness(0, 74, 0, 0)
+                End If
                 Units = New UnitChooser(AvailableUnits)
-                Units.AllowMultiSelect = True
+                If qsu.Count > 0 Then Units.AllowMultiSelect = True
 
+                '// Add flash-specific flashgroups (categories)
                 CafeSalesGroup = New FlashGroup(MSP, Wk, Units, "Sales", False, 0, True, False, True, True, False)
                 CateringSalesGroup = New FlashGroup(MSP, Wk, Units, "Catering Sales", False, 47, False, False, True, True, False)
                 SalesTaxGroup = New FlashGroup(MSP, Wk, Units, "Sales Tax", False, 94, True, False, True, False, True)
@@ -249,36 +293,82 @@ Public Class Flash
 
 
             Case 5      ' Beverage Flash
-                'TODO:  FIGURE OUT A BETTER WAY OF TYING THE OH UNITS TOGETHER VS. HARD CODING
+                Title = "Beverage Weekly Financial Flash"
+                Height = 510
+                AvailableUnits = New UnitGroup With {.UnitGroupName = "BV"}
+
+                '// Add Unit and/or Subunits
+                Dim qsu = From su In AGNESShared.UnitsSubunits
+                          Where su.UnitNumber = FU
+                          Select su
+
+                If qsu.Count > 0 Then
+                    For Each su In qsu
+                        Dim subunit As New UnitFlash With {.FlashType = AvailableUnits.UnitGroupName, .UnitNumber = su.SubUnitNumber}
+                        AvailableUnits.UnitsInGroup.Add(subunit)
+                        tlbUnits.Visibility = Visibility.Visible
+                    Next
+                Else
+                    Dim FlashUnit As New UnitFlash With {.FlashType = AvailableUnits.UnitGroupName, .UnitNumber = FU}
+                    AvailableUnits.UnitsInGroup.Add(FlashUnit)
+                    tlbUnits.Visibility = Visibility.Hidden
+                    grdColumnLabels.Margin = New Thickness(0, 42, 0, 0)
+                    grdFlashGroups.Margin = New Thickness(0, 74, 0, 0)
+                End If
+                Units = New UnitChooser(AvailableUnits)
+                If qsu.Count > 0 Then Units.AllowMultiSelect = True
+
+                '// Add flash-specific flashgroups (categories)
+                SalesGroup = New FlashGroup(MSP, Wk, Units, "Sales", False, 0, True, False, True, True, False) With {.SpreadByWeeks = True}
+                SalesTaxGroup = New FlashGroup(MSP, Wk, Units, "Sales Tax", False, 47, False, False, True, True, False) With {.SpreadByWeeks = True}
+                CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", True, 94, False, False, True, False, True) With {.SalesFlashGroup = TotalSalesGroup, .SpreadByWeeks = True}
+                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", True, 141, True, False, True, False, True) With {.SalesFlashGroup = TotalSalesGroup, .SpreadByWeeks = True}
+                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", True, 188, False, False, True, False, True) With {.SalesFlashGroup = TotalSalesGroup, .SpreadByWeeks = True}
+                FeesGroup = New FlashGroup(MSP, Wk, Units, "Fees", True, 235, True, False, True, False, True) With {.SalesFlashGroup = TotalSalesGroup, .SpreadByWeeks = True}
+                SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", True, 282, True, True, True, False, False, New List(Of FlashGroup) From {SalesGroup, SalesTaxGroup, CogsGroup, LaborGroup, OpexGroup, FeesGroup}) With {.SalesFlashGroup = TotalSalesGroup}
+
+                With grdFlashGroups.Children
+                    .Add(SalesGroup)
+                    .Add(SalesTaxGroup)
+                    .Add(CogsGroup)
+                    .Add(LaborGroup)
+                    .Add(OpexGroup)
+                    .Add(FeesGroup)
+                    .Add(SubsidyGroup)
+                End With
+
             Case 6      ' Catering Flash
+
             Case 7      ' Overhead Flash
-                'TODO:  FIGURE OUT A BETTER WAY OF TYING THE OH UNITS TOGETHER VS. HARD CODING
                 Title = "Overhead Weekly Financial Flash"
                 Height = 369
                 AvailableUnits = New UnitGroup With {.UnitGroupName = "OH"}
-                Dim OHUnit1 As New UnitFlash With {.FlashType = "OH", .UnitNumber = 1852}
-                AvailableUnits.UnitsInGroup.Add(OHUnit1)
-                Dim OHUnit2 As New UnitFlash With {.FlashType = "OH", .UnitNumber = 2734}
-                AvailableUnits.UnitsInGroup.Add(OHUnit2)
-                Dim OHUnit3 As New UnitFlash With {.FlashType = "OH", .UnitNumber = 31878}
-                AvailableUnits.UnitsInGroup.Add(OHUnit3)
-                Dim OHUnit4 As New UnitFlash With {.FlashType = "OH", .UnitNumber = 4713}
-                AvailableUnits.UnitsInGroup.Add(OHUnit4)
-                Dim OHUnit5 As New UnitFlash With {.FlashType = "OH", .UnitNumber = 6038}
-                AvailableUnits.UnitsInGroup.Add(OHUnit5)
-                Dim OHUnit6 As New UnitFlash With {.FlashType = "OH", .UnitNumber = 11414}
-                AvailableUnits.UnitsInGroup.Add(OHUnit6)
-                Dim OHUnit7 As New UnitFlash With {.FlashType = "OH", .UnitNumber = 11681}
-                AvailableUnits.UnitsInGroup.Add(OHUnit7)
-                Dim OHUnit8 As New UnitFlash With {.FlashType = "OH", .UnitNumber = 11682}
-                AvailableUnits.UnitsInGroup.Add(OHUnit8)
-                tlbUnits.Visibility = Visibility.Visible
-                Units = New UnitChooser(AvailableUnits)
-                Units.AllowMultiSelect = True
 
-                CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", False, 0, False, False, True, False, True)
-                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", False, 47, True, False, True, False, True)
-                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", False, 94, False, False, True, False, True)
+                '// Add Unit and/or Subunits
+                Dim qsu = From su In AGNESShared.UnitsSubunits
+                          Where su.UnitNumber = FU
+                          Select su
+
+                If qsu.Count > 0 Then
+                    For Each su In qsu
+                        Dim subunit As New UnitFlash With {.FlashType = AvailableUnits.UnitGroupName, .UnitNumber = su.SubUnitNumber}
+                        AvailableUnits.UnitsInGroup.Add(subunit)
+                        tlbUnits.Visibility = Visibility.Visible
+                    Next
+                Else
+                    Dim FlashUnit As New UnitFlash With {.FlashType = AvailableUnits.UnitGroupName, .UnitNumber = FU}
+                    AvailableUnits.UnitsInGroup.Add(FlashUnit)
+                    tlbUnits.Visibility = Visibility.Hidden
+                    grdColumnLabels.Margin = New Thickness(0, 42, 0, 0)
+                    grdFlashGroups.Margin = New Thickness(0, 74, 0, 0)
+                End If
+                Units = New UnitChooser(AvailableUnits)
+                If qsu.Count > 0 Then Units.AllowMultiSelect = True
+
+                '// Add flash-specific flashgroups (categories)
+                CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", False, 0, False, False, True, False, True) With {.SpreadByWeeks = True}
+                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", False, 47, True, False, True, False, True) With {.SpreadByWeeks = True}
+                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", False, 94, False, False, True, False, True) With {.SpreadByWeeks = True}
                 SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", True, 141, True, True, True, False, False, New List(Of FlashGroup) From {CogsGroup, LaborGroup, OpexGroup})
                 With grdFlashGroups.Children
                     .Add(CogsGroup)
@@ -286,8 +376,6 @@ Public Class Flash
                     .Add(OpexGroup)
                     .Add(SubsidyGroup)
                 End With
-
-
         End Select
 
         For Each fg As FlashGroup In grdFlashGroups.Children

@@ -22,7 +22,7 @@
         FlashPage.SaveStatus = InitialLoadStatus
         FlashPage.ShowDialog()
 
-        '// Additional follow up modules, such as Sick/OT, etc., are invoked here
+        'TODO: ADDITIONAL FOLLOW UP MODULES/USER INPUTS, SUCH AS SICK/OT, ETC., ARE INVOKED HERE AFTER THE FLASH IS CLOSED
 
     End Sub
 End Module

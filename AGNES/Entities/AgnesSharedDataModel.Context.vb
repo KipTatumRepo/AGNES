@@ -30,5 +30,6 @@ Partial Public Class AGNESSharedDataEntity
     Public Overridable Property Users() As DbSet(Of User)
     Public Overridable Property FlashTypes() As DbSet(Of FlashType)
     Public Overridable Property FlashTypesUsers_Join() As DbSet(Of FlashTypesUsers_Join)
+    Public Overridable Property UnitsSubunits() As DbSet(Of UnitsSubunit)
 
 End Class

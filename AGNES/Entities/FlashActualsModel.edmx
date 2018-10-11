@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="FlashActualsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FlashActualsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Flashes">
           <Key>
             <PropertyRef Name="PID" />
@@ -22,12 +22,12 @@
           <Property Name="OpDaysWeek" Type="tinyint" Nullable="false" />
           <Property Name="OpDaysPeriod" Type="tinyint" Nullable="false" />
           <Property Name="SavedBy" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="Alert" Type="bit" Nullable="false" />
         </EntityType>
         <EntityContainer Name="FlashActualsModelStoreContainer">
           <EntitySet Name="Flashes" EntityType="Self.Flashes" Schema="agnes" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="FlashActualsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -48,6 +48,7 @@
           <Property Name="OpDaysWeek" Type="Byte" Nullable="false" />
           <Property Name="OpDaysPeriod" Type="Byte" Nullable="false" />
           <Property Name="SavedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Alert" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityContainer Name="FlashActualsEntity" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="FlashActualData" EntityType="FlashActualsModel.FlashActualData" />
@@ -61,6 +62,7 @@
           <EntitySetMapping Name="FlashActualData">
             <EntityTypeMapping TypeName="FlashActualsModel.FlashActualData">
               <MappingFragment StoreEntitySet="Flashes">
+                <ScalarProperty Name="Alert" ColumnName="Alert" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
                 <ScalarProperty Name="MSFY" ColumnName="MSFY" />
                 <ScalarProperty Name="MSP" ColumnName="MSP" />

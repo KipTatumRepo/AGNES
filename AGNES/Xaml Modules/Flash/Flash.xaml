@@ -14,11 +14,11 @@
             <Separator />
             <Image x:Name="imgSave" Source="/AGNES;component/Resources/save.png" ToolTip="Save Final" />
             <Separator />
-            <Image x:Name="imgPrint" Source="/AGNES;component/Resources/print.png" ToolTip="Print" />
+            <Image x:Name="imgPrint" Source="/AGNES;component/Resources/print.png" ToolTip="Print" IsEnabled="False" />
             <Separator />
             <Image x:Name="imgDelegates" Source="/AGNES;component/Resources/Delegates.png" ToolTip="Manage Delegates" />
             <Separator />
-            <Image x:Name="imgEscalate" Source="/AGNES;component/Resources/HandWave.png" ToolTip="Call out to DM"  />
+            <Image x:Name="imgEscalate" Source="/AGNES;component/Resources/HandWave.png" ToolTip="Call out Flash to DM"  />
             <Separator />
         </ToolBar>
         <ToolBar x:Name="tlbUnits" Height="41" VerticalAlignment="Top" UseLayoutRounding="False" Margin="0,38.896,0,0"/>
