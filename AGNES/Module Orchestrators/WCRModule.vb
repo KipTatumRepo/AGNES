@@ -1,10 +1,11 @@
 ﻿Module WCRModule
     Public WCR As New WCRObject
-    Public UserClosed As Boolean
     Public WCRE As WCREntities
+    Public UserClosed As Boolean
+
     Public Sub Runmodule()
-        WCRE = New WCREntities
         Dim WCRStartPage As New WCRHello
+        WCRE = New WCREntities
         WCRStartPage.ShowDialog()
         If UserClosed = True Then
             WCR = Nothing

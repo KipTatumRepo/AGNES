@@ -1,5 +1,7 @@
 ﻿Public Class RadialPortal
+
 #Region "Properties"
+
     Private _buttonrest As Byte
     Private _buttonhover As Byte
     Private _itemcount As Byte
@@ -24,6 +26,7 @@
     Public Sub New()
         InitializeComponent()
         GetUserInfo()
+        BaseModule.Runmodule()
         ConstructRadialMenu()
     End Sub
 
@@ -201,6 +204,8 @@
                 BGCRMModule.Runmodule()
             Case "Flash"
                 FlashModule.Runmodule()
+            Case "Admin"
+                AdminModule.Runmodule()
         End Select
         Show()
     End Sub
