@@ -186,6 +186,8 @@
             Case 6  ' Catering
             Case 7  ' Overhead
                 us = 1852
+            Case 8  ' Eventions
+                us = 9890
         End Select
         Return (fs, us)
     End Function
