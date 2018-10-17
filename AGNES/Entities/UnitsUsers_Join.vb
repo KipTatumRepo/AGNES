@@ -14,5 +14,7 @@ Partial Public Class UnitsUsers_Join
     Public Property PID As Long
     Public Property UnitNumber As Long
     Public Property UserId As Long
+    Public Property [Delegate] As Boolean
+    Public Property DelegateAddedBy As Nullable(Of Long)
 
 End Class

@@ -69,6 +69,8 @@
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UnitNumber" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="bigint" Nullable="false" />
+          <Property Name="Delegate" Type="bit" Nullable="false" />
+          <Property Name="DelegateAddedBy" Type="bigint" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -138,6 +140,8 @@
           <Property Name="PID" Type="Int64" Nullable="false" />
           <Property Name="UnitNumber" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="Delegate" Type="Boolean" Nullable="false" />
+          <Property Name="DelegateAddedBy" Type="Int64" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -234,6 +238,8 @@
           <EntitySetMapping Name="UnitsUsers_Join">
             <EntityTypeMapping TypeName="AGNESSharedDataModel.UnitsUsers_Join">
               <MappingFragment StoreEntitySet="UnitsUsers_Join">
+                <ScalarProperty Name="DelegateAddedBy" ColumnName="DelegateAddedBy" />
+                <ScalarProperty Name="Delegate" ColumnName="Delegate" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
                 <ScalarProperty Name="UnitNumber" ColumnName="UnitNumber" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
