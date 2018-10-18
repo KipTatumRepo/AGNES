@@ -1,0 +1,45 @@
+﻿<Window x:Class="Flash"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AGNES"
+        mc:Ignorable="d"
+        Title="Weekly Financial Flash" Height="561" Width="990" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
+    <Window.Effect>
+        <DropShadowEffect Opacity="0.5"/>
+    </Window.Effect>
+
+    <Grid x:Name="grdMain">
+
+        <ToolBar x:Name="tlbFlash" Height="41" VerticalAlignment="Top" UseLayoutRounding="False">
+            <Image x:Name="imgDraft" Source="/AGNES;component/Resources/draft.png" ToolTip="Save Draft" />
+            <Separator />
+            <Image x:Name="imgSave" Source="/AGNES;component/Resources/save.png" ToolTip="Save Final" />
+            <Separator />
+            <Image x:Name="imgPrint" Source="/AGNES;component/Resources/print.png" ToolTip="Print" IsEnabled="False" />
+            <Separator />
+            <Image x:Name="imgDelegates" Source="/AGNES;component/Resources/Delegates.png" ToolTip="Manage Delegates" />
+            <Separator />
+            <Image x:Name="imgEscalate" Source="/AGNES;component/Resources/HandWave.png" ToolTip="Call out Flash to DM"  />
+            <Separator />
+        </ToolBar>
+        <ToolBar x:Name="tlbUnits" Height="41" VerticalAlignment="Top" UseLayoutRounding="False" Margin="0,38.896,0,0"/>
+        <Grid x:Name="grdColumnLabels" Margin="0,87,0,0" Height="27" VerticalAlignment="Top">
+            <TextBlock HorizontalAlignment = "Left" Margin="100,0,0,0" TextWrapping="Wrap" Text="Flash" VerticalAlignment="Top" Width="124" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
+            <TextBlock Margin="265,87,0,0" TextWrapping="Wrap" Text="%" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Percentage against flashed revenue" HorizontalAlignment="Left" Width="34" Height="24" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment = "Left" Margin="314,0,0,0" TextWrapping="Wrap" Text="Budget" VerticalAlignment="Top" Width="124" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Budget amount"/>
+            <TextBlock HorizontalAlignment = "Left" Margin="443,0,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Width="34" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Percentage against budgeted revenue"/>
+            <TextBlock HorizontalAlignment = "Left" Margin="488,0,0,0" TextWrapping="Wrap" Text="Variance to Budget" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Variance of flash to budget"/>
+            <TextBlock x:Name = "lblForecast" HorizontalAlignment="Left" Margin="631,0,0,0" TextWrapping="Wrap" Text="Forecast" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Forecast amount" />
+            <TextBlock x:Name = "lblForecastPercentage" HorizontalAlignment="Left" Margin="771,0,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Width="34" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Percentage against forecasted revenue"/>
+            <TextBlock x:Name = "lblForecastVariance" HorizontalAlignment="Left" Margin="817,0,0,0" TextWrapping="Wrap" Text="Variance to Forecast" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Variance of flash to forecast"/>
+        </Grid>
+
+        <Grid x:Name="grdFlashGroups" Margin="0,114,0,24"/>
+        <StatusBar x:Name="barSaveStatus" Height="24" VerticalAlignment="Bottom" Background="#FF19F30E">
+            <TextBlock x:Name="tbSaveStatus" Text="Saved" Width="972" TextAlignment="Center" FontWeight="SemiBold" />
+        </StatusBar>
+    </Grid>
+
+</Window>

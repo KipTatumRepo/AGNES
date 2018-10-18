@@ -13,6 +13,7 @@
         VeryLarge   '24pt font
     End Enum
     Private _flare As Boolean
+
     Public Property Flare As Boolean
         Get
             Return _flare
@@ -90,6 +91,5 @@
             .Add(mytxt)
         End With
     End Sub
-
 
 End Class

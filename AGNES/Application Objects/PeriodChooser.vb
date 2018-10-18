@@ -1,12 +1,18 @@
-﻿Public Class PeriodChooser
+﻿Imports System.ComponentModel
+
+Public Class PeriodChooser
     Inherits DockPanel
+    Implements INotifyPropertyChanged
     Private _currentperiod As Byte
     Private Week As WeekChooser
+    Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
+    Public Property HeldPeriod As Byte
     Public Property CurrentPeriod As Byte
         Get
             Return _currentperiod
         End Get
         Set(value As Byte)
+            HeldPeriod = _currentperiod
             _currentperiod = value
             For Each b As Border In Children
                 If b.Tag <> "Label" Then
@@ -22,13 +28,15 @@
                     End If
                 End If
             Next
+            RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(“Period”))
         End Set
     End Property
     Public Property MinPeriod As Byte
     Public Property MaxPeriod As Byte
-
+    Public SelectAllEnabled As Boolean
     Public RelatedWeekObject As Object
-    Public Sub New(ByRef DataObject As Object, ByRef RelatedWeekObject As WeekChooser, MinP As Byte, MaxP As Byte, CurP As Byte)
+    Public Property SelectedCount As Byte
+    Public Sub New(ByRef RelatedWeekObject As WeekChooser, MinP As Byte, MaxP As Byte, CurP As Byte)
         Dim ct As Byte
         Week = RelatedWeekObject
         MinPeriod = MinP
@@ -65,7 +73,7 @@
             Dim brd As Border = sender
             tb = brd.Child
         End If
-        tb.FontSize = 24
+        tb.FontSize = 30
     End Sub
 
     Private Sub LeavePeriod(sender As Object, e As MouseEventArgs)
@@ -76,7 +84,11 @@
             Dim brd As Border = sender
             tb = brd.Child
         End If
-        If FormatNumber(tb.Tag, 0) <> CurrentPeriod Then tb.FontSize = 16
+        If FormatNumber(tb.Tag, 0) <> CurrentPeriod Then
+            tb.FontSize = 16
+        Else
+            tb.FontSize = 24
+        End If
     End Sub
 
     Private Sub ChoosePeriod(sender As Object, e As MouseEventArgs)
@@ -87,12 +99,19 @@
             Dim brd As Border = sender
             tb = brd.Child
         End If
-        If FormatNumber(tb.Tag, 0) <> CurrentPeriod Then
+        If (FormatNumber(tb.Tag, 0) <> CurrentPeriod Or SelectAllEnabled = False) Then
             CurrentPeriod = FormatNumber(tb.Tag, 0)
         Else
             If CurrentPeriod <> 0 Then Reset()
         End If
-        Week.CurrentWeek = 1
+        If CurrentPeriod < MaxPeriod Then
+            Week.MaxWeek = GetMaxWeeks(CurrentPeriod)
+            Week.CurrentWeek = 1
+        Else
+            Week.MaxWeek = GetCurrentWeek(FormatDateTime(Now(), DateFormat.ShortDate))
+            Week.CurrentWeek = GetCurrentWeek(FormatDateTime(Now(), DateFormat.ShortDate))
+        End If
+        Week.EnableWeeks()
     End Sub
 
     Public Sub Reset()
@@ -102,7 +121,7 @@
             If brd.Tag <> "Label" Then
                 tb.Foreground = Brushes.Black
                 tb.FontSize = 16
-                tb.FontWeight = FontWeights.Normal
+                tb.FontWeight = FontWeights.SemiBold
             End If
         Next
     End Sub
