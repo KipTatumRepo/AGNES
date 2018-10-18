@@ -1,5 +1,7 @@
 ﻿Public Class RadialPortal
+
 #Region "Properties"
+
     Private _buttonrest As Byte
     Private _buttonhover As Byte
     Private _itemcount As Byte
@@ -24,6 +26,7 @@
     Public Sub New()
         InitializeComponent()
         GetUserInfo()
+        BaseModule.Runmodule()
         ConstructRadialMenu()
     End Sub
 
@@ -59,7 +62,18 @@
                     .UserLevel = c.AccessLevelId
                 End With
             Next
+
+            '// IMPERSONATION - Change to whichever userID and Access Level needed to test
+            'With My.Settings
+            '    .UserName = "Miguel Avila"
+            '    .UserShortName = "Miguel"
+            '    .UserID = 10087
+            '    .UserLevel = 4
+            'End With
+            '// IMPERSONATION
+
         End If
+
     End Sub
 
     Private Sub ConstructRadialMenu()
@@ -73,10 +87,7 @@
 
         Dim ct As Integer, UID As Integer = My.Settings.UserID, ULVL As Byte = My.Settings.UserLevel, Modules() As Long = Nothing
 
-        '// IMPERSONATION - Change to whichever userID and Access Level needed to test
-        'ULVL = 4
-        'UID = 81
-        '// IMPERSONATION
+
 
         Dim ef As New AGNESSharedDataEntity
         Select Case ULVL
@@ -201,6 +212,8 @@
                 BGCRMModule.Runmodule()
             Case "Flash"
                 FlashModule.Runmodule()
+            Case "Admin"
+                AdminModule.Runmodule()
         End Select
         Show()
     End Sub

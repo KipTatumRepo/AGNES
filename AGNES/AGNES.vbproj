@@ -345,11 +345,16 @@
     <Compile Include="Flash Objects\SharedFunctions.vb" />
     <Compile Include="Flash Objects\UnitFlash.vb" />
     <Compile Include="Flash Objects\UnitGroup.vb" />
+    <Compile Include="Module Orchestrators\AdminModule.vb" />
+    <Compile Include="Module Orchestrators\BaseModule.vb" />
     <Compile Include="Module Orchestrators\FlashModule.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="XAML Components\Admin\Admin.xaml.vb">
+      <DependentUpon>Admin.xaml</DependentUpon>
     </Compile>
     <Compile Include="XAML Components\Business Group CRM\BGCRM.xaml.vb">
       <DependentUpon>BGCRM.xaml</DependentUpon>
@@ -429,6 +434,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Application Objects\FlashForecastChooser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XAML Components\Admin\Admin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -67,9 +67,9 @@
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UnitNumber" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UnitNumber" Type="bigint" Nullable="false" />
           <Property Name="UserId" Type="bigint" Nullable="false" />
-          <Property Name="Delegate" Type="bit" Nullable="false" />
+          <Property Name="Delegate" Type="bit" />
           <Property Name="DelegateAddedBy" Type="bigint" />
         </EntityType>
         <EntityType Name="Users">
@@ -133,16 +133,6 @@
           <Property Name="ModuleId" Type="Int64" Nullable="false" />
           <Property Name="UserId" Type="Int64" Nullable="false" />
         </EntityType>
-        <EntityType Name="UnitsUsers_Join">
-          <Key>
-            <PropertyRef Name="PID" />
-          </Key>
-          <Property Name="PID" Type="Int64" Nullable="false" />
-          <Property Name="UnitNumber" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int64" Nullable="false" />
-          <Property Name="Delegate" Type="Boolean" Nullable="false" />
-          <Property Name="DelegateAddedBy" Type="Int64" />
-        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="PID" />
@@ -162,11 +152,11 @@
           <EntitySet Name="ModuleGroups" EntityType="Self.ModuleGroup" />
           <EntitySet Name="Modules" EntityType="Self.Module" />
           <EntitySet Name="ModulesUsers_Join" EntityType="Self.ModulesUsers_Join" />
-          <EntitySet Name="UnitsUsers_Join" EntityType="Self.UnitsUsers_Join" />
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="FlashTypes" EntityType="AGNESSharedDataModel.FlashType" />
           <EntitySet Name="FlashTypesUsers_Join" EntityType="AGNESSharedDataModel.FlashTypesUsers_Join" />
           <EntitySet Name="UnitsSubunits" EntityType="AGNESSharedDataModel.UnitsSubunit" />
+          <EntitySet Name="UnitsUsers_Join" EntityType="AGNESSharedDataModel.UnitsUsers_Join" />
         </EntityContainer>
         <EntityType Name="FlashType">
           <Key>
@@ -192,6 +182,16 @@
           <Property Name="SubUnitNumber" Type="Int64" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Grouping" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="UnitsUsers_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UnitNumber" Type="Int64" Nullable="false" />
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="Delegate" Type="Boolean" />
+          <Property Name="DelegateAddedBy" Type="Int64" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -235,17 +235,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UnitsUsers_Join">
-            <EntityTypeMapping TypeName="AGNESSharedDataModel.UnitsUsers_Join">
-              <MappingFragment StoreEntitySet="UnitsUsers_Join">
-                <ScalarProperty Name="DelegateAddedBy" ColumnName="DelegateAddedBy" />
-                <ScalarProperty Name="Delegate" ColumnName="Delegate" />
-                <ScalarProperty Name="PID" ColumnName="PID" />
-                <ScalarProperty Name="UnitNumber" ColumnName="UnitNumber" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="AGNESSharedDataModel.User">
               <MappingFragment StoreEntitySet="Users">
@@ -284,6 +273,17 @@
                 <ScalarProperty Name="Grouping" ColumnName="Grouping" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="SubUnitNumber" ColumnName="SubUnitNumber" />
+                <ScalarProperty Name="UnitNumber" ColumnName="UnitNumber" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UnitsUsers_Join">
+            <EntityTypeMapping TypeName="AGNESSharedDataModel.UnitsUsers_Join">
+              <MappingFragment StoreEntitySet="UnitsUsers_Join">
+                <ScalarProperty Name="DelegateAddedBy" ColumnName="DelegateAddedBy" />
+                <ScalarProperty Name="Delegate" ColumnName="Delegate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="UnitNumber" ColumnName="UnitNumber" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
               </MappingFragment>
