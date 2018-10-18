@@ -64,7 +64,6 @@
             Next
 
             '// IMPERSONATION - Change to whichever userID and Access Level needed to test
-            '// Test change
             'With My.Settings
             '    .UserName = "Miguel Avila"
             '    .UserShortName = "Miguel"
