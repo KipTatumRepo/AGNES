@@ -11,4 +11,13 @@
         FlashBudgets = New BudgetEntity
         FlashForecasts = New ForecastEntity
     End Sub
+    Public Function TruncateAlias(UserAlias As String) As String
+        Dim ReturnAlias As String = UserAlias
+        Try
+            ReturnAlias = UserAlias.Remove(UserAlias.IndexOf("@microsoft.com"))
+        Catch ex As Exception
+            '// No domain attached
+        End Try
+        Return ReturnAlias
+    End Function
 End Module
