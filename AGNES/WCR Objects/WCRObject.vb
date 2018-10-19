@@ -619,19 +619,19 @@ Public Class WCRObject
         For Each cc As CamCheck In CamChecks
             Select Case cc.DayofWeek
                 Case 1  'Friday
-                    FriCam = cc.CheckAmt
+                    FriCam += cc.CheckAmt
                     CamCheckTotal += cc.CheckAmt
                 Case 4  'Monday
-                    MonCam = cc.CheckAmt
+                    MonCam += cc.CheckAmt
                     CamCheckTotal += cc.CheckAmt
                 Case 5  'Tuesday
-                    TueCam = cc.CheckAmt
+                    TueCam += cc.CheckAmt
                     CamCheckTotal += cc.CheckAmt
                 Case 6  'Wednesday
-                    WedCam = cc.CheckAmt
+                    WedCam += cc.CheckAmt
                     CamCheckTotal += cc.CheckAmt
                 Case 7  'Thursday
-                    ThuCam = cc.CheckAmt
+                    ThuCam += cc.CheckAmt
                     CamCheckTotal += cc.CheckAmt
             End Select
         Next
