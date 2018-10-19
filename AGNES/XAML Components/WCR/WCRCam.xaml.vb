@@ -1,5 +1,5 @@
 ﻿Imports System.Windows.Threading
-
+'TODO: ADD RELOAD OF CAM CHECKS AND VALIDATION AGAINST SAVING ONES THAT ALREADY EXIST
 Public Class WCRCam
     Dim dt As DispatcherTimer = New DispatcherTimer()
     Dim dt2 As DispatcherTimer = New DispatcherTimer()
