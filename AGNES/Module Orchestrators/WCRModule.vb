@@ -2,7 +2,7 @@
     Public WCR As New WCRObject
     Public WCRE As WCREntities
     Public UserClosed As Boolean
-
+    'TODO: ADD VALIDATION TO PREVENT DUPLICATE CAM CHECKS FROM BEING ENTERED
     Public Sub Runmodule()
         Dim WCRStartPage As New WCRHello
         WCRE = New WCREntities
