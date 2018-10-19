@@ -11,20 +11,17 @@ Imports System
 Imports System.Data.Entity
 Imports System.Data.Entity.Infrastructure
 
-Partial Public Class BIEntities
+Partial Public Class TrainingEntities
     Inherits DbContext
 
     Public Sub New()
-        MyBase.New("name=BIEntities")
+        MyBase.New("name=TrainingEntities")
     End Sub
 
     Protected Overrides Sub OnModelCreating(modelBuilder As DbModelBuilder)
         Throw New UnintentionalCodeFirstException()
     End Sub
 
-    Public Overridable Property MasterBuildingLists() As DbSet(Of MasterBuildingList)
-    Public Overridable Property Dates() As DbSet(Of Dates)
-    Public Overridable Property LOCATIONS() As DbSet(Of LOCATION)
-    Public Overridable Property EmployeeLists() As DbSet(Of EmployeeList)
+    Public Overridable Property TrainingTypes() As DbSet(Of TrainingType)
 
 End Class

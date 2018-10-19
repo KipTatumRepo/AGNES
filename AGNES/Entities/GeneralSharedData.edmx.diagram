@@ -5,9 +5,10 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="35aa7c12bed2409b89c8d43f4f2acbde" Name="Diagram1">
-        <EntityTypeShape EntityType="BIModel.MasterBuildingList" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="BIModel.Dates" Width="1.5" PointX="3.375" PointY="0.75" />
-        <EntityTypeShape EntityType="BIModel.LOCATION" Width="1.5" PointX="6.125" PointY="0.75" />
+        <EntityTypeShape EntityType="BIModel.MasterBuildingList" Width="1.5" PointX="0.5" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BIModel.Dates" Width="1.5" PointX="2.125" PointY="0.5" />
+        <EntityTypeShape EntityType="BIModel.LOCATION" Width="1.5" PointX="3.75" PointY="0.5" />
+        <EntityTypeShape EntityType="BIModel.EmployeeList" Width="1.5" PointX="5.375" PointY="0.5" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
