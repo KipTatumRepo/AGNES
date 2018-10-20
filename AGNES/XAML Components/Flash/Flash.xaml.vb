@@ -28,15 +28,19 @@ Public Class Flash
                 Case 0      '   Unsaved
                     tbSaveStatus.Text = "Changes not saved"
                     barSaveStatus.Background = Brushes.Red
+                    imgEscalate.IsEnabled = True
                 Case 1      '   Draft
                     tbSaveStatus.Text = "Draft saved"
                     barSaveStatus.Background = Brushes.Yellow
+                    imgEscalate.IsEnabled = True
                 Case 2      '   Saved
                     tbSaveStatus.Text = "Flash saved"
                     barSaveStatus.Background = Brushes.LightGreen
+                    imgEscalate.IsEnabled = True
                 Case 3      '   Final
                     tbSaveStatus.Text = "Flash Locked"
                     barSaveStatus.Background = Brushes.LightGreen
+                    imgEscalate.IsEnabled = False
             End Select
         End Set
     End Property
