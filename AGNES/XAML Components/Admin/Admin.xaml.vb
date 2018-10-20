@@ -1,8 +1,13 @@
 ﻿Imports System.ComponentModel
 Imports System.Linq
 Public Class Admin
+
+#Region "Properties"
     Private RecordExists As Boolean
     Private UserId As Long
+#End Region
+
+#Region "Constructor"
     Public Sub New()
         InitializeComponent()
         LoadAccessLevels()
@@ -12,6 +17,9 @@ Public Class Admin
         LoadUsers()
     End Sub
 
+#End Region
+
+#Region "Private Methods"
     Private Sub LoadAccessLevels()
         Dim qal = From ual In AGNESShared.AccessLevels
                   Select ual
@@ -314,5 +322,7 @@ Public Class Admin
         Next
         AGNESShared.SaveChanges()
     End Sub
+
+#End Region
 
 End Class

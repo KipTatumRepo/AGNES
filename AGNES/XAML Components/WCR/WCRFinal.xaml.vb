@@ -1,13 +1,21 @@
 ﻿Public Class WCRFinal
+
+#Region "Properties"
     Dim HoverDrop As Effects.DropShadowEffect, LeaveDrop As Effects.DropShadowEffect
     Public Property InBalance As Boolean
     Public Property CancelDueToBalanceIssue As Boolean
+#End Region
+
+#Region "Constructor"
     Public Sub New()
         InitializeComponent()
         tbFinal.Text = "Okay, we're almost done!  Let's print invoices next - click the button when you're ready."
         HoverDrop = New Effects.DropShadowEffect With {.Color = Color.FromRgb(235, 235, 235), .Direction = 200, .Opacity = 100, .ShadowDepth = 6, .BlurRadius = 2, .RenderingBias = Effects.RenderingBias.Performance}
         LeaveDrop = New Effects.DropShadowEffect With {.Color = Color.FromRgb(235, 235, 235), .Direction = 200, .Opacity = 100, .ShadowDepth = 4, .BlurRadius = 2, .RenderingBias = Effects.RenderingBias.Performance}
     End Sub
+#End Region
+
+#Region "Private Methods"
 
     Private Sub PrintInvoices_Click(sender As Object, e As MouseButtonEventArgs) Handles tbPrintInvoices.MouseDown
         WCRModule.WCR.PrintInvoices()
@@ -77,5 +85,7 @@
         End If
         Close()
     End Sub
+
+#End Region
 
 End Class
