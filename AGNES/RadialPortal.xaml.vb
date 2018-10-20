@@ -214,6 +214,8 @@
                 FlashModule.Runmodule()
             Case "Admin"
                 AdminModule.Runmodule()
+            Case "Training"
+                TrainingModule.RunModule()
         End Select
         Show()
     End Sub
