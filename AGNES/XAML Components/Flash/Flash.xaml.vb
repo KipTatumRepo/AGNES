@@ -2,6 +2,7 @@
 
 Public Class Flash
     'TODO:  PUSH FLASH/FORECAST UNLOCK FUNCTIONALITY TO DM FLASH STATUS UI, ALONG WITH ALERTS (AND SUPRESSION OF ALERTS)
+#Region "Properties"
     Dim SalesGroup As FlashGroup
     Dim CamGroup As FlashGroup
     Dim CafeSalesGroup As FlashGroup
@@ -45,28 +46,18 @@ Public Class Flash
         End Set
     End Property
 
+#End Region
+
+#Region "Constructor"
+
     Public Sub New(FlashType, FlashUnit)
         InitializeComponent()
         ConstructTemplate(FlashType, FlashUnit)
     End Sub
 
-    Public Sub ToggleAlert(onoff)
-        If onoff = 0 Then
-            With imgEscalate
-                .Tag = "On"
-                .Source = New BitmapImage(New Uri("/AGNES;component/Resources/HandWaveOn.png", UriKind.Relative))
-                .ToolTip = "Deactive alert to DM"
-            End With
-        Else
-            With imgEscalate
-                .Tag = "Off"
-                .Source = New BitmapImage(New Uri("/AGNES;component/Resources/HandWave.png", UriKind.Relative))
-                .ToolTip = "Call out Flash to DM"
-            End With
-        End If
-    End Sub
+#End Region
 
-#Region "Toolbar Controls"
+#Region "Toolbar Methods"
     Private Sub SaveDraft(sender As Object, e As MouseButtonEventArgs) Handles imgDraft.MouseLeftButtonDown
         If SaveStatus > 0 Then Exit Sub
 
@@ -79,6 +70,15 @@ Public Class Flash
             End If
         Next
         SaveStatus = 1
+    End Sub
+
+    Private Sub ToggleAlertButton(sender As Object, e As MouseButtonEventArgs) Handles imgEscalate.MouseLeftButtonDown
+        If imgEscalate.Tag = "On" Then
+            ToggleAlert(1)
+        Else
+            ToggleAlert(0)
+        End If
+        SaveStatus = 0
     End Sub
 
     Private Sub SaveFinal(sender As Object, e As MouseButtonEventArgs) Handles imgSave.MouseLeftButtonDown
@@ -94,28 +94,35 @@ Public Class Flash
         SaveStatus = 3
     End Sub
 
-    Private Sub ToggleAlertButton(sender As Object, e As MouseButtonEventArgs) Handles imgEscalate.MouseLeftButtonDown
-        If imgEscalate.Tag = "On" Then
-            ToggleAlert(1)
-        Else
-            ToggleAlert(0)
-        End If
-        SaveStatus = 0
-    End Sub
-
     Private Sub PrintFlash(sender As Object, e As MouseButtonEventArgs) Handles imgPrint.MouseLeftButtonDown
-        'TODO: BUILD PRINT FUNCTIONALITY
-        Dim ph As String = "Placeholder"
+        PrintAnyObject(grdMain, "Flash")
     End Sub
 
     Private Sub OpenDelegatesUI(sender As Object, e As MouseButtonEventArgs) Handles imgDelegates.MouseLeftButtonDown
         'TODO: BUILD DELEGATE FUNCTIONALITY
-        Dim ph As String = "Placeholder"
     End Sub
 
 #End Region
 
-#Region "Private Functions"
+#Region "Public Methods"
+    Public Sub ToggleAlert(onoff)
+        If onoff = 0 Then
+            With imgEscalate
+                .Tag = "On"
+                .Source = New BitmapImage(New Uri("/AGNES;component/Resources/HandWaveOn.png", UriKind.Relative))
+                .ToolTip = "Deactive alert to DM"
+            End With
+        Else
+            With imgEscalate
+                .Tag = "Off"
+                .Source = New BitmapImage(New Uri("/AGNES;component/Resources/HandWave.png", UriKind.Relative))
+                .ToolTip = "Call out Flash to DM"
+            End With
+        End If
+    End Sub
+#End Region
+
+#Region "Private Methods"
     Private Sub ConstructTemplate(FT As Byte, FU As Long)
         grdFlashGroups.Children.Clear()
         '// Add period, week, and unit chooser controls 
