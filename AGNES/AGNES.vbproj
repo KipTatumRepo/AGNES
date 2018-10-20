@@ -25,7 +25,7 @@
     <ProductName>AGNES</ProductName>
     <PublisherName>Compass Business Intelligence</PublisherName>
     <SuiteName>Compass Business Intelligence Application Suite</SuiteName>
-    <ApplicationRevision>22</ApplicationRevision>
+    <ApplicationRevision>23</ApplicationRevision>
     <ApplicationVersion>1.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -182,6 +182,9 @@
     <Compile Include="Entities\Dates.vb">
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\EmployeeList.vb">
+      <DependentUpon>GeneralSharedData.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Events.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
@@ -332,6 +335,24 @@
     <Compile Include="Entities\Tenders.vb">
       <DependentUpon>WCRModule.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\TrainingModel.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrainingModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TrainingModel.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrainingModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TrainingModel.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrainingModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TrainingType.vb">
+      <DependentUpon>TrainingModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\UnitsSubunit.vb">
       <DependentUpon>AgnesSharedDataModel.tt</DependentUpon>
     </Compile>
@@ -348,10 +369,14 @@
     <Compile Include="Module Orchestrators\AdminModule.vb" />
     <Compile Include="Module Orchestrators\BaseModule.vb" />
     <Compile Include="Module Orchestrators\FlashModule.vb" />
+    <Compile Include="Module Orchestrators\TrainingModule.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Training Objects\AssocSearch.xaml.vb">
+      <DependentUpon>AssocSearch.xaml</DependentUpon>
     </Compile>
     <Compile Include="XAML Components\Admin\Admin.xaml.vb">
       <DependentUpon>Admin.xaml</DependentUpon>
@@ -419,6 +444,9 @@
     <Compile Include="XAML Components\HR Audit\HRAudit.xaml.vb">
       <DependentUpon>HRAudit.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XAML Components\Training\Training.xaml.vb">
+      <DependentUpon>Training.xaml</DependentUpon>
+    </Compile>
     <Compile Include="XAML Components\WCR\WCRCam.xaml.vb">
       <DependentUpon>WCRCam.xaml</DependentUpon>
     </Compile>
@@ -434,6 +462,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Application Objects\FlashForecastChooser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Training Objects\AssocSearch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -462,6 +494,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="XAML Components\HR Audit\HRAudit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XAML Components\Training\Training.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -562,6 +598,13 @@
     </None>
     <None Include="Entities\GeneralSharedData.edmx.diagram">
       <DependentUpon>GeneralSharedData.edmx</DependentUpon>
+    </None>
+    <EntityDeploy Include="Entities\TrainingModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>TrainingModel.Designer.vb</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Entities\TrainingModel.edmx.diagram">
+      <DependentUpon>TrainingModel.edmx</DependentUpon>
     </None>
     <None Include="Entities\WCRModule.edmx.diagram">
       <DependentUpon>WCRModule.edmx</DependentUpon>
@@ -702,6 +745,16 @@
       <DependentUpon>GeneralSharedData.edmx</DependentUpon>
       <LastGenOutput>GeneralSharedData.vb</LastGenOutput>
     </Content>
+    <Content Include="Entities\TrainingModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TrainingModel.edmx</DependentUpon>
+      <LastGenOutput>TrainingModel.Context.vb</LastGenOutput>
+    </Content>
+    <Content Include="Entities\TrainingModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TrainingModel.edmx</DependentUpon>
+      <LastGenOutput>TrainingModel.vb</LastGenOutput>
+    </Content>
     <Content Include="Entities\WCRModule.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>WCRModule.edmx</DependentUpon>
@@ -712,6 +765,8 @@
       <DependentUpon>WCRModule.edmx</DependentUpon>
       <LastGenOutput>WCRModule.vb</LastGenOutput>
     </Content>
+    <Resource Include="Resources\magglass.png" />
+    <Resource Include="Resources\Training.png" />
     <Resource Include="Resources\HandWaveOn.png" />
     <Resource Include="Resources\print.png" />
     <Resource Include="Resources\PTD.png" />

@@ -60,10 +60,47 @@
           <Property Name="Lat" Type="decimal" Precision="12" Scale="6" />
           <Property Name="Long" Type="decimal" Precision="12" Scale="6" />
         </EntityType>
+        <EntityType Name="EmployeeList">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PersonnelArea" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="PSubArea" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="PersonnelSubArea" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="RegionName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="DistrictManager" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="CostCenterNumber" Type="bigint" Nullable="false" />
+          <Property Name="CostCenter" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="PersNumber" Type="bigint" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="MiddleName" Type="varchar" MaxLength="128" />
+          <Property Name="FirstName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="NickName" Type="varchar" MaxLength="128" />
+          <Property Name="EmployeeSubGroup" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="Job" Type="bigint" Nullable="false" />
+          <Property Name="Position" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="PSGroup" Type="int" />
+          <Property Name="Crcy" Type="varchar" MaxLength="128" />
+          <Property Name="DateOfHire" Type="date" Nullable="false" />
+          <Property Name="BirthDate" Type="date" />
+          <Property Name="RacialCat1" Type="varchar" MaxLength="128" />
+          <Property Name="RacialCat2" Type="varchar" MaxLength="128" />
+          <Property Name="RacialCat3" Type="varchar" MaxLength="128" />
+          <Property Name="Gender" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="256" />
+          <Property Name="SecondAddressLine" Type="varchar" MaxLength="128" />
+          <Property Name="City" Type="varchar" MaxLength="128" />
+          <Property Name="State" Type="varchar" MaxLength="32" />
+          <Property Name="Zip" Type="varchar" MaxLength="32" />
+          <Property Name="Telephone" Type="varchar" MaxLength="32" />
+          <Property Name="Email" Type="varchar" MaxLength="128" />
+        </EntityType>
         <EntityContainer Name="BIModelStoreContainer">
           <EntitySet Name="DATES" EntityType="Self.DATES" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LOCATIONS" EntityType="Self.LOCATIONS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MasterBuildingList" EntityType="Self.MasterBuildingList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeList" EntityType="Self.EmployeeList" Schema="HR" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -86,6 +123,7 @@
           <EntitySet Name="MasterBuildingLists" EntityType="Self.MasterBuildingList" />
           <EntitySet Name="Dates" EntityType="BIModel.Dates" />
           <EntitySet Name="LOCATIONS" EntityType="BIModel.LOCATION" />
+          <EntitySet Name="EmployeeLists" EntityType="BIModel.EmployeeList" />
         </EntityContainer>
         <EntityType Name="Dates">
           <Key>
@@ -128,6 +166,42 @@
           <Property Name="EspressoSqFt" Type="Int64" />
           <Property Name="MSNeighborhood" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="ParticipationNeighborhood" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="EmployeeList">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PersonnelArea" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="PSubArea" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="PersonnelSubArea" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="RegionName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="DistrictManager" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="CostCenterNumber" Type="Int64" Nullable="false" />
+          <Property Name="CostCenter" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="PersNumber" Type="Int64" Nullable="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="MiddleName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="NickName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeSubGroup" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="Job" Type="Int64" Nullable="false" />
+          <Property Name="Position" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="PSGroup" Type="Int32" />
+          <Property Name="Crcy" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="DateOfHire" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="BirthDate" Type="DateTime" Precision="0" />
+          <Property Name="RacialCat1" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="RacialCat2" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="RacialCat3" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="Gender" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="SecondAddressLine" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="Zip" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="Telephone" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -188,6 +262,43 @@
                 <ScalarProperty Name="Unit" ColumnName="Unit" />
                 <ScalarProperty Name="profit_center_name" ColumnName="profit_center_name" />
                 <ScalarProperty Name="profit_center_id" ColumnName="profit_center_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeLists">
+            <EntityTypeMapping TypeName="BIModel.EmployeeList">
+              <MappingFragment StoreEntitySet="EmployeeList">
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="SecondAddressLine" ColumnName="SecondAddressLine" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="RacialCat3" ColumnName="RacialCat3" />
+                <ScalarProperty Name="RacialCat2" ColumnName="RacialCat2" />
+                <ScalarProperty Name="RacialCat1" ColumnName="RacialCat1" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="DateOfHire" ColumnName="DateOfHire" />
+                <ScalarProperty Name="Crcy" ColumnName="Crcy" />
+                <ScalarProperty Name="PSGroup" ColumnName="PSGroup" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="Job" ColumnName="Job" />
+                <ScalarProperty Name="EmployeeSubGroup" ColumnName="EmployeeSubGroup" />
+                <ScalarProperty Name="NickName" ColumnName="NickName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="PersNumber" ColumnName="PersNumber" />
+                <ScalarProperty Name="CostCenter" ColumnName="CostCenter" />
+                <ScalarProperty Name="CostCenterNumber" ColumnName="CostCenterNumber" />
+                <ScalarProperty Name="DistrictManager" ColumnName="DistrictManager" />
+                <ScalarProperty Name="RegionName" ColumnName="RegionName" />
+                <ScalarProperty Name="PersonnelSubArea" ColumnName="PersonnelSubArea" />
+                <ScalarProperty Name="PSubArea" ColumnName="PSubArea" />
+                <ScalarProperty Name="PersonnelArea" ColumnName="PersonnelArea" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

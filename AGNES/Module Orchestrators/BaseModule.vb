@@ -3,6 +3,7 @@
     Public AGNESShared As AGNESSharedDataEntity
     Public FlashBudgets As BudgetEntity
     Public FlashForecasts As ForecastEntity
+    Public TrainingData As TrainingEntities
     Public BGE As BGCRMEntity
     Public Sub Runmodule()
         SharedDataGroup = New BIEntities
@@ -10,6 +11,7 @@
         BGE = New BGCRMEntity
         FlashBudgets = New BudgetEntity
         FlashForecasts = New ForecastEntity
+        TrainingData = New TrainingEntities
     End Sub
     Public Function TruncateAlias(UserAlias As String) As String
         Dim ReturnAlias As String = UserAlias
