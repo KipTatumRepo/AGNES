@@ -1,7 +1,11 @@
 ﻿Public Class AssocSearch
+
+#Region "Properties"
     Public Property ParamChoice As Byte = 0
     Public Property ParamText As String = ""
+#End Region
 
+#Region "Private Methods"
     Private Sub LastName(sender As Object, e As RoutedEventArgs) Handles rdbLastName.Click
         ParamChoice = 1
     End Sub
@@ -19,4 +23,7 @@
         If txtSearch.Text = "" Then ParamChoice = 0
         Hide()
     End Sub
+
+#End Region
+
 End Class

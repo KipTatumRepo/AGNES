@@ -1,6 +1,6 @@
 ﻿Imports System.Windows.Threading
 Public Class AgnesMessageBox
-
+#Region "Properties"
     Public Enum MsgBoxSize
         Small
         Medium
@@ -27,8 +27,10 @@ Public Class AgnesMessageBox
     End Enum
     Private Property FntSz As Byte
     Private dt As DispatcherTimer = New DispatcherTimer()
-    Private _topsectiontext As String
     Private CopiedText As String
+    Public Property ReturnResult As String
+
+    Private _topsectiontext As String
     Public Property TopSectionText As String
         Get
             Return _topsectiontext
@@ -84,7 +86,6 @@ Public Class AgnesMessageBox
             'TODO: FIGURE OUT THE RUNTIME IMGSOURCE METHOD
         End Set
     End Property
-    Public Property ReturnResult As String
 
     Private _msgsize As MsgBoxSize
     Private Property MsgSize As MsgBoxSize
@@ -148,7 +149,6 @@ Public Class AgnesMessageBox
     End Property
 
     Private _allowcopy As Boolean
-
     Private Property AllowCopy As Boolean
         Get
             Return _allowcopy
@@ -158,6 +158,9 @@ Public Class AgnesMessageBox
         End Set
     End Property
 
+#End Region
+
+#Region "Constructor"
     Public Sub New(Size As MsgBoxSize, Layout As MsgBoxLayout, Type As MsgBoxType, Fontsize As Byte, Optional PermitCopying As Boolean = False, Optional TopText As String = "", Optional OffsetText As String = "", Optional BottomText As String = "")
         InitializeComponent()
         FntSz = Fontsize
@@ -169,6 +172,18 @@ Public Class AgnesMessageBox
         OffsetSectionText = OffsetText
         BottomSectionText = BottomText
     End Sub
+
+#End Region
+
+#Region "Public Methods"
+    Public Sub PauseForCopyNotify(ByVal sender As Object, ByVal e As EventArgs)
+        CommandManager.InvalidateRequerySuggested()
+        dt.Stop()
+        tbBottomSection.Text = CopiedText
+    End Sub
+#End Region
+
+#Region "Private Methods"
     Private Sub ScaleMessagebox(win_h, win_w, img_h, img_w, img_ml, img_mt, img_mr, img_mb, ts_h, ts_w, ts_ml, ts_mt, ts_mr, ts_mb, tos_h,
                              tos_w, tos_ml, tos_mt, tos_mr, tos_mb, bs_h, bs_w, bs_ml, bs_mt, bs_mr, bs_mb, but_h, but_w, b1_ml, b1_mt, b1_mr, b1_mb,
                              b2_ml, b2_mt, b2_mr, b2_mb, b3_ml, b3_mt, b3_mr, b3_mb, b4_ml, b4_mt, b4_mr, b4_mb, b5_ml, b5_mt, b5_mr, b5_mb, dsr, dsd, bfs)
@@ -333,10 +348,7 @@ Public Class AgnesMessageBox
         End If
     End Sub
 
-    Public Sub PauseForCopyNotify(ByVal sender As Object, ByVal e As EventArgs)
-        CommandManager.InvalidateRequerySuggested()
-        dt.Stop()
-        tbBottomSection.Text = CopiedText
-    End Sub
+
+#End Region
 
 End Class

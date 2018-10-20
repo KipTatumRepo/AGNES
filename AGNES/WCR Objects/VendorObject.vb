@@ -1,4 +1,65 @@
 ﻿Public Class VendorObject
+
+#Region "Properties"
+    Public CCClear As Double
+    Public AmexClear As Double
+    Public Tenders As New List(Of Tender)
+
+    Public Property InvoiceName As String
+    Public Property InvoiceNumber As String
+    Public Property VendorNumber As Long
+    Public Property SalesTax As Double
+    Public Property NetSales As Double
+    Public Property CAMType As String
+    Public Property CAMAmt As Double
+    Public Property KPIType As String
+    Public Property KPIAmt As Double
+    Public Property CAM As Double
+    Public Property KPI As Double
+    Public Property Cash As Double
+    Public Property CreditCards As Double
+    Public Property VisaMastercard As Double
+    Public Property FreedomPay As Double
+    Public Property AMEX As Double
+    Public Property MealCard As Double
+    Public Property MealCardCredit As Double
+    Public Property ECoupons As Double
+    Public Property ECash As Double
+    Public Property ScratchCoupons As Double
+    Public Property ExpiredCard As Double
+    Public Property IOCharges As Double
+    Public Property Suspend As Double
+    Public Property CompassPayment As Double
+    Public Property VendorPayment As Double
+    Public Property DueFromVendor As Double
+
+    Private _grosssales As Double
+    Public Property GrossSales As Double
+        Get
+            Return _grosssales
+        End Get
+        Set(value As Double)
+            _grosssales = value
+            Dim st As Double = My.Settings.WASalesTax
+            NetSales = _grosssales / (1 + st)
+            SalesTax = value - NetSales
+            CAMAmt = 0 : KPIAmt = 0
+            Select Case CAMType
+                Case "Percentage"
+                    If CAM > 0 Then CAMAmt = NetSales * CAM
+                Case "Flat"
+                    If CAM > 0 Then CAMAmt = CAM
+            End Select
+
+            Select Case KPIType
+                Case "Percentage"
+                    If KPI > 0 Then KPIAmt = NetSales * KPI
+                Case "Flat"
+                    If KPI > 0 Then KPIAmt = KPI
+            End Select
+        End Set
+    End Property
+
     Private _vendorname As String
     Public Property VendorName As String
         Get
@@ -37,67 +98,10 @@
             Next
         End Set
     End Property
-    Public Property InvoiceName As String
-    Public Property InvoiceNumber As String
-    Public Property VendorNumber As Long
-    Private _grosssales As Double
-    Public Property GrossSales As Double
-        Get
-            Return _grosssales
-        End Get
-        Set(value As Double)
-            _grosssales = value
-            Dim st As Double = My.Settings.WASalesTax
-            NetSales = _grosssales / (1 + st)
-            SalesTax = value - NetSales
-            CAMAmt = 0 : KPIAmt = 0
-            Select Case CAMType
-                Case "Percentage"
-                    If CAM > 0 Then CAMAmt = NetSales * CAM
-                Case "Flat"
-                    If CAM > 0 Then CAMAmt = CAM
-            End Select
 
-            Select Case KPIType
-                Case "Percentage"
-                    If KPI > 0 Then KPIAmt = NetSales * KPI
-                Case "Flat"
-                    If KPI > 0 Then KPIAmt = KPI
-            End Select
-        End Set
-    End Property
-    Public Property SalesTax As Double
-    Public Property NetSales As Double
-    Public Property CAMType As String
-    Public Property CAMAmt As Double
-    Public Property KPIType As String
-    Public Property KPIAmt As Double
-    Public Property CAM As Double
-    Public Property KPI As Double
-    Public Property Cash As Double
-    Public Property CreditCards As Double
-    Public Property VisaMastercard As Double
-    Public Property FreedomPay As Double
-    Public Property AMEX As Double
-    Public Property MealCard As Double
-    Public Property MealCardCredit As Double
-    Public Property ECoupons As Double
-    Public Property ECash As Double
-    Public Property ScratchCoupons As Double
-    Public Property ExpiredCard As Double
-    Public Property IOCharges As Double
-    Public Property Suspend As Double
-    Public Property CompassPayment As Double
-    Public Property VendorPayment As Double
-    Public Property DueFromVendor As Double
-    Public CCClear As Double
-    Public AmexClear As Double
-    Public Tenders As New List(Of Tender)
+#End Region
 
-    Public Sub New()
-        Dim ph As String = ""
-    End Sub
-
+#Region "Public Methods"
     Public Sub AddTender(id, nm, qty, amt)
         Dim t As New Tender With {.TenderId = id, .TenderName = nm, .TenderQty = qty, .TenderAmt = amt}
         Tenders.Add(t)
@@ -355,5 +359,7 @@
             If VendorName <> "Concierge" Then DueFromVendor = CompassPayment - VendorPayment
         Next
     End Sub
+
+#End Region
 
 End Class
