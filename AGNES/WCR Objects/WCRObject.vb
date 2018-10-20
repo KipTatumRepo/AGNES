@@ -4,6 +4,10 @@ Imports System.Printing
 Imports System.Windows.Xps
 
 Public Class WCRObject
+
+#Region "Properties"
+
+
     Public WeekStart As Date
     Public Vendors As New List(Of VendorObject)
     Public CamChecks As New List(Of CamCheck)
@@ -18,11 +22,9 @@ Public Class WCRObject
             CCClear As Double, AmexClear As Double, CamCheckTotal As Double, FriCam As Double, MonCam As Double, TueCam As Double, WedCam As Double,
             ThuCam As Double, ConciergeTenderLoaded As Boolean
 
+#End Region
 
-    Public Sub New()
-        Dim ph As String = ""
-    End Sub
-
+#Region "Public Methods"
     Public Sub LoadTenders(ByRef disp As WCRHello, ByRef disptext As TextBlock)
         Dim vn As String, fd As New OpenFileDialog() With {.Multiselect = True}
         fd.DefaultExt = ".xls"
@@ -243,6 +245,75 @@ Public Class WCRObject
         xps_writer.Write(idps.DocumentPaginator)
 
     End Sub
+
+    Public Sub PrintInvoices()
+        Dim pd As PrintDialog, fd As FlowDocument
+        Try
+            pd = New PrintDialog
+            pd.ShowDialog()
+            fd = New FlowDocument With {.ColumnGap = 0, .ColumnWidth = pd.PrintableAreaWidth}
+        Catch
+            Exit Sub
+        End Try
+
+        Dim v As VendorObject, ct As Integer = Vendors.Count
+        InvoicesArePresent = 0
+        For Each v In Vendors
+            Dim s As New Section() With {.BreakPageBefore = True}
+            ct -= 1
+            If v.VendorName <> "Concierge" Then
+                v.PrintInvoice(pd, fd)
+                InvoicesArePresent += 1
+            End If
+            If ct > 0 Then fd.Blocks.Add(s)
+        Next
+
+        If InvoicesArePresent > 0 Then
+            Dim xps_writer As XpsDocumentWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue)
+            Dim idps As IDocumentPaginatorSource = CType(fd, IDocumentPaginatorSource)
+            xps_writer.Write(idps.DocumentPaginator)
+        End If
+    End Sub
+
+    Public Function GetVendorID(vnm)
+        Dim vid As Integer
+        Dim q = From c In WCRE.VendorInfo
+                Where c.Name Is vnm
+                Select c
+        For Each c In q
+            vid = c.PID
+        Next
+        Return vid
+    End Function
+
+    Public Function CheckDoesNotExist(cn, vid) As Boolean
+        Dim ef As New WCREntities
+        Dim vid1 As Integer = vid
+        Try
+            Dim IsNew = ef.ReceivedCAMChecks.Single(Function(p) p.CheckNumber Is cn)     ' If check number exists,
+            Dim DoubleCheck = ef.ReceivedCAMChecks.Single(Function(p) p.VendorId = vid1)      ' see if it's for the same vendor.  If so, throw an error; if not, create new entry
+            Return False
+        Catch ex As InvalidOperationException
+            Return True
+        Catch ex As Exception
+            Dim a As String = ex.Message
+            Return False
+        End Try
+    End Function
+
+    Public Function DoesNotExistInTempCheckList(cn, vid) As Boolean
+        For Each c As CamCheck In CamChecks
+            If c.CheckNumber = cn And c.VendorID = vid Then
+                Return False
+                Exit Function
+            End If
+        Next
+        Return True
+    End Function
+
+#End Region
+
+#Region "Private Methods"
 
     Private Sub CreateTotalsSection(ByRef pd As PrintDialog, ByRef fd As FlowDocument)
         '// Header, vendor, invoice #, and date
@@ -786,35 +857,6 @@ Public Class WCRObject
         DepositArray(7, 2) = FormatCurrency(AmexClear, 2)
     End Sub
 
-    Public Sub PrintInvoices()
-        Dim pd As PrintDialog, fd As FlowDocument
-        Try
-            pd = New PrintDialog
-            pd.ShowDialog()
-            fd = New FlowDocument With {.ColumnGap = 0, .ColumnWidth = pd.PrintableAreaWidth}
-        Catch
-            Exit Sub
-        End Try
-
-        Dim v As VendorObject, ct As Integer = Vendors.Count
-        InvoicesArePresent = 0
-        For Each v In Vendors
-            Dim s As New Section() With {.BreakPageBefore = True}
-            ct -= 1
-            If v.VendorName <> "Concierge" Then
-                v.PrintInvoice(pd, fd)
-                InvoicesArePresent += 1
-            End If
-            If ct > 0 Then fd.Blocks.Add(s)
-        Next
-
-        If InvoicesArePresent > 0 Then
-            Dim xps_writer As XpsDocumentWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue)
-            Dim idps As IDocumentPaginatorSource = CType(fd, IDocumentPaginatorSource)
-            xps_writer.Write(idps.DocumentPaginator)
-        End If
-    End Sub
-
     Private Function GetVendorNameFromString(st)
         Dim vn As String = st
         Dim si As Integer = vn.IndexOf("(")
@@ -838,42 +880,6 @@ Public Class WCRObject
         End Try
     End Sub
 
-    Public Function GetVendorID(vnm)
-        Dim vid As Integer
-        Dim q = From c In WCRE.VendorInfo
-                Where c.Name Is vnm
-                Select c
-        For Each c In q
-            vid = c.PID
-        Next
-        Return vid
-    End Function
-
-    Public Function CheckDoesNotExist(cn, vid) As Boolean
-        Dim ef As New WCREntities
-        Dim vid1 As Integer = vid
-        Try
-            Dim IsNew = ef.ReceivedCAMChecks.Single(Function(p) p.CheckNumber Is cn)     ' If check number exists,
-            Dim DoubleCheck = ef.ReceivedCAMChecks.Single(Function(p) p.VendorId = vid1)      ' see if it's for the same vendor.  If so, throw an error; if not, create new entry
-            Return False
-        Catch ex As InvalidOperationException
-            Return True
-        Catch ex As Exception
-            Dim a As String = ex.Message
-            Return False
-        End Try
-    End Function
-
-    Public Function DoesNotExistInTempCheckList(cn, vid) As Boolean
-        For Each c As CamCheck In CamChecks
-            If c.CheckNumber = cn And c.VendorID = vid Then
-                Return False
-                Exit Function
-            End If
-        Next
-        Return True
-    End Function
-
     Private Function WCRInBalance() As Double
         Dim creditsection As Double, debitanddepositsection As Double
         creditsection = CamToCompass + PotentialKpi + PotentialKpi - MealCardCredits + CamCheckTotal
@@ -883,5 +889,8 @@ Public Class WCRObject
         Return Math.Round(creditsection, 2) - Math.Round(debitanddepositsection, 2)
 
     End Function
+
+
+#End Region
 
 End Class

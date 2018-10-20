@@ -1,4 +1,8 @@
 ﻿Public Class FlashForecastChooser
+
+#Region "Properties"
+    Public Property UserChoice As Long
+
     Private _choosertype As Byte
     Public Property ChooserType As Byte
         Get
@@ -20,18 +24,24 @@
         End Set
     End Property
 
-    Public Property UserChoice As Long
+#End Region
 
+#Region "Constructor"
     Public Sub New()
         InitializeComponent()
     End Sub
 
+#End Region
+
+#Region "Public Methods"
     Public Sub Populate(l As List(Of Long))
         For Each i As Long In l
             Createbutton(i)
         Next
     End Sub
+#End Region
 
+#Region "Private Methods"
     Private Sub Createbutton(inum)
         Dim brd As New Border With {.Height = 40, .Width = 112}
         Dim tb As New TextBlock With
@@ -101,5 +111,7 @@
         UserChoice = FormatNumber(s.tag, 0)
         Hide()
     End Sub
+
+#End Region
 
 End Class

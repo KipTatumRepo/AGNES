@@ -1,5 +1,12 @@
 ﻿Public Class NumberBox
     Inherits AgnesBaseInput
+#Region "Properties"
+    Private _posonly As Boolean
+    Private _negonly As Boolean
+    Public NumberOfDecimals As Byte
+    Public Highlight As Boolean
+    Private SystemChange As Boolean
+
     Private _pos As Boolean
     Public Property Positive As Boolean
         Get
@@ -21,7 +28,6 @@
     End Property
 
     Private _amount As Double
-    Private _setamount As Double
     Public Property Amount As Double
         Get
             Return _amount
@@ -30,6 +36,8 @@
             _amount = value
         End Set
     End Property
+
+    Private _setamount As Double
     Public Property SetAmount As Double
         Get
             Return _setamount
@@ -40,13 +48,10 @@
             tb.Text = FormatNumber(_setamount, NumberOfDecimals)
         End Set
     End Property
-    Private _posonly As Boolean
-    Private _negonly As Boolean
-    Public NumberOfDecimals As Byte
-    Public Highlight As Boolean
-    Private SystemChange As Boolean
 
+#End Region
 
+#Region "Constructor"
     Public Sub New(FieldWidth As Integer, AllowPositive As Boolean, AllowNegative As Boolean, ForcePositive As Boolean, ForceNegative As Boolean, SelectAllUponEnteringField As Boolean, FontSize As AgnesBaseInput.FontSz, Optional ByVal Decimals As Byte = 0, Optional ByVal DefaultText As String = "$0.00")
         MyBase.New(FieldWidth, VerticalAlignment.Top, HorizontalAlignment.Left, FontSize, TextAlignment.Center, DefaultText, TextWrapping.NoWrap)
         Positive = AllowPositive
@@ -66,6 +71,9 @@
         '             for 24pt= 204
     End Sub
 
+#End Region
+
+#Region "Private Methods"
     Private Sub ValidateText(sender As Object, e As EventArgs)
         Dim t As TextBox = sender
         If SystemChange = True Then Exit Sub
@@ -129,4 +137,6 @@
         End Try
 
     End Sub
+
+#End Region
 End Class

@@ -1,6 +1,7 @@
 ﻿Imports System.ComponentModel
 Imports System.Linq
 Public Class BGCRM
+#Region "Properties"
     Dim BG As objBusinessGroup
     Dim BGC As BGCRMEntity
     Dim SD As BIEntities
@@ -12,7 +13,9 @@ Public Class BGCRM
     Dim numHeadcount As NumberBox
     Dim numPopMoving As NumberBox
     Dim AdminSelect As Boolean
+#End Region
 
+#Region "Constructor"
     Public Sub New()
         InitializeComponent()
         BG = New objBusinessGroup
@@ -54,8 +57,84 @@ Public Class BGCRM
         btnSaveFinish.IsEnabled = True
         cboGroup.Focus()
     End Sub
+#End Region
 
-#Region "Navigation"
+#Region "Private Methods"
+    Private Function ValidatePage(p, dir) As Boolean
+        If dir = 1 Then '// Direction 1 = forward, triggering validation
+            Dim invalid As New List(Of String), i As Integer, c As Double
+            invalid.Clear()
+            Select Case p
+                Case 0  '// Group page
+                    If cboGroup.SelectedIndex = -1 Then invalid.Add("A business group must be selected.")
+                    If cboWorkTimes.SelectedIndex = -1 Then invalid.Add("A work times option must be selected.")
+                    If cboWorkspace.SelectedIndex = -1 Then invalid.Add("A workspace option must be selected.")
+                    Try
+                        Dim tb As TextBox = numHeadcount.Children(1)
+                        c = FormatNumber(tb.Text, 2)
+                    Catch ex As Exception
+                        invalid.Add("Headcount must be a number - enter 0 if currently unknown.")
+                    End Try
+
+                Case 1  '// People page
+                    If cboLeader.SelectedIndex = -1 Then invalid.Add("An organizational leader must be selected.")
+                    If cboRelManager.SelectedIndex = -1 Then invalid.Add("A relationship manager must be selected.")
+                Case 2  '// Financials page
+                    Try
+                        Dim tb As TextBox = curRevenue.Children(1)
+                        c = FormatNumber(tb.Text, 2)
+                    Catch ex As Exception
+                        invalid.Add("Offsite spend must be a number - enter 0 if currently unknown.")
+                    End Try
+
+                    Try
+                        Dim tb As TextBox = curOffsite.Children(1)
+                        c = FormatNumber(tb.Text, 2)
+                    Catch ex As Exception
+                        invalid.Add("Offsite spend must be a number - enter 0 if currently unknown.")
+                    End Try
+
+                    Try
+                        Dim tb As TextBox = numEventCount.Children(1)
+                        i = FormatNumber(tb.Text, 0)
+                    Catch ex As Exception
+                        invalid.Add("Event count must be a number - enter 0 if currently unknown.")
+                    End Try
+
+                    Try
+                        Dim tb As TextBox = num500Events.Children(1)
+                        i = FormatNumber(tb.Text, 0)
+                    Catch ex As Exception
+                        invalid.Add("500+ event count must be a number - enter 0 if currently unknown.")
+                    End Try
+
+                    Try
+                        Dim tb As TextBox = numCatered.Children(1)
+                        i = FormatNumber(tb.Text, 0)
+                    Catch ex As Exception
+                        invalid.Add("Catered event count must be a number - enter 0 if currently unknown.")
+                    End Try
+
+                Case 3  '// Events Page
+                Case 4  '// CR page
+            End Select
+
+            If invalid.Count > 0 Then
+                Dim errorstring As String = "", ct As Integer
+                For ct = 0 To invalid.Count - 1
+                    errorstring = errorstring & invalid(ct) & Chr(13) & Chr(13)
+                Next
+                Dim amsg1 = New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText,
+                                                AgnesMessageBox.MsgBoxType.OkOnly, 14,,,, errorstring)
+                amsg1.ShowDialog()
+                amsg1.Close()
+                Return False
+            End If
+        End If
+        Return True
+    End Function
+
+#Region "Navigation Methods"
     Private Sub LastPage(sender As Object, e As RoutedEventArgs) Handles btnBack1.Click, btnBack2.Click, btnBack3.Click, btnBack4.Click
         ValidatePage(tabPages.SelectedIndex, 0)
         SavePageToBGObj(tabPages.SelectedIndex)
@@ -69,7 +148,7 @@ Public Class BGCRM
     End Sub
 #End Region
 
-#Region "Data Handling"
+#Region "Data Handling Methods"
     Private Sub SavePageToBGObj(p)
         Dim si As ListBoxItem
         Select Case p
@@ -570,7 +649,7 @@ Public Class BGCRM
 
 #End Region
 
-#Region "Field Management"
+#Region "Field Management Methods"
     Private Sub PopulateOptions()
 
         '// Populate business group names
@@ -1018,7 +1097,7 @@ Public Class BGCRM
 
 #End Region
 
-#Region "Context Menu Actions"
+#Region "Context Menu Methods"
     Private Sub BusinessGroupContextMenu(sender As Object, e As ContextMenuEventArgs) Handles cboGroup.ContextMenuOpening
         If cboGroup.SelectedIndex = -1 Then
             cbiDeleteBG.IsEnabled = False
@@ -1414,81 +1493,6 @@ Public Class BGCRM
     End Sub
 
 #End Region
-
-#Region "Functions"
-    Private Function ValidatePage(p, dir) As Boolean
-        If dir = 1 Then '// Direction 1 = forward, triggering validation
-            Dim invalid As New List(Of String), i As Integer, c As Double
-            invalid.Clear()
-            Select Case p
-                Case 0  '// Group page
-                    If cboGroup.SelectedIndex = -1 Then invalid.Add("A business group must be selected.")
-                    If cboWorkTimes.SelectedIndex = -1 Then invalid.Add("A work times option must be selected.")
-                    If cboWorkspace.SelectedIndex = -1 Then invalid.Add("A workspace option must be selected.")
-                    Try
-                        Dim tb As TextBox = numHeadcount.Children(1)
-                        c = FormatNumber(tb.Text, 2)
-                    Catch ex As Exception
-                        invalid.Add("Headcount must be a number - enter 0 if currently unknown.")
-                    End Try
-
-                Case 1  '// People page
-                    If cboLeader.SelectedIndex = -1 Then invalid.Add("An organizational leader must be selected.")
-                    If cboRelManager.SelectedIndex = -1 Then invalid.Add("A relationship manager must be selected.")
-                Case 2  '// Financials page
-                    Try
-                        Dim tb As TextBox = curRevenue.Children(1)
-                        c = FormatNumber(tb.Text, 2)
-                    Catch ex As Exception
-                        invalid.Add("Offsite spend must be a number - enter 0 if currently unknown.")
-                    End Try
-
-                    Try
-                        Dim tb As TextBox = curOffsite.Children(1)
-                        c = FormatNumber(tb.Text, 2)
-                    Catch ex As Exception
-                        invalid.Add("Offsite spend must be a number - enter 0 if currently unknown.")
-                    End Try
-
-                    Try
-                        Dim tb As TextBox = numEventCount.Children(1)
-                        i = FormatNumber(tb.Text, 0)
-                    Catch ex As Exception
-                        invalid.Add("Event count must be a number - enter 0 if currently unknown.")
-                    End Try
-
-                    Try
-                        Dim tb As TextBox = num500Events.Children(1)
-                        i = FormatNumber(tb.Text, 0)
-                    Catch ex As Exception
-                        invalid.Add("500+ event count must be a number - enter 0 if currently unknown.")
-                    End Try
-
-                    Try
-                        Dim tb As TextBox = numCatered.Children(1)
-                        i = FormatNumber(tb.Text, 0)
-                    Catch ex As Exception
-                        invalid.Add("Catered event count must be a number - enter 0 if currently unknown.")
-                    End Try
-
-                Case 3  '// Events Page
-                Case 4  '// CR page
-            End Select
-
-            If invalid.Count > 0 Then
-                Dim errorstring As String = "", ct As Integer
-                For ct = 0 To invalid.Count - 1
-                    errorstring = errorstring & invalid(ct) & Chr(13) & Chr(13)
-                Next
-                Dim amsg1 = New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText,
-                                                AgnesMessageBox.MsgBoxType.OkOnly, 14,,,, errorstring)
-                amsg1.ShowDialog()
-                amsg1.Close()
-                Return False
-            End If
-        End If
-        Return True
-    End Function
 
 #End Region
 

@@ -3,9 +3,17 @@
 Public Class WeekChooser
     Inherits DockPanel
     Implements INotifyPropertyChanged
-    Private _currentweek As Byte
+
+#Region "Properties"
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
 
+    Public Property MinWeek As Byte
+    Public Property MaxWeek As Byte
+    Public Property HeldWeek As Byte
+    Public Property ChooserParent As Object
+    Public Property SelectedCount As Byte
+
+    Private _currentweek As Byte
     Public Property CurrentWeek As Byte
         Get
             Return _currentweek
@@ -35,11 +43,10 @@ Public Class WeekChooser
             RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(“Week”))
         End Set
     End Property
-    Public Property MinWeek As Byte
-    Public Property MaxWeek As Byte
-    Public Property HeldWeek As Byte
-    Public Property ChooserParent As Object
-    Public Property SelectedCount As Byte
+
+#End Region
+
+#Region "Constructor"
     Public Sub New(MinW As Byte, MaxW As Byte, CurW As Byte)
         Dim ct As Byte
         MinWeek = MinW
@@ -68,6 +75,40 @@ Public Class WeekChooser
         EnableWeeks()
     End Sub
 
+#End Region
+
+#Region "Public Methods"
+    Public Sub EnableWeeks()
+        For Each brd As Border In Children
+            If brd.Tag <> "Label" Then
+                Dim tb As TextBlock = brd.Child
+                If (FormatNumber(tb.Tag, 0) < MinWeek) Or (FormatNumber(tb.Tag, 0) > MaxWeek) Then
+                    brd.IsEnabled = False
+                    brd.Visibility = Visibility.Hidden
+                Else
+                    brd.IsEnabled = True
+                    brd.Visibility = Visibility.Visible
+                End If
+            End If
+        Next
+    End Sub
+
+    Public Sub Reset()
+        For Each brd As Border In Children
+            Dim tb As TextBlock = brd.Child
+            If brd.Tag <> "Label" Then
+                tb.Foreground = Brushes.Black
+                tb.FontSize = 16
+                tb.FontWeight = FontWeights.SemiBold
+                If brd.IsEnabled = True Then SelectedCount += 1
+            End If
+        Next
+        CurrentWeek = 0
+    End Sub
+
+#End Region
+
+#Region "Private Methods"
     Private Sub HoverOverWeek(sender As Object, e As MouseEventArgs)
         Dim tb As TextBlock
         If TypeOf (sender) Is TextBlock Then
@@ -110,32 +151,6 @@ Public Class WeekChooser
         End If
     End Sub
 
-    Public Sub Reset()
-        For Each brd As Border In Children
-            Dim tb As TextBlock = brd.Child
-            If brd.Tag <> "Label" Then
-                tb.Foreground = Brushes.Black
-                tb.FontSize = 16
-                tb.FontWeight = FontWeights.SemiBold
-                If brd.IsEnabled = True Then SelectedCount += 1
-            End If
-        Next
-        CurrentWeek = 0
-    End Sub
-
-    Public Sub EnableWeeks()
-        For Each brd As Border In Children
-            If brd.Tag <> "Label" Then
-                Dim tb As TextBlock = brd.Child
-                If (FormatNumber(tb.Tag, 0) < MinWeek) Or (FormatNumber(tb.Tag, 0) > MaxWeek) Then
-                    brd.IsEnabled = False
-                    brd.Visibility = Visibility.Hidden
-                Else
-                    brd.IsEnabled = True
-                    brd.Visibility = Visibility.Visible
-                End If
-            End If
-        Next
-    End Sub
+#End Region
 
 End Class

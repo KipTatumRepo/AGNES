@@ -2,7 +2,15 @@
 Public Class CurrencyBox
     Inherits AgnesBaseInput
     Implements INotifyPropertyChanged
+#Region "Properties"
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
+
+    Private _debitonly As Boolean
+    Private _creditonly As Boolean
+    Public Highlight As Boolean
+    Private SystemChange As Boolean
+    Private HeldValue As String
+
     Private _credit As Boolean
     Public Property Credit As Boolean
         Get
@@ -34,12 +42,10 @@ Public Class CurrencyBox
             tb.Text = FormatCurrency(_setamount, 2)
         End Set
     End Property
-    Private _debitonly As Boolean
-    Private _creditonly As Boolean
-    Public Highlight As Boolean
-    Private SystemChange As Boolean
-    Private HeldValue As String
 
+#End Region
+
+#Region "Constructor"
     Public Sub New(FieldWidth As Integer, SelectAllUponEnteringField As Boolean, FontSize As AgnesBaseInput.FontSz, Optional ByVal DefaultText As String = "$0.00", Optional ForceCredit As Boolean = False, Optional ForceDebit As Boolean = False)
         MyBase.New(FieldWidth, VerticalAlignment.Top, HorizontalAlignment.Left, FontSize, TextAlignment.Right, DefaultText, TextWrapping.NoWrap)
         Credit = Not ForceDebit
@@ -57,7 +63,9 @@ Public Class CurrencyBox
         '             for 18pt= 160
         '             for 24pt= 204
     End Sub
+#End Region
 
+#Region "Private Methods"
     Private Sub ValidateText(sender As Object, e As EventArgs)
         Dim t As TextBox = sender
         If SystemChange = True Then Exit Sub
@@ -128,5 +136,7 @@ Public Class CurrencyBox
         If t.Text = HeldValue Then Exit Sub
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(“Amountchanged”))
     End Sub
+
+#End Region
 
 End Class

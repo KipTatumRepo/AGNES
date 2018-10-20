@@ -19,7 +19,7 @@
             <Separator />
             <Image x:Name="imgSave" Source="/AGNES;component/Resources/save.png" ToolTip="Save Final" />
             <Separator />
-            <Image x:Name="imgPrint" Source="/AGNES;component/Resources/print.png" ToolTip="Print" IsEnabled="False" />
+            <Image x:Name="imgPrint" Source="/AGNES;component/Resources/print.png" ToolTip="Print"/>
             <Separator />
             <Image x:Name="imgDelegates" Source="/AGNES;component/Resources/Delegates.png" ToolTip="Manage Delegates" />
 

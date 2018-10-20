@@ -1,9 +1,16 @@
 ﻿Imports System.Windows.Threading
 'TODO: ADD RELOAD OF CAM CHECKS AND VALIDATION AGAINST SAVING ONES THAT ALREADY EXIST
 Public Class WCRCam
+
+#Region "Properties"
+
     Dim dt As DispatcherTimer = New DispatcherTimer()
     Dim dt2 As DispatcherTimer = New DispatcherTimer()
+
     Dim HoverDrop As Effects.DropShadowEffect, LeaveDrop As Effects.DropShadowEffect
+#End Region
+
+#Region "Constructor"
     Public Sub New()
         InitializeComponent()
         ToggleEntryVisibility(0)
@@ -31,6 +38,9 @@ Public Class WCRCam
 
     End Sub
 
+#End Region
+
+#Region "Public Methods"
     Public Sub PauseForMinimizing(ByVal sender As Object, ByVal e As EventArgs)
         CommandManager.InvalidateRequerySuggested()
         tbCam.Text = "Okay!  Let's move on to CAM checks.  I'll hang out down here so I'm not in your way, but I'll continue to walk you through the process."
@@ -47,7 +57,9 @@ Public Class WCRCam
         tbYesCam.Visibility = Visibility.Visible
         tbNo.Visibility = Visibility.Visible
     End Sub
+#End Region
 
+#Region "Private Methods"
     Private Sub AddCamCheck(sender As Object, e As MouseButtonEventArgs) Handles tbYesCam.MouseDown
         With dtpDepositDate
             .DisplayDateStart = WCR.WeekStart
@@ -216,5 +228,7 @@ Public Class WCRCam
             amsg.Close()
         End If
     End Sub
+
+#End Region
 
 End Class

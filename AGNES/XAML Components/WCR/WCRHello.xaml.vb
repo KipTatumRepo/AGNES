@@ -1,8 +1,26 @@
 ﻿Public Class WCRHello
+
+#Region "Properties"
     Private Property _currentstate As Integer
     Private ActiveWCR As WCRObject = WCRModule.WCR
     Dim HoverDrop As Effects.DropShadowEffect, LeaveDrop As Effects.DropShadowEffect
+#End Region
 
+#Region "Public Methods"
+    Public Sub TenderLoadComplete(totalfiles, badfiles)
+        If badfiles = 0 Then
+            tbHello.Text = "All selected tenders have been loaded"
+        Else
+            tbHello.Text = (totalfiles - badfiles) & " of the " & totalfiles & " tenders you selected have been loaded."
+        End If
+
+        tbLoadTenders.Visibility = Visibility.Hidden
+        tbAnother.Visibility = Visibility.Visible
+        tbDone.Visibility = Visibility.Visible
+    End Sub
+#End Region
+
+#Region "Private Methods"
     Private Sub WCRHello_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
         tbHello.Text = "Hi, " & My.Settings.UserShortName & "!  It's me, Agnes, and I'll be guiding you through your WCR entry today." & Chr(13) & Chr(13) & "Let's get started by choosing whether we want to look at a past WCR or create a new one!"
         tbCreateWCR.Visibility = Visibility.Visible
@@ -43,44 +61,6 @@
         sender.Effect = LeaveDrop
     End Sub
 
-    'Public Sub PrintVendorTotalTendersToScreen(ByRef v As VendorObject, bf As Boolean)
-    '//--------DEPRECATED 8/8/18 IN LIEU OF HANDLING MULTIPLE FILES AND CONFIRMATIONS IN THE WCR OBJECT
-    '    Dim t As Tender, ttl As Double, msgstring As String = ""
-    '    tbHello.FontSize = 24
-    '    If bf = True Then
-    '        msgstring = "Unable to read data from the selected file."
-    '        tbHello.Text = msgstring
-    '        tbLoadTenders.Visibility = Visibility.Hidden
-    '        tbYes.Visibility = Visibility.Hidden
-    '        tbNo.Visibility = Visibility.Hidden
-    '        tbAnother.Visibility = Visibility.Visible
-    '        tbDone.Visibility = Visibility.Visible
-    '    Else
-    '        For Each t In v.Tenders
-    '            ttl += t.TenderAmt
-    '        Next
-    '        msgstring = "It looks like " & v.VendorName & "" & " has a total of " & FormatCurrency(ttl, 2) & ".  Is this correct?"
-    '        tbHello.Text = msgstring
-    '        tbLoadTenders.Visibility = Visibility.Hidden
-    '        tbYes.Visibility = Visibility.Visible
-    '        tbNo.Visibility = Visibility.Visible
-    '        tbAnother.Visibility = Visibility.Hidden
-    '        tbDone.Visibility = Visibility.Hidden
-    '    End If
-    'End Sub
-
-    Public Sub TenderLoadComplete(totalfiles, badfiles)
-        If badfiles = 0 Then
-            tbHello.Text = "All selected tenders have been loaded"
-        Else
-            tbHello.Text = (totalfiles - badfiles) & " of the " & totalfiles & " tenders you selected have been loaded."
-        End If
-
-        tbLoadTenders.Visibility = Visibility.Hidden
-        tbAnother.Visibility = Visibility.Visible
-        tbDone.Visibility = Visibility.Visible
-    End Sub
-
     Private Sub ExitWCR(sender As Object, e As MouseButtonEventArgs) Handles btnExit.MouseDown
         Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
                                                 18,,,, "Close WCR?")
@@ -93,5 +73,7 @@
             amsg.Close()
         End If
     End Sub
+
+#End Region
 
 End Class

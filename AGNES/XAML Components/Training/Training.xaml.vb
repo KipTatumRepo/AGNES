@@ -1,11 +1,16 @@
 ﻿Imports System.ComponentModel
 
 Public Class Training
+
+#Region "Constructor"
     Public Sub New()
         InitializeComponent()
         PopulateAssociates() '2, "32633")
         PopulateTraining()
     End Sub
+#End Region
+
+#Region "Private Methods"
 
     Private Sub PopulateAssociates(Optional search As Byte = 0, Optional param As String = "")
         ' Search 0 = All
@@ -83,4 +88,7 @@ Public Class Training
         searchparam.Close()
 
     End Sub
+
+#End Region
+
 End Class
