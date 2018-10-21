@@ -120,11 +120,17 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Application Objects\AgnesBaseInput.vb" />
-    <Compile Include="Application Objects\AgnesMessageBox.xaml.vb">
+    <Compile Include="Entities\SickOtRecord.vb">
+      <DependentUpon>FlashActualsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="XAML Components\Flash\Delegates.xaml.vb">
+      <DependentUpon>Delegates.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="XAML Components\Shared\AgnesMessageBox.xaml.vb">
       <DependentUpon>AgnesMessageBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Application Objects\CurrencyBox.vb" />
-    <Compile Include="Application Objects\FlashForecastChooser.xaml.vb">
+    <Compile Include="XAML Components\Shared\FlashForecastChooser.xaml.vb">
       <DependentUpon>FlashForecastChooser.xaml</DependentUpon>
     </Compile>
     <Compile Include="Application Objects\NumberBox.vb" />
@@ -375,7 +381,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Training Objects\AssocSearch.xaml.vb">
+    <Compile Include="XAML Components\Training\AssocSearch.xaml.vb">
       <DependentUpon>AssocSearch.xaml</DependentUpon>
     </Compile>
     <Compile Include="XAML Components\Admin\Admin.xaml.vb">
@@ -387,7 +393,7 @@
     <Compile Include="BusinessGroupObjects\BusinessGroupObj.vb" />
     <Compile Include="BusinessGroupObjects\CRBuilding.vb" />
     <Compile Include="BusinessGroupObjects\RefreshEvent.vb" />
-    <Compile Include="BusinessGroupObjects\SingleUserInput.xaml.vb">
+    <Compile Include="XAML Components\Shared\SingleUserInput.xaml.vb">
       <DependentUpon>SingleUserInput.xaml</DependentUpon>
     </Compile>
     <Compile Include="Entities\BusinessGroupCRM.Context.vb">
@@ -457,15 +463,19 @@
       <DependentUpon>WCRHello.xaml</DependentUpon>
     </Compile>
     <Compile Include="WCR Objects\WCRObject.vb" />
-    <Page Include="Application Objects\AgnesMessageBox.xaml">
+    <Page Include="XAML Components\Flash\Delegates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Application Objects\FlashForecastChooser.xaml">
+    <Page Include="XAML Components\Shared\AgnesMessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Training Objects\AssocSearch.xaml">
+    <Page Include="XAML Components\Shared\FlashForecastChooser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XAML Components\Training\AssocSearch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -477,7 +487,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BusinessGroupObjects\SingleUserInput.xaml">
+    <Page Include="XAML Components\Shared\SingleUserInput.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

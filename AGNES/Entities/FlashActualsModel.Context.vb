@@ -23,5 +23,6 @@ Partial Public Class FlashActualsEntity
     End Sub
 
     Public Overridable Property FlashActualData() As DbSet(Of FlashActualData)
+    Public Overridable Property SickOtRecords() As DbSet(Of SickOtRecord)
 
 End Class

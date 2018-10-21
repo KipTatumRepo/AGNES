@@ -24,8 +24,21 @@
           <Property Name="SavedBy" Type="varchar" MaxLength="128" Nullable="false" />
           <Property Name="Alert" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="SickOtRecords">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UnitNumber" Type="bigint" Nullable="false" />
+          <Property Name="MSFY" Type="smallint" Nullable="false" />
+          <Property Name="MSP" Type="tinyint" Nullable="false" />
+          <Property Name="Week" Type="tinyint" Nullable="false" />
+          <Property Name="SickPay" Type="money" Nullable="false" />
+          <Property Name="OtPay" Type="money" Nullable="false" />
+        </EntityType>
         <EntityContainer Name="FlashActualsModelStoreContainer">
           <EntitySet Name="Flashes" EntityType="Self.Flashes" Schema="agnes" store:Type="Tables" />
+          <EntitySet Name="SickOtRecords" EntityType="Self.SickOtRecords" Schema="agnes" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -52,7 +65,20 @@
         </EntityType>
         <EntityContainer Name="FlashActualsEntity" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="FlashActualData" EntityType="FlashActualsModel.FlashActualData" />
+          <EntitySet Name="SickOtRecords" EntityType="FlashActualsModel.SickOtRecord" />
         </EntityContainer>
+        <EntityType Name="SickOtRecord">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UnitNumber" Type="Int64" Nullable="false" />
+          <Property Name="MSFY" Type="Int16" Nullable="false" />
+          <Property Name="MSP" Type="Byte" Nullable="false" />
+          <Property Name="Week" Type="Byte" Nullable="false" />
+          <Property Name="SickPay" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="OtPay" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -76,6 +102,19 @@
                 <ScalarProperty Name="OpDaysWeek" ColumnName="OpDaysWeek" />
                 <ScalarProperty Name="OpDaysPeriod" ColumnName="OpDaysPeriod" />
                 <ScalarProperty Name="SavedBy" ColumnName="SavedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SickOtRecords">
+            <EntityTypeMapping TypeName="FlashActualsModel.SickOtRecord">
+              <MappingFragment StoreEntitySet="SickOtRecords">
+                <ScalarProperty Name="OtPay" ColumnName="OtPay" />
+                <ScalarProperty Name="SickPay" ColumnName="SickPay" />
+                <ScalarProperty Name="Week" ColumnName="Week" />
+                <ScalarProperty Name="MSP" ColumnName="MSP" />
+                <ScalarProperty Name="MSFY" ColumnName="MSFY" />
+                <ScalarProperty Name="UnitNumber" ColumnName="UnitNumber" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

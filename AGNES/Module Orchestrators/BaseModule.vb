@@ -14,7 +14,7 @@
         TrainingData = New TrainingEntities
     End Sub
 
-#Region "Globally Shared Methods"
+#Region "Public Methods" '// Globally Shared Methods
 
     Public Function TruncateAlias(UserAlias As String) As String
         Dim ReturnAlias As String = UserAlias
