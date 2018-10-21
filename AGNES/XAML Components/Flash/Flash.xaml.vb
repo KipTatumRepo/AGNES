@@ -15,9 +15,10 @@ Public Class Flash
     Dim FeesGroup As FlashGroup
     Dim SubsidyGroup As FlashGroup
     Dim TotalGroup As FlashGroup
-    Dim Wk As WeekChooser
-    Dim MSP As PeriodChooser
     Dim Units As UnitChooser
+
+    Public Property MSP As PeriodChooser
+    Public Property Wk As WeekChooser
     Private _savestatus As Byte
     Public Property SaveStatus As Byte
         Get
@@ -53,53 +54,6 @@ Public Class Flash
     Public Sub New(FlashType, FlashUnit)
         InitializeComponent()
         ConstructTemplate(FlashType, FlashUnit)
-    End Sub
-
-#End Region
-
-#Region "Toolbar Methods"
-    Private Sub SaveDraft(sender As Object, e As MouseButtonEventArgs) Handles imgDraft.MouseLeftButtonDown
-        If SaveStatus > 0 Then Exit Sub
-
-        For Each fg As FlashGroup In grdFlashGroups.Children
-            If fg.GroupIsSubTotal = False Then
-                If fg.Save("Draft") = False Then
-                    SaveStatus = 0
-                    Exit Sub
-                End If
-            End If
-        Next
-        SaveStatus = 1
-    End Sub
-
-    Private Sub ToggleAlertButton(sender As Object, e As MouseButtonEventArgs) Handles imgEscalate.MouseLeftButtonDown
-        If imgEscalate.Tag = "On" Then
-            ToggleAlert(1)
-        Else
-            ToggleAlert(0)
-        End If
-        SaveStatus = 0
-    End Sub
-
-    Private Sub SaveFinal(sender As Object, e As MouseButtonEventArgs) Handles imgSave.MouseLeftButtonDown
-        If SaveStatus > 1 Then Exit Sub
-        For Each fg As FlashGroup In grdFlashGroups.Children
-            If fg.GroupIsSubTotal = False Then
-                If fg.Save("Final") = False Then
-                    SaveStatus = 0
-                    Exit Sub
-                End If
-            End If
-        Next
-        SaveStatus = 3
-    End Sub
-
-    Private Sub PrintFlash(sender As Object, e As MouseButtonEventArgs) Handles imgPrint.MouseLeftButtonDown
-        PrintAnyObject(grdMain, "Flash")
-    End Sub
-
-    Private Sub OpenDelegatesUI(sender As Object, e As MouseButtonEventArgs) Handles imgDelegates.MouseLeftButtonDown
-        'TODO: BUILD DELEGATE FUNCTIONALITY
     End Sub
 
 #End Region
@@ -466,6 +420,54 @@ Public Class Flash
         If Units.NumberOfAvailableUnits = 1 Then Units.IsEnabled = False
 
     End Sub
+
+#Region "Toolbar Methods"
+    Private Sub SaveDraft(sender As Object, e As MouseButtonEventArgs) Handles imgDraft.MouseLeftButtonDown
+        If SaveStatus > 0 Then Exit Sub
+
+        For Each fg As FlashGroup In grdFlashGroups.Children
+            If fg.GroupIsSubTotal = False Then
+                If fg.Save("Draft") = False Then
+                    SaveStatus = 0
+                    Exit Sub
+                End If
+            End If
+        Next
+        SaveStatus = 1
+    End Sub
+
+    Private Sub ToggleAlertButton(sender As Object, e As MouseButtonEventArgs) Handles imgEscalate.MouseLeftButtonDown
+        If imgEscalate.Tag = "On" Then
+            ToggleAlert(1)
+        Else
+            ToggleAlert(0)
+        End If
+        SaveStatus = 0
+    End Sub
+
+    Private Sub SaveFinal(sender As Object, e As MouseButtonEventArgs) Handles imgSave.MouseLeftButtonDown
+        If SaveStatus > 1 Then Exit Sub
+        For Each fg As FlashGroup In grdFlashGroups.Children
+            If fg.GroupIsSubTotal = False Then
+                If fg.Save("Final") = False Then
+                    SaveStatus = 0
+                    Exit Sub
+                End If
+            End If
+        Next
+        SaveStatus = 3
+    End Sub
+
+    Private Sub PrintFlash(sender As Object, e As MouseButtonEventArgs) Handles imgPrint.MouseLeftButtonDown
+        PrintAnyObject(grdMain, "Flash")
+    End Sub
+
+    Private Sub OpenDelegatesUI(sender As Object, e As MouseButtonEventArgs) Handles imgDelegates.MouseLeftButtonDown
+        Dim DelUi As New Delegates(Units.CurrentUnit)
+        DelUi.ShowDialog()
+    End Sub
+
+#End Region
 
     Private Sub Flash_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         If SaveStatus = 0 Then

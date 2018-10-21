@@ -8,9 +8,9 @@
         Title="Search Parameters" Height="125   " Width="300" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False">
     <Grid>
         <RadioButton x:Name="rdbLastName" Content="Last Name" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <RadioButton x:Name="rdbNumber" Content="Pers Number" HorizontalAlignment="Left" Margin="196,10,0,0" VerticalAlignment="Top"/>
-        <RadioButton x:Name="rdbCostCenter" Content="Cost Center" HorizontalAlignment="Left" Margin="106,10,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtSearch" HorizontalAlignment="Left" Height="23" Margin="10,30,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="272"/>
+        <RadioButton x:Name="rdbNumber" Content="Pers Number" HorizontalAlignment="Left" Margin="189,10,0,0" VerticalAlignment="Top"/>
+        <RadioButton x:Name="rdbCostCenter" Content="Cost Center" HorizontalAlignment="Left" Margin="98,10,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtSearch" HorizontalAlignment="Left" Height="23" Margin="10,30,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="267"/>
         <Button x:Name="btnSearch" Content="Search" HorizontalAlignment="Left" Margin="108,58,0,0" VerticalAlignment="Top" Width="76"/>
     </Grid>
 </Window>
