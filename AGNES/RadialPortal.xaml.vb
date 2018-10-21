@@ -65,9 +65,23 @@
 
             '// IMPERSONATION - Change to whichever userID and Access Level needed to test
             'With My.Settings
-            '    .UserName = "Miguel Avila"
-            '    .UserShortName = "Miguel"
+            '    .UserName = "Shawn Roland"
+            '    .UserShortName = "Shawn"
             '    .UserID = 10087
+            '    .UserLevel = 4
+            'End With
+
+            'With My.Settings
+            '    .UserName = "Mike Shea"
+            '    .UserShortName = "Mike"
+            '    .UserID = 10086
+            '    .UserLevel = 4
+            'End With
+
+            'With My.Settings
+            '    .UserName = "Nicholas Pagel"
+            '    .UserShortName = "Nick"
+            '    .UserID = 81
             '    .UserLevel = 4
             'End With
             '// IMPERSONATION

@@ -16,7 +16,7 @@ Public Class Flash
     Dim SubsidyGroup As FlashGroup
     Dim TotalGroup As FlashGroup
     Dim Units As UnitChooser
-
+    Public Property TypeOfFlash As Byte
     Public Property MSP As PeriodChooser
     Public Property Wk As WeekChooser
     Private _savestatus As Byte
@@ -53,6 +53,7 @@ Public Class Flash
 
     Public Sub New(FlashType, FlashUnit)
         InitializeComponent()
+        TypeOfFlash = FlashType
         ConstructTemplate(FlashType, FlashUnit)
     End Sub
 
