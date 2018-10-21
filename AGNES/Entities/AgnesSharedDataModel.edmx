@@ -43,6 +43,8 @@
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ModuleName" Type="varchar" MaxLength="64" Nullable="false" />
           <Property Name="ImgResource" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="RequiresFlashType" Type="bit" Nullable="false" />
+          <Property Name="RequiresUnitAccess" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ModulesUsers_Join">
           <Key>
@@ -124,6 +126,8 @@
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ModuleName" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ImgResource" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RequiresFlashType" Type="Boolean" Nullable="false" />
+          <Property Name="RequiresUnitAccess" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="ModulesUsers_Join">
           <Key>
@@ -220,6 +224,8 @@
           <EntitySetMapping Name="Modules">
             <EntityTypeMapping TypeName="AGNESSharedDataModel.Module">
               <MappingFragment StoreEntitySet="Modules">
+                <ScalarProperty Name="RequiresUnitAccess" ColumnName="RequiresUnitAccess" />
+                <ScalarProperty Name="RequiresFlashType" ColumnName="RequiresFlashType" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
                 <ScalarProperty Name="ModuleName" ColumnName="ModuleName" />
                 <ScalarProperty Name="ImgResource" ColumnName="ImgResource" />

@@ -5,6 +5,7 @@ Public Class Admin
 #Region "Properties"
     Private RecordExists As Boolean
     Private UserId As Long
+    Private SaveError As Boolean
 #End Region
 
 #Region "Constructor"
@@ -36,7 +37,7 @@ Public Class Admin
                   Select modl
 
         For Each modl In qam
-            Dim li As New ListBoxItem With {.Content = modl.ModuleName}
+            Dim li As New ModuleListItem With {.Content = modl.ModuleName, .ModuleId = modl.PID, .RequiresFlash = modl.RequiresFlashType, .RequiresUnit = modl.RequiresUnitAccess}
             AddHandler li.MouseDoubleClick, AddressOf ModuleSelected
             lbxAvailableModules.Items.Add(li)
         Next
@@ -82,6 +83,7 @@ Public Class Admin
     End Sub
 
     Private Sub UserSelected(sender As Object, e As MouseEventArgs)
+        'TODO:  ADD ROUTINE TO SHOW LIST OF THE SELECTED USER'S CURRENT ITEMS
         Dim s As ListBoxItem = sender
         lbxAccessibleModules.Items.Clear()
         lbxAccessibleUnits.Items.Clear()
@@ -92,26 +94,28 @@ Public Class Admin
     End Sub
 
     Private Sub ModuleSelected(sender As Object, e As MouseEventArgs)
-        Dim s As ListBoxItem = sender
-        Dim nli As New ListBoxItem With {.Content = s.Content}
+        Dim s As ModuleListItem = sender
+        Dim nli As New ModuleListItem With {.Content = s.Content, .ModuleId = s.ModuleId, .RequiresFlash = s.RequiresFlash, .RequiresUnit = s.RequiresUnit}
+
         AddHandler nli.MouseDoubleClick, AddressOf ModuleDeselected
         lbxAccessibleModules.Items.Add(nli)
         lbxAvailableModules.Items.Remove(s)
         lbxAccessibleModules.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
-        If s.Content = "Flash" Then cbxFlashType.IsEnabled = True
+        cbxFlashType.IsEnabled = nli.RequiresFlash
+        lbxAccessibleUnits.IsEnabled = nli.RequiresUnit
+        lbxAvailableUnits.IsEnabled = nli.RequiresUnit
     End Sub
 
     Private Sub ModuleDeselected(sender As Object, e As MouseEventArgs)
-        Dim s As ListBoxItem = sender
-        Dim nli As New ListBoxItem With {.Content = s.Content}
+        Dim s As ModuleListItem = sender
+        Dim nli As New ModuleListItem With {.Content = s.Content, .ModuleId = s.ModuleId, .RequiresFlash = s.RequiresFlash, .RequiresUnit = s.RequiresUnit}
         AddHandler nli.MouseDoubleClick, AddressOf ModuleSelected
         lbxAvailableModules.Items.Add(nli)
         lbxAccessibleModules.Items.Remove(s)
         lbxAvailableModules.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
-        If s.Content = "Flash" Then
-            cbxFlashType.IsEnabled = False
-            cbxFlashType.SelectedIndex = -1
-        End If
+        cbxFlashType.IsEnabled = nli.RequiresFlash
+        lbxAccessibleUnits.IsEnabled = nli.RequiresUnit
+        lbxAvailableUnits.IsEnabled = nli.RequiresUnit
     End Sub
 
     Private Sub UnitSelected(sender As Object, e As MouseEventArgs)
@@ -168,7 +172,9 @@ Public Class Admin
     End Sub
 
     Private Sub SaveRecord(sender As Object, e As RoutedEventArgs) Handles btnSave.Click
+        SaveError = False
         ValidateInfo()
+        If SaveError = True Then Exit Sub
         SaveUserInfo()
         If cbxAccess.SelectedIndex = 3 Then
             SaveModuleInfo()
@@ -192,6 +198,8 @@ Public Class Admin
         UserId = 0
         lbxAccessibleModules.Items.Clear()
         lbxAccessibleUnits.Items.Clear()
+        lbxAccessibleUnits.IsEnabled = False
+        lbxAvailableUnits.IsEnabled = False
         cbxFlashType.IsEnabled = False
         cbxFlashType.SelectedIndex = -1
         LoadModules()
@@ -199,7 +207,59 @@ Public Class Admin
     End Sub
 
     Private Sub ValidateInfo()
-        'TODO:  ADD VALIDATION ROUTINE
+
+        '// Check for required user info
+        If txtFirstName.Text = "" Or txtLastName.Text = "" Or txtSpokenName.Text = "" Or txtAlias.Text = "" Then
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly, 12,, "Cannot save",, "You are missing user information.")
+            amsg.ShowDialog()
+            amsg.Close()
+            SaveError = True
+            Exit Sub
+        End If
+
+        '// Check for access level
+        If cbxAccess.SelectedIndex = -1 Then
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly, 12,, "Cannot save",, "You must choose an access level.")
+            amsg.ShowDialog()
+            amsg.Close()
+            SaveError = True
+            Exit Sub
+        End If
+
+        If cbxAccess.SelectedIndex = 3 Then
+
+            '// Check for minimum number of modules (3)
+            If lbxAccessibleModules.Items.Count < 3 Then
+                Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly, 12,, "Cannot save",, "Users must have a minimum of three modules available.")
+                amsg.ShowDialog()
+                amsg.Close()
+                SaveError = True
+                Exit Sub
+            End If
+
+            '// Iterate through items and check for Flash type and Unit access, if required
+            For Each li As ModuleListItem In lbxAccessibleModules.Items
+                If li.RequiresFlash = True Then
+                    If cbxFlashType.SelectedIndex = -1 Then
+                        Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly, 12,, "Cannot save",, "At least one of the modules selected requires a flash type.")
+                        amsg.ShowDialog()
+                        amsg.Close()
+                        SaveError = True
+                        Exit Sub
+                    End If
+                End If
+                If li.RequiresUnit = True Then
+                    If lbxAccessibleUnits.Items.Count = 0 Then
+                        Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly, 12,, "Cannot save",, "At least one of the modules selected requires access to at least one unit.")
+                        amsg.ShowDialog()
+                        amsg.Close()
+                        SaveError = True
+                        Exit Sub
+                    End If
+                End If
+            Next
+
+        End If
     End Sub
 
     Private Sub SaveUserInfo()

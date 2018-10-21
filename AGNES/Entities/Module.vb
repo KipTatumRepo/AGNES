@@ -14,5 +14,7 @@ Partial Public Class [Module]
     Public Property PID As Long
     Public Property ModuleName As String
     Public Property ImgResource As String
+    Public Property RequiresFlashType As Boolean
+    Public Property RequiresUnitAccess As Boolean
 
 End Class

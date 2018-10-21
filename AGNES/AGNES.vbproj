@@ -119,6 +119,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Admin Objects\ModuleListItem.vb" />
     <Compile Include="Application Objects\AgnesBaseInput.vb" />
     <Compile Include="Entities\SickOtRecord.vb">
       <DependentUpon>FlashActualsModel.tt</DependentUpon>

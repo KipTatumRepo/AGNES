@@ -16,7 +16,7 @@
 
         '// Additional follow up modules/user inputs are invoked here, after the flash is closed
         Select Case SelectedFlashType
-            Case 1, 2, 4    ' Cafes, Commons, Fields
+            Case 1, 2   ' Puget Sound Cafes and Commons
                 Dim SickPay As New SingleUserInput
                 With SickPay
                     .InputType = 1
