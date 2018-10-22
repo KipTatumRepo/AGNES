@@ -24,6 +24,7 @@ Public Class Admin
 
 #Region "Private Methods"
     Private Sub LoadAccessLevels()
+        cbxAccess.Items.Clear()
         Dim qal = From ual In AGNESShared.AccessLevels
                   Select ual
 
@@ -47,6 +48,7 @@ Public Class Admin
     End Sub
 
     Private Sub LoadFlashTypes()
+        cbxFlashType.Items.Clear()
         Dim qft = From ft In AGNESShared.FlashTypes
                   Select ft
 
@@ -73,6 +75,7 @@ Public Class Admin
     End Sub
 
     Private Sub LoadUsers()
+        lbxUsers.Items.Clear()
         Dim qlu = From usr In AGNESShared.Users
                   Select usr
 
@@ -88,6 +91,8 @@ Public Class Admin
         Dim s As ListBoxItem = sender
         lbxAccessibleModules.Items.Clear()
         lbxAccessibleUnits.Items.Clear()
+        cbxFlashType.SelectedIndex = -1
+        cbxFlashType.IsEnabled = False
         LoadModules()
         LoadUnits()
         PopulateUserInfo(s.Content)
@@ -95,6 +100,7 @@ Public Class Admin
         PopulateAccessibleModules(Long.Parse(s.Tag))
         PopulateFlashType(Long.Parse(s.Tag))
         RecordExists = True
+        btnDelete.IsEnabled = True
     End Sub
 
     Private Sub ModuleSelected(sender As Object, e As MouseEventArgs)
@@ -240,8 +246,19 @@ Public Class Admin
     End Sub
 
     Private Sub PopulateFlashType(uid As Long)
-        'TODO: RETRIEVE AVAILABLE FLASH TYPE
+
+        Dim qft = From uft In AGNESShared.FlashTypesUsers_Join
+                  Select uft
+                  Where uft.UserId = uid
+
+        If qft.Count > 0 Then cbxFlashType.IsEnabled = True
+
+        For Each uft In qft
+            cbxFlashType.SelectedIndex = uft.FlashId - 1
+
+        Next
     End Sub
+
     Private Sub SaveRecord(sender As Object, e As RoutedEventArgs) Handles btnSave.Click
         SaveError = False
         ValidateInfo()
@@ -273,6 +290,7 @@ Public Class Admin
         lbxAvailableUnits.IsEnabled = False
         cbxFlashType.IsEnabled = False
         cbxFlashType.SelectedIndex = -1
+        cbxFlashType.Text = ""
         LoadModules()
         LoadUnits()
     End Sub
@@ -452,6 +470,59 @@ Public Class Admin
             End Try
         Next
         AGNESShared.SaveChanges()
+    End Sub
+
+    Private Sub DeleteUser(sender As Object, e As RoutedEventArgs) Handles btnDelete.Click
+        Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkayCancel, 14,, "Confirm Deletion",, "Click Ok to delete this user from all records.  You cannot undo.")
+        amsg.ShowDialog()
+        If amsg.ReturnResult = "Okay" Then
+            Dim tmpUserId As Long, usrnm As String = txtFirstName.Text & " " & txtLastName.Text
+            '// Fetch user id and delete from Users table
+            Dim qui = From usr In AGNESShared.Users
+                      Where usr.UserName = usrnm
+                      Select usr
+
+            For Each usr In qui
+                tmpUserId = usr.PID
+                AGNESShared.Users.Remove(usr)
+            Next
+
+            '// Delete from Units join
+            Dim quj = From uuj In AGNESShared.UnitsUsers_Join
+                      Where uuj.UserId = tmpUserId
+                      Select uuj
+
+            For Each uuj In quj
+                AGNESShared.UnitsUsers_Join.Remove(uuj)
+            Next
+
+            '// Delete from Modules join
+            Dim qmj = From umj In AGNESShared.ModulesUsers_Join
+                      Where umj.UserId = tmpUserId
+                      Select umj
+
+            For Each umj In qmj
+                AGNESShared.ModulesUsers_Join.Remove(umj)
+            Next
+
+            '// Delete from Flashtypes join
+            Dim qfj = From ufj In AGNESShared.FlashTypesUsers_Join
+                      Where ufj.UserId = tmpUserId
+                      Select ufj
+
+            For Each ufj In qfj
+                AGNESShared.FlashTypesUsers_Join.Remove(ufj)
+            Next
+            lbxUsers.SelectedIndex = -1
+            AGNESShared.SaveChanges()
+            ClearInfo()
+            LoadUsers()
+            Dim anmsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly, 14,,,, "Deletion successful!")
+            anmsg.ShowDialog()
+            anmsg.Close()
+        End If
+        amsg.Close()
+
     End Sub
 
 #End Region
