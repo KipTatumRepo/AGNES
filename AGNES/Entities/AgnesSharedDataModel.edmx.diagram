@@ -5,8 +5,8 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="21d4ffebbe0a489c974d5a0de111295a" Name="Diagram1">
-        <EntityTypeShape EntityType="AGNESSharedDataModel.AccessLevel" Width="1.5" PointX="5.375" PointY="2.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="AGNESSharedDataModel.ModuleGroup" Width="1.5" PointX="7" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AGNESSharedDataModel.AccessLevel" Width="1.5" PointX="7" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AGNESSharedDataModel.ModuleGroup" Width="1.5" PointX="10.25" PointY="0.5" IsExpanded="true" />
         <EntityTypeShape EntityType="AGNESSharedDataModel.Module" Width="1.5" PointX="5.375" PointY="0.5" IsExpanded="true" />
         <EntityTypeShape EntityType="AGNESSharedDataModel.ModulesUsers_Join" Width="1.5" PointX="7" PointY="0.5" IsExpanded="true" />
         <EntityTypeShape EntityType="AGNESSharedDataModel.User" Width="1.5" PointX="0.5" PointY="0.5" IsExpanded="true" />

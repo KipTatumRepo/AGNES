@@ -12,7 +12,7 @@
                 <Grid Background="#FFE5E5E5">
                     <ListBox x:Name="lbxUsers" HorizontalAlignment="Left" Height="347" Margin="249,34,0,0" VerticalAlignment="Top" Width="211" TabIndex="7"/>
                     <ListBox x:Name="lbxAvailableModules" HorizontalAlignment="Left" Height="151" Margin="465,33,0,0" VerticalAlignment="Top" Width="200" TabIndex="8"/>
-                    <ListBox x:Name="lbxAvailableUnits" HorizontalAlignment="Left" Height="139" Margin="465,212,0,0" VerticalAlignment="Top" Width="200" TabIndex="10"/>
+                    <ListBox x:Name="lbxAvailableUnits" HorizontalAlignment="Left" Height="139" Margin="465,212,0,0" VerticalAlignment="Top" Width="200" TabIndex="10" IsEnabled="False"/>
                     <TextBlock HorizontalAlignment="Left" Height="23" Margin="249,11,0,0" TextWrapping="Wrap" Text="Current Users" TextAlignment="Center" VerticalAlignment="Top" Width="211" Background="#FFA4A1A1" FontWeight="Bold"/>
                     <TextBlock HorizontalAlignment="Left" Height="23" Margin="465,11,0,0" TextWrapping="Wrap" Text="Available Modules" TextAlignment="Center" VerticalAlignment="Top" Width="200" Background="#FFA4A1A1" FontWeight="Bold"/>
                     <TextBlock HorizontalAlignment="Left" Height="23" Margin="678,11,0,0" TextWrapping="Wrap" Text="Accessible Modules" TextAlignment="Center" VerticalAlignment="Top" Width="200" Background="#FFA4A1A1" FontWeight="Bold"/>
@@ -22,7 +22,7 @@
                     <TextBlock HorizontalAlignment="Left" Height="23" Margin="10,179,0,0" TextWrapping="Wrap" Text="Spoken Name" TextAlignment="Center" VerticalAlignment="Top" Width="234" Background="#FFA4A1A1" FontWeight="Bold"/>
                     <TextBlock HorizontalAlignment="Left" Height="23" Margin="10,235,0,0" TextWrapping="Wrap" Text="Access Level" TextAlignment="Center" VerticalAlignment="Top" Width="234" Background="#FFA4A1A1" FontWeight="Bold"/>
                     <ListBox x:Name="lbxAccessibleModules" HorizontalAlignment="Left" Height="151" Margin="678,33,0,0" VerticalAlignment="Top" Width="200" TabIndex="9"/>
-                    <ListBox x:Name="lbxAccessibleUnits" HorizontalAlignment="Left" Height="142" Margin="678,209,0,0" VerticalAlignment="Top" Width="200" TabIndex="11"/>
+                    <ListBox x:Name="lbxAccessibleUnits" HorizontalAlignment="Left" Height="142" Margin="678,209,0,0" VerticalAlignment="Top" Width="200" TabIndex="11" IsEnabled="False"/>
                     <TextBlock HorizontalAlignment="Left" Height="23" Margin="465,189,0,0" TextWrapping="Wrap" Text="Available Units" TextAlignment="Center" VerticalAlignment="Top" Width="200" Background="#FFA4A1A1" FontWeight="Bold"/>
                     <TextBlock HorizontalAlignment="Left" Height="23" Margin="678,189,0,0" TextWrapping="Wrap" Text="Accessible Units" TextAlignment="Center" VerticalAlignment="Top" Width="200" Background="#FFA4A1A1" FontWeight="Bold"/>
                     <TextBox x:Name="txtFirstName" HorizontalAlignment="Left" Height="23" Margin="10,39,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="234" TabIndex="0"/>
