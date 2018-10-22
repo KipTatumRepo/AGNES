@@ -1,4 +1,6 @@
-﻿Public Class RadialPortal
+﻿Imports System.Reflection
+
+Public Class RadialPortal
 
 #Region "Properties"
 
@@ -25,6 +27,7 @@
 #Region "Constructor"
     Public Sub New()
         InitializeComponent()
+        GetVersion()
         GetUserInfo()
         BaseModule.Runmodule()
         ConstructRadialMenu()
@@ -33,6 +36,11 @@
 #End Region
 
 #Region "Private Methods"
+
+    Private Sub GetVersion()
+        Dim v As Version = Assembly.GetExecutingAssembly().GetName().Version
+        txtVersion.Text = "Version " & v.Major & "." & v.Minor
+    End Sub
 
     Private Sub GetUserInfo()
         Dim ef As New AGNESSharedDataEntity
