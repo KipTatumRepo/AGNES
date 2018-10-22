@@ -34,6 +34,7 @@
                     <Button x:Name="btnClear" Content="Clear" HorizontalAlignment="Left" Margin="169,361,0,0" VerticalAlignment="Top" Width="75" TabIndex="6"/>
                     <ComboBox x:Name="cbxFlashType" HorizontalAlignment="Left" Margin="678,359,0,0" VerticalAlignment="Top" Width="200" TabIndex="4" IsEnabled="False"/>
                     <TextBlock HorizontalAlignment="Left" Height="23" Margin="465,358,0,0" TextWrapping="Wrap" Text="Flash Type" TextAlignment="Center" VerticalAlignment="Top" Width="200" Background="#FFA4A1A1" FontWeight="Bold"/>
+                    <Button x:Name="btnDelete" Content="Delete" HorizontalAlignment="Left" Margin="90,361,0,0" VerticalAlignment="Top" Width="75" TabIndex="5" IsEnabled="False"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Other Features">
