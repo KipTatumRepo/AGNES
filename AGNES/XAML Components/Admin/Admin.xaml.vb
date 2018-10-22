@@ -6,6 +6,8 @@ Public Class Admin
     Private RecordExists As Boolean
     Private UserId As Long
     Private SaveError As Boolean
+    Private lbihold As New List(Of ListBoxItem)
+    Private mlbhold As New List(Of ModuleListItem)
 #End Region
 
 #Region "Constructor"
@@ -62,7 +64,7 @@ Public Class Admin
 
         For Each units In qau
             Dim li As New ListBoxItem With {.Content = units.Unit_Number, .ToolTip = units.Unit & " | " & units.profit_center_name &
-                " | " & units.Group}
+                " | " & units.Group, .Tag = units.Unit_Number}
             AddHandler li.MouseDoubleClick, AddressOf UnitSelected
             lbxAvailableUnits.Items.Add(li)
         Next
@@ -75,7 +77,7 @@ Public Class Admin
                   Select usr
 
         For Each usr In qlu
-            Dim lbi As New ListBoxItem With {.Content = usr.UserName}
+            Dim lbi As New ListBoxItem With {.Content = usr.UserName, .Tag = usr.PID}
             AddHandler lbi.MouseDoubleClick, AddressOf UserSelected
             lbxUsers.Items.Add(lbi)
         Next
@@ -83,13 +85,15 @@ Public Class Admin
     End Sub
 
     Private Sub UserSelected(sender As Object, e As MouseEventArgs)
-        'TODO:  ADD ROUTINE TO SHOW LIST OF THE SELECTED USER'S CURRENT ITEMS
         Dim s As ListBoxItem = sender
         lbxAccessibleModules.Items.Clear()
         lbxAccessibleUnits.Items.Clear()
         LoadModules()
         LoadUnits()
         PopulateUserInfo(s.Content)
+        PopulateAccessibleUnits(Long.Parse(s.Tag))
+        PopulateAccessibleModules(Long.Parse(s.Tag))
+        PopulateFlashType(Long.Parse(s.Tag))
         RecordExists = True
     End Sub
 
@@ -120,7 +124,7 @@ Public Class Admin
 
     Private Sub UnitSelected(sender As Object, e As MouseEventArgs)
         Dim s As ListBoxItem = sender
-        Dim nli As New ListBoxItem With {.Content = s.Content}
+        Dim nli As New ListBoxItem With {.Content = s.Content, .Tag = s.Tag, .ToolTip = s.ToolTip}
         AddHandler nli.MouseDoubleClick, AddressOf UnitDeselected
         lbxAccessibleUnits.Items.Add(nli)
         lbxAvailableUnits.Items.Remove(s)
@@ -171,6 +175,73 @@ Public Class Admin
 
     End Sub
 
+    Private Sub PopulateAccessibleUnits(uid As Long)
+        lbihold.Clear()
+
+        Dim qau = From aun In AGNESShared.UnitsUsers_Join
+                  Select aun
+                  Where aun.UserId = uid
+
+        For Each aun In qau
+            Dim unum As Long = aun.UnitNumber
+            For Each lbi As ListBoxItem In lbxAvailableUnits.Items
+                Dim tun As Long = Long.Parse(lbi.Tag)
+                If tun = unum Then
+                    Dim nli As New ListBoxItem With {.Content = lbi.Content, .Tag = lbi.Tag, .ToolTip = lbi.ToolTip}
+                    AddHandler nli.MouseDoubleClick, AddressOf UnitDeselected
+                    lbxAccessibleUnits.Items.Add(nli)
+                    lbihold.Add(lbi)
+                End If
+            Next
+        Next
+        If lbihold.Count > 0 Then
+            For Each lbi In lbihold
+                lbxAvailableUnits.Items.Remove(lbi)
+            Next
+            lbxAccessibleUnits.IsEnabled = True
+            lbxAvailableUnits.IsEnabled = True
+        Else
+            lbxAccessibleUnits.IsEnabled = False
+            lbxAvailableUnits.IsEnabled = False
+        End If
+        lbxAccessibleUnits.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+    End Sub
+
+    Private Sub PopulateAccessibleModules(uid As Long)
+        mlbhold.Clear()
+
+        Dim qam = From ama In AGNESShared.ModulesUsers_Join
+                  Select ama
+                  Where ama.UserId = uid
+
+        For Each ama In qam
+            Dim modnum As Long = ama.ModuleId
+            For Each mlb As ModuleListItem In lbxAvailableModules.Items
+                Dim mnum As Long = Long.Parse(mlb.ModuleId)
+                If mnum = modnum Then
+                    Dim mli As New ModuleListItem With {.Content = mlb.Content, .ModuleId = mlb.ModuleId, .RequiresFlash = mlb.RequiresFlash, .RequiresUnit = mlb.RequiresUnit}
+                    AddHandler mli.MouseDoubleClick, AddressOf ModuleDeselected
+                    lbxAccessibleModules.Items.Add(mli)
+                    mlbhold.Add(mlb)
+                End If
+            Next
+        Next
+        If mlbhold.Count > 0 Then
+            For Each mlb In mlbhold
+                lbxAvailableModules.Items.Remove(mlb)
+            Next
+            lbxAccessibleModules.IsEnabled = True
+            lbxAvailableModules.IsEnabled = True
+        Else
+            lbxAccessibleModules.IsEnabled = False
+            lbxAvailableModules.IsEnabled = False
+        End If
+        lbxAccessibleModules.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+    End Sub
+
+    Private Sub PopulateFlashType(uid As Long)
+        'TODO: RETRIEVE AVAILABLE FLASH TYPE
+    End Sub
     Private Sub SaveRecord(sender As Object, e As RoutedEventArgs) Handles btnSave.Click
         SaveError = False
         ValidateInfo()
