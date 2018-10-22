@@ -22,7 +22,7 @@
 
 #End Region
 
-#Region "Public Methods"
+#Region "Constructor"
     Public Sub New()
         InitializeComponent()
         GetUserInfo()
@@ -63,14 +63,44 @@
                 End With
             Next
 
+#Region "Impersonation for testing"
             '// IMPERSONATION - Change to whichever userID and Access Level needed to test
             'With My.Settings
-            '    .UserName = "Miguel Avila"
-            '    .UserShortName = "Miguel"
-            '    .UserID = 10087
+            '    .UserName = "Shawn Roland"
+            '    .UserShortName = "Shawn"
+            '    .UserID = 10095
             '    .UserLevel = 4
             'End With
-            '// IMPERSONATION
+
+            'With My.Settings
+            '    .UserName = "Mike Shea"
+            '    .UserShortName = "Mike"
+            '    .UserID = 10086
+            '    .UserLevel = 4
+            'End With
+
+            'With My.Settings
+            '    .UserName = "Nicholas Pagel"
+            '    .UserShortName = "Nick"
+            '    .UserID = 81
+            '    .UserLevel = 4
+            'End With
+
+            'With My.Settings
+            '    .UserName = "James Normandin"
+            '    .UserShortName = "Jim"
+            '    .UserID = 10096
+            '    .UserLevel = 4
+            'End With
+
+            'With My.Settings
+            '    .UserName = "Robert Price"
+            '    .UserShortName = "Robert"
+            '    .UserID = 10097
+            '    .UserLevel = 4
+            'End With
+
+#End Region
 
         End If
 
@@ -79,8 +109,6 @@
     Private Sub ConstructRadialMenu()
         '// Build the radial menu based on user access.  Placement is counterclockwise and base 0
         '// The ItemCount property requires a minimum of three items or else an overflow is triggered
-        '// You can "trick" to show fewer by declaring 4 items and using positions 0 And 2 for placement of two
-        '// or position 1 for placement of one item
 
         '// Build array of Module PIDs assigned to the user; bypass if access level is greater than user
         '// Count # of items & set ItemCount accordingly, which determines the size of the buttons and their hover event sizes

@@ -3,9 +3,18 @@
 Public Class PeriodChooser
     Inherits DockPanel
     Implements INotifyPropertyChanged
+
+#Region "Properties"
+    Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
+
     Private _currentperiod As Byte
     Private Week As WeekChooser
-    Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
+
+    Public Property MinPeriod As Byte
+    Public Property MaxPeriod As Byte
+    Public Property SelectAllEnabled As Boolean
+    Public Property RelatedWeekObject As Object
+    Public Property SelectedCount As Byte
     Public Property HeldPeriod As Byte
     Public Property CurrentPeriod As Byte
         Get
@@ -31,11 +40,9 @@ Public Class PeriodChooser
             RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(“Period”))
         End Set
     End Property
-    Public Property MinPeriod As Byte
-    Public Property MaxPeriod As Byte
-    Public SelectAllEnabled As Boolean
-    Public RelatedWeekObject As Object
-    Public Property SelectedCount As Byte
+#End Region
+
+#Region "Constructor"
     Public Sub New(ByRef RelatedWeekObject As WeekChooser, MinP As Byte, MaxP As Byte, CurP As Byte)
         Dim ct As Byte
         Week = RelatedWeekObject
@@ -65,6 +72,23 @@ Public Class PeriodChooser
         CurrentPeriod = CurP
     End Sub
 
+#End Region
+
+#Region "Public Methods"
+    Public Sub Reset()
+        CurrentPeriod = 0
+        For Each brd As Border In Children
+            Dim tb As TextBlock = brd.Child
+            If brd.Tag <> "Label" Then
+                tb.Foreground = Brushes.Black
+                tb.FontSize = 16
+                tb.FontWeight = FontWeights.SemiBold
+            End If
+        Next
+    End Sub
+#End Region
+
+#Region "Private Methods"
     Private Sub HoverOverPeriod(sender As Object, e As MouseEventArgs)
         Dim tb As TextBlock
         If TypeOf (sender) Is TextBlock Then
@@ -114,16 +138,6 @@ Public Class PeriodChooser
         Week.EnableWeeks()
     End Sub
 
-    Public Sub Reset()
-        CurrentPeriod = 0
-        For Each brd As Border In Children
-            Dim tb As TextBlock = brd.Child
-            If brd.Tag <> "Label" Then
-                tb.Foreground = Brushes.Black
-                tb.FontSize = 16
-                tb.FontWeight = FontWeights.SemiBold
-            End If
-        Next
-    End Sub
+#End Region
 
 End Class

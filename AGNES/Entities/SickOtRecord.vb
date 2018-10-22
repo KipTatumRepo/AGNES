@@ -10,11 +10,13 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class [Module]
+Partial Public Class SickOtRecord
     Public Property PID As Long
-    Public Property ModuleName As String
-    Public Property ImgResource As String
-    Public Property RequiresFlashType As Boolean
-    Public Property RequiresUnitAccess As Boolean
+    Public Property UnitNumber As Long
+    Public Property MSFY As Short
+    Public Property MSP As Byte
+    Public Property Week As Byte
+    Public Property SickPay As Decimal
+    Public Property OtPay As Decimal
 
 End Class

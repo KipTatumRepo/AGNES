@@ -1,4 +1,7 @@
 ﻿Public Class RefreshEvent
+
+    Public Property BuildingsMoving As New List(Of CRBuilding)
+
     Private _eventname As String
     Public Property EventName As String
         Get
@@ -18,6 +21,7 @@
             _eventid = value
         End Set
     End Property
+
     Private _groupid As Integer
     Public Property GroupID As Integer
         Get
@@ -49,7 +53,6 @@
     End Property
 
     Private _totalpopulation As Integer
-
     Public Property TotalPopulation As Integer
         Get
             Return _totalpopulation
@@ -58,8 +61,6 @@
             _totalpopulation = value
         End Set
     End Property
-
-    Public Property BuildingsMoving As New List(Of CRBuilding)
 
     Private _destbuild As String
     Public Property DestinationBuilding As String
@@ -70,7 +71,5 @@
             _destbuild = value
         End Set
     End Property
-
-
 
 End Class

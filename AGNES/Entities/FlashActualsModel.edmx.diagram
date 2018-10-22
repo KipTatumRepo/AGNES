@@ -6,6 +6,7 @@
     <edmx:Diagrams>
       <Diagram DiagramId="8139d818d9064f0886747ab5158dab17" Name="Diagram1">
         <EntityTypeShape EntityType="FlashActualsModel.FlashActualData" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FlashActualsModel.SickOtRecord" Width="1.5" PointX="3.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

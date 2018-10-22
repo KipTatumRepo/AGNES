@@ -3,10 +3,18 @@ Public Class UnitChooser
     'TODO:  ADD MULTISELECT FUNCTIONALITY TO UNIT CHOOSER
     Inherits DockPanel
     Implements INotifyPropertyChanged
-    Private _currentunit As Long
-    Private Week As WeekChooser
+
+#Region "Properties"
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
+
+    Private Week As WeekChooser
+
     Public Property HeldUnit As Long
+    Public Property NumberOfAvailableUnits As Byte
+    Public Property AllowMultiSelect As Boolean
+    Public Property SelectedCount As Byte
+
+    Private _currentunit As Long
     Public Property CurrentUnit As Long
         Get
             Return _currentunit
@@ -35,9 +43,10 @@ Public Class UnitChooser
             RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(“Unit”))
         End Set
     End Property
-    Public Property NumberOfAvailableUnits As Byte
-    Public Property AllowMultiSelect As Boolean
-    Public Property SelectedCount As Byte
+
+#End Region
+
+#Region "Constructor"
     Public Sub New(ByRef ListOfUnits As UnitGroup)
         Dim ct As Byte
         '// Create chooser label
@@ -66,6 +75,25 @@ Public Class UnitChooser
 
     End Sub
 
+#End Region
+
+#Region "Public Methods"
+    Public Sub Reset()
+        For Each brd As Border In Children
+            Dim tb As TextBlock = brd.Child
+            If brd.Tag <> "Label" Then
+                tb.Foreground = Brushes.Black
+                tb.FontSize = 14
+                tb.FontWeight = FontWeights.SemiBold
+                If brd.IsEnabled = True Then SelectedCount += 1
+            End If
+        Next
+        CurrentUnit = 0
+    End Sub
+
+#End Region
+
+#Region "Private Methods"
     Private Sub HoverOverUnit(sender As Object, e As MouseEventArgs)
         Dim tb As TextBlock
         If TypeOf (sender) Is TextBlock Then
@@ -108,17 +136,6 @@ Public Class UnitChooser
         End If
     End Sub
 
-    Public Sub Reset()
-        For Each brd As Border In Children
-            Dim tb As TextBlock = brd.Child
-            If brd.Tag <> "Label" Then
-                tb.Foreground = Brushes.Black
-                tb.FontSize = 14
-                tb.FontWeight = FontWeights.SemiBold
-                If brd.IsEnabled = True Then SelectedCount += 1
-            End If
-        Next
-        CurrentUnit = 0
-    End Sub
+#End Region
 
 End Class

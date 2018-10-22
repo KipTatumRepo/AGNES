@@ -1,5 +1,12 @@
 ﻿Imports System.Data
 Public Class Tender
+
+#Region "Properties"
+    Public Property TenderName As String
+    Public Property TenderQty As Integer
+    Public Property TenderAmt As Double
+    Public Property GL As Long
+
     Private _tenderid As Integer
     Public Property TenderId As Integer
         Get
@@ -10,15 +17,10 @@ Public Class Tender
             _tenderid = value
         End Set
     End Property
-    Public Property TenderName As String
-    Public Property TenderQty As Integer
-    Public Property TenderAmt As Double
-    Public Property GL As Long
 
-    Public Sub New()
-        Dim ph As String = ""
-    End Sub
+#End Region
 
+#Region "Private Methods"
     Private Sub GetGLCode(tid As Integer)
         Dim q = From c In WCRE.GLsTenders_Join
                 Where c.TenderId = tid
@@ -29,5 +31,6 @@ Public Class Tender
             GL = c.GLId
         Next
     End Sub
+#End Region
 
 End Class

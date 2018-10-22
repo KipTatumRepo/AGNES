@@ -1,5 +1,7 @@
 ﻿Public Class AgnesBaseInput
     Inherits Grid
+#Region "Properties"
+
     Public Enum ShowFlare
         Show
         Hide
@@ -31,6 +33,9 @@
         End Set
     End Property
 
+#End Region
+
+#Region "Constructor"
     Public Sub New(ByVal FieldWidth As Integer, ByVal v As VerticalAlignment, ByVal h As HorizontalAlignment, FontSize As FontSz, Optional ta As TextAlignment = TextAlignment.Left, Optional ByVal s As String = "", Optional ByVal tw As TextWrapping = TextWrapping.Wrap)
         HorizontalAlignment = h
         VerticalAlignment = v
@@ -91,5 +96,7 @@
             .Add(mytxt)
         End With
     End Sub
+
+#End Region
 
 End Class
