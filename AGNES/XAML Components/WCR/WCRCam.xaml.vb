@@ -1,5 +1,4 @@
 ﻿Imports System.Windows.Threading
-'TODO: ADD RELOAD OF CAM CHECKS AND VALIDATION AGAINST SAVING ONES THAT ALREADY EXIST
 Public Class WCRCam
 
 #Region "Properties"
