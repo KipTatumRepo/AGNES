@@ -25,6 +25,7 @@ Public Class AgnesMessageBox
         Danger
         Alert
     End Enum
+
     Private Property FntSz As Byte
     Private dt As DispatcherTimer = New DispatcherTimer()
     Private CopiedText As String
@@ -78,10 +79,8 @@ Public Class AgnesMessageBox
                     imgAlert = img
                     'imgAlert.Source = New BitmapImage(New Uri("Resources/BusinessGroup.png", UriKind.Relative))
                 Case ImageType.Danger
-                    Dim img As New Image With {.Source = New BitmapImage(New Uri("Resources/danger.png", UriKind.Relative)),
-                        .Height = imgAlert.Height, .Width = imgAlert.Width, .Stretch = Stretch.Fill}
-                    img.Margin = New Thickness(imgAlert.Margin.Left, imgAlert.Margin.Top, imgAlert.Margin.Right, imgAlert.Margin.Bottom)
-                    imgAlert = img
+                    imgAlert.Source = New BitmapImage(New Uri("/AGNES;component/Resources/danger.png", UriKind.Relative))
+
             End Select
             'TODO: FIGURE OUT THE RUNTIME IMGSOURCE METHOD
         End Set
@@ -161,7 +160,7 @@ Public Class AgnesMessageBox
 #End Region
 
 #Region "Constructor"
-    Public Sub New(Size As MsgBoxSize, Layout As MsgBoxLayout, Type As MsgBoxType, Fontsize As Byte, Optional PermitCopying As Boolean = False, Optional TopText As String = "", Optional OffsetText As String = "", Optional BottomText As String = "")
+    Public Sub New(Size As MsgBoxSize, Layout As MsgBoxLayout, Type As MsgBoxType, Fontsize As Byte, Optional PermitCopying As Boolean = False, Optional TopText As String = "", Optional OffsetText As String = "", Optional BottomText As String = "", Optional imgt As ImageType = Nothing)
         InitializeComponent()
         FntSz = Fontsize
         MsgSize = Size
@@ -171,6 +170,7 @@ Public Class AgnesMessageBox
         TopSectionText = TopText
         OffsetSectionText = OffsetText
         BottomSectionText = BottomText
+        ImageSource = imgt
     End Sub
 
 #End Region

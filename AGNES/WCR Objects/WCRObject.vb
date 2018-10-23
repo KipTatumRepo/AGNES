@@ -286,18 +286,23 @@ Public Class WCRObject
         Return vid
     End Function
 
-    Public Function CheckDoesNotExist(cn, vid) As Boolean
+    Public Function CheckDoesNotExist(cn As Long, vid As Integer) As Boolean
         Dim ef As New WCREntities
-        Dim vid1 As Integer = vid
         Try
-            Dim IsNew = ef.ReceivedCAMChecks.Single(Function(p) p.CheckNumber Is cn)     ' If check number exists,
-            Dim DoubleCheck = ef.ReceivedCAMChecks.Single(Function(p) p.VendorId = vid1)      ' see if it's for the same vendor.  If so, throw an error; if not, create new entry
-            Return False
-        Catch ex As InvalidOperationException
-            Return True
+
+            Dim qce = From vcv In ef.ReceivedCAMChecks
+                      Select vcv
+                      Where vcv.CheckNumber = cn And
+                          vcv.VendorId = vid
+
+            If qce.Count = 0 Then
+                Return True
+            Else
+                Return False
+            End If
         Catch ex As Exception
             Dim a As String = ex.Message
-            Return False
+        Return False
         End Try
     End Function
 
