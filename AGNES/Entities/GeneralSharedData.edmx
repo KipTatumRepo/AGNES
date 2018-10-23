@@ -96,11 +96,22 @@
           <Property Name="Telephone" Type="varchar" MaxLength="32" />
           <Property Name="Email" Type="varchar" MaxLength="128" />
         </EntityType>
+        <EntityType Name="ApplicationSessions">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ApplicationName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="SessionStart" Type="datetime" Nullable="false" />
+          <Property Name="SessionEnd" Type="datetime" />
+        </EntityType>
         <EntityContainer Name="BIModelStoreContainer">
           <EntitySet Name="DATES" EntityType="Self.DATES" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LOCATIONS" EntityType="Self.LOCATIONS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MasterBuildingList" EntityType="Self.MasterBuildingList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeList" EntityType="Self.EmployeeList" Schema="HR" store:Type="Tables" />
+          <EntitySet Name="ApplicationSessions" EntityType="Self.ApplicationSessions" Schema="stats" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -124,6 +135,7 @@
           <EntitySet Name="Dates" EntityType="BIModel.Dates" />
           <EntitySet Name="LOCATIONS" EntityType="BIModel.LOCATION" />
           <EntitySet Name="EmployeeLists" EntityType="BIModel.EmployeeList" />
+          <EntitySet Name="ApplicationSessions" EntityType="BIModel.ApplicationSession" />
         </EntityContainer>
         <EntityType Name="Dates">
           <Key>
@@ -202,6 +214,16 @@
           <Property Name="Zip" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
           <Property Name="Telephone" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
           <Property Name="Email" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ApplicationSession">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApplicationName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="SessionStart" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SessionEnd" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -298,6 +320,17 @@
                 <ScalarProperty Name="PersonnelSubArea" ColumnName="PersonnelSubArea" />
                 <ScalarProperty Name="PSubArea" ColumnName="PSubArea" />
                 <ScalarProperty Name="PersonnelArea" ColumnName="PersonnelArea" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ApplicationSessions">
+            <EntityTypeMapping TypeName="BIModel.ApplicationSession">
+              <MappingFragment StoreEntitySet="ApplicationSessions">
+                <ScalarProperty Name="SessionEnd" ColumnName="SessionEnd" />
+                <ScalarProperty Name="SessionStart" ColumnName="SessionStart" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
               </MappingFragment>
             </EntityTypeMapping>

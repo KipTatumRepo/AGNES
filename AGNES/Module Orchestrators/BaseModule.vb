@@ -204,6 +204,47 @@
         Return (fs, us)
     End Function
 
+    Public Sub SessionLog(i)
+        '// Ignore Owners to avoid junk data from debugging
+        If My.Settings.UserLevel = 1 Then Exit Sub
+        Select Case i
+            Case 0      ' Initiate session
+                Dim session As New ApplicationSession, sessionstart As DateTime = Format(Now(), "MM/dd/yy hh:mm:ss")
+
+                '// Write new session data row
+                With session
+                    .ApplicationName = "AGNES"
+                    .SessionStart = sessionstart
+                    .UserId = Environment.UserName
+                End With
+                SharedDataGroup.ApplicationSessions.Add(session)
+                SharedDataGroup.SaveChanges()
+
+                '// Fetch newly saved row and assign session id to settings from PID
+                Dim qsi = From usi In SharedDataGroup.ApplicationSessions
+                          Select usi
+                          Where usi.ApplicationName = "AGNES" And
+                            usi.UserId = Environment.UserName And
+                            usi.SessionStart = sessionstart
+
+                For Each usi In qsi
+                    My.Settings.SessionId = usi.PID
+                Next
+            Case 1      ' Conclude session
+                Dim sessionend As DateTime = Format(Now(), "MM/dd/yy hh:mm:ss")
+                Dim qsi = From usi In SharedDataGroup.ApplicationSessions
+                          Select usi
+                          Where usi.PID = My.Settings.SessionId
+
+                For Each usi In qsi
+                    With usi
+                        .SessionEnd = sessionend
+                    End With
+                Next
+                SharedDataGroup.SaveChanges()
+        End Select
+    End Sub
+
 #End Region
 
 End Module
