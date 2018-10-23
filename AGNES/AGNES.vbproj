@@ -121,6 +121,9 @@
     </ApplicationDefinition>
     <Compile Include="Admin Objects\ModuleListItem.vb" />
     <Compile Include="Application Objects\AgnesBaseInput.vb" />
+    <Compile Include="Entities\ApplicationSession.vb">
+      <DependentUpon>GeneralSharedData.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\SickOtRecord.vb">
       <DependentUpon>FlashActualsModel.tt</DependentUpon>
     </Compile>

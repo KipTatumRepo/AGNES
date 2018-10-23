@@ -26,5 +26,6 @@ Partial Public Class BIEntities
     Public Overridable Property Dates() As DbSet(Of Dates)
     Public Overridable Property LOCATIONS() As DbSet(Of LOCATION)
     Public Overridable Property EmployeeLists() As DbSet(Of EmployeeList)
+    Public Overridable Property ApplicationSessions() As DbSet(Of ApplicationSession)
 
 End Class
