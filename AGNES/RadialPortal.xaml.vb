@@ -30,6 +30,7 @@ Public Class RadialPortal
         GetVersion()
         GetUserInfo()
         BaseModule.Runmodule()
+        SessionLog(0)
         ConstructRadialMenu()
     End Sub
 
@@ -212,6 +213,7 @@ Public Class RadialPortal
                                         AgnesMessageBox.MsgBoxType.YesNo, 18,,,, "Close AGNES?")
         amsg.ShowDialog()
         If amsg.ReturnResult = "Yes" Then
+            SessionLog(1)
             amsg.Close()
             GC.Collect()
             Close()
@@ -255,6 +257,7 @@ Public Class RadialPortal
         End Select
         Show()
     End Sub
+
 
 #End Region
 

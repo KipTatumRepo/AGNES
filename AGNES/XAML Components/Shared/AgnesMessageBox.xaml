@@ -13,7 +13,7 @@
         <DropShadowEffect Opacity="0.7" BlurRadius="14" ShadowDepth="6" Direction="240"/>
     </Window.Effect>
     <Grid x:Name="grdMsgBox">
-        <Image x:Name="imgAlert" HorizontalAlignment="Left" Height="100" Margin="71,31,0,0" VerticalAlignment="Top" Width="100"/>
+        <Image x:Name="imgAlert" HorizontalAlignment="Left" Height="100" Margin="71,31,0,0" VerticalAlignment="Top" Width="100" Source="/AGNES;component/Resources/danger.jpg"/>
         <TextBlock x:Name="tbTopSection" HorizontalAlignment="Left" Margin="71,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="100" Width="667" TextAlignment="Center" FontSize="18"/>
         <TextBlock x:Name="tbTopOffsetSection" HorizontalAlignment="Left" Margin="193,31,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="100" Width="545" TextAlignment="Center" FontSize="18"/>
         <TextBlock x:Name="tbBottomSection" HorizontalAlignment="Left" Margin="71,137,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="170" Width="667" FontSize="18" TextAlignment="Center"/>
