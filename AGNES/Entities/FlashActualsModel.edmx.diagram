@@ -5,8 +5,9 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="8139d818d9064f0886747ab5158dab17" Name="Diagram1">
-        <EntityTypeShape EntityType="FlashActualsModel.FlashActualData" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="FlashActualsModel.SickOtRecord" Width="1.5" PointX="3.375" PointY="0.75" />
+        <EntityTypeShape EntityType="FlashActualsModel.FlashActualData" Width="1.5" PointX="0.5" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FlashActualsModel.SickOtRecord" Width="1.5" PointX="2.125" PointY="0.5" />
+        <EntityTypeShape EntityType="FlashActualsModel.FlashAlert" Width="1.5" PointX="3.75" PointY="0.5" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

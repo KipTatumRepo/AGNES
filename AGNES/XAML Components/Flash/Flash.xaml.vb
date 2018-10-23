@@ -65,16 +65,19 @@ Public Class Flash
             With imgEscalate
                 .Tag = "On"
                 .Source = New BitmapImage(New Uri("/AGNES;component/Resources/HandWaveOn.png", UriKind.Relative))
-                .ToolTip = "Deactive alert to DM"
+                .ToolTip = "Deactivate alert to DM"
             End With
+            AddAlertMsg()
         Else
             With imgEscalate
                 .Tag = "Off"
                 .Source = New BitmapImage(New Uri("/AGNES;component/Resources/HandWave.png", UriKind.Relative))
                 .ToolTip = "Call out Flash to DM"
             End With
+            DeleteAlertMsg()
         End If
     End Sub
+
 #End Region
 
 #Region "Private Methods"
@@ -469,6 +472,42 @@ Public Class Flash
     End Sub
 
 #End Region
+
+    Private Sub AddAlertMsg()
+        Dim alertmsg As String = "", sui As New SingleUserInput With {.InputType = 0}
+        sui.lblInputDirection.Text = "Please enter a short (64 characters or less) message to accompany this alert."
+        sui.ShowDialog()
+        alertmsg = sui.StringVal
+        sui.Close()
+
+        Dim nfa As New FlashAlert
+        With nfa
+            .MSFY = CurrentFiscalYear
+            .MSP = MSP.CurrentPeriod
+            .Week = Wk.CurrentWeek
+            .UnitNumber = Units.CurrentUnit
+            .AlertNote = alertmsg
+            .SavedBy = My.Settings.UserShortName
+        End With
+        With FlashActuals
+            .FlashAlerts.Add(nfa)
+            .SaveChanges()
+        End With
+    End Sub
+
+    Private Sub DeleteAlertMsg()
+        Dim qfa = From fai In FlashActuals.FlashAlerts
+                  Select fai
+                  Where fai.UnitNumber = Units.CurrentUnit And
+                      fai.MSFY = CurrentFiscalYear And
+                      fai.MSP = MSP.CurrentPeriod And
+                      fai.Week = Wk.CurrentWeek
+
+        For Each fai In qfa
+            FlashActuals.FlashAlerts.Remove(fai)
+        Next
+        FlashActuals.SaveChanges()
+    End Sub
 
     Private Sub Flash_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         If SaveStatus = 0 Then
