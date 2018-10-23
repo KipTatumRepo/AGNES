@@ -130,8 +130,13 @@
     <Compile Include="Entities\SickOtRecord.vb">
       <DependentUpon>FlashActualsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Flash Objects\StatusItem.vb" />
+    <Compile Include="Module Orchestrators\FlashStatusModule.vb" />
     <Compile Include="XAML Components\Flash\Delegates.xaml.vb">
       <DependentUpon>Delegates.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="XAML Components\Flash\FlashStatus.xaml.vb">
+      <DependentUpon>FlashStatus.xaml</DependentUpon>
     </Compile>
     <Compile Include="XAML Components\Shared\AgnesMessageBox.xaml.vb">
       <DependentUpon>AgnesMessageBox.xaml</DependentUpon>
@@ -474,6 +479,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="XAML Components\Flash\FlashStatus.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="XAML Components\Shared\AgnesMessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -782,6 +791,8 @@
       <DependentUpon>WCRModule.edmx</DependentUpon>
       <LastGenOutput>WCRModule.vb</LastGenOutput>
     </Content>
+    <Resource Include="Resources\unlocked.png" />
+    <Resource Include="Resources\locked.png" />
     <Resource Include="Resources\magglass.png" />
     <Resource Include="Resources\Training.png" />
     <Resource Include="Resources\HandWaveOn.png" />

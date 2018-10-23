@@ -1,5 +1,5 @@
 ﻿Imports System.Reflection
-
+'TODO: CLEAN UP LOCATIONS FILE - SPECIFICALLY, THE FLASH TYPE COLUMN!  MISSING AV UNITS, ETC
 Public Class RadialPortal
 
 #Region "Properties"
@@ -250,6 +250,8 @@ Public Class RadialPortal
                 BGCRMModule.Runmodule()
             Case "Flash"
                 FlashModule.Runmodule()
+            Case "Flash Status"
+                FlashStatusModule.RunModule()
             Case "Admin"
                 AdminModule.Runmodule()
             Case "Training"
