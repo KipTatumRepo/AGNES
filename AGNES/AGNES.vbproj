@@ -130,8 +130,16 @@
     <Compile Include="Entities\SickOtRecord.vb">
       <DependentUpon>FlashActualsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Trainer.vb">
+      <DependentUpon>TrainingModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TrainingRecord.vb">
+      <DependentUpon>TrainingModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Flash Objects\StatusItem.vb" />
     <Compile Include="Module Orchestrators\FlashStatusModule.vb" />
+    <Compile Include="Training Objects\EmployeeObj.vb" />
+    <Compile Include="Training Objects\TrainingGridSource.vb" />
     <Compile Include="XAML Components\Flash\Delegates.xaml.vb">
       <DependentUpon>Delegates.xaml</DependentUpon>
     </Compile>

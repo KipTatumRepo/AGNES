@@ -52,7 +52,7 @@
 #End Region
 
 #Region "Constructor"
-    Public Sub New(FieldWidth As Integer, AllowPositive As Boolean, AllowNegative As Boolean, ForcePositive As Boolean, ForceNegative As Boolean, SelectAllUponEnteringField As Boolean, FontSize As AgnesBaseInput.FontSz, Optional ByVal Decimals As Byte = 0, Optional ByVal DefaultText As String = "$0.00")
+    Public Sub New(FieldWidth As Integer, AllowPositive As Boolean, AllowNegative As Boolean, ForcePositive As Boolean, ForceNegative As Boolean, SelectAllUponEnteringField As Boolean, FontSize As AgnesBaseInput.FontSz, Optional ByVal Decimals As Byte = 0, Optional ByVal DefaultText As String = "0")
         MyBase.New(FieldWidth, VerticalAlignment.Top, HorizontalAlignment.Left, FontSize, TextAlignment.Center, DefaultText, TextWrapping.NoWrap)
         Positive = AllowPositive
         Negative = AllowNegative
