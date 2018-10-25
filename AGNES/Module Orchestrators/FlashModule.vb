@@ -3,7 +3,7 @@
     Public FlashActuals As FlashActualsEntity
     Public FlashPage As Flash
     Public InitialLoadStatus As Byte = 0
-    Public CurrentFiscalYear As Integer = 2019
+
     Public Sub Runmodule()
         FlashActuals = New FlashActualsEntity
         Dim SelectedFlashType As Byte, SelectedFlashUnit As Long
