@@ -5,6 +5,7 @@
     Public FlashForecasts As ForecastEntity
     Public TrainingData As TrainingEntities
     Public BGE As BGCRMEntity
+    Public CurrentFiscalYear As Integer = 2019
     Public Sub Runmodule()
         SharedDataGroup = New BIEntities
         AGNESShared = New AGNESSharedDataEntity
@@ -33,7 +34,7 @@
     End Sub
 
     Public Function GetCurrentPeriod(dt As Date) As Byte
-        dt = dt.AddDays(1)
+        dt = dt.AddDays(-1)
         Dim df = From d In SharedDataGroup.Dates
                  Where d.Date_ID = dt
                  Select d
@@ -115,7 +116,7 @@
         Return 0
     End Function
 
-    Public Function SelectFlashForecastTypeAndUnit() As (flashselection As Byte, unitselection As Long)
+    Public Function SelectFlashForecastTypeAndUnit(Optional ignoreunits As Boolean = False) As (flashselection As Byte, unitselection As Long)
         Dim fs As Byte, us As Long, availableflashtypes As New List(Of Long), availableunits As New List(Of Long), usr As Integer, ulvl As Byte
         Dim LocalAGNESShared As AGNESSharedDataEntity = New AGNESSharedDataEntity
         usr = My.Settings.UserID : ulvl = My.Settings.UserLevel
@@ -151,6 +152,10 @@
             flchs.Close()
         Else
             fs = availableflashtypes(0)
+        End If
+        If ignoreunits = True Then
+            Return (fs, 0)
+            Exit Function
         End If
         Select Case fs
             Case 1, 2, 4    ' Cafes, Commons, Fields
@@ -244,6 +249,17 @@
                 SharedDataGroup.SaveChanges()
         End Select
     End Sub
+
+    Public Function GetUnitName(i As Long) As String
+        Dim qun = From f In SharedDataGroup.LOCATIONS
+                  Where f.Unit_Number = i
+                  Select f
+
+        For Each f In qun
+            Return f.Unit
+        Next
+        Return "Null"
+    End Function
 
 #End Region
 

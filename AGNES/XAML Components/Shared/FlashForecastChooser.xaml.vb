@@ -77,17 +77,6 @@
         Return "Null"
     End Function
 
-    Private Function GetUnitName(i As Long) As String
-        Dim qun = From f In SharedDataGroup.LOCATIONS
-                  Where f.Unit_Number = i
-                  Select f
-
-        For Each f In qun
-            Return f.Unit
-        Next
-        Return "Null"
-    End Function
-
     Private Sub MouseHover(s As Object, e As MouseEventArgs)
         Dim sender As Border = s, tb As TextBlock = sender.Child
         With tb

@@ -5,6 +5,18 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="FlashActualsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="FlashAlerts">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MSFY" Type="smallint" Nullable="false" />
+          <Property Name="MSP" Type="tinyint" Nullable="false" />
+          <Property Name="Week" Type="tinyint" Nullable="false" />
+          <Property Name="UnitNumber" Type="bigint" Nullable="false" />
+          <Property Name="AlertNote" Type="varchar" MaxLength="64" />
+          <Property Name="SavedBy" Type="varchar" MaxLength="128" Nullable="false" />
+        </EntityType>
         <EntityType Name="Flashes">
           <Key>
             <PropertyRef Name="PID" />
@@ -37,6 +49,7 @@
           <Property Name="OtPay" Type="money" Nullable="false" />
         </EntityType>
         <EntityContainer Name="FlashActualsModelStoreContainer">
+          <EntitySet Name="FlashAlerts" EntityType="Self.FlashAlerts" Schema="agnes" store:Type="Tables" />
           <EntitySet Name="Flashes" EntityType="Self.Flashes" Schema="agnes" store:Type="Tables" />
           <EntitySet Name="SickOtRecords" EntityType="Self.SickOtRecords" Schema="agnes" store:Type="Tables" />
         </EntityContainer>
@@ -66,6 +79,7 @@
         <EntityContainer Name="FlashActualsEntity" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="FlashActualData" EntityType="FlashActualsModel.FlashActualData" />
           <EntitySet Name="SickOtRecords" EntityType="FlashActualsModel.SickOtRecord" />
+          <EntitySet Name="FlashAlerts" EntityType="FlashActualsModel.FlashAlert" />
         </EntityContainer>
         <EntityType Name="SickOtRecord">
           <Key>
@@ -78,6 +92,18 @@
           <Property Name="Week" Type="Byte" Nullable="false" />
           <Property Name="SickPay" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
           <Property Name="OtPay" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+        </EntityType>
+        <EntityType Name="FlashAlert">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MSFY" Type="Int16" Nullable="false" />
+          <Property Name="MSP" Type="Byte" Nullable="false" />
+          <Property Name="Week" Type="Byte" Nullable="false" />
+          <Property Name="UnitNumber" Type="Int64" Nullable="false" />
+          <Property Name="AlertNote" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="SavedBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -114,6 +140,19 @@
                 <ScalarProperty Name="MSP" ColumnName="MSP" />
                 <ScalarProperty Name="MSFY" ColumnName="MSFY" />
                 <ScalarProperty Name="UnitNumber" ColumnName="UnitNumber" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FlashAlerts">
+            <EntityTypeMapping TypeName="FlashActualsModel.FlashAlert">
+              <MappingFragment StoreEntitySet="FlashAlerts">
+                <ScalarProperty Name="SavedBy" ColumnName="SavedBy" />
+                <ScalarProperty Name="AlertNote" ColumnName="AlertNote" />
+                <ScalarProperty Name="UnitNumber" ColumnName="UnitNumber" />
+                <ScalarProperty Name="Week" ColumnName="Week" />
+                <ScalarProperty Name="MSP" ColumnName="MSP" />
+                <ScalarProperty Name="MSFY" ColumnName="MSFY" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
               </MappingFragment>
             </EntityTypeMapping>
