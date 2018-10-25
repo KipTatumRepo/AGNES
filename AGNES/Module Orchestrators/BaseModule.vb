@@ -34,7 +34,7 @@
     End Sub
 
     Public Function GetCurrentPeriod(dt As Date) As Byte
-        dt = dt.AddDays(1)
+        dt = dt.AddDays(-1)
         Dim df = From d In SharedDataGroup.Dates
                  Where d.Date_ID = dt
                  Select d
