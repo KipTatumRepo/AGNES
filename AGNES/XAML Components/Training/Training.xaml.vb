@@ -176,11 +176,12 @@ Public Class Training
             Dim tr As New TrainingRecordItem
             With tr
                 .Training = GetTrainingType(atr.Training)
-                .Start = Format(atr.StartDate, "MM/dd/yy")
+                .Start = FormatDateTime(atr.StartDate, DateFormat.ShortDate)
                 .Complete = Format(atr.EndDate, "MM/dd/yy")
                 .Trainer = GetTrainer(atr.Trainer)
                 .Score = atr.Score
             End With
+
             'TODO:  ADD ROUTINE AND DATA TO DETERMINE IF CERTIFICATION IS NEEDED AND, IF SO, WHAT SCORE QUALIFIES
             'If HasCert(atr.Training) = True Then
             '    tr.Certification = CertAchieved(atr.Training, atr.Score)
@@ -190,6 +191,11 @@ Public Class Training
             dgTrainingHistory.DataContext = source
             dgTrainingHistory.ItemsSource = source
         Next
+
+        'Dim col As DataGridColumn = dgTrainingHistory.Columns(1)
+
+        'col.Width = 20
+
 
     End Sub
 
