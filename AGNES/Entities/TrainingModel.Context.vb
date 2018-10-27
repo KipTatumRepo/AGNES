@@ -23,5 +23,7 @@ Partial Public Class TrainingEntities
     End Sub
 
     Public Overridable Property TrainingTypes() As DbSet(Of TrainingType)
+    Public Overridable Property TrainingRecords() As DbSet(Of TrainingRecord)
+    Public Overridable Property Trainers() As DbSet(Of Trainer)
 
 End Class

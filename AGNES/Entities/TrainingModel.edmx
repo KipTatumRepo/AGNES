@@ -4,7 +4,28 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="TrainingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="TrainingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Trainers">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TrainerName" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="TrainingId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TrainingRecords">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AssociateID" Type="bigint" Nullable="false" />
+          <Property Name="Training" Type="smallint" Nullable="false" />
+          <Property Name="Trainer" Type="bigint" Nullable="false" />
+          <Property Name="StartDate" Type="date" Nullable="false" />
+          <Property Name="EndDate" Type="date" Nullable="false" />
+          <Property Name="Score" Type="decimal" Precision="4" Scale="1" Nullable="false" />
+          <Property Name="Certification" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="TrainingTypes">
           <Key>
             <PropertyRef Name="PID" />
@@ -18,10 +39,11 @@
           <Property Name="Scored" Type="bit" />
         </EntityType>
         <EntityContainer Name="TrainingModelStoreContainer">
+          <EntitySet Name="Trainers" EntityType="Self.Trainers" Schema="Training" store:Type="Tables" />
+          <EntitySet Name="TrainingRecords" EntityType="Self.TrainingRecords" Schema="Training" store:Type="Tables" />
           <EntitySet Name="TrainingTypes" EntityType="Self.TrainingTypes" Schema="Training" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="TrainingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -39,7 +61,30 @@
         </EntityType>
         <EntityContainer Name="TrainingEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="TrainingTypes" EntityType="Self.TrainingType" />
+          <EntitySet Name="TrainingRecords" EntityType="TrainingModel.TrainingRecord" />
+          <EntitySet Name="Trainers" EntityType="TrainingModel.Trainer" />
         </EntityContainer>
+        <EntityType Name="TrainingRecord">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AssociateID" Type="Int64" Nullable="false" />
+          <Property Name="Training" Type="Int16" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Score" Type="Decimal" Nullable="false" Precision="4" Scale="1" />
+          <Property Name="Certification" Type="Boolean" Nullable="false" />
+          <Property Name="Trainer" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Trainer">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TrainerName" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="TrainingId" Type="Int64" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -56,6 +101,29 @@
                 <ScalarProperty Name="Hours" ColumnName="Hours" />
                 <ScalarProperty Name="Certification" ColumnName="Certification" />
                 <ScalarProperty Name="Scored" ColumnName="Scored" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TrainingRecords">
+            <EntityTypeMapping TypeName="TrainingModel.TrainingRecord">
+              <MappingFragment StoreEntitySet="TrainingRecords">
+                <ScalarProperty Name="Trainer" ColumnName="Trainer" />
+                <ScalarProperty Name="Certification" ColumnName="Certification" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="Training" ColumnName="Training" />
+                <ScalarProperty Name="AssociateID" ColumnName="AssociateID" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Trainers">
+            <EntityTypeMapping TypeName="TrainingModel.Trainer">
+              <MappingFragment StoreEntitySet="Trainers">
+                <ScalarProperty Name="TrainingId" ColumnName="TrainingId" />
+                <ScalarProperty Name="TrainerName" ColumnName="TrainerName" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
