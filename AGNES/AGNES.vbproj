@@ -799,6 +799,7 @@
       <DependentUpon>WCRModule.edmx</DependentUpon>
       <LastGenOutput>WCRModule.vb</LastGenOutput>
     </Content>
+    <Resource Include="Resources\danger.png" />
     <Resource Include="Resources\unlocked.png" />
     <Resource Include="Resources\locked.png" />
     <Resource Include="Resources\magglass.png" />
@@ -815,7 +816,6 @@
     <Resource Include="Resources\Status.png" />
     <Resource Include="Resources\Marketing.png" />
     <Resource Include="Resources\Vendors.png" />
-    <Resource Include="Resources\danger.jpg" />
     <Resource Include="Resources\alert.png" />
     <Resource Include="Resources\msgbox.png" />
     <Resource Include="Resources\WCR.png" />
