@@ -32,7 +32,7 @@
                         osp.UnitNumber = SelectedFlashUnit
 
                 If qsp.Count = 0 And (FlashPage.SaveStatus = 1 Or FlashPage.SaveStatus = 3) Then ' Add new
-                    Dim SickPay As New SingleUserInput
+                    Dim SickPay As New SingleUserInput(True)
                     With SickPay
                         .InputType = 1
                         .lblInputDirection.Text = "Enter your sick pay for the week."
@@ -40,7 +40,7 @@
                         .ShowDialog()
                     End With
 
-                    Dim OtPay As New SingleUserInput
+                    Dim OtPay As New SingleUserInput(True)
                     With OtPay
                         .InputType = 1
                         .lblInputDirection.Text = "Enter your overtime pay for the week."

@@ -8,8 +8,25 @@
     Public Property InputType As Byte
 #End Region
 
+#Region "Constructor"
+    Public Sub New(Optional EnterOnly As Boolean = False)
+        InitializeComponent()
+        If EnterOnly = True Then btnOkay.Visibility = Visibility.Hidden
+    End Sub
+#End Region
+
 #Region "Private Methods"
     Private Sub btnOkay_Click(sender As Object, e As RoutedEventArgs) Handles btnOkay.Click
+        ExitAndSave()
+    End Sub
+
+    Private Sub txtUserInput_PreviewKeyUp(sender As Object, e As KeyEventArgs) Handles txtUserInput.PreviewKeyUp
+        If e.Key = Key.Enter Then
+            ExitAndSave()
+        End If
+    End Sub
+
+    Private Sub ExitAndSave()
         Select Case InputType
             Case 0  '// String input
                 StringVal = txtUserInput.Text

@@ -1,7 +1,6 @@
 ﻿Imports System.ComponentModel
 
 Public Class Flash
-    'TODO:  PUSH FLASH/FORECAST UNLOCK FUNCTIONALITY TO DM FLASH STATUS UI, ALONG WITH ALERTS (AND SUPRESSION OF ALERTS)
 
 #Region "Properties"
     Dim SalesGroup As FlashGroup
@@ -513,7 +512,7 @@ Public Class Flash
 
     Private Sub Flash_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         If SaveStatus = 0 Then
-            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TopOnly, AgnesMessageBox.MsgBoxType.YesNo, 12, False, "Discard unsaved data?")
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.YesNo, 12, False,, "Discard unsaved data?",, AgnesMessageBox.ImageType.Danger)
             amsg.ShowDialog()
             If amsg.ReturnResult = "No" Then e.Cancel = True
             amsg.Close()
