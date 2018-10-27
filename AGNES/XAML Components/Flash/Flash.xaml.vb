@@ -2,6 +2,7 @@
 
 Public Class Flash
     'TODO:  PUSH FLASH/FORECAST UNLOCK FUNCTIONALITY TO DM FLASH STATUS UI, ALONG WITH ALERTS (AND SUPRESSION OF ALERTS)
+
 #Region "Properties"
     Dim SalesGroup As FlashGroup
     Dim CamGroup As FlashGroup
@@ -30,19 +31,19 @@ Public Class Flash
                 Case 0      '   Unsaved
                     tbSaveStatus.Text = "Changes not saved"
                     barSaveStatus.Background = Brushes.Red
-                    imgEscalate.IsEnabled = True
+                    imgEscalate.Visibility = Visibility.Visible
                 Case 1      '   Draft
                     tbSaveStatus.Text = "Draft saved"
                     barSaveStatus.Background = Brushes.Yellow
-                    imgEscalate.IsEnabled = True
+                    imgEscalate.Visibility = Visibility.Visible
                 Case 2      '   Saved
                     tbSaveStatus.Text = "Flash saved"
                     barSaveStatus.Background = Brushes.LightGreen
-                    imgEscalate.IsEnabled = True
+                    imgEscalate.Visibility = Visibility.Visible
                 Case 3      '   Final
                     tbSaveStatus.Text = "Flash Locked"
                     barSaveStatus.Background = Brushes.LightGreen
-                    imgEscalate.IsEnabled = False
+                    imgEscalate.Visibility = Visibility.Collapsed
             End Select
         End Set
     End Property
@@ -474,6 +475,7 @@ Public Class Flash
 #End Region
 
     Private Sub AddAlertMsg()
+        If AlertOverride = True Then Exit Sub
         Dim alertmsg As String = "", sui As New SingleUserInput With {.InputType = 0}
         sui.lblInputDirection.Text = "Please enter a short (64 characters or less) message to accompany this alert."
         sui.ShowDialog()

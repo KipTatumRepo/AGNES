@@ -1,9 +1,14 @@
 ﻿Module FlashModule
+
+#Region "Properties"
     Public AvailableUnits As UnitGroup
     Public FlashActuals As FlashActualsEntity
     Public FlashPage As Flash
     Public InitialLoadStatus As Byte = 0
+    Public AlertOverride As Boolean = False
+#End Region
 
+#Region "Public Methods"
     Public Sub Runmodule()
         FlashActuals = New FlashActualsEntity
         Dim SelectedFlashType As Byte, SelectedFlashUnit As Long
@@ -40,6 +45,8 @@
         End Select
 
     End Sub
+
+#End Region
 
 #Region "Private Methods"
     Private Sub SaveSickOtPay(ot As Double, sick As Double, un As Long)

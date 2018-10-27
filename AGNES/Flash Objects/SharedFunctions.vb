@@ -1,7 +1,11 @@
 ﻿Module SharedFunctions
 
+#Region "Properties"
     Public Property FlashNotes As String
 
+#End Region
+
+#Region "Public Methods"
     Public Function LoadSingleWeekAndUnitFlash(category As String, unit As Int64, yr As Int16, period As Byte, wk As Byte) As (fv As Double, Stts As String, Notes As String, alert As Boolean)
         FlashNotes = ""
         Dim ff = From f In FlashActuals.FlashActualData
@@ -17,5 +21,6 @@
         Return (0, "", "", False)
     End Function
 
+#End Region
 
 End Module

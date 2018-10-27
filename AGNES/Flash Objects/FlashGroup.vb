@@ -1,5 +1,6 @@
 ﻿Public Class FlashGroup
     Inherits DockPanel
+
 #Region "Properties"
     Public GroupCategory As String
     Public FlashVal As CurrencyBox
@@ -201,9 +202,11 @@
 
 #Region "Public Methods"
     Public Sub Load()
+        AlertOverride = True
         LoadFlash()
         LoadBudget()
         LoadForecast()
+        AlertOverride = False
     End Sub
     Public Function Save(SaveType) As Boolean
         Dim SaveOkay As Boolean
@@ -382,8 +385,8 @@
                                 End Try
 
                                 Try
-                                        FlashPage.SaveStatus = tmpsavestatus
-                                    Catch ex As Exception
+                                    FlashPage.SaveStatus = tmpsavestatus
+                                Catch ex As Exception
                                         InitialLoadStatus = tmpsavestatus
                                     End Try
                                     If AddValue.fv = 999999.99 Then AddValue.fv = 0
