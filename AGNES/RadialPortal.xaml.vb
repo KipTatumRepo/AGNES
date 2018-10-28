@@ -1,4 +1,5 @@
-﻿Imports System.Reflection
+﻿Imports System.ComponentModel
+Imports System.Reflection
 'TODO: CLEAN UP LOCATIONS FILE - SPECIFICALLY, THE FLASH TYPE COLUMN!  MISSING AV UNITS, ETC
 Public Class RadialPortal
 
@@ -213,7 +214,6 @@ Public Class RadialPortal
                                         AgnesMessageBox.MsgBoxType.YesNo, 18,,,, "Close AGNES?")
         amsg.ShowDialog()
         If amsg.ReturnResult = "Yes" Then
-            SessionLog(1)
             amsg.Close()
             GC.Collect()
             Close()
@@ -260,6 +260,9 @@ Public Class RadialPortal
         Show()
     End Sub
 
+    Private Sub ClosingEvents(sender As Object, e As CancelEventArgs) Handles Me.Closing
+        SessionLog(1)
+    End Sub
 
 #End Region
 
