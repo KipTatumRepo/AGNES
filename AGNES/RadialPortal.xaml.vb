@@ -244,6 +244,8 @@ Public Class RadialPortal
         Dim s As Image = sender
         Hide()
         Select Case s.Tag
+            Case "Power BI"
+                Process.Start("http://www.powerbi.com")
             Case "WCR"
                 WCRModule.Runmodule()
             Case "Business Group CRM"
@@ -252,6 +254,8 @@ Public Class RadialPortal
                 FlashModule.Runmodule()
             Case "Flash Status"
                 FlashStatusModule.RunModule()
+            Case "Forecast"
+                ForecastModule.Runmodule()
             Case "Admin"
                 AdminModule.Runmodule()
             Case "Training"
