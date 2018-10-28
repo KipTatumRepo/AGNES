@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGNES"
         mc:Ignorable="d"
-        Title="Weekly Financial Flash" Height="561" Width="990" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
+        Title="Weekly Financial Flash" Height="561" Width="1000" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
     <Window.Effect>
         <DropShadowEffect Opacity="0.5"/>
     </Window.Effect>
@@ -36,11 +36,11 @@
             <TextBlock HorizontalAlignment = "Left" Margin="355,0,0,0" TextWrapping="Wrap" Text="Week 3" VerticalAlignment="Top" Width="80" Height="16" TextAlignment="Center" FontSize="10" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
             <TextBlock HorizontalAlignment = "Left" Margin="440,0,0,0" TextWrapping="Wrap" Text="Week 4" VerticalAlignment="Top" Width="80" Height="16" TextAlignment="Center" FontSize="10" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
             <TextBlock HorizontalAlignment = "Left" Margin="525,0,0,0" TextWrapping="Wrap" Text="Week 5" VerticalAlignment="Top" Width="80" Height="16" TextAlignment="Center" FontSize="10" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
-            <TextBlock HorizontalAlignment = "Left" Margin="610,0,0,0" TextWrapping="Wrap" Text="Period Total" VerticalAlignment="Top" Width="80" Height="16" TextAlignment="Center" FontSize="10" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
-            <TextBlock HorizontalAlignment = "Left" Margin="705,0,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Width="40" Height="16" TextAlignment="Center" FontSize="10" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
-            <TextBlock HorizontalAlignment = "Left" Margin="755,0,0,0" TextWrapping="Wrap" Text="Budget" VerticalAlignment="Top" Width="80" Height="16" TextAlignment="Center" FontSize="10" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
-            <TextBlock HorizontalAlignment = "Left" Margin="848,1,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Width="40" Height="16" TextAlignment="Center" FontSize="10" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
-            <TextBlock HorizontalAlignment = "Left" Margin="894,1,0,0" TextWrapping="Wrap" Text="Variance" VerticalAlignment="Top" Width="80" Height="16" TextAlignment="Center" FontSize="10" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
+            <TextBlock HorizontalAlignment = "Left" Margin="615,0,0,0" TextWrapping="Wrap" Text="Period Total" VerticalAlignment="Top" Width="80" Height="16" TextAlignment="Center" FontSize="10" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
+            <TextBlock HorizontalAlignment = "Left" Margin="710,0,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Width="40" Height="16" TextAlignment="Center" FontSize="10" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
+            <TextBlock HorizontalAlignment = "Left" Margin="760,0,0,0" TextWrapping="Wrap" Text="Budget" VerticalAlignment="Top" Width="80" Height="16" TextAlignment="Center" FontSize="10" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
+            <TextBlock HorizontalAlignment = "Left" Margin="855,0,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Width="40" Height="16" TextAlignment="Center" FontSize="10" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
+            <TextBlock HorizontalAlignment = "Left" Margin="904,0,0,0" TextWrapping="Wrap" Text="Variance" VerticalAlignment="Top" Width="80" Height="16" TextAlignment="Center" FontSize="10" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
         </Grid>
         
 

@@ -10,8 +10,11 @@
     Public W4Val As CurrencyBox
     Public W5Val As CurrencyBox
     Public PeriodTotalVal As CurrencyBox
+    Public TotalPercent As PercentBox
     Public BudgetVal As CurrencyBox
+    Public BudgetPercent As PercentBox
     Public VarianceVal As CurrencyBox
+
     Private _subtotal As Boolean
     Public Property GroupIsSubTotal As Boolean
         Get
@@ -34,48 +37,62 @@
         HorizontalAlignment = HorizontalAlignment.Left
         VerticalAlignment = VerticalAlignment.Top
         Height = 42
-        Width = 962
+        Width = 970
         LastChildFill = False
         Margin = New Thickness(10, Top, 0, 0)
         If Highlight = True Then Background = Brushes.WhiteSmoke
         GroupIsSubTotal = Subtotal
         '// Create Flash group header label
         Dim GroupLabel As New Border
-        Dim tb As New TextBlock With {.Text = GroupName, .Height = 42, .Width = 80, .LineHeight = 16, .TextAlignment = TextAlignment.Center,
+        Dim tb As New TextBlock With {.Text = GroupName, .Width = 80, .LineHeight = 16, .TextAlignment = TextAlignment.Center,
             .Margin = New Thickness(0, -2, 0, 0), .VerticalAlignment = VerticalAlignment.Center,
             .FontSize = 12, .FontWeight = FontWeights.SemiBold, .TextWrapping = TextWrapping.Wrap}
         GroupLabel.Child = tb
         '// Create daily run rate field
-        DRR = New CurrencyBox(80, True, AgnesBaseInput.FontSz.Medium,, CreditOnly, DebitOnly) With
+        DRR = New CurrencyBox(80, True, AgnesBaseInput.FontSz.Standard,, CreditOnly, DebitOnly) With
             {.Margin = New Thickness(8, 6, 0, 0)}
 
         '// Create Week value input fields
-        W1Val = New CurrencyBox(80, True, AgnesBaseInput.FontSz.Medium,, CreditOnly, DebitOnly) With
+        W1Val = New CurrencyBox(80, True, AgnesBaseInput.FontSz.Standard,, CreditOnly, DebitOnly) With
             {.Margin = New Thickness(8, 6, 0, 0)}
-        W2Val = New CurrencyBox(80, True, AgnesBaseInput.FontSz.Medium,, CreditOnly, DebitOnly) With
+        W2Val = New CurrencyBox(80, True, AgnesBaseInput.FontSz.Standard,, CreditOnly, DebitOnly) With
             {.Margin = New Thickness(6, 6, 0, 0)}
-        W3Val = New CurrencyBox(80, True, AgnesBaseInput.FontSz.Medium,, CreditOnly, DebitOnly) With
+        W3Val = New CurrencyBox(80, True, AgnesBaseInput.FontSz.Standard,, CreditOnly, DebitOnly) With
             {.Margin = New Thickness(6, 6, 0, 0)}
-        W4Val = New CurrencyBox(80, True, AgnesBaseInput.FontSz.Medium,, CreditOnly, DebitOnly) With
+        W4Val = New CurrencyBox(80, True, AgnesBaseInput.FontSz.Standard,, CreditOnly, DebitOnly) With
             {.Margin = New Thickness(6, 6, 0, 0)}
-        W5Val = New CurrencyBox(80, True, AgnesBaseInput.FontSz.Medium,, CreditOnly, DebitOnly) With
+        W5Val = New CurrencyBox(80, True, AgnesBaseInput.FontSz.Standard,, CreditOnly, DebitOnly) With
             {.Margin = New Thickness(6, 6, 0, 0)}
 
         '// Create calculated fields (total, budget, variance, and percentages)
-        'W1Val = New CurrencyBox(80, True, AgnesBaseInput.FontSz.Medium,, CreditOnly, DebitOnly) With
-        '    {.Margin = New Thickness(8, 6, 0, 0)}
 
+        PeriodTotalVal = New CurrencyBox(80, True, AgnesBaseInput.FontSz.Standard,, CreditOnly, DebitOnly) With
+            {.Margin = New Thickness(6, 6, 0, 0), .IsEnabled = False}
+
+        TotalPercent = New PercentBox(60, True, AgnesBaseInput.FontSz.Standard, 1) With
+            {.VerticalAlignment = VerticalAlignment.Center, .Margin = New Thickness(1, 0, 0, 0), .IsEnabled = False}
+
+        BudgetVal = New CurrencyBox(80, True, AgnesBaseInput.FontSz.Standard,, CreditOnly, DebitOnly) With
+            {.Margin = New Thickness(1, 6, 0, 0), .IsEnabled = False}
+
+        BudgetPercent = New PercentBox(60, True, AgnesBaseInput.FontSz.Standard, 1) With
+            {.VerticalAlignment = VerticalAlignment.Center, .Margin = New Thickness(1, 0, 0, 0), .IsEnabled = False}
+
+        VarianceVal = New CurrencyBox(80, True, AgnesBaseInput.FontSz.Standard,, False, False) With
+            {.Margin = New Thickness(1, 6, 0, 0), .IsEnabled = False}
+
+
+
+        If GroupHasPercentages = False Then
+            TotalPercent.Visibility = Visibility.Hidden
+            ' BudgetPercent.Visibility = Visibility.Hidden
+
+        End If
 
         If GroupIsSubTotal = True Then IsEnabled = False
 
 
-        '    <Margin="8,6,0,0"/>
-        '     Margin="6,6,0,0"/>
-        '    Margin="6,6,0,0"/>
-        '    Margin="6,6,0,0"/>
-        '     Margin="6,6,0,0"/>
-        '     Margin="6,6,0,0"/>
-        '    Margin="6,6,0,0"/>
+
         '     Width="50" Margin="6,6,0,0"/>
         '     Width="80" Margin="6,6,0,0"/>
         '     Width="50" Margin="6,6,0,0"/>
@@ -90,6 +107,11 @@
             .Add(W3Val)
             .Add(W4Val)
             .Add(W5Val)
+            .Add(PeriodTotalVal)
+            .Add(TotalPercent)
+            .Add(BudgetVal)
+            .Add(BudgetPercent)
+            .Add(VarianceVal)
         End With
 
 
@@ -100,5 +122,6 @@
         End If
 
     End Sub
+
 #End Region
 End Class
