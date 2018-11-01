@@ -12,29 +12,20 @@
         <Image x:Name ="imgSearch" HorizontalAlignment="Left" Height="32" Margin="748,28,0,0" VerticalAlignment="Top" Width="34" Source="/AGNES;component/Resources/magglass.png"/>
         <Grid x:Name="grdEditor">
             <Rectangle HorizontalAlignment="Left" Height="170" Margin="10,71,0,0" Stroke="#FF7A7878" VerticalAlignment="Top" Width="772"/>
-            <ComboBox x:Name="cbxTraining" HorizontalAlignment="Left" Margin="177,81,0,0" VerticalAlignment="Top" Width="212" FontSize="14"/>
-            <TextBlock HorizontalAlignment="Left" Margin="81,81,0,0" TextWrapping="Wrap" Text="Training" VerticalAlignment="Top" FontSize="18" Width="91" TextAlignment="Right"/>
-            <TextBlock HorizontalAlignment="Left" Margin="14,123,0,0" TextWrapping="Wrap" Text="Cost Center/Unit:" VerticalAlignment="Top" FontSize="18" Width="158" TextAlignment="Right"/>
-            <ComboBox HorizontalAlignment="Left" Margin="177,123,0,0" VerticalAlignment="Top" Width="212" FontSize="14"/>
-            <TextBlock HorizontalAlignment="Left" Margin="70,163,0,0" TextWrapping="Wrap" Text="Trainer:" VerticalAlignment="Top" FontSize="18" Width="102" TextAlignment="Right"/>
-            <ComboBox HorizontalAlignment="Left" Margin="177,163,0,0" VerticalAlignment="Top" Width="212" FontSize="14"/>
-            <TextBlock HorizontalAlignment="Left" Margin="443,123,0,0" TextWrapping="Wrap" Text="Training Start Date:" VerticalAlignment="Top" FontSize="18" Width="158" TextAlignment="Right"/>
-            <DatePicker HorizontalAlignment="Left" Margin="606,123,0,0" VerticalAlignment="Top" Width="137"/>
-            <TextBlock HorizontalAlignment="Left" Margin="443,81,0,0" TextWrapping="Wrap" Text="Training End Date:" VerticalAlignment="Top" FontSize="18" Width="158" TextAlignment="Right"/>
-            <DatePicker HorizontalAlignment="Left" Margin="606,81,0,0" VerticalAlignment="Top" Width="137"/>
-            <TextBlock HorizontalAlignment="Left" Margin="499,163,0,0" TextWrapping="Wrap" Text="Score:" VerticalAlignment="Top" FontSize="18" Width="102" TextAlignment="Right"/>
-            <TextBox HorizontalAlignment="Left" Height="23" Margin="606,165,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="137"/>
+            <ComboBox x:Name="cbxTraining" HorizontalAlignment="Left" Margin="124,81,0,0" VerticalAlignment="Top" Width="212" FontSize="14"/>
+            <TextBlock HorizontalAlignment="Left" Margin="17,81,0,0" TextWrapping="Wrap" Text="Training" VerticalAlignment="Top" FontSize="18" Width="102" TextAlignment="Right"/>
+            <TextBlock HorizontalAlignment="Left" Margin="17,123,0,0" TextWrapping="Wrap" Text="Trainer:" VerticalAlignment="Top" FontSize="18" Width="102" TextAlignment="Right"/>
+            <ComboBox x:Name="cbxTrainer" HorizontalAlignment="Left" Margin="124,123,0,0" VerticalAlignment="Top" Width="212" FontSize="14"/>
+            <TextBlock HorizontalAlignment="Left" Margin="443,123,0,0" TextWrapping="Wrap" Text="Training End Date:" VerticalAlignment="Top" FontSize="18" Width="158" TextAlignment="Right"/>
+            <DatePicker x:Name="dtpEndDt" HorizontalAlignment="Left" Margin="606,123,0,0" VerticalAlignment="Top" Width="137"/>
+            <TextBlock HorizontalAlignment="Left" Margin="443,81,0,0" TextWrapping="Wrap" Text="Training Start Date:" VerticalAlignment="Top" FontSize="18" Width="158" TextAlignment="Right"/>
+            <DatePicker x:Name="dtpStartDt" HorizontalAlignment="Left" Margin="606,81,0,0" VerticalAlignment="Top" Width="137"/>
+            <TextBlock HorizontalAlignment="Left" Margin="293,164,0,0" TextWrapping="Wrap" Text="Score:" VerticalAlignment="Top" FontSize="18" Width="85" TextAlignment="Right"/>
+            <!--<TextBox x:Name="txtScore" HorizontalAlignment="Left" Height="23" Margin="392,165,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="76"/>-->
             <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="360,202,0,0" VerticalAlignment="Top" Width="75" IsEnabled="False" Background="{x:Null}" Height="29"/>
 
         </Grid>
-        <DataGrid x:Name="dgTrainingHistory" HorizontalAlignment="Left" Height="163" Margin="10,246,0,0" VerticalAlignment="Top" Width="772" Background="OldLace">
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Training Date"/>
-                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Training Type"/>
-                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}"/>
-                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <DataGrid x:Name="dgTrainingHistory" HorizontalAlignment="Left" Height="163" Margin="10,246,0,0" VerticalAlignment="Top" Width="772" Background="OldLace" IsEnabled="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" CanUserResizeRows="False"/>
 
     </Grid>
 </Window>

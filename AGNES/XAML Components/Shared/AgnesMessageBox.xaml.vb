@@ -1,5 +1,6 @@
 ﻿Imports System.Windows.Threading
 Public Class AgnesMessageBox
+
 #Region "Properties"
     Public Enum MsgBoxSize
         Small
@@ -71,18 +72,19 @@ Public Class AgnesMessageBox
         End Get
         Set(value As ImageType)
             _imgsrc = value
+            Dim DisplayedImage As BitmapImage
             Select Case value
                 Case ImageType.Alert
                     Dim img As New Image With {.Source = New BitmapImage(New Uri("Resources/BusinessGroup.png", UriKind.Relative)),
                         .Height = imgAlert.Height, .Width = imgAlert.Width, .Stretch = Stretch.Fill}
                     img.Margin = New Thickness(imgAlert.Margin.Left, imgAlert.Margin.Top, imgAlert.Margin.Right, imgAlert.Margin.Bottom)
                     imgAlert = img
-                    'imgAlert.Source = New BitmapImage(New Uri("Resources/BusinessGroup.png", UriKind.Relative))
+                    DisplayedImage = New BitmapImage(New Uri("pack://application:,,,/Resources/alert.png"))
+                    imgAlert.Source = DisplayedImage
                 Case ImageType.Danger
-                    imgAlert.Source = New BitmapImage(New Uri("/AGNES;component/Resources/danger.png", UriKind.Relative))
-
+                    DisplayedImage = New BitmapImage(New Uri("pack://application:,,,/Resources/danger.png"))
+                    imgAlert.Source = DisplayedImage
             End Select
-            'TODO: FIGURE OUT THE RUNTIME IMGSOURCE METHOD
         End Set
     End Property
 

@@ -1,14 +1,18 @@
-﻿Public Class NumberBox
+﻿Imports System.ComponentModel
+Public Class PercentBox
     Inherits AgnesBaseInput
+    Implements INotifyPropertyChanged
 #Region "Properties"
-    Private _posonly As Boolean
+    Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
+
     Private _negonly As Boolean
-    Public NumberOfDecimals As Byte
+    Private _posonly As Boolean
     Public Highlight As Boolean
     Private SystemChange As Boolean
-
+    Private HeldValue As String
+    Private NumofDec As Byte
     Private _pos As Boolean
-    Public Property Positive As Boolean
+    Public Property Pos As Boolean
         Get
             Return _pos
         End Get
@@ -18,22 +22,12 @@
     End Property
 
     Private _neg As Boolean
-    Public Property Negative As Boolean
+    Public Property Neg As Boolean
         Get
             Return _neg
         End Get
         Set(value As Boolean)
             _neg = value
-        End Set
-    End Property
-
-    Private _amount As Double
-    Public Property Amount As Double
-        Get
-            Return _amount
-        End Get
-        Set(value As Double)
-            _amount = value
         End Set
     End Property
 
@@ -45,20 +39,20 @@
         Set(value As Double)
             _setamount = value
             Dim tb As TextBox = Children(1)
-            tb.Text = FormatNumber(_setamount, NumberOfDecimals)
+            tb.Text = FormatPercent(_setamount, NumofDec)
         End Set
     End Property
 
 #End Region
 
 #Region "Constructor"
-    Public Sub New(FieldWidth As Integer, AllowPositive As Boolean, AllowNegative As Boolean, ForcePositive As Boolean, ForceNegative As Boolean, SelectAllUponEnteringField As Boolean, FontSize As AgnesBaseInput.FontSz, Optional ByVal Decimals As Byte = 0, Optional ByVal DefaultText As String = "0")
-        MyBase.New(FieldWidth, VerticalAlignment.Top, HorizontalAlignment.Left, FontSize, TextAlignment.Center, DefaultText, TextWrapping.NoWrap)
-        Positive = AllowPositive
-        Negative = AllowNegative
-        _posonly = ForcePositive
-        _negonly = ForceNegative
-        NumberOfDecimals = Decimals
+    Public Sub New(FieldWidth As Integer, SelectAllUponEnteringField As Boolean, FontSize As AgnesBaseInput.FontSz, Optional DecimalCount As Byte = 0, Optional ByVal DefaultText As String = "0%", Optional ForcePos As Boolean = False, Optional ForceNeg As Boolean = False)
+        MyBase.New(FieldWidth, VerticalAlignment.Top, HorizontalAlignment.Left, FontSize, TextAlignment.Right, DefaultText, TextWrapping.NoWrap)
+        Pos = Not ForceNeg
+        Neg = Not ForcePos
+        _negonly = ForceNeg
+        _posonly = ForcePos
+        NumofDec = DecimalCount
         Highlight = SelectAllUponEnteringField
         Dim t As TextBox = Children(1)
         AddHandler t.GotFocus, AddressOf EnterField
@@ -70,7 +64,6 @@
         '             for 18pt= 160
         '             for 24pt= 204
     End Sub
-
 #End Region
 
 #Region "Private Methods"
@@ -78,7 +71,8 @@
         Dim t As TextBox = sender
         If SystemChange = True Then Exit Sub
         Try
-            Dim cval As Double = FormatNumber(t.Text, NumberOfDecimals)
+            Dim temptext As String = t.Text.Replace("%", "")
+            Dim cval As Double = FormatNumber(temptext, 6)
         Catch ex As Exception
             Flare = True
             Exit Sub
@@ -88,7 +82,11 @@
 
     Private Sub EnterField(sender As Object, e As EventArgs)
         Dim t As TextBox = sender
+        HeldValue = t.Text
         SystemChange = True
+        '// Remove currency symbol, if present  
+        t.Text = t.Text.Replace("%", "")
+
         '// Remove negative parentheses, if present
         If InStr(1, t.Text, "(") > 0 Then
             t.Text = t.Text.Replace("(", "")
@@ -102,20 +100,22 @@
             t.CaretIndex = t.Text.Length
         End If
         SystemChange = False
+
     End Sub
 
     Private Sub ExitField(sender As Object, e As EventArgs)
         Dim t As TextBox = sender
+
         Try
-            Dim cval As Double = FormatNumber(t.Text, NumberOfDecimals)
-            If (Positive = False And cval > 0) Or (Negative = False And cval < 0) Then
+            Dim cval As Double = FormatNumber(t.Text.Replace("%", ""), 6)
+            If (Neg = False And cval > 0) Or (Pos = False And cval < 0) Then
                 SystemChange = True
                 Flare = True
             Else
                 Flare = False
             End If
-            t.Text = FormatNumber(cval, NumberOfDecimals)
-            Amount = FormatNumber(cval, NumberOfDecimals)
+            t.Text = FormatPercent(cval, NumofDec)
+            SetAmount = cval
             SystemChange = False
         Catch ex As Exception
             Flare = True
@@ -123,19 +123,20 @@
         End Try
 
         Try
-            Dim cval As Double = FormatNumber(t.Text)
-            If (_posonly = True And cval < 0) Or (_negonly = True And cval > 0) Then
+            Dim cval As Double = FormatNumber(t.Text.Replace("%", ""), 6)
+            If (_negonly = True And cval < 0) Or (_posonly = True And cval > 0) Then
                 SystemChange = True
                 Flare = False
-                t.Text = FormatNumber(-cval, NumberOfDecimals)
-                Amount = FormatNumber(-cval, NumberOfDecimals)
+                t.Text = FormatPercent(-cval, NumofDec)
+                SetAmount = -cval
                 SystemChange = False
             End If
         Catch ex As Exception
             Flare = True
             Me.Focus()
         End Try
-
+        If t.Text = HeldValue Then Exit Sub
+        RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(“Amountchanged”))
     End Sub
 
 #End Region

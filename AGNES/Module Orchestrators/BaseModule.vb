@@ -1,4 +1,6 @@
 ﻿Module BaseModule
+
+#Region "Properties"
     Public SharedDataGroup As BIEntities
     Public AGNESShared As AGNESSharedDataEntity
     Public FlashBudgets As BudgetEntity
@@ -6,6 +8,10 @@
     Public TrainingData As TrainingEntities
     Public BGE As BGCRMEntity
     Public CurrentFiscalYear As Integer = 2019
+
+#End Region
+
+#Region "Public Methods" '// Globally Shared Methods
     Public Sub Runmodule()
         SharedDataGroup = New BIEntities
         AGNESShared = New AGNESSharedDataEntity
@@ -14,8 +20,6 @@
         FlashForecasts = New ForecastEntity
         TrainingData = New TrainingEntities
     End Sub
-
-#Region "Public Methods" '// Globally Shared Methods
 
     Public Function TruncateAlias(UserAlias As String) As String
         Dim ReturnAlias As String = UserAlias
