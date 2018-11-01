@@ -121,6 +121,7 @@
     </ApplicationDefinition>
     <Compile Include="Admin Objects\ModuleListItem.vb" />
     <Compile Include="Application Objects\AgnesBaseInput.vb" />
+    <Compile Include="Application Objects\PercentBox.vb" />
     <Compile Include="Entities\ApplicationSession.vb">
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
     </Compile>
@@ -137,7 +138,9 @@
       <DependentUpon>TrainingModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Flash Objects\StatusItem.vb" />
+    <Compile Include="Forecast Objects\ForecastGroup.vb" />
     <Compile Include="Module Orchestrators\FlashStatusModule.vb" />
+    <Compile Include="Module Orchestrators\ForecastModule.vb" />
     <Compile Include="Training Objects\EmployeeObj.vb" />
     <Compile Include="Training Objects\TrainingGridSource.vb" />
     <Compile Include="XAML Components\Flash\Delegates.xaml.vb">
@@ -145,6 +148,9 @@
     </Compile>
     <Compile Include="XAML Components\Flash\FlashStatus.xaml.vb">
       <DependentUpon>FlashStatus.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="XAML Components\Forecast\Forecast.xaml.vb">
+      <DependentUpon>Forecast.xaml</DependentUpon>
     </Compile>
     <Compile Include="XAML Components\Shared\AgnesMessageBox.xaml.vb">
       <DependentUpon>AgnesMessageBox.xaml</DependentUpon>
@@ -491,6 +497,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="XAML Components\Forecast\Forecast.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="XAML Components\Shared\AgnesMessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -799,6 +809,10 @@
       <DependentUpon>WCRModule.edmx</DependentUpon>
       <LastGenOutput>WCRModule.vb</LastGenOutput>
     </Content>
+    <Resource Include="Resources\staff.png" />
+    <Resource Include="Resources\refresh.png" />
+    <Resource Include="Resources\eraser.png" />
+    <Resource Include="Resources\applycheck.png" />
     <Resource Include="Resources\danger.png" />
     <Resource Include="Resources\unlocked.png" />
     <Resource Include="Resources\locked.png" />
@@ -840,7 +854,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="XAML Components\Campaign Manager\" />
-    <Folder Include="XAML Components\Forecast\" />
     <Folder Include="XAML Components\Journal\" />
     <Folder Include="XAML Components\QA Suite\" />
     <Folder Include="XAML Components\Vendor Management\" />
