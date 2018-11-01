@@ -134,6 +134,9 @@
     <Compile Include="Entities\Trainer.vb">
       <DependentUpon>TrainingModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\TrainerTrainingJoin.vb">
+      <DependentUpon>TrainingModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\TrainingRecord.vb">
       <DependentUpon>TrainingModel.tt</DependentUpon>
     </Compile>
@@ -809,6 +812,8 @@
       <DependentUpon>WCRModule.edmx</DependentUpon>
       <LastGenOutput>WCRModule.vb</LastGenOutput>
     </Content>
+    <Resource Include="Resources\Class.png" />
+    <Resource Include="Resources\Trainer.png" />
     <Resource Include="Resources\staff.png" />
     <Resource Include="Resources\refresh.png" />
     <Resource Include="Resources\eraser.png" />

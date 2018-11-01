@@ -75,10 +75,10 @@ Public Class AgnesMessageBox
             Dim DisplayedImage As BitmapImage
             Select Case value
                 Case ImageType.Alert
-                    Dim img As New Image With {.Source = New BitmapImage(New Uri("Resources/BusinessGroup.png", UriKind.Relative)),
-                        .Height = imgAlert.Height, .Width = imgAlert.Width, .Stretch = Stretch.Fill}
-                    img.Margin = New Thickness(imgAlert.Margin.Left, imgAlert.Margin.Top, imgAlert.Margin.Right, imgAlert.Margin.Bottom)
-                    imgAlert = img
+                    'Dim img As New Image With {.Source = New BitmapImage(New Uri("Resources/BusinessGroup.png", UriKind.Relative)),
+                    '    .Height = imgAlert.Height, .Width = imgAlert.Width, .Stretch = Stretch.Fill}
+                    'img.Margin = New Thickness(imgAlert.Margin.Left, imgAlert.Margin.Top, imgAlert.Margin.Right, imgAlert.Margin.Bottom)
+                    'imgAlert = img
                     DisplayedImage = New BitmapImage(New Uri("pack://application:,,,/Resources/alert.png"))
                     imgAlert.Source = DisplayedImage
                 Case ImageType.Danger
