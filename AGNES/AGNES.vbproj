@@ -25,7 +25,7 @@
     <ProductName>AGNES</ProductName>
     <PublisherName>Compass Business Intelligence</PublisherName>
     <SuiteName>Compass Business Intelligence Application Suite</SuiteName>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>3</ApplicationRevision>
     <ApplicationVersion>2.3.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -132,6 +132,9 @@
       <DependentUpon>FlashActualsModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Trainer.vb">
+      <DependentUpon>TrainingModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TrainerTrainingJoin.vb">
       <DependentUpon>TrainingModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\TrainingRecord.vb">
@@ -809,6 +812,8 @@
       <DependentUpon>WCRModule.edmx</DependentUpon>
       <LastGenOutput>WCRModule.vb</LastGenOutput>
     </Content>
+    <Resource Include="Resources\Class.png" />
+    <Resource Include="Resources\Trainer.png" />
     <Resource Include="Resources\staff.png" />
     <Resource Include="Resources\refresh.png" />
     <Resource Include="Resources\eraser.png" />

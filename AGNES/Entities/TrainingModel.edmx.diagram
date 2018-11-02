@@ -5,9 +5,10 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="04d8ddb5e5de43a39c4c78563b110713" Name="Diagram1">
-        <EntityTypeShape EntityType="TrainingModel.TrainingType" Width="1.5" PointX="2.125" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TrainingModel.TrainingRecord" Width="1.5" PointX="3.75" PointY="0.5" />
+        <EntityTypeShape EntityType="TrainingModel.TrainingType" Width="1.5" PointX="4" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TrainingModel.TrainingRecord" Width="1.5" PointX="5.75" PointY="0.5" />
         <EntityTypeShape EntityType="TrainingModel.Trainer" Width="1.5" PointX="0.5" PointY="0.5" />
+        <EntityTypeShape EntityType="TrainingModel.TrainerTrainingJoin" Width="1.5" PointX="2.25" PointY="0.5" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

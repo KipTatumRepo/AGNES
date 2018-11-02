@@ -13,7 +13,7 @@
         Dim currwk As Byte = GetCurrentWeek(FormatDateTime(Now(), DateFormat.ShortDate))
         Dim currmsp As Byte = GetCurrentPeriod(FormatDateTime(Now(), DateFormat.ShortDate))
         StatusWk = New WeekChooser(1, currwk, currwk)
-        StatusMsp = New PeriodChooser(StatusWk, 1, currwk, currmsp)
+        StatusMsp = New PeriodChooser(StatusWk, 1, currmsp, currmsp)
         AddHandler StatusWk.PropertyChanged, AddressOf PopulateUnits
         Dim sep As New Separator
         With tlbTimePeriods.Items

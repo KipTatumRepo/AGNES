@@ -32,24 +32,12 @@ Public Class Forecast
                     imgClear.Visibility = Visibility.Visible
                     imgApplyDrr.Visibility = Visibility.Visible
                     imgRefDrr.Visibility = Visibility.Visible
-                Case 1      '   Draft
-                    tbSaveStatus.Text = "Draft saved"
-                    barSaveStatus.Background = Brushes.Yellow
-                    imgClear.Visibility = Visibility.Visible
-                    imgApplyDrr.Visibility = Visibility.Visible
-                    imgRefDrr.Visibility = Visibility.Visible
-                Case 2      '   Saved
+                Case 1      '   Saved
                     tbSaveStatus.Text = "Forecast saved"
                     barSaveStatus.Background = Brushes.LightGreen
                     imgClear.Visibility = Visibility.Visible
                     imgApplyDrr.Visibility = Visibility.Visible
                     imgRefDrr.Visibility = Visibility.Visible
-                Case 3      '   Final
-                    tbSaveStatus.Text = "Forecast Locked"
-                    barSaveStatus.Background = Brushes.LightGreen
-                    imgClear.Visibility = Visibility.Collapsed
-                    imgApplyDrr.Visibility = Visibility.Collapsed
-                    imgRefDrr.Visibility = Visibility.Collapsed
             End Select
         End Set
     End Property
@@ -77,9 +65,10 @@ Public Class Forecast
         Dim currwk As Byte = GetCurrentWeek(FormatDateTime(Now(), DateFormat.ShortDate))
         Wk = New WeekChooser(1, currwk, currwk)
         MSP = New PeriodChooser(Wk, currmsp, 12, currmsp)
-        MSP.SelectAllEnabled = False
+        MSP.DisableSelectAll = True
 
 #Region "ToComplete"
+        'TODO: FINISH TEMPLATING ALL LOBS OTHER THAN COMMONS
         Select Case FT
 #Region "Commons"
             Case 1      '   Commons Flash
@@ -399,10 +388,10 @@ Public Class Forecast
 #End Region
         End Select
 
-        '        For Each fg As FlashGroup In grdFlashGroups.Children
-        '            fg.Load()
-        '            If fg.GroupIsSubTotal = True Then fg.Update(fg)
-        '        Next
+        For Each fg As ForecastGroup In grdFcastGroups.Children
+            fg.Load()
+            If fg.GroupIsSubTotal = True Then fg.Update(fg)
+        Next
 
 #End Region
 
@@ -415,6 +404,54 @@ Public Class Forecast
         If Units.NumberOfAvailableUnits = 1 Then Units.IsEnabled = False
 
     End Sub
+
+#Region "Toolbar"
+    Private Sub SaveForecast(sender As Object, e As MouseButtonEventArgs) Handles imgSave.MouseLeftButtonDown
+        If SaveStatus = 1 Then Exit Sub
+        For Each fg As ForecastGroup In grdFcastGroups.Children
+            If fg.GroupIsSubTotal = False Then
+                If fg.Save("Final") = False Then
+                    SaveStatus = 0
+                    Exit Sub
+                End If
+            End If
+        Next
+        SaveStatus = 1
+    End Sub
+
+    Private Sub PrintForecast(sender As Object, e As MouseButtonEventArgs) Handles imgPrint.MouseLeftButtonDown
+        PrintAnyObject(grdMain, "Flash")
+    End Sub
+
+    Private Sub ClearForecast(sender As Object, e As MouseButtonEventArgs) Handles imgClear.MouseLeftButtonDown
+        For Each fg As ForecastGroup In grdFcastGroups.Children
+            If fg.GroupIsSubTotal = False Then fg.ClearForecast()
+            fg.Update(fg)
+        Next
+    End Sub
+
+    Private Sub RefreshRunRate(sender As Object, e As MouseButtonEventArgs) Handles imgRefDrr.MouseLeftButtonDown
+        For Each fg As ForecastGroup In grdFcastGroups.Children
+            If fg.GroupIsSubTotal = False Then fg.CalculateRunRate()
+            fg.Update(fg)
+        Next
+    End Sub
+
+    Private Sub ApplyRunRate(sender As Object, e As MouseButtonEventArgs) Handles imgApplyDrr.MouseLeftButtonDown
+        For Each fg As ForecastGroup In grdFcastGroups.Children
+            If fg.GroupIsSubTotal = False Then fg.ApplyRunRate()
+            fg.Update(fg)
+        Next
+    End Sub
+
+    Private Sub RecordStaffingShorts(sender As Object, e As MouseButtonEventArgs) Handles imgStaffing.MouseLeftButtonDown
+        'TODO: CODE STAFFING SHORTAGE RECORDING ROUTINES
+        Dim ph As String = ""
+
+    End Sub
+
+#End Region
+
 #End Region
 
 End Class

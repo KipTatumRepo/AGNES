@@ -7,6 +7,8 @@ Public Class Training
     Private WithEvents source As Trainings
     Public ScoreBox As NumberBox
     Public ScoreBoxText As TextBox
+    Private HasCert As Boolean
+    Private PassingScore As Double
 
 #End Region
 
@@ -30,6 +32,7 @@ Public Class Training
             .Margin = New Thickness(392, 165, 0, 0)
         End With
         ScoreBoxText = ScoreBox.Children(1)
+        ScoreBoxText.TabIndex = 5
         grdEditor.Children.Add(ScoreBox)
     End Sub
 
@@ -205,24 +208,42 @@ Public Class Training
             Exit Sub
         End If
         Dim cbi As ComboBoxItem = cbxTraining.SelectedItem
-        PopulateTrainers(Integer.Parse(cbi.Tag))
+        Dim tid As Integer = Integer.Parse(cbi.Tag)
+        PopulateTrainers(tid)
+
+        '// Assign minimum passing score and whether certification is required
+        Dim qtd = From tdi In TrainingData.TrainingTypes
+                  Select tdi
+                  Where tdi.PID = tid
+
+        For Each tdi In qtd
+            HasCert = tdi.Certification
+            PassingScore = tdi.PassCertScore
+        Next
 
     End Sub
 
     Private Sub PopulateTrainers(tid As Integer)
         cbxTrainer.Items.Clear()
         cbxTrainer.IsEnabled = False
-        Dim qtn = From ttn In TrainingData.Trainers
-                  Select ttn
-                  Where ttn.TrainingId = tid
+        Dim qti = From tti In TrainingData.TrainerTrainingJoins
+                  Select tti
+                  Where tti.TrainingId = tid
 
-        For Each ttn In qtn
-            Dim cbi As New ComboBoxItem With {.Content = ttn.TrainerName, .Tag = ttn.PID}
-            cbxTrainer.Items.Add(cbi)
+        For Each tti In qti
+            Dim qtn = From ttn In TrainingData.Trainers
+                      Select ttn
+                      Where ttn.PID = tti.TrainerId
+
+            For Each ttn In qtn
+                Dim cbi As New ComboBoxItem With {.Content = ttn.TrainerName, .Tag = ttn.PID}
+                cbxTrainer.Items.Add(cbi)
+            Next
+
+            If qtn.Count > 0 Then cbxTrainer.IsEnabled = True
+            If qtn.Count = 1 Then cbxTrainer.SelectedIndex = 0
+
         Next
-
-        If qtn.Count > 0 Then cbxTrainer.IsEnabled = True
-        If qtn.Count = 1 Then cbxTrainer.SelectedIndex = 0
 
     End Sub
 
@@ -236,7 +257,41 @@ Public Class Training
     End Sub
 
     Private Sub SaveRecord(sender As Object, e As RoutedEventArgs) Handles btnSave.Click
-        'TODO: ADD VALIDATION ROUTINE
+
+        '// Field validation
+        If ScoreBox.Flare = True Then Exit Sub
+        If ScoreBoxText.Text = "" Then
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.OkOnly, 12,,,, "Score required.", AgnesMessageBox.ImageType.Danger)
+            amsg.ShowDialog()
+            amsg.Close()
+            Exit Sub
+        End If
+
+        Dim ScoreVal As Double = FormatNumber(ScoreBoxText.Text, 1)
+        Dim CertVal As Boolean = False
+
+        '// Notify if score is below passing/cert not achieved
+        If HasCert = True Then CertVal = True
+        If ScoreVal < PassingScore Then
+            If HasCert = True Then
+                Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.YesNo, 12,,, "Score is below certification requirement.", "Do you still wish to save?", AgnesMessageBox.ImageType.Alert)
+                amsg.ShowDialog()
+                If amsg.ReturnResult = "No" Then
+                    amsg.Close()
+                    Exit Sub
+                End If
+                CertVal = False
+            Else
+                Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.YesNo, 12,,, "Score is below passing.", "Do you still wish to save?", AgnesMessageBox.ImageType.Alert)
+                amsg.ShowDialog()
+                If amsg.ReturnResult = "No" Then
+                    amsg.Close()
+                    Exit Sub
+                End If
+            End If
+        End If
+
+
         Dim empid As Long = 0
 
         For Each emp As EmployeeObj In EmployeeList
@@ -249,11 +304,10 @@ Public Class Training
         Dim newentry As New TrainingRecord
         With newentry
             .AssociateID = empid
-            'TODO: DETERMINE IF CERTIFICATION NEEDS TO BE SAVED
-            '.Certification = 0
+            .Certification = CertVal
             .StartDate = dtpStartDt.DisplayDate
             .EndDate = dtpEndDt.DisplayDate
-            .Score = FormatNumber(ScoreBoxText.Text, 1)
+            .Score = ScoreVal
             .Trainer = GetTrainerId(cbxTrainer.Text)
             .Training = GetTrainingId(cbxTraining.Text)
         End With
@@ -261,6 +315,7 @@ Public Class Training
         TrainingData.TrainingRecords.Add(newentry)
         TrainingData.SaveChanges()
         PopulateTrainingRecords(empid)
+        ClearFields()
     End Sub
 
     Private Function GetTrainingType(tid As Long) As String
@@ -307,7 +362,39 @@ Public Class Training
         Return 0
     End Function
 
-#End Region
+    Private Sub ClearFields()
+        cbxAssociates.SelectedIndex = -1
+        With cbxTraining
+            .Text = ""
+            .SelectedIndex = -1
+            .IsEnabled = False
+        End With
 
+        With cbxTrainer
+            .Text = ""
+            .Items.Clear()
+            .IsEnabled = False
+        End With
+
+        With dtpStartDt
+            .SelectedDate = Nothing
+            .DisplayDate = DateTime.Today
+            .IsEnabled = False
+        End With
+
+        With dtpEndDt
+            .SelectedDate = Nothing
+            .DisplayDate = DateTime.Today
+            .IsEnabled = False
+        End With
+
+        ScoreBoxText.Text = ""
+        ScoreBox.Flare = False
+        ScoreBox.IsEnabled = False
+
+        dgTrainingHistory.ItemsSource = Nothing
+    End Sub
+
+#End Region
 
 End Class
