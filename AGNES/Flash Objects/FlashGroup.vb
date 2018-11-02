@@ -318,11 +318,11 @@
                                 WeekCount += 1
                                 If SpreadByWeeks = False Then
                                     CalculateBudget += LoadSingleWeekAndUnitBudget(GroupCategory, FormatNumber(unittb.Tag, 0), CurrentFiscalYear, PeriodChooseObject.CurrentPeriod,
-                                                                          getweekoperatingdays(PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0)),
-                                                                          getperiodoperatingdays(PeriodChooseObject.CurrentPeriod))
+                                                                          getweekoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0)),
+                                                                          getperiodoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod))
                                 Else
                                     Dim tempopdays = 4
-                                    If getperiodoperatingdays(PeriodChooseObject.CurrentPeriod) > 20 Then tempopdays = 5
+                                    If getperiodoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod) > 20 Then tempopdays = 5
                                     CalculateBudget += LoadSingleWeekAndUnitBudget(GroupCategory, FormatNumber(unittb.Tag, 0), CurrentFiscalYear,
                                                                                    PeriodChooseObject.CurrentPeriod, 1, tempopdays)
                                 End If
@@ -447,8 +447,8 @@
                 .GLCategory = GroupCategory
                 .FlashValue = FlashVal.SetAmount
                 .FlashNotes = tb.Text
-                .OpDaysWeek = getweekoperatingdays(PeriodChooseObject.CurrentPeriod, WeekChooseObject.CurrentWeek)
-                .OpDaysPeriod = getperiodoperatingdays(PeriodChooseObject.CurrentPeriod)
+                .OpDaysWeek = getweekoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, WeekChooseObject.CurrentWeek)
+                .OpDaysPeriod = getperiodoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod)
                 .SavedBy = My.Settings.UserName
             End With
             If FlashPage.imgEscalate.Tag = "On" Then
@@ -486,8 +486,8 @@
                 .Status = SaveType
                 .FlashValue = FlashVal.SetAmount
                 .FlashNotes = tb.Text
-                .OpDaysWeek = getweekoperatingdays(PeriodChooseObject.CurrentPeriod, WeekChooseObject.CurrentWeek)
-                .OpDaysPeriod = getperiodoperatingdays(PeriodChooseObject.CurrentPeriod)
+                .OpDaysWeek = getweekoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, WeekChooseObject.CurrentWeek)
+                .OpDaysPeriod = getperiodoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod)
                 .SavedBy = My.Settings.UserName
             End With
             If FlashPage.imgEscalate.Tag = "On" Then
@@ -521,7 +521,7 @@
             End If
         Next
 
-        For Each periodbrd In WeekChooseObject.Children
+        For Each periodbrd In PeriodChooseObject.Children
             If periodbrd.Tag <> "Label" Then
                 periodtb = periodbrd.Child
                 If periodtb.FontWeight = FontWeights.SemiBold Then InternalCounter += 1

@@ -43,6 +43,18 @@ Public Class PercentBox
         End Set
     End Property
 
+    Private _fontsize As Integer
+    Public Property FontSize As Integer
+        Get
+            Return _fontsize
+        End Get
+        Set(value As Integer)
+            _fontsize = value
+            Dim t As TextBox = Children(1)
+            t.FontSize = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Constructor"

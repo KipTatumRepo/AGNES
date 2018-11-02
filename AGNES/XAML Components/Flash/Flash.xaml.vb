@@ -88,7 +88,7 @@ Public Class Flash
         Dim currwk As Byte = GetCurrentWeek(FormatDateTime(Now(), DateFormat.ShortDate))
         Wk = New WeekChooser(1, currwk, currwk)
         MSP = New PeriodChooser(Wk, 1, currmsp, currmsp)
-        MSP.SelectAllEnabled = False
+        MSP.DisableSelectAll = False
 
         Select Case FT
 #Region "Commons"

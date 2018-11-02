@@ -9,6 +9,7 @@
 
     Public Enum FontSz
         Small       '8pt font
+        Smaller     '10pt font
         Standard    '12pt font
         Medium      '16pt font
         Large       '18pt font
@@ -56,6 +57,14 @@
                     .Width = FieldWidth - 8
                     .Margin = New Thickness(4, 4, 0, 0)
                     .FontSize = 8
+                End With
+            Case FontSz.Smaller
+                Height = 26
+                With mytxt
+                    .Height = 18
+                    .Width = FieldWidth - 8
+                    .Margin = New Thickness(4, 4, 0, 0)
+                    .FontSize = 10
                 End With
             Case FontSz.Standard
                 Height = 28
