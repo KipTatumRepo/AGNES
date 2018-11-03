@@ -306,9 +306,21 @@
     End Sub
 
     Public Sub ApplyRunRate()
-        'TODO: CODE APPLYRUNRATE ROUTINE
-        Dim ph As String = ""
+        If W1Val.IsEnabled = True Then W1Val.SetAmount = (getweekoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, 1) * DRR.SetAmount)
+        If W2Val.IsEnabled = True Then W2Val.SetAmount = (getweekoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, 2) * DRR.SetAmount)
+        If W3Val.IsEnabled = True Then W3Val.SetAmount = (getweekoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, 3) * DRR.SetAmount)
+        If W4Val.IsEnabled = True Then W4Val.SetAmount = (getweekoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, 4) * DRR.SetAmount)
+        If (W5Val.IsEnabled = True And W5Val.Visibility = Visibility.Visible) Then W5Val.SetAmount = (getweekoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, 5) * DRR.SetAmount)
     End Sub
+
+    Public Sub Unlock()
+        W1Val.IsEnabled = True
+        W2Val.IsEnabled = True
+        W3Val.IsEnabled = True
+        W4Val.IsEnabled = True
+        If W5Val.Visibility = Visibility.Visible Then W5Val.IsEnabled = True
+    End Sub
+
     Public Function Save(SaveType) As Boolean
         Dim SaveOkay As Boolean
         '// SaveType only influences the value saved to the status field; the status bar is updated via the Fcastpage that calls this routine
@@ -350,7 +362,6 @@
         End Try
         Return True
     End Function
-
 
 #End Region
 

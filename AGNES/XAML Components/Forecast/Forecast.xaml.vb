@@ -2,18 +2,18 @@
 Public Class Forecast
 
 #Region "Properties"
-    'Dim SalesGroup As FcastGroup
+    Dim SalesGroup As ForecastGroup
     Dim CamGroup As ForecastGroup
-    'Dim CafeSalesGroup As FcastGroup
-    'Dim SalesTaxGroup As FcastGroup
-    'Dim CateringSalesGroup As FcastGroup
-    'Dim TotalSalesGroup As FcastGroup
+    Dim CafeSalesGroup As ForecastGroup
+    Dim SalesTaxGroup As ForecastGroup
+    Dim CateringSalesGroup As ForecastGroup
+    Dim TotalSalesGroup As ForecastGroup
     Dim CogsGroup As ForecastGroup
     Dim LaborGroup As ForecastGroup
     Dim OpexGroup As ForecastGroup
-    'Dim FeesGroup As FcastGroup
+    Dim FeesGroup As ForecastGroup
     Dim SubsidyGroup As ForecastGroup
-    'Dim TotalGroup As FcastGroup
+    Dim TotalGroup As ForecastGroup
     Dim Units As UnitChooser
     Public Property TypeOfFcast As Byte
     Public Property MSP As PeriodChooser
@@ -49,6 +49,14 @@ Public Class Forecast
         InitializeComponent()
         TypeOfFcast = FcastType
         ConstructTemplate(FcastType, FCastUnit)
+        Dim adminunlock As Byte = My.Settings.UserLevel
+        If adminunlock < 3 Then
+            imgUnlock.Visibility = Visibility.Visible
+            sepUnlock.Visibility = Visibility.Visible
+        Else
+            imgUnlock.Visibility = Visibility.Collapsed
+            sepUnlock.Visibility = Visibility.Hidden
+        End If
     End Sub
 
 #End Region
@@ -68,13 +76,13 @@ Public Class Forecast
         MSP.DisableSelectAll = True
 
 #Region "ToComplete"
-        'TODO: FINISH TEMPLATING ALL LOBS OTHER THAN COMMONS
+        'TODO: FINISH TEMPLATING BEV, OH, CATERING, AND EVENTIONS
         Select Case FT
 #Region "Commons"
-            Case 1      '   Commons Flash
+            Case 1      '   Commons Forecast
                 Title = "WCC Period Financial Forecast - Unit " & FU
                 Height = 369
-                AvailableUnits = New UnitGroup With {.UnitGroupName = "WCC"}
+                AvailableUnits = New UnitGroup With {.Summoner = 1, .UnitGroupName = "WCC"}
 
                 '// Add Unit and/or Subunits
                 Dim qsu = From su In AGNESShared.UnitsSubunits
@@ -83,13 +91,13 @@ Public Class Forecast
 
                 If qsu.Count > 0 Then
                     For Each su In qsu
-                        Dim subunit As New UnitFlash With {.FlashType = AvailableUnits.UnitGroupName, .UnitNumber = su.SubUnitNumber}
-                        AvailableUnits.UnitsInGroup.Add(subunit)
+                        Dim subunit As New UnitFcast With {.FcastType = AvailableUnits.UnitGroupName, .UnitNumber = su.SubUnitNumber}
+                        AvailableUnits.FcastUnitsInGroup.Add(subunit)
                         tlbUnits.Visibility = Visibility.Visible
                     Next
                 Else
-                    Dim FlashUnit As New UnitFlash With {.FlashType = AvailableUnits.UnitGroupName, .UnitNumber = FU}
-                    AvailableUnits.UnitsInGroup.Add(FlashUnit)
+                    Dim FCastUnit As New UnitFcast With {.FcastType = AvailableUnits.UnitGroupName, .UnitNumber = FU}
+                    AvailableUnits.FcastUnitsInGroup.Add(FCastUnit)
                     tlbUnits.Visibility = Visibility.Hidden
                     grdColumnLabels.Margin = New Thickness(0, 42, 0, 0)
                     grdFcastGroups.Margin = New Thickness(0, 74, 0, 0)
@@ -116,7 +124,7 @@ Public Class Forecast
             Case 2      ' Puget Sound Cafe Forecast
                 Title = "Cafe Period Financial Forecast - Unit " & FU
                 Height = 369
-                AvailableUnits = New UnitGroup With {.UnitGroupName = "Cafes"}
+                AvailableUnits = New UnitGroup With {.Summoner = 1, .UnitGroupName = "Cafes"}
 
                 '// Add Unit and/or Subunits
                 Dim qsu = From su In AGNESShared.UnitsSubunits
@@ -125,13 +133,13 @@ Public Class Forecast
 
                 If qsu.Count > 0 Then
                     For Each su In qsu
-                        Dim subunit As New UnitFlash With {.FlashType = AvailableUnits.UnitGroupName, .UnitNumber = su.SubUnitNumber}
-                        AvailableUnits.UnitsInGroup.Add(subunit)
+                        Dim subunit As New UnitFcast With {.FcastType = AvailableUnits.UnitGroupName, .UnitNumber = su.SubUnitNumber}
+                        AvailableUnits.FcastUnitsInGroup.Add(subunit)
                         tlbUnits.Visibility = Visibility.Visible
                     Next
                 Else
-                    Dim FcastUnit As New UnitFlash With {.FlashType = AvailableUnits.UnitGroupName, .UnitNumber = FU}
-                    AvailableUnits.UnitsInGroup.Add(FcastUnit)
+                    Dim FCastUnit As New UnitFcast With {.FcastType = AvailableUnits.UnitGroupName, .UnitNumber = FU}
+                    AvailableUnits.FcastUnitsInGroup.Add(FCastUnit)
                     tlbUnits.Visibility = Visibility.Hidden
                     grdColumnLabels.Margin = New Thickness(0, 42, 0, 0)
                     grdFcastGroups.Margin = New Thickness(0, 74, 0, 0)
@@ -139,116 +147,115 @@ Public Class Forecast
                 Units = New UnitChooser(AvailableUnits)
                 If qsu.Count > 0 Then Units.AllowMultiSelect = True
 
-                '// Add forecast-specific forecastgroups (categories)
-                'SalesGroup = New FlashGroup(MSP, Wk, Units, "Sales", False, 0, True, False, True, True, False) ' Increments of 47 for flashgroup spacing
-                'CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", True, 47, False, False, True, False, True) With {.SalesFlashGroup = SalesGroup}
-                'LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", True, 94, True, False, True, False, True) With {.SalesFlashGroup = SalesGroup}
-                'OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", True, 141, False, False, True, False, True) With {.SalesFlashGroup = SalesGroup}
-                'SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", True, 188, True, True, True, False, False, New List(Of FlashGroup) From {SalesGroup, CogsGroup, LaborGroup, OpexGroup}) With {.SalesFlashGroup = SalesGroup}
-                'With grdFlashGroups.Children
-                '    .Add(SalesGroup)
-                '    .Add(CogsGroup)
-                '    .Add(LaborGroup)
-                '    .Add(OpexGroup)
-                '    .Add(SubsidyGroup)
-                'End With
+                '// Add forecast groups (categories)
+                SalesGroup = New ForecastGroup(MSP, Units, "Sales", False, 0, True, False, True, False) ' Increments of 47 for flashgroup spacing 
+                CogsGroup = New ForecastGroup(MSP, Units, "COGS", True, 47, False, False, False, True) With {.SalesFcastGroup = SalesGroup}
+                LaborGroup = New ForecastGroup(MSP, Units, "Labor", True, 94, True, False, False, True) With {.SalesFcastGroup = SalesGroup}
+                OpexGroup = New ForecastGroup(MSP, Units, "OPEX", True, 141, False, False, False, True) With {.SalesFcastGroup = SalesGroup}
+                SubsidyGroup = New ForecastGroup(MSP, Units, "Subsidy", True, 188, True, True, False, False, New List(Of ForecastGroup) From {SalesGroup, CogsGroup, LaborGroup, OpexGroup}) With {.SalesFcastGroup = SalesGroup}
+                With grdFcastGroups.Children
+                    .Add(SalesGroup)
+                    .Add(CogsGroup)
+                    .Add(LaborGroup)
+                    .Add(OpexGroup)
+                    .Add(SubsidyGroup)
+                End With
 #End Region
 
 #Region "A/V"
-                '            Case 3      ' A/V Flash
-                '                Title = "A/V Weekly Financial Flash"
-                '                Height = 460
-                '                AvailableUnits = New UnitGroup With {.UnitGroupName = "AV"}
+            Case 3      ' A/V Forecast
+                Title = "A/V Period Financial Forecast"
+                Height = 460
+                AvailableUnits = New UnitGroup With {.Summoner = 1, .UnitGroupName = "AV"}
 
-                '                '// Add Unit and/or Subunits
-                '                Dim qsu = From su In AGNESShared.UnitsSubunits
-                '                          Where su.UnitNumber = FU
-                '                          Select su
+                '// Add Unit and/or Subunits
+                Dim qsu = From su In AGNESShared.UnitsSubunits
+                          Where su.UnitNumber = FU
+                          Select su
 
-                '                If qsu.Count > 0 Then
-                '                    For Each su In qsu
-                '                        Dim subunit As New UnitFlash With {.FlashType = AvailableUnits.UnitGroupName, .UnitNumber = su.SubUnitNumber}
-                '                        AvailableUnits.UnitsInGroup.Add(subunit)
-                '                        tlbUnits.Visibility = Visibility.Visible
-                '                    Next
-                '                Else
-                '                    Dim FlashUnit As New UnitFlash With {.FlashType = AvailableUnits.UnitGroupName, .UnitNumber = FU}
-                '                    AvailableUnits.UnitsInGroup.Add(FlashUnit)
-                '                    tlbUnits.Visibility = Visibility.Hidden
-                '                    grdColumnLabels.Margin = New Thickness(0, 42, 0, 0)
-                '                    grdFlashGroups.Margin = New Thickness(0, 74, 0, 0)
-                '                End If
-                '                Units = New UnitChooser(AvailableUnits)
-                '                If qsu.Count > 0 Then Units.AllowMultiSelect = True
+                If qsu.Count > 0 Then
+                    For Each su In qsu
+                        Dim subunit As New UnitFcast With {.FcastType = AvailableUnits.UnitGroupName, .UnitNumber = su.SubUnitNumber}
+                        AvailableUnits.FcastUnitsInGroup.Add(subunit)
+                        tlbUnits.Visibility = Visibility.Visible
+                    Next
+                Else
+                    Dim FCastUnit As New UnitFcast With {.FcastType = AvailableUnits.UnitGroupName, .UnitNumber = FU}
+                    AvailableUnits.FcastUnitsInGroup.Add(FCastUnit)
+                    tlbUnits.Visibility = Visibility.Hidden
+                    grdColumnLabels.Margin = New Thickness(0, 42, 0, 0)
+                    grdFcastGroups.Margin = New Thickness(0, 74, 0, 0)
+                End If
+                Units = New UnitChooser(AvailableUnits)
+                If qsu.Count > 0 Then Units.AllowMultiSelect = True
 
-                '                '// Add flash-specific flashgroups (categories)
-                '                SalesGroup = New FlashGroup(MSP, Wk, Units, "Sales", False, 0, True, False, True, False, False) With {.SpreadByWeeks = True}
-                '                SalesTaxGroup = New FlashGroup(MSP, Wk, Units, "Sales Tax", False, 47, False, False, True, False, False) With {.SpreadByWeeks = True}
-
-                '                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", False, 94, True, False, True, False, False) With {.SpreadByWeeks = True}
-                '                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", False, 141, False, False, True, False, False) With {.SpreadByWeeks = True}
-                '                FeesGroup = New FlashGroup(MSP, Wk, Units, "Fees", False, 188, True, False, True, False, False) With {.SpreadByWeeks = True}
-                '                SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", False, 188 + 47, True, True, True, False, False, New List(Of FlashGroup) From {SalesGroup, SalesTaxGroup, LaborGroup, OpexGroup, FeesGroup})
-                '                With grdFlashGroups.Children
-                '                    .Add(SalesGroup)
-                '                    .Add(SalesTaxGroup)
-                '                    .Add(LaborGroup)
-                '                    .Add(OpexGroup)
-                '                    .Add(FeesGroup)
-                '                    .Add(SubsidyGroup)
-                '                End With
+                '// Add forecast groups (categories)
+                SalesGroup = New ForecastGroup(MSP, Units, "Sales", False, 0, True, False, False, False) ' Increments of 47 for flashgroup spacing 
+                SalesTaxGroup = New ForecastGroup(MSP, Units, "Sales Tax", False, 47, False, False, False, False) With {.SalesFcastGroup = SalesGroup}
+                LaborGroup = New ForecastGroup(MSP, Units, "Labor", True, 94, True, False, False, False) With {.SalesFcastGroup = SalesGroup}
+                OpexGroup = New ForecastGroup(MSP, Units, "OPEX", True, 141, False, False, False, False) With {.SalesFcastGroup = SalesGroup}
+                FeesGroup = New ForecastGroup(MSP, Units, "Fees", True, 188, True, False, False, False) With {.SalesFcastGroup = SalesGroup}
+                SubsidyGroup = New ForecastGroup(MSP, Units, "Subsidy", True, 235, True, True, False, False, New List(Of ForecastGroup) From {SalesGroup, SalesTaxGroup, LaborGroup, OpexGroup, FeesGroup}) With {.SalesFcastGroup = SalesGroup}
+                With grdFcastGroups.Children
+                    .Add(SalesGroup)
+                    .Add(SalesTaxGroup)
+                    .Add(LaborGroup)
+                    .Add(OpexGroup)
+                    .Add(FeesGroup)
+                    .Add(SubsidyGroup)
+                End With
 
 #End Region
 
 #Region "Field Sites"
-                '            Case 4      ' Field Site Flash
-                '                Title = "Field Site Weekly Financial Flash"
-                '                Height = 600
-                '                AvailableUnits = New UnitGroup With {.UnitGroupName = "Cafes"}
+            Case 4      ' Field Site Flash
+                Title = "Field Period Financial Forecast - Unit " & FU
+                Height = 600
+                AvailableUnits = New UnitGroup With {.Summoner = 1, .UnitGroupName = "Field"}
 
-                '                '// Add Unit and/or Subunits
-                '                Dim qsu = From su In AGNESShared.UnitsSubunits
-                '                          Where su.UnitNumber = FU
-                '                          Select su
+                '// Add Unit and/or Subunits
+                Dim qsu = From su In AGNESShared.UnitsSubunits
+                          Where su.UnitNumber = FU
+                          Select su
 
-                '                If qsu.Count > 0 Then
-                '                    For Each su In qsu
-                '                        Dim subunit As New UnitFlash With {.FlashType = AvailableUnits.UnitGroupName, .UnitNumber = su.SubUnitNumber}
-                '                        AvailableUnits.UnitsInGroup.Add(subunit)
-                '                        tlbUnits.Visibility = Visibility.Visible
-                '                    Next
-                '                Else
-                '                    Dim FlashUnit As New UnitFlash With {.FlashType = AvailableUnits.UnitGroupName, .UnitNumber = FU}
-                '                    AvailableUnits.UnitsInGroup.Add(FlashUnit)
-                '                    tlbUnits.Visibility = Visibility.Hidden
-                '                    grdColumnLabels.Margin = New Thickness(0, 42, 0, 0)
-                '                    grdFlashGroups.Margin = New Thickness(0, 74, 0, 0)
-                '                End If
-                '                Units = New UnitChooser(AvailableUnits)
-                '                If qsu.Count > 0 Then Units.AllowMultiSelect = True
+                If qsu.Count > 0 Then
+                    For Each su In qsu
+                        Dim subunit As New UnitFcast With {.FcastType = AvailableUnits.UnitGroupName, .UnitNumber = su.SubUnitNumber}
+                        AvailableUnits.FcastUnitsInGroup.Add(subunit)
+                        tlbUnits.Visibility = Visibility.Visible
+                    Next
+                Else
+                    Dim FCastUnit As New UnitFcast With {.FcastType = AvailableUnits.UnitGroupName, .UnitNumber = FU}
+                    AvailableUnits.FcastUnitsInGroup.Add(FCastUnit)
+                    tlbUnits.Visibility = Visibility.Hidden
+                    grdColumnLabels.Margin = New Thickness(0, 42, 0, 0)
+                    grdFcastGroups.Margin = New Thickness(0, 74, 0, 0)
+                End If
+                Units = New UnitChooser(AvailableUnits)
+                If qsu.Count > 0 Then Units.AllowMultiSelect = True
 
-                '                '// Add flash-specific flashgroups (categories)
-                '                CafeSalesGroup = New FlashGroup(MSP, Wk, Units, "Sales", False, 0, True, False, True, True, False)
-                '                CateringSalesGroup = New FlashGroup(MSP, Wk, Units, "Catering Sales", False, 47, False, False, True, True, False)
-                '                SalesTaxGroup = New FlashGroup(MSP, Wk, Units, "Sales Tax", False, 94, True, False, True, False, True)
-                '                TotalSalesGroup = New FlashGroup(MSP, Wk, Units, "Total Sales", False, 141, False, True, True, False, False, New List(Of FlashGroup) From {CafeSalesGroup, CateringSalesGroup, SalesTaxGroup})
-                '                CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", True, 188, False, False, True, False, True) With {.SalesFlashGroup = TotalSalesGroup}
-                '                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", True, 235, True, False, True, False, True) With {.SalesFlashGroup = TotalSalesGroup}
-                '                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", True, 282, False, False, True, False, True) With {.SalesFlashGroup = TotalSalesGroup}
-                '                FeesGroup = New FlashGroup(MSP, Wk, Units, "Fees", True, 329, True, False, True, False, True) With {.SalesFlashGroup = TotalSalesGroup}
-                '                SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", True, 376, True, True, True, False, False, New List(Of FlashGroup) From {TotalSalesGroup, CogsGroup, LaborGroup, OpexGroup, FeesGroup}) With {.SalesFlashGroup = TotalSalesGroup}
+                '// Add forecast groups (categories)
+                CafeSalesGroup = New ForecastGroup(MSP, Units, "Sales", False, 0, True, False, True, False) ' Increments of 47 for flashgroup spacing 
+                CateringSalesGroup = New ForecastGroup(MSP, Units, "Catering Sales", False, 47, False, False, True, False) With {.SalesFcastGroup = CafeSalesGroup}
+                SalesTaxGroup = New ForecastGroup(MSP, Units, "Sales Tax", True, 94, True, False, False, True) With {.SalesFcastGroup = CafeSalesGroup}
+                TotalSalesGroup = New ForecastGroup(MSP, Units, "Total Sales", False, 141, False, True, False, False, New List(Of ForecastGroup) From {CafeSalesGroup, CateringSalesGroup, SalesTaxGroup})
 
-                '                With grdFlashGroups.Children
-                '                    .Add(CafeSalesGroup)
-                '                    .Add(CateringSalesGroup)
-                '                    .Add(SalesTaxGroup)
-                '                    .Add(TotalSalesGroup)
-                '                    .Add(CogsGroup)
-                '                    .Add(LaborGroup)
-                '                    .Add(OpexGroup)
-                '                    .Add(FeesGroup)
-                '                    .Add(SubsidyGroup)
-                '                End With
+                CogsGroup = New ForecastGroup(MSP, Units, "COGS", True, 188, False, False, False, True) With {.SalesFcastGroup = TotalSalesGroup}
+                LaborGroup = New ForecastGroup(MSP, Units, "Labor", True, 235, True, False, False, True) With {.SalesFcastGroup = TotalSalesGroup}
+                OpexGroup = New ForecastGroup(MSP, Units, "OPEX", True, 282, False, False, False, True) With {.SalesFcastGroup = TotalSalesGroup}
+                FeesGroup = New ForecastGroup(MSP, Units, "Fees", True, 329, True, False, False, True) With {.SalesFcastGroup = TotalSalesGroup}
+                SubsidyGroup = New ForecastGroup(MSP, Units, "Subsidy", True, 376, True, True, False, False, New List(Of ForecastGroup) From {TotalSalesGroup, CogsGroup, LaborGroup, FeesGroup, OpexGroup}) With {.SalesFcastGroup = TotalSalesGroup}
+                With grdFcastGroups.Children
+                    .Add(CafeSalesGroup)
+                    .Add(CateringSalesGroup)
+                    .Add(SalesTaxGroup)
+                    .Add(TotalSalesGroup)
+                    .Add(CogsGroup)
+                    .Add(LaborGroup)
+                    .Add(OpexGroup)
+                    .Add(FeesGroup)
+                    .Add(SubsidyGroup)
+                End With
 #End Region
 
 #Region "Beverage"
@@ -395,14 +402,19 @@ Public Class Forecast
 
 #End Region
 
-        Dim sep As New Separator
-        With tlbFcast.Items
-            .Add(MSP)
-            .Add(sep)
-        End With
+        tlbFcast.Items.Add(MSP)
         tlbUnits.Items.Add(Units)
         If Units.NumberOfAvailableUnits = 1 Then Units.IsEnabled = False
 
+    End Sub
+
+    Private Sub Forecast_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+        If SaveStatus = 0 Then
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.YesNo, 12, False,, "Discard unsaved data?",, AgnesMessageBox.ImageType.Danger)
+            amsg.ShowDialog()
+            If amsg.ReturnResult = "No" Then e.Cancel = True
+            amsg.Close()
+        End If
     End Sub
 
 #Region "Toolbar"
@@ -448,6 +460,12 @@ Public Class Forecast
         'TODO: CODE STAFFING SHORTAGE RECORDING ROUTINES
         Dim ph As String = ""
 
+    End Sub
+
+    Private Sub UnlockWeeks(sender As Object, e As MouseButtonEventArgs) Handles imgUnlock.MouseLeftButtonDown
+        For Each fg As ForecastGroup In grdFcastGroups.Children
+            If fg.GroupIsSubTotal = False Then fg.Unlock()
+        Next
     End Sub
 
 #End Region

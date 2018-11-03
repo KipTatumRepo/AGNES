@@ -25,6 +25,8 @@
             <Separator />
             <Image x:Name="imgStaffing" Source="/AGNES;component/Resources/staff.png" ToolTip="Record Staffing Shortages" />
             <Separator />
+            <Image x:Name="imgUnlock" Source="/AGNES;component/Resources/unlocked.png" ToolTip="Unlock All Weeks" />
+            <Separator x:Name="sepUnlock" />
         </ToolBar>
         <ToolBar x:Name="tlbUnits" Height="41" VerticalAlignment="Top" UseLayoutRounding="False" Margin="0,38.896,0,0"/>
         <Grid x:Name="grdColumnLabels" Margin="0,87,0,0" Height="27" VerticalAlignment="Top">

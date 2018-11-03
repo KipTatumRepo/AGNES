@@ -141,7 +141,9 @@
       <DependentUpon>TrainingModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Flash Objects\StatusItem.vb" />
+    <Compile Include="Forecast Objects\FcastUnitGroup.vb" />
     <Compile Include="Forecast Objects\ForecastGroup.vb" />
+    <Compile Include="Forecast Objects\UnitFcast.vb" />
     <Compile Include="Module Orchestrators\FlashStatusModule.vb" />
     <Compile Include="Module Orchestrators\ForecastModule.vb" />
     <Compile Include="Training Objects\EmployeeObj.vb" />
@@ -400,7 +402,7 @@
     <Compile Include="Flash Objects\FlashGroup.vb" />
     <Compile Include="Flash Objects\SharedFunctions.vb" />
     <Compile Include="Flash Objects\UnitFlash.vb" />
-    <Compile Include="Flash Objects\UnitGroup.vb" />
+    <Compile Include="Application Objects\UnitGroup.vb" />
     <Compile Include="Module Orchestrators\AdminModule.vb" />
     <Compile Include="Module Orchestrators\BaseModule.vb" />
     <Compile Include="Module Orchestrators\FlashModule.vb" />
