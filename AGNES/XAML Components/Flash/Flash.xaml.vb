@@ -1,6 +1,7 @@
 ﻿Imports System.ComponentModel
 
 Public Class Flash
+    'TODO: LOCK/UNLOCK FLASH FIELDS ON PTD VIEW TOGGLE
 
 #Region "Properties"
     Dim SalesGroup As FlashGroup
