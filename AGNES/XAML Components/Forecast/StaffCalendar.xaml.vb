@@ -30,6 +30,7 @@ Public Class StaffCalendar
 #Region "Constructor"
     Public Sub New(fy, msp, unum)
         InitializeComponent()
+        SaveStatus = True
         WeekOne = New CalWeekObj(unum, fy, msp, 1, Me)
         WeekTwo = New CalWeekObj(unum, fy, msp, 2, Me)
         WeekThree = New CalWeekObj(unum, fy, msp, 3, Me)

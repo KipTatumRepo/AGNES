@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGNES"
         mc:Ignorable="d"
-        Title="Staffing Shortages" Height="600" Width="810">
+        Title="Staffing Shortages" Height="600" Width="810" WindowStartupLocation="CenterScreen">
     <Window.Effect>
         <DropShadowEffect Opacity="0.5"/>
     </Window.Effect>
