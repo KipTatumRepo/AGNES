@@ -355,8 +355,6 @@
                             If weektb.FontWeight = FontWeights.SemiBold And FormatNumber(weektb.Tag, 0) <= WeekChooseObject.MaxWeek Then
                                 WeekCount += 1
                                 Dim AddValue = LoadSingleWeekAndUnitFlash(GroupCategory, FormatNumber(unittb.Tag, 0), CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, FormatNumber(weektb.Tag, 0))
-                                '// Lock flash fields during PTD or Multiple Unit views, regardless of individual save statuses
-                                If CheckIfMultipleAreSelected() Then FlashVal.IsEnabled = False
                                 NoteContent = AddValue.Notes
                                 notestb.Text = NoteContent
                                 Select Case AddValue.Stts
@@ -373,6 +371,12 @@
                                         notestb.IsEnabled = True
                                         tmpsavestatus = 2
                                 End Select
+
+                                '// Lock flash fields during PTD or Multiple Unit views, regardless of individual save statuses
+                                If CheckIfMultipleAreSelected() > 3 Then
+                                    FlashVal.IsEnabled = False
+                                    notestb.IsEnabled = False
+                                End If
 
                                 Try
                                     If AddValue.alert = True Then
@@ -587,6 +591,7 @@
             Else
                 amsg.Close()
             End If
+
         End If
         Load()
         Update(Me)
