@@ -3,6 +3,7 @@
 #Region "Properties"
     Public SharedDataGroup As BIEntities
     Public AGNESShared As AGNESSharedDataEntity
+    Public FlashActuals As FlashActualsEntity
     Public FlashBudgets As BudgetEntity
     Public FlashForecasts As ForecastEntity
     Public TrainingData As TrainingEntities
@@ -16,6 +17,7 @@
         SharedDataGroup = New BIEntities
         AGNESShared = New AGNESSharedDataEntity
         BGE = New BGCRMEntity
+        FlashActuals = New FlashActualsEntity
         FlashBudgets = New BudgetEntity
         FlashForecasts = New ForecastEntity
         TrainingData = New TrainingEntities

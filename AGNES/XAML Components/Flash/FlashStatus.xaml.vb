@@ -1,7 +1,7 @@
 ﻿Public Class FlashStatus
-    'TODO: ADD VIEWING CAPABILITY FROM STATUS WINDOW
+
 #Region "Properties"
-    Private TypeofFlash As Byte
+    Public TypeofFlash As Byte
     Public StatusWk As WeekChooser
     Public StatusMsp As PeriodChooser
 
@@ -24,6 +24,7 @@
         End With
         PopulateUnits()
     End Sub
+
 #End Region
 
 #Region "Public Methods"
@@ -36,9 +37,8 @@
                   Select uig
                   Where uig.FlashType = TypeofFlash
 
-        '// Build items into stackpanel - buttons as test objects
+        '// Build items into wrappanel
         For Each uig In qgu
-
             Dim CurrentFlashStatus As String = GetFlashstatus(uig.Unit_Number)
             Select Case CurrentFlashStatus
                 Case "None"
@@ -70,6 +70,7 @@
             End Select
 
         Next
+
     End Sub
 
 #End Region

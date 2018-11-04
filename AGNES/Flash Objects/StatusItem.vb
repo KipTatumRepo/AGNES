@@ -7,12 +7,12 @@
     Public Property DefaultBrush As Brush
     Public Property MSP As Byte
     Public Property Wk As Byte
+
 #End Region
 
 #Region "Constructor"
     Public Sub New(tl As String, st As Byte, al As Boolean, am As String, un As Long)
         UnitNumber = un
-        Dim NextMarginLeft As Integer = 170
         If am <> "" Then AlertMsg = am
         AddHandler MouseEnter, AddressOf MouseHover
         AddHandler MouseLeave, AddressOf MouseEndHover
@@ -22,56 +22,77 @@
         AddHandler brd.MouseEnter, AddressOf MouseHover
         AddHandler brd.MouseLeave, AddressOf MouseEndHover
 
-        Dim grd As New Grid
-        AddHandler grd.MouseEnter, AddressOf MouseHover
-        AddHandler grd.MouseLeave, AddressOf MouseEndHover
-        brd.Child = grd
+        Dim dp As New DockPanel
+        AddHandler dp.MouseEnter, AddressOf MouseHover
+        AddHandler dp.MouseLeave, AddressOf MouseEndHover
+        brd.Child = dp
         Children.Add(brd)
 
         '// Add Unit name and number
-        Dim UnitNameLabel As New TextBlock With {.Width = 166, .VerticalAlignment = VerticalAlignment.Center, .HorizontalAlignment = HorizontalAlignment.Left,
+        Dim UnitNameLabel As New TextBlock With {.Width = 120, .VerticalAlignment = VerticalAlignment.Center, .HorizontalAlignment = HorizontalAlignment.Left,
             .Margin = New Thickness(5, 0, 0, 0)}
         UnitNameLabel.Text = tl
-        grd.Children.Add(UnitNameLabel)
+        dp.Children.Add(UnitNameLabel)
         AddHandler UnitNameLabel.MouseEnter, AddressOf MouseHover
         AddHandler UnitNameLabel.MouseLeave, AddressOf MouseEndHover
 
-        '// Add status icon (unlocked for draft, locked for final)
+        Dim IconDp As New DockPanel
+        IconDp.HorizontalAlignment = HorizontalAlignment.Right
         Dim DisplayedImage As BitmapImage
+
+        '// Add alert icon, if present, and hoverover alert message
+        If al = True Then
+            DisplayedImage = New BitmapImage(New Uri("pack://application:,,,/Resources/HandWave.png"))
+            Dim AlertImg As New Image With {.Name = "imgAlertStatus", .Height = 32, .Width = 32, .Stretch = Stretch.UniformToFill,
+                .ToolTip = am, .Margin = New Thickness(0, 0, 5, 0)}
+            AlertImg.Source = DisplayedImage
+            AddHandler AlertImg.MouseEnter, AddressOf MouseHover
+            AddHandler AlertImg.MouseLeave, AddressOf MouseEndHover
+            IconDp.Children.Add(AlertImg)
+        End If
+
+        '// Add status icon (unlocked for draft, locked for final)
+        '// Create eye/view icon (show if in draft or final)
         Dim StatusImg As New Image With {.Name = "imgFlashStatus", .Height = 32, .Width = 32, .Stretch = Stretch.UniformToFill,
-            .HorizontalAlignment = HorizontalAlignment.Right}
-        If al = True Then StatusImg.Margin = New Thickness(0, 0, 64, 0)
+            .Margin = New Thickness(0, 0, 5, 0)}
         AddHandler StatusImg.MouseEnter, AddressOf MouseHover
         AddHandler StatusImg.MouseLeave, AddressOf MouseEndHover
+        Dim EyeImg As New Image With {.Name = "imgViewFlash", .Height = 32, .Width = 32, .Stretch = Stretch.UniformToFill,
+            .ToolTip = "View Flash", .Margin = New Thickness(0, 0, 5, 0)}
+        AddHandler EyeImg.PreviewMouseLeftButtonDown, AddressOf ViewFlash
+        AddHandler EyeImg.MouseEnter, AddressOf MouseHover
+        AddHandler EyeImg.MouseLeave, AddressOf MouseEndHover
+
 
         Select Case st
             Case 1
-                DisplayedImage = New BitmapImage(New Uri("pack://application:,,,/Resources/unlocked.png"))
                 DefaultBrush = Brushes.LightYellow
+                DisplayedImage = New BitmapImage(New Uri("pack://application:,,,/Resources/eye.png"))
+                EyeImg.Source = DisplayedImage
+                DisplayedImage = New BitmapImage(New Uri("pack://application:,,,/Resources/unlocked.png"))
                 StatusImg.Source = DisplayedImage
-                grd.Children.Add(StatusImg)
+                IconDp.Children.Add(EyeImg)
+                IconDp.Children.Add(StatusImg)
+
             Case 2
-                DisplayedImage = New BitmapImage(New Uri("pack://application:,,,/Resources/locked.png"))
                 DefaultBrush = Brushes.White
+                DisplayedImage = New BitmapImage(New Uri("pack://application:,,,/Resources/eye.png"))
+                EyeImg.Source = DisplayedImage
+                DisplayedImage = New BitmapImage(New Uri("pack://application:,,,/Resources/locked.png"))
                 StatusImg.Source = DisplayedImage
+                IconDp.Children.Add(EyeImg)
                 StatusImg.ToolTip = "Click to unlock Flash for edits"
                 AddHandler StatusImg.PreviewMouseLeftButtonDown, AddressOf UnlockUnit
-                grd.Children.Add(StatusImg)
+                IconDp.Children.Add(StatusImg)
             Case Else
                 DefaultBrush = Brushes.LightGray
         End Select
 
         Background = DefaultBrush
-        '// Add alert icon, if present, and hoverover alert message
-        If al = True Then
-            DisplayedImage = New BitmapImage(New Uri("pack://application:,,,/Resources/HandWave.png"))
-            Dim AlertImg As New Image With {.Name = "imgAlertStatus", .Height = 32, .Width = 32, .Stretch = Stretch.UniformToFill,
-                .ToolTip = am, .HorizontalAlignment = HorizontalAlignment.Right}
-            AlertImg.Source = DisplayedImage
-            AddHandler AlertImg.MouseEnter, AddressOf MouseHover
-            AddHandler AlertImg.MouseLeave, AddressOf MouseEndHover
-            grd.Children.Add(AlertImg)
-        End If
+
+
+
+            dp.Children.Add(IconDp)
 
     End Sub
 
@@ -102,6 +123,13 @@
         If IsEnabled = False Then Exit Sub
         Background = DefaultBrush
     End Sub
+
+    Private Sub ViewFlash()
+        FlashPage = New Flash(FlashStatusPage.TypeofFlash, UnitNumber)
+        FlashPage.SaveStatus = InitialLoadStatus
+        FlashPage.ShowDialog()
+    End Sub
+
 #End Region
 
 End Class

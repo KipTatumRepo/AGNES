@@ -826,6 +826,7 @@
       <DependentUpon>WCRModule.edmx</DependentUpon>
       <LastGenOutput>WCRModule.vb</LastGenOutput>
     </Content>
+    <Resource Include="Resources\eye.png" />
     <Resource Include="Resources\Class.png" />
     <Resource Include="Resources\Trainer.png" />
     <Resource Include="Resources\staff.png" />
@@ -874,6 +875,8 @@
   <ItemGroup>
     <Folder Include="XAML Components\Campaign Manager\" />
     <Folder Include="XAML Components\Journal\" />
+    <Folder Include="XAML Components\Marketing Suite\" />
+    <Folder Include="XAML Components\Menu Engineering\" />
     <Folder Include="XAML Components\QA Suite\" />
     <Folder Include="XAML Components\Vendor Management\" />
     <Folder Include="XAML Components\Waste\" />
