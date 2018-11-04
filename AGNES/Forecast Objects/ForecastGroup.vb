@@ -490,8 +490,7 @@
     End Sub
 
     Private Sub CheckWeekFive()
-        Dim pod As Byte = getperiodoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod)
-        If pod < 21 Then
+        If GetMaxWeeks(PeriodChooseObject.CurrentPeriod) = 4 Then
             W5Val.Visibility = Visibility.Hidden
             W5Val.IsEnabled = False
             FcastPage.lblWeek5.Foreground = Brushes.LightGray

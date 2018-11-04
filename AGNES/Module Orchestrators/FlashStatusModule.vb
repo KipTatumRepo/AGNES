@@ -10,4 +10,5 @@
         FlashStatusPage = New FlashStatus(StatusFlashType)
         FlashStatusPage.ShowDialog()
     End Sub
+
 End Module
