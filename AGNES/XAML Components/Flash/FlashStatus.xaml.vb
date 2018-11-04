@@ -1,4 +1,5 @@
 ﻿Public Class FlashStatus
+    'TODO: ADD VIEWING CAPABILITY FROM STATUS WINDOW
 #Region "Properties"
     Private TypeofFlash As Byte
     Public StatusWk As WeekChooser

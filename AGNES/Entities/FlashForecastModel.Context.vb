@@ -24,5 +24,6 @@ Partial Public Class ForecastEntity
 
     Public Overridable Property ForecastAudits() As DbSet(Of ForecastAudits)
     Public Overridable Property Forecasts() As DbSet(Of Forecasts)
+    Public Overridable Property AssociateShortages() As DbSet(Of AssociateShortage)
 
 End Class

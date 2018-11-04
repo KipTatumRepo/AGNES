@@ -125,6 +125,9 @@
     <Compile Include="Entities\ApplicationSession.vb">
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\AssociateShortage.vb">
+      <DependentUpon>FlashForecastModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\FlashAlert.vb">
       <DependentUpon>FlashActualsModel.tt</DependentUpon>
     </Compile>
@@ -141,6 +144,8 @@
       <DependentUpon>TrainingModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Flash Objects\StatusItem.vb" />
+    <Compile Include="Forecast Objects\CalDayObj.vb" />
+    <Compile Include="Forecast Objects\CalWeekObj.vb" />
     <Compile Include="Forecast Objects\FcastUnitGroup.vb" />
     <Compile Include="Forecast Objects\ForecastGroup.vb" />
     <Compile Include="Forecast Objects\UnitFcast.vb" />
@@ -156,6 +161,9 @@
     </Compile>
     <Compile Include="XAML Components\Forecast\Forecast.xaml.vb">
       <DependentUpon>Forecast.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="XAML Components\Forecast\StaffCalendar.xaml.vb">
+      <DependentUpon>StaffCalendar.xaml</DependentUpon>
     </Compile>
     <Compile Include="XAML Components\Shared\AgnesMessageBox.xaml.vb">
       <DependentUpon>AgnesMessageBox.xaml</DependentUpon>
@@ -503,6 +511,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="XAML Components\Forecast\Forecast.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XAML Components\Forecast\StaffCalendar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
