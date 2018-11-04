@@ -826,6 +826,7 @@
       <DependentUpon>WCRModule.edmx</DependentUpon>
       <LastGenOutput>WCRModule.vb</LastGenOutput>
     </Content>
+    <Resource Include="Resources\eye.png" />
     <Resource Include="Resources\Class.png" />
     <Resource Include="Resources\Trainer.png" />
     <Resource Include="Resources\staff.png" />
