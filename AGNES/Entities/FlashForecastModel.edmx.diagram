@@ -6,7 +6,8 @@
     <edmx:Diagrams>
       <Diagram DiagramId="21e4047e15cd4a878d045e69c41a36df" Name="Diagram1">
         <EntityTypeShape EntityType="ForecastModel.ForecastAudits" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ForecastModel.Forecasts" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ForecastModel.Forecasts" Width="1.5" PointX="4.125" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ForecastModel.AssociateShortage" Width="1.5" PointX="2.5" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

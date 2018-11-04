@@ -4,7 +4,17 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ForecastModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ForecastModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AssociateShortages">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UnitNumber" Type="bigint" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="HourlyOut" Type="int" Nullable="false" />
+          <Property Name="SalaryOut" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="ForecastAudit">
           <Key>
             <PropertyRef Name="PID" />
@@ -29,11 +39,11 @@
           <Property Name="ForecastValue" Type="decimal" Precision="12" Scale="2" Nullable="false" />
         </EntityType>
         <EntityContainer Name="ForecastModelStoreContainer">
+          <EntitySet Name="AssociateShortages" EntityType="Self.AssociateShortages" Schema="agnes" store:Type="Tables" />
           <EntitySet Name="ForecastAudit" EntityType="Self.ForecastAudit" Schema="agnes" store:Type="Tables" />
           <EntitySet Name="Forecasts" EntityType="Self.Forecasts" Schema="agnes" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ForecastModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -63,7 +73,18 @@
         <EntityContainer Name="ForecastEntity" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ForecastAudits" EntityType="ForecastModel.ForecastAudits" />
           <EntitySet Name="Forecasts" EntityType="ForecastModel.Forecasts" />
+          <EntitySet Name="AssociateShortages" EntityType="ForecastModel.AssociateShortage" />
         </EntityContainer>
+        <EntityType Name="AssociateShortage">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UnitNumber" Type="Int64" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="HourlyOut" Type="Int32" Nullable="false" />
+          <Property Name="SalaryOut" Type="Int32" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -92,6 +113,17 @@
                 <ScalarProperty Name="GL" ColumnName="GL" />
                 <ScalarProperty Name="GLCategory" ColumnName="GLCategory" />
                 <ScalarProperty Name="ForecastValue" ColumnName="ForecastValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AssociateShortages">
+            <EntityTypeMapping TypeName="ForecastModel.AssociateShortage">
+              <MappingFragment StoreEntitySet="AssociateShortages">
+                <ScalarProperty Name="SalaryOut" ColumnName="SalaryOut" />
+                <ScalarProperty Name="HourlyOut" ColumnName="HourlyOut" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="UnitNumber" ColumnName="UnitNumber" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

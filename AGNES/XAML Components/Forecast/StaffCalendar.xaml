@@ -1,0 +1,26 @@
+﻿<Window x:Class="StaffCalendar"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AGNES"
+        mc:Ignorable="d"
+        Title="Staffing Shortages" Height="600" Width="810">
+    <Window.Effect>
+        <DropShadowEffect Opacity="0.5"/>
+    </Window.Effect>
+    <Grid x:Name="grdMain" Margin="0,0,2,0" Width="790">
+        <ToolBar x:Name="tlbStaff" Height="41" VerticalAlignment="Top" UseLayoutRounding="False">
+            <Image x:Name="imgSave" Source="/AGNES;component/Resources/save.png" ToolTip="Save Schedule" />
+            <Separator />
+            <Image x:Name="imgPrint" Source="/AGNES;component/Resources/print.png" ToolTip="Print"/>
+            <Separator />
+            <Image x:Name="imgClear" Source="/AGNES;component/Resources/eraser.png" ToolTip="Clear Fields" />
+            <Separator />
+        </ToolBar>
+        <StackPanel x:Name="stkPeriod" Margin="4,44,0,24" Width="790" HorizontalAlignment="Left"/>
+        <StatusBar x:Name="barSaveStatus" Height="24" VerticalAlignment="Bottom" Background="#FF19F30E">
+            <TextBlock x:Name="tbSaveStatus" Text="Saved" TextAlignment="Center" FontWeight="SemiBold" Width="782" />
+        </StatusBar>
+    </Grid>
+</Window>

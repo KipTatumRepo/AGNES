@@ -2,6 +2,7 @@
 Public Class CurrencyBox
     Inherits AgnesBaseInput
     Implements INotifyPropertyChanged
+
 #Region "Properties"
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
 

@@ -9,9 +9,7 @@
     <Window.Effect>
         <DropShadowEffect Opacity="0.5"/>
     </Window.Effect>
-
     <Grid x:Name="grdMain">
-
         <ToolBar x:Name="tlbFcast" Height="41" VerticalAlignment="Top" UseLayoutRounding="False">
             <Image x:Name="imgSave" Source="/AGNES;component/Resources/save.png" ToolTip="Save Forecast" />
             <Separator />
@@ -42,10 +40,7 @@
             <TextBlock HorizontalAlignment = "Left" Margin="855,0,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Width="40" Height="16" TextAlignment="Center" FontSize="10" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
             <TextBlock HorizontalAlignment = "Left" Margin="904,0,0,0" TextWrapping="Wrap" Text="Variance" VerticalAlignment="Top" Width="80" Height="16" TextAlignment="Center" FontSize="10" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
         </Grid>
-        
-
         <Grid x:Name="grdFcastGroups" Margin="0,114,0,24">
-
         </Grid>
         <StatusBar x:Name="barSaveStatus" Height="24" VerticalAlignment="Bottom" Background="#FF19F30E">
             <TextBlock x:Name="tbSaveStatus" Text="Saved" Width="972" TextAlignment="Center" FontWeight="SemiBold" />

@@ -508,9 +508,8 @@ Public Class Forecast
     End Sub
 
     Private Sub RecordStaffingShorts(sender As Object, e As MouseButtonEventArgs) Handles imgStaffing.MouseLeftButtonDown
-        'TODO: CODE STAFFING SHORTAGE RECORDING ROUTINES
-        Dim ph As String = ""
-
+        Dim staff As New StaffCalendar(CurrentFiscalYear, MSP.CurrentPeriod, Units.CurrentUnit) With {.Title = "Staffing Shortages - Unit " & Units.CurrentUnit & " - Period " & MSP.CurrentPeriod}
+        staff.ShowDialog()
     End Sub
 
     Private Sub UnlockWeeks(sender As Object, e As MouseButtonEventArgs) Handles imgUnlock.MouseLeftButtonDown
