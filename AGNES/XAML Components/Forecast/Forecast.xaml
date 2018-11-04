@@ -5,17 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGNES"
         mc:Ignorable="d"
-        Title="Weekly Financial Flash" Height="561" Width="1000" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
+        Title="Period Financial Forecast" Height="561" Width="1000" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
     <Window.Effect>
         <DropShadowEffect Opacity="0.5"/>
     </Window.Effect>
-
     <Grid x:Name="grdMain">
-
         <ToolBar x:Name="tlbFcast" Height="41" VerticalAlignment="Top" UseLayoutRounding="False">
-            <Image x:Name="imgDraft" Source="/AGNES;component/Resources/draft.png" ToolTip="Save Draft" />
-            <Separator />
-            <Image x:Name="imgSave" Source="/AGNES;component/Resources/save.png" ToolTip="Save Final" />
+            <Image x:Name="imgSave" Source="/AGNES;component/Resources/save.png" ToolTip="Save Forecast" />
             <Separator />
             <Image x:Name="imgPrint" Source="/AGNES;component/Resources/print.png" ToolTip="Print"/>
             <Separator />
@@ -27,6 +23,8 @@
             <Separator />
             <Image x:Name="imgStaffing" Source="/AGNES;component/Resources/staff.png" ToolTip="Record Staffing Shortages" />
             <Separator />
+            <Image x:Name="imgUnlock" Source="/AGNES;component/Resources/unlocked.png" ToolTip="Unlock All Weeks" />
+            <Separator x:Name="sepUnlock" />
         </ToolBar>
         <ToolBar x:Name="tlbUnits" Height="41" VerticalAlignment="Top" UseLayoutRounding="False" Margin="0,38.896,0,0"/>
         <Grid x:Name="grdColumnLabels" Margin="0,87,0,0" Height="27" VerticalAlignment="Top">
@@ -35,17 +33,14 @@
             <TextBlock HorizontalAlignment = "Left" Margin="270,0,0,0" TextWrapping="Wrap" Text="Week 2" VerticalAlignment="Top" Width="80" Height="16" TextAlignment="Center" FontSize="10" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
             <TextBlock HorizontalAlignment = "Left" Margin="355,0,0,0" TextWrapping="Wrap" Text="Week 3" VerticalAlignment="Top" Width="80" Height="16" TextAlignment="Center" FontSize="10" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
             <TextBlock HorizontalAlignment = "Left" Margin="440,0,0,0" TextWrapping="Wrap" Text="Week 4" VerticalAlignment="Top" Width="80" Height="16" TextAlignment="Center" FontSize="10" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
-            <TextBlock HorizontalAlignment = "Left" Margin="525,0,0,0" TextWrapping="Wrap" Text="Week 5" VerticalAlignment="Top" Width="80" Height="16" TextAlignment="Center" FontSize="10" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
+            <TextBlock x:Name="lblWeek5" HorizontalAlignment = "Left" Margin="525,0,0,0" TextWrapping="Wrap" Text="Week 5" VerticalAlignment="Top" Width="80" Height="16" TextAlignment="Center" FontSize="10" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
             <TextBlock HorizontalAlignment = "Left" Margin="615,0,0,0" TextWrapping="Wrap" Text="Period Total" VerticalAlignment="Top" Width="80" Height="16" TextAlignment="Center" FontSize="10" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
             <TextBlock HorizontalAlignment = "Left" Margin="710,0,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Width="40" Height="16" TextAlignment="Center" FontSize="10" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
             <TextBlock HorizontalAlignment = "Left" Margin="760,0,0,0" TextWrapping="Wrap" Text="Budget" VerticalAlignment="Top" Width="80" Height="16" TextAlignment="Center" FontSize="10" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
             <TextBlock HorizontalAlignment = "Left" Margin="855,0,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Width="40" Height="16" TextAlignment="Center" FontSize="10" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
             <TextBlock HorizontalAlignment = "Left" Margin="904,0,0,0" TextWrapping="Wrap" Text="Variance" VerticalAlignment="Top" Width="80" Height="16" TextAlignment="Center" FontSize="10" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
         </Grid>
-        
-
         <Grid x:Name="grdFcastGroups" Margin="0,114,0,24">
-
         </Grid>
         <StatusBar x:Name="barSaveStatus" Height="24" VerticalAlignment="Bottom" Background="#FF19F30E">
             <TextBlock x:Name="tbSaveStatus" Text="Saved" Width="972" TextAlignment="Center" FontWeight="SemiBold" />

@@ -1053,8 +1053,7 @@ Public Class BGCRM
     End Sub
 
     Private Sub PopulateRefreshEvent(sender, EventArgs) Handles lbxRefreshEvents.SelectionChanged
-        'TODO: Refresh selectable listbox and clear chosen listbox prior to populating
-
+        'TODO: REFRESH SELECTABLE LISTBOX AND CLEAR CHOSEN LISTBOX PRIOR TO POPULATING
         Dim RefEvent As String, EventID As Long, lbi As ListBoxItem = lbxRefreshEvents.SelectedItem
         RefEvent = lbi.Content
         Dim GetEventDetails = From evnt In BGC.RefreshEvents

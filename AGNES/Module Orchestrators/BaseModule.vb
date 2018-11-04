@@ -3,6 +3,7 @@
 #Region "Properties"
     Public SharedDataGroup As BIEntities
     Public AGNESShared As AGNESSharedDataEntity
+    Public FlashActuals As FlashActualsEntity
     Public FlashBudgets As BudgetEntity
     Public FlashForecasts As ForecastEntity
     Public TrainingData As TrainingEntities
@@ -16,6 +17,7 @@
         SharedDataGroup = New BIEntities
         AGNESShared = New AGNESSharedDataEntity
         BGE = New BGCRMEntity
+        FlashActuals = New FlashActualsEntity
         FlashBudgets = New BudgetEntity
         FlashForecasts = New ForecastEntity
         TrainingData = New TrainingEntities
@@ -71,9 +73,9 @@
         Return 5
     End Function
 
-    Public Function getweekoperatingdays(p As Byte, w As Byte) As Byte
+    Public Function getweekoperatingdays(fy As Integer, p As Byte, w As Byte) As Byte
         Dim df = From d In SharedDataGroup.Dates
-                 Where d.MS_FY = CurrentFiscalYear And
+                 Where d.MS_FY = fy And
                      d.MS_Period = p And
                      d.Week = w And
                      d.IS_WEEKEND_HOLIDAY = 0
@@ -83,14 +85,27 @@
         Return df.Count
     End Function
 
-    Public Function getperiodoperatingdays(p As Byte) As Byte
+    Public Function getperiodoperatingdays(fy As Integer, p As Byte) As Byte
         Dim df = From d In SharedDataGroup.Dates
-                 Where d.MS_FY = CurrentFiscalYear And
+                 Where d.MS_FY = fy And
                      d.MS_Period = p And
                      d.IS_WEEKEND_HOLIDAY = 0
                  Select d
         Dim dayz As Byte = df.Count
         Return df.Count
+    End Function
+
+    Public Function LoadSingleUnitBudget(category As String, unit As Int64, yr As Int16, period As Byte) As Double
+        Dim bf = From b In FlashBudgets.Budgets
+                 Where b.Category = category And
+                     b.MSFY = yr And
+                     b.MSP = period And
+                     b.UnitNumber = unit
+                 Select b
+        For Each b In bf
+            Return b.Budget1
+        Next
+        Return 0
     End Function
 
     Public Function LoadSingleWeekAndUnitBudget(category As String, unit As Int64, yr As Int16, period As Byte, weekoperatingdays As Byte, periodoperatingdays As Byte) As Double

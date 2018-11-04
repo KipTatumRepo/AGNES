@@ -2,7 +2,6 @@
 
 #Region "Properties"
     Public AvailableUnits As UnitGroup
-    Public FlashActuals As FlashActualsEntity
     Public FlashPage As Flash
     Public InitialLoadStatus As Byte = 0
     Public AlertOverride As Boolean = False
@@ -10,7 +9,6 @@
 
 #Region "Public Methods"
     Public Sub Runmodule()
-        FlashActuals = New FlashActualsEntity
         Dim SelectedFlashType As Byte, SelectedFlashUnit As Long
         Dim GetSelections = SelectFlashForecastTypeAndUnit()
         SelectedFlashType = GetSelections.flashselection

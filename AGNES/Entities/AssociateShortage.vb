@@ -10,14 +10,11 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class TrainingType
+Partial Public Class AssociateShortage
     Public Property PID As Long
-    Public Property LOB As String
-    Public Property TrainingName As String
-    Public Property TrainingDescription As String
-    Public Property Hours As Decimal
-    Public Property Certification As Boolean
-    Public Property Scored As Boolean
-    Public Property PassCertScore As Decimal
+    Public Property UnitNumber As Long
+    Public Property [Date] As Date
+    Public Property HourlyOut As Integer
+    Public Property SalaryOut As Integer
 
 End Class

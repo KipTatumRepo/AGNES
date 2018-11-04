@@ -48,6 +48,7 @@ Public Class UnitChooser
 
 #Region "Constructor"
     Public Sub New(ByRef ListOfUnits As UnitGroup)
+
         Dim ct As Byte
         '// Create chooser label
         Dim BorderLabel As New Border With {.BorderBrush = Brushes.Black, .VerticalAlignment = VerticalAlignment.Center,
@@ -56,9 +57,22 @@ Public Class UnitChooser
         .HorizontalAlignment = HorizontalAlignment.Center, .FontSize = 14, .Name = "tbLabel", .Tag = "Label"}
         BorderLabel.Child = TextLabel
         Children.Add(BorderLabel)
-        NumberOfAvailableUnits = ListOfUnits.UnitsInGroup.Count
+        Select Case ListOfUnits.Summoner
+            Case 0
+                NumberOfAvailableUnits = ListOfUnits.UnitsInGroup.Count
+            Case 1
+                NumberOfAvailableUnits = ListOfUnits.FcastUnitsInGroup.Count
+        End Select
+
         For ct = 0 To NumberOfAvailableUnits - 1
-            Dim unitnumber As Long = ListOfUnits.UnitsInGroup(ct).UnitNumber
+            Dim unitnumber As Long
+            Select Case ListOfUnits.Summoner
+                Case 0
+                    unitnumber = ListOfUnits.UnitsInGroup(ct).UnitNumber
+                Case 1
+                    unitnumber = ListOfUnits.FcastUnitsInGroup(ct).UnitNumber
+            End Select
+
             Dim brdUnit As New Border With {.BorderBrush = Brushes.Black, .Width = 64, .VerticalAlignment = VerticalAlignment.Center,
             .Name = "brd" & unitnumber}
             Dim tbUnit As New TextBlock With {.Text = unitnumber, .TextAlignment = TextAlignment.Center, .HorizontalAlignment = HorizontalAlignment.Center,
@@ -71,7 +85,13 @@ Public Class UnitChooser
             brdUnit.Child = tbUnit
             Children.Add(brdUnit)
         Next
-        CurrentUnit = ListOfUnits.UnitsInGroup(0).UnitNumber
+        Select Case ListOfUnits.Summoner
+            Case 0
+                CurrentUnit = ListOfUnits.UnitsInGroup(0).UnitNumber
+            Case 1
+                CurrentUnit = ListOfUnits.FcastUnitsInGroup(0).UnitNumber
+        End Select
+
 
     End Sub
 

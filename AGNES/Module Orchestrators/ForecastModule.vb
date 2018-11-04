@@ -1,9 +1,8 @@
 ﻿Module ForecastModule
 #Region "Properties"
     Public AvailableFcastUnits As UnitGroup
-    'Public FCastRecords As FlashActualsEntity
     Public FcastPage As Forecast
-    Public InitialForecastLoadStatus As Byte = 0
+    Public InitialForecastLoadStatus As Byte = 1
 
 #End Region
 
@@ -18,42 +17,7 @@
         FcastPage.SaveStatus = InitialForecastLoadStatus
         FcastPage.ShowDialog()
 
-        '// Additional follow up modules/user inputs are invoked here, after the flash is closed
-        'Select Case SelectedFlashType
-        '    Case 1, 2   ' Puget Sound Cafes and Commons
-
-        '        '// Sick time and overtime, if not present already
-        '        Dim qsp = From osp In FlashActuals.SickOtRecords
-        '                  Select osp
-        '                  Where osp.MSFY = CurrentFiscalYear And
-        '                osp.MSP = FlashPage.MSP.CurrentPeriod And
-        '                osp.Week = FlashPage.Wk.CurrentWeek And
-        '                osp.UnitNumber = SelectedFlashUnit
-
-        '        If qsp.Count = 0 And (FlashPage.SaveStatus = 1 Or FlashPage.SaveStatus = 3) Then ' Add new
-        '            Dim SickPay As New SingleUserInput(True)
-        '            With SickPay
-        '                .InputType = 1
-        '                .lblInputDirection.Text = "Enter your sick pay for the week."
-        '                .txtUserInput.Focus()
-        '                .ShowDialog()
-        '            End With
-
-        '            Dim OtPay As New SingleUserInput(True)
-        '            With OtPay
-        '                .InputType = 1
-        '                .lblInputDirection.Text = "Enter your overtime pay for the week."
-        '                .txtUserInput.Focus()
-        '                .ShowDialog()
-        '            End With
-
-        '            '// Add sick overtime pay to db
-        '            SaveSickOtPay(OtPay.CurrencyVal, SickPay.CurrencyVal, SelectedFlashUnit)
-        '            OtPay.Close()
-        '            SickPay.Close()
-        '        End If
-
-        'End Select
+        '// Additional follow up modules/user inputs are invoked here, after the forecast is closed
 
     End Sub
 

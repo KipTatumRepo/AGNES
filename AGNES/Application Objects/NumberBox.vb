@@ -1,6 +1,10 @@
-﻿Public Class NumberBox
+﻿Imports System.ComponentModel
+Public Class NumberBox
     Inherits AgnesBaseInput
+    Implements INotifyPropertyChanged
+
 #Region "Properties"
+    Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
     Private _posonly As Boolean
     Private _negonly As Boolean
     Public NumberOfDecimals As Byte
@@ -79,6 +83,7 @@
         If SystemChange = True Then Exit Sub
         Try
             Dim cval As Double = FormatNumber(t.Text, NumberOfDecimals)
+            RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(“NumValChanged”))
         Catch ex As Exception
             Flare = True
             Exit Sub
@@ -138,5 +143,7 @@
 
     End Sub
 
+
 #End Region
+
 End Class

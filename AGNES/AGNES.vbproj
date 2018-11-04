@@ -25,7 +25,7 @@
     <ProductName>AGNES</ProductName>
     <PublisherName>Compass Business Intelligence</PublisherName>
     <SuiteName>Compass Business Intelligence Application Suite</SuiteName>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>3</ApplicationRevision>
     <ApplicationVersion>2.3.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -125,6 +125,9 @@
     <Compile Include="Entities\ApplicationSession.vb">
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\AssociateShortage.vb">
+      <DependentUpon>FlashForecastModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\FlashAlert.vb">
       <DependentUpon>FlashActualsModel.tt</DependentUpon>
     </Compile>
@@ -134,11 +137,18 @@
     <Compile Include="Entities\Trainer.vb">
       <DependentUpon>TrainingModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\TrainerTrainingJoin.vb">
+      <DependentUpon>TrainingModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\TrainingRecord.vb">
       <DependentUpon>TrainingModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Flash Objects\StatusItem.vb" />
+    <Compile Include="Forecast Objects\CalDayObj.vb" />
+    <Compile Include="Forecast Objects\CalWeekObj.vb" />
+    <Compile Include="Forecast Objects\FcastUnitGroup.vb" />
     <Compile Include="Forecast Objects\ForecastGroup.vb" />
+    <Compile Include="Forecast Objects\UnitFcast.vb" />
     <Compile Include="Module Orchestrators\FlashStatusModule.vb" />
     <Compile Include="Module Orchestrators\ForecastModule.vb" />
     <Compile Include="Training Objects\EmployeeObj.vb" />
@@ -151,6 +161,9 @@
     </Compile>
     <Compile Include="XAML Components\Forecast\Forecast.xaml.vb">
       <DependentUpon>Forecast.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="XAML Components\Forecast\StaffCalendar.xaml.vb">
+      <DependentUpon>StaffCalendar.xaml</DependentUpon>
     </Compile>
     <Compile Include="XAML Components\Shared\AgnesMessageBox.xaml.vb">
       <DependentUpon>AgnesMessageBox.xaml</DependentUpon>
@@ -397,7 +410,7 @@
     <Compile Include="Flash Objects\FlashGroup.vb" />
     <Compile Include="Flash Objects\SharedFunctions.vb" />
     <Compile Include="Flash Objects\UnitFlash.vb" />
-    <Compile Include="Flash Objects\UnitGroup.vb" />
+    <Compile Include="Application Objects\UnitGroup.vb" />
     <Compile Include="Module Orchestrators\AdminModule.vb" />
     <Compile Include="Module Orchestrators\BaseModule.vb" />
     <Compile Include="Module Orchestrators\FlashModule.vb" />
@@ -498,6 +511,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="XAML Components\Forecast\Forecast.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XAML Components\Forecast\StaffCalendar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -809,6 +826,9 @@
       <DependentUpon>WCRModule.edmx</DependentUpon>
       <LastGenOutput>WCRModule.vb</LastGenOutput>
     </Content>
+    <Resource Include="Resources\eye.png" />
+    <Resource Include="Resources\Class.png" />
+    <Resource Include="Resources\Trainer.png" />
     <Resource Include="Resources\staff.png" />
     <Resource Include="Resources\refresh.png" />
     <Resource Include="Resources\eraser.png" />
@@ -855,6 +875,8 @@
   <ItemGroup>
     <Folder Include="XAML Components\Campaign Manager\" />
     <Folder Include="XAML Components\Journal\" />
+    <Folder Include="XAML Components\Marketing Suite\" />
+    <Folder Include="XAML Components\Menu Engineering\" />
     <Folder Include="XAML Components\QA Suite\" />
     <Folder Include="XAML Components\Vendor Management\" />
     <Folder Include="XAML Components\Waste\" />

@@ -88,14 +88,14 @@ Public Class Flash
         Dim currwk As Byte = GetCurrentWeek(FormatDateTime(Now(), DateFormat.ShortDate))
         Wk = New WeekChooser(1, currwk, currwk)
         MSP = New PeriodChooser(Wk, 1, currmsp, currmsp)
-        MSP.SelectAllEnabled = False
+        MSP.DisableSelectAll = False
 
         Select Case FT
 #Region "Commons"
             Case 1      '   Commons Flash
                 Title = "WCC Weekly Financial Flash - Unit " & FU
                 Height = 369
-                AvailableUnits = New UnitGroup With {.UnitGroupName = "WCC"}
+                AvailableUnits = New UnitGroup With {.Summoner = 0, .UnitGroupName = "WCC"}
 
                 '// Add Unit and/or Subunits
                 Dim qsu = From su In AGNESShared.UnitsSubunits
@@ -137,7 +137,7 @@ Public Class Flash
             Case 2      ' Puget Sound Cafe Flash
                 Title = "Cafe Weekly Financial Flash - Unit " & FU
                 Height = 369
-                AvailableUnits = New UnitGroup With {.UnitGroupName = "Cafes"}
+                AvailableUnits = New UnitGroup With {.Summoner = 0, .UnitGroupName = "Cafes"}
 
                 '// Add Unit and/or Subunits
                 Dim qsu = From su In AGNESShared.UnitsSubunits
@@ -179,7 +179,7 @@ Public Class Flash
             Case 3      ' A/V Flash
                 Title = "A/V Weekly Financial Flash"
                 Height = 460
-                AvailableUnits = New UnitGroup With {.UnitGroupName = "AV"}
+                AvailableUnits = New UnitGroup With {.Summoner = 0, .UnitGroupName = "AV"}
 
                 '// Add Unit and/or Subunits
                 Dim qsu = From su In AGNESShared.UnitsSubunits
@@ -225,7 +225,7 @@ Public Class Flash
             Case 4      ' Field Site Flash
                 Title = "Field Site Weekly Financial Flash"
                 Height = 600
-                AvailableUnits = New UnitGroup With {.UnitGroupName = "Cafes"}
+                AvailableUnits = New UnitGroup With {.Summoner = 0, .UnitGroupName = "Cafes"}
 
                 '// Add Unit and/or Subunits
                 Dim qsu = From su In AGNESShared.UnitsSubunits
@@ -249,7 +249,7 @@ Public Class Flash
                 If qsu.Count > 0 Then Units.AllowMultiSelect = True
 
                 '// Add flash-specific flashgroups (categories)
-                CafeSalesGroup = New FlashGroup(MSP, Wk, Units, "Sales", False, 0, True, False, True, True, False)
+                CafeSalesGroup = New FlashGroup(MSP, Wk, Units, "Cafe Sales", False, 0, True, False, True, True, False)
                 CateringSalesGroup = New FlashGroup(MSP, Wk, Units, "Catering Sales", False, 47, False, False, True, True, False)
                 SalesTaxGroup = New FlashGroup(MSP, Wk, Units, "Sales Tax", False, 94, True, False, True, False, True)
                 TotalSalesGroup = New FlashGroup(MSP, Wk, Units, "Total Sales", False, 141, False, True, True, False, False, New List(Of FlashGroup) From {CafeSalesGroup, CateringSalesGroup, SalesTaxGroup})
@@ -277,7 +277,7 @@ Public Class Flash
                 Title = "Beverage Weekly Financial Flash"
                 Height = 510
 
-                AvailableUnits = New UnitGroup With {.UnitGroupName = "BV"}
+                AvailableUnits = New UnitGroup With {.Summoner = 0, .UnitGroupName = "BV"}
 
                 '// Add Unit and/or Subunits
                 Dim qsu = From su In AGNESShared.UnitsSubunits
@@ -329,7 +329,7 @@ Public Class Flash
             Case 7      ' Overhead Flash
                 Title = "Overhead Weekly Financial Flash"
                 Height = 369
-                AvailableUnits = New UnitGroup With {.UnitGroupName = "OH"}
+                AvailableUnits = New UnitGroup With {.Summoner = 0, .UnitGroupName = "OH"}
 
                 '// Add Unit and/or Subunits
                 Dim qsu = From su In AGNESShared.UnitsSubunits
@@ -369,7 +369,7 @@ Public Class Flash
             Case 8
                 Title = "Eventions Weekly Financial Flash"
                 Height = 369
-                AvailableUnits = New UnitGroup With {.UnitGroupName = "Eventions"}
+                AvailableUnits = New UnitGroup With {.Summoner = 0, .UnitGroupName = "Eventions"}
 
                 '// Add Unit and/or Subunits
                 Dim qsu = From su In AGNESShared.UnitsSubunits

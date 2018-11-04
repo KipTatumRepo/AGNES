@@ -11,6 +11,13 @@
           </Key>
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TrainerName" Type="varchar" MaxLength="64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TrainerTrainingJoin">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TrainerId" Type="bigint" Nullable="false" />
           <Property Name="TrainingId" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="TrainingRecords">
@@ -35,11 +42,13 @@
           <Property Name="TrainingName" Type="varchar" MaxLength="64" Nullable="false" />
           <Property Name="TrainingDescription" Type="varchar" MaxLength="512" />
           <Property Name="Hours" Type="decimal" Precision="6" Scale="2" Nullable="false" />
-          <Property Name="Certification" Type="bit" />
-          <Property Name="Scored" Type="bit" />
+          <Property Name="Certification" Type="bit" Nullable="false" />
+          <Property Name="Scored" Type="bit" Nullable="false" />
+          <Property Name="PassCertScore" Type="decimal" Precision="4" Scale="1" Nullable="false" />
         </EntityType>
         <EntityContainer Name="TrainingModelStoreContainer">
           <EntitySet Name="Trainers" EntityType="Self.Trainers" Schema="Training" store:Type="Tables" />
+          <EntitySet Name="TrainerTrainingJoin" EntityType="Self.TrainerTrainingJoin" Schema="Training" store:Type="Tables" />
           <EntitySet Name="TrainingRecords" EntityType="Self.TrainingRecords" Schema="Training" store:Type="Tables" />
           <EntitySet Name="TrainingTypes" EntityType="Self.TrainingTypes" Schema="Training" store:Type="Tables" />
         </EntityContainer>
@@ -56,13 +65,15 @@
           <Property Name="TrainingName" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="TrainingDescription" Type="String" MaxLength="512" FixedLength="false" Unicode="false" />
           <Property Name="Hours" Type="Decimal" Precision="6" Scale="2" Nullable="false" />
-          <Property Name="Certification" Type="Boolean" />
-          <Property Name="Scored" Type="Boolean" />
+          <Property Name="Certification" Type="Boolean" Nullable="false" />
+          <Property Name="Scored" Type="Boolean" Nullable="false" />
+          <Property Name="PassCertScore" Type="Decimal" Nullable="false" Precision="4" Scale="1" />
         </EntityType>
         <EntityContainer Name="TrainingEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="TrainingTypes" EntityType="Self.TrainingType" />
           <EntitySet Name="TrainingRecords" EntityType="TrainingModel.TrainingRecord" />
           <EntitySet Name="Trainers" EntityType="TrainingModel.Trainer" />
+          <EntitySet Name="TrainerTrainingJoins" EntityType="TrainingModel.TrainerTrainingJoin" />
         </EntityContainer>
         <EntityType Name="TrainingRecord">
           <Key>
@@ -83,6 +94,13 @@
           </Key>
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TrainerName" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="TrainerTrainingJoin">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TrainerId" Type="Int64" Nullable="false" />
           <Property Name="TrainingId" Type="Int64" Nullable="false" />
         </EntityType>
       </Schema>
@@ -94,6 +112,7 @@
           <EntitySetMapping Name="TrainingTypes">
             <EntityTypeMapping TypeName="TrainingModel.TrainingType">
               <MappingFragment StoreEntitySet="TrainingTypes">
+                <ScalarProperty Name="PassCertScore" ColumnName="PassCertScore" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
                 <ScalarProperty Name="LOB" ColumnName="LOB" />
                 <ScalarProperty Name="TrainingName" ColumnName="TrainingName" />
@@ -121,8 +140,16 @@
           <EntitySetMapping Name="Trainers">
             <EntityTypeMapping TypeName="TrainingModel.Trainer">
               <MappingFragment StoreEntitySet="Trainers">
-                <ScalarProperty Name="TrainingId" ColumnName="TrainingId" />
                 <ScalarProperty Name="TrainerName" ColumnName="TrainerName" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TrainerTrainingJoins">
+            <EntityTypeMapping TypeName="TrainingModel.TrainerTrainingJoin">
+              <MappingFragment StoreEntitySet="TrainerTrainingJoin">
+                <ScalarProperty Name="TrainingId" ColumnName="TrainingId" />
+                <ScalarProperty Name="TrainerId" ColumnName="TrainerId" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
               </MappingFragment>
             </EntityTypeMapping>

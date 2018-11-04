@@ -12,7 +12,7 @@ Public Class PeriodChooser
 
     Public Property MinPeriod As Byte
     Public Property MaxPeriod As Byte
-    Public Property SelectAllEnabled As Boolean
+    Public Property DisableSelectAll As Boolean
     Public Property RelatedWeekObject As Object
     Public Property SelectedCount As Byte
     Public Property HeldPeriod As Byte
@@ -123,10 +123,10 @@ Public Class PeriodChooser
             Dim brd As Border = sender
             tb = brd.Child
         End If
-        If (FormatNumber(tb.Tag, 0) <> CurrentPeriod Or SelectAllEnabled = False) Then
+        If (FormatNumber(tb.Tag, 0) <> CurrentPeriod Or DisableSelectAll = False) Then
             CurrentPeriod = FormatNumber(tb.Tag, 0)
         Else
-            If CurrentPeriod <> 0 Then Reset()
+            If CurrentPeriod <> 0 And DisableSelectAll = False Then Reset()
         End If
         If CurrentPeriod < MaxPeriod Then
             Week.MaxWeek = GetMaxWeeks(CurrentPeriod)

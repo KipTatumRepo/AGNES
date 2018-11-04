@@ -1,6 +1,7 @@
 ﻿Public Class FlashStatus
+
 #Region "Properties"
-    Private TypeofFlash As Byte
+    Public TypeofFlash As Byte
     Public StatusWk As WeekChooser
     Public StatusMsp As PeriodChooser
 
@@ -13,7 +14,7 @@
         Dim currwk As Byte = GetCurrentWeek(FormatDateTime(Now(), DateFormat.ShortDate))
         Dim currmsp As Byte = GetCurrentPeriod(FormatDateTime(Now(), DateFormat.ShortDate))
         StatusWk = New WeekChooser(1, currwk, currwk)
-        StatusMsp = New PeriodChooser(StatusWk, 1, currwk, currmsp)
+        StatusMsp = New PeriodChooser(StatusWk, 1, currmsp, currmsp)
         AddHandler StatusWk.PropertyChanged, AddressOf PopulateUnits
         Dim sep As New Separator
         With tlbTimePeriods.Items
@@ -23,6 +24,7 @@
         End With
         PopulateUnits()
     End Sub
+
 #End Region
 
 #Region "Public Methods"
@@ -35,9 +37,8 @@
                   Select uig
                   Where uig.FlashType = TypeofFlash
 
-        '// Build items into stackpanel - buttons as test objects
+        '// Build items into wrappanel
         For Each uig In qgu
-
             Dim CurrentFlashStatus As String = GetFlashstatus(uig.Unit_Number)
             Select Case CurrentFlashStatus
                 Case "None"
@@ -69,6 +70,7 @@
             End Select
 
         Next
+
     End Sub
 
 #End Region
