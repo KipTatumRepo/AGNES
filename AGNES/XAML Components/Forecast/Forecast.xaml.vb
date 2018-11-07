@@ -1,5 +1,7 @@
 ﻿Imports System.ComponentModel
 Public Class Forecast
+    'TODO: BUG ON MULTIPLE UNIT FORECASTS - WHEN FLIPPING TO NEW UNIT WITH UNSAVED DATA, OPTING TO **NOT** DISCARD THE INFORMATION
+    '      STILL DISCARDS IT
 
 #Region "Properties"
     Dim SalesGroup As ForecastGroup
@@ -261,7 +263,7 @@ Public Class Forecast
                 If qsu.Count > 0 Then Units.AllowMultiSelect = True
 
                 '// Add forecast groups (categories)
-                CafeSalesGroup = New ForecastGroup(PC:=MSP, UC:=Units, GroupName:="Cafe Sales", ShowPercentages:=False, Top:=0, Highlight:=True,
+                CafeSalesGroup = New ForecastGroup(PC:=MSP, UC:=Units, GroupName:="Sales", ShowPercentages:=False, Top:=0, Highlight:=True,
                                              Subtotal:=False, CreditOnly:=True, DebitOnly:=False) ' Increments of 47 for flashgroup spacing 
                 CateringSalesGroup = New ForecastGroup(PC:=MSP, UC:=Units, GroupName:="Catering Sales", ShowPercentages:=False, Top:=47, Highlight:=False,
                                              Subtotal:=False, CreditOnly:=True, DebitOnly:=False) ' Increments of 47 for flashgroup spacing 

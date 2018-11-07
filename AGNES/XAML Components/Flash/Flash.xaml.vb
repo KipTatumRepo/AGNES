@@ -1,5 +1,7 @@
 ﻿Imports System.ComponentModel
-
+'TODO: GLITCH WHEN OPENING DRAFT FLASH - UNABLE TO RESAVE (STATUSSAVE?)  ISSUE WAS WITH FARGO P5W1
+'TODO: BUG ON MULTIPLE UNIT FLASHES - WHEN FLIPPING TO NEW UNIT WITH UNSAVED DATA, OPTING TO **NOT** DISCARD THE INFORMATION
+'      STILL DISCARDS IT
 Public Class Flash
 
 #Region "Properties"
@@ -249,7 +251,7 @@ Public Class Flash
                 If qsu.Count > 0 Then Units.AllowMultiSelect = True
 
                 '// Add flash-specific flashgroups (categories)
-                CafeSalesGroup = New FlashGroup(MSP, Wk, Units, "Cafe Sales", False, 0, True, False, True, True, False)
+                CafeSalesGroup = New FlashGroup(MSP, Wk, Units, "Sales", False, 0, True, False, True, True, False)
                 CateringSalesGroup = New FlashGroup(MSP, Wk, Units, "Catering Sales", False, 47, False, False, True, True, False)
                 SalesTaxGroup = New FlashGroup(MSP, Wk, Units, "Sales Tax", False, 94, True, False, True, False, True)
                 TotalSalesGroup = New FlashGroup(MSP, Wk, Units, "Total Sales", False, 141, False, True, True, False, False, New List(Of FlashGroup) From {CafeSalesGroup, CateringSalesGroup, SalesTaxGroup})
