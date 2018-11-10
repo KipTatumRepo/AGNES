@@ -35,8 +35,7 @@ Public Class StaffCalendar
         WeekTwo = New CalWeekObj(unum, fy, msp, 2, Me)
         WeekThree = New CalWeekObj(unum, fy, msp, 3, Me)
         WeekFour = New CalWeekObj(unum, fy, msp, 4, Me)
-
-        If getperiodoperatingdays(fy, msp) > 20 Then WeekFive = New CalWeekObj(unum, fy, msp, 5, Me)
+        If GetMaxWeeks(msp) = 5 Then WeekFive = New CalWeekObj(unum, fy, msp, 5, Me)
 
         With stkPeriod.Children
             .Add(WeekOne)
@@ -44,7 +43,12 @@ Public Class StaffCalendar
             .Add(WeekThree)
             .Add(WeekFour)
         End With
-        If getperiodoperatingdays(fy, msp) > 20 Then stkPeriod.Children.Add(WeekFive)
+        If GetMaxWeeks(msp) = 5 Then
+            stkPeriod.Children.Add(WeekFive)
+            Height = 600
+        Else
+            Height = 500
+        End If
 
     End Sub
 
@@ -70,6 +74,7 @@ Public Class StaffCalendar
         For Each wi As CalWeekObj In stkPeriod.Children
             wi.ClearFields()
         Next
+        SaveStatus = False
     End Sub
 
 #End Region
@@ -81,6 +86,7 @@ Public Class StaffCalendar
             amsg.Close()
         End If
     End Sub
+
 #End Region
 
 End Class

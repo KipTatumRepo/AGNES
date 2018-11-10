@@ -1,6 +1,6 @@
 ﻿Public Class FlashGroup
     Inherits DockPanel
-
+    'TODO: REPLACE TEXTBOXES WITH PERCENTAGE BOXES
 #Region "Properties"
     Public GroupCategory As String
     Public FlashVal As CurrencyBox
