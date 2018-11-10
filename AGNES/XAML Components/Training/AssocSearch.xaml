@@ -6,6 +6,9 @@
         xmlns:local="clr-namespace:AGNES"
         mc:Ignorable="d"
         Title="Search Parameters" Height="125   " Width="300" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False">
+    <Window.Effect>
+        <DropShadowEffect Opacity="0.7" BlurRadius="14" ShadowDepth="6" Direction="240"/>
+    </Window.Effect>
     <Grid>
         <RadioButton x:Name="rdbLastName" Content="Last Name" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <RadioButton x:Name="rdbNumber" Content="Pers Number" HorizontalAlignment="Left" Margin="189,10,0,0" VerticalAlignment="Top"/>

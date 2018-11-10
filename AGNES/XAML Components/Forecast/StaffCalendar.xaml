@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGNES"
         mc:Ignorable="d"
-        Title="Staffing Shortages" Height="600" Width="810" WindowStartupLocation="CenterScreen">
+        Title="Staffing Shortages" Height="600" Width="810" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="/AGNES;component/Resources/staff.png">
     <Window.Effect>
-        <DropShadowEffect Opacity="0.5"/>
+        <DropShadowEffect Opacity="0.7" BlurRadius="14" ShadowDepth="6" Direction="240"/>
     </Window.Effect>
     <Grid x:Name="grdMain" Margin="0,0,2,0" Width="790">
         <ToolBar x:Name="tlbStaff" Height="41" VerticalAlignment="Top" UseLayoutRounding="False">

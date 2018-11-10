@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGNES"
         mc:Ignorable="d"
-        Title="Training Manager" Height="450" Width="800" Background="OldLace" WindowStartupLocation="CenterScreen">
+        Title="Training Manager" Height="450" Width="800" Background="OldLace" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" Icon="/AGNES;component/Resources/Training.png">
+    <Window.Effect>
+        <DropShadowEffect Opacity="0.7" BlurRadius="14" ShadowDepth="6" Direction="240"/>
+    </Window.Effect>
     <Grid x:Name="grdMain">
         <ComboBox x:Name="cbxAssociates" HorizontalAlignment="Left" Margin="148,38,0,0" VerticalAlignment="Top" Width="595" FontSize="18" TabIndex="0"/>
         <TextBlock HorizontalAlignment="Left" Margin="10,36,0,0" TextWrapping="Wrap" Text="Associate" VerticalAlignment="Top" FontSize="24" Width="133" TextAlignment="Center"/>

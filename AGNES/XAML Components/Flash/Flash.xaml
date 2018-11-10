@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGNES"
         mc:Ignorable="d"
-        Title="Weekly Financial Flash" Height="561" Width="990" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
+        Title="Weekly Financial Flash" Height="561" Width="990" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Icon="/AGNES;component/Resources/Flash.png">
     <Window.Effect>
-        <DropShadowEffect Opacity="0.5"/>
+        <DropShadowEffect Opacity="0.7" BlurRadius="14" ShadowDepth="6" Direction="240"/>
     </Window.Effect>
 
     <Grid x:Name="grdMain">
