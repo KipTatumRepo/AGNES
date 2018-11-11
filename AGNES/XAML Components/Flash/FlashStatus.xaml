@@ -5,14 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGNES"
         mc:Ignorable="d"
-        Title="Flash Submission Status" Height="600" Width="790" WindowStartupLocation="CenterScreen">
+        Title="Flash Submission Status" Height="600" Width="790" WindowStartupLocation="CenterScreen" Icon="/AGNES;component/Resources/Status.png" ResizeMode="CanMinimize">
+    <Window.Effect>
+        <DropShadowEffect Opacity="0.7" BlurRadius="14" ShadowDepth="6" Direction="240"/>
+    </Window.Effect>
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="10,53,0,0" TextWrapping="Wrap" Text="Submission Status" VerticalAlignment="Top" Width="772" TextAlignment="Center" FontSize="24"/>
         <WrapPanel x:Name="wrpFlashes" HorizontalAlignment="Left" Height="457" Margin="10,90,0,0" VerticalAlignment="Top" Width="750"/>
         <ToolBar x:Name="tlbTimePeriods" HorizontalAlignment="Left" Height="48" VerticalAlignment="Top" Width="782"/>
     </Grid>
-    <Window.Effect>
-        <DropShadowEffect Opacity="0.5"/>
-    </Window.Effect>
+
 
 </Window>

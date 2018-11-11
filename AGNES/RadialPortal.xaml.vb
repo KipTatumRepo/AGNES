@@ -268,6 +268,8 @@ Public Class RadialPortal
                 AdminModule.Runmodule()
             Case "Training"
                 TrainingModule.RunModule()
+            Case "Vendor Manager"
+                VendorModule.Runmodule()
         End Select
         Show()
     End Sub

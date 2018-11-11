@@ -151,6 +151,7 @@
     <Compile Include="Forecast Objects\UnitFcast.vb" />
     <Compile Include="Module Orchestrators\FlashStatusModule.vb" />
     <Compile Include="Module Orchestrators\ForecastModule.vb" />
+    <Compile Include="Module Orchestrators\VendorModule.vb" />
     <Compile Include="Training Objects\EmployeeObj.vb" />
     <Compile Include="Training Objects\TrainingGridSource.vb" />
     <Compile Include="XAML Components\Flash\Delegates.xaml.vb">
@@ -492,6 +493,9 @@
     <Compile Include="XAML Components\Training\Training.xaml.vb">
       <DependentUpon>Training.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XAML Components\Vendor Management\VendorSchedule.xaml.vb">
+      <DependentUpon>VendorSchedule.xaml</DependentUpon>
+    </Compile>
     <Compile Include="XAML Components\WCR\WCRCam.xaml.vb">
       <DependentUpon>WCRCam.xaml</DependentUpon>
     </Compile>
@@ -559,6 +563,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="XAML Components\Training\Training.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XAML Components\Vendor Management\VendorSchedule.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -826,6 +834,9 @@
       <DependentUpon>WCRModule.edmx</DependentUpon>
       <LastGenOutput>WCRModule.vb</LastGenOutput>
     </Content>
+    <Resource Include="Resources\LoadPrevious.png" />
+    <Resource Include="Resources\FoodTruck.png" />
+    <Resource Include="Resources\brands.png" />
     <Resource Include="Resources\eye.png" />
     <Resource Include="Resources\Class.png" />
     <Resource Include="Resources\Trainer.png" />
@@ -878,7 +889,6 @@
     <Folder Include="XAML Components\Marketing Suite\" />
     <Folder Include="XAML Components\Menu Engineering\" />
     <Folder Include="XAML Components\QA Suite\" />
-    <Folder Include="XAML Components\Vendor Management\" />
     <Folder Include="XAML Components\Waste\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
