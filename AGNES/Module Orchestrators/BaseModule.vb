@@ -7,6 +7,7 @@
     Public FlashBudgets As BudgetEntity
     Public FlashForecasts As ForecastEntity
     Public TrainingData As TrainingEntities
+    Public VendorData As VendorEntity
     Public BGE As BGCRMEntity
     Public CurrentFiscalYear As Integer = 2019
 
@@ -21,6 +22,7 @@
         FlashBudgets = New BudgetEntity
         FlashForecasts = New ForecastEntity
         TrainingData = New TrainingEntities
+        VendorData = New VendorEntity
     End Sub
 
     Public Function TruncateAlias(UserAlias As String) As String

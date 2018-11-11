@@ -10,14 +10,13 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class ReceivedCAMChecks
+Partial Public Class Availability
     Public Property PID As Long
-    Public Property VendorId As Long
-    Public Property Name As String
-    Public Property CheckNumber As String
-    Public Property [Date] As Date
-    Public Property DayofWeek As Short
-    Public Property Amount As Decimal
-    Public Property Notes As String
+    Public Property VendorID As Long
+    Public Property Monday As Short
+    Public Property Tuesday As Short
+    Public Property Wednesday As Short
+    Public Property Thursday As Short
+    Public Property Friday As Short
 
 End Class

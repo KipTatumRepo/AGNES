@@ -67,7 +67,7 @@
         End Get
         Set(value As String)
             _vendorname = value
-            Dim q = From c In WCRE.VendorInfo
+            Dim q = From c In VendorData.VendorInfo
                     Where c.Name = value
                     Select c
             For Each c In q
@@ -76,7 +76,7 @@
                 '// CAM and KPI >>>
                 CAM = FormatNumber(c.CAMAmount, 4)
                 KPI = FormatNumber(c.KPIAmount, 4)
-                Dim q1 = From c1 In WCRE.CAMWithholdings
+                Dim q1 = From c1 In VendorData.CAMWithholdings
                          Where c1.PID = c.CAMType
                          Select c1
                 For Each c1 In q1
@@ -85,7 +85,7 @@
                 If Now() < c.CAMStart Then
                     CAMType = "None" : CAM = 0
                 End If
-                Dim q2 = From c2 In WCRE.KPIWithholdings
+                Dim q2 = From c2 In VendorData.KPIWithholdings
                          Where c2.PID = c.KPIType
                          Select c2
                 For Each c2 In q2

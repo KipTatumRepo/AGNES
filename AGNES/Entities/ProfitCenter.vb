@@ -10,8 +10,9 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class KPIWithholdings
+Partial Public Class ProfitCenter
     Public Property PID As Long
-    Public Property Withholding As String
+    Public Property VendorID As Long
+    Public Property ProfitCenterID As Long
 
 End Class

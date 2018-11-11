@@ -3,6 +3,7 @@
 #Region "Properties"
     Public Property MSP As PeriodChooser
     Public Property Wk As WeekChooser
+    Public wkSched As ScheduleWeek
 #End Region
 
 #Region "Constructor"
@@ -23,11 +24,11 @@
         End With
 
         '// Add week object, with days, locations, and data load being subfunctions
-        Dim wkSched As New ScheduleWeek
+        wkSched = New ScheduleWeek
         wkSched.Update(MSP.CurrentPeriod, Wk.CurrentWeek)
         grdWeek.Children.Add(wkSched)
 
-        PopulateVendors() '//   Any consideration of day-to-day vendor availability as to whether to show them?
+        PopulateVendors(0) '//   Any consideration of day-to-day vendor availability as to whether to show them?
     End Sub
 
 #End Region
@@ -37,11 +38,14 @@
 #End Region
 
 #Region "Private Methods"
-    Private Sub PopulateVendors()
-        '//TEST ONLY
+    Private Sub PopulateVendors(view)   '0=All, 1=Brands, 2=Trucks
+        Dim qvn = From v In VendorData.VendorInfo
+                  Where v.VendorType = 2 Or
+                      v.VendorType = 3 And
+                      v.Active = True
 
-        For x As Byte = 1 To 8
-            Dim nv As New TextBlock With {.Text = "Vendor " & x}
+        For Each v In qvn
+            Dim nv As New TextBlock With {.Text = v.Name, .FontSize = 18}
             stkVendors.Children.Add(nv)
         Next
     End Sub
@@ -49,7 +53,7 @@
 
 #Region "Event Listeners"
     Private Sub WeekChanged()
-
+        wkSched.Update(MSP.CurrentPeriod, Wk.CurrentWeek)
     End Sub
 
 #End Region
