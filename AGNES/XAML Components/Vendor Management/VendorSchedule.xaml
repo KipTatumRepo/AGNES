@@ -25,9 +25,7 @@
         <Border BorderBrush="Black" BorderThickness="1,1,1,1" HorizontalAlignment="Left" Width="258" Margin="0,112,0,51">
             <StackPanel x:Name="stkVendors" HorizontalAlignment="Left" Width="257" CanVerticallyScroll="True" ScrollViewer.CanContentScroll="True"/>
         </Border>
-        <Grid x:Name="grdWeek" HorizontalAlignment="Right" Width="1016" Height="659" VerticalAlignment="Top" Margin="0,61,0,0">
-        
-        </Grid>
+        <Grid x:Name="grdWeek" HorizontalAlignment="Right" Width="1011" Height="659" VerticalAlignment="Top" Margin="0,61,0,0"/>
         <StatusBar x:Name="barSaveStatus" Height="51" VerticalAlignment="Bottom" Background="#FF19F30E">
             <TextBlock x:Name="tbSaveStatus" Text="Saved" Width="1268" TextAlignment="Center" FontWeight="SemiBold" FontSize="18" />
         </StatusBar>
