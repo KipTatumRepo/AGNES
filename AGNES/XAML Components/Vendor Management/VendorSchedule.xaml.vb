@@ -45,10 +45,11 @@
                       v.Active = True
 
         For Each v In qvn
-            Dim nv As New TextBlock With {.Text = v.Name, .FontSize = 18}
+            Dim nv As New ScheduleVendor(v.Name)
             stkVendors.Children.Add(nv)
         Next
     End Sub
+
 #End Region
 
 #Region "Event Listeners"
@@ -57,4 +58,5 @@
     End Sub
 
 #End Region
+
 End Class

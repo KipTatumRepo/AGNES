@@ -19,14 +19,14 @@
             <Image Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/FoodTruck.png" ToolTip="Show Food Trucks" Margin="0,5,0,0" />
             <Separator />
         </ToolBar>
-        <Border BorderBrush="Black" BorderThickness="1,1,1,1" Width="258" Height ="50" HorizontalAlignment="left" VerticalAlignment="Top" Margin="0,61,0,0">
+        <Border BorderBrush="Black" BorderThickness="1,1,1,1" Width="253" Height ="50" HorizontalAlignment="left" VerticalAlignment="Top" Margin="0,61,0,0">
             <TextBlock TextWrapping="Wrap" Text="Vendors" FontSize="24" TextAlignment="Center" Background="Black" Foreground="White"/>
         </Border>
-        <Border BorderBrush="Black" BorderThickness="1,1,1,1" HorizontalAlignment="Left" Width="258" Margin="0,112,0,51">
+        <Border BorderBrush="Black" BorderThickness="1,1,1,1" HorizontalAlignment="Left" Width="253" Margin="0,111,0,52">
             <StackPanel x:Name="stkVendors" HorizontalAlignment="Left" Width="257" CanVerticallyScroll="True" ScrollViewer.CanContentScroll="True"/>
         </Border>
-        <Grid x:Name="grdWeek" HorizontalAlignment="Right" Width="1011" Height="659" VerticalAlignment="Top" Margin="0,61,0,0"/>
-        <StatusBar x:Name="barSaveStatus" Height="51" VerticalAlignment="Bottom" Background="#FF19F30E">
+        <Grid x:Name="grdWeek" HorizontalAlignment="Right" Width="1010" Height="658" VerticalAlignment="Top" Margin="0,61,1,0"/>
+        <StatusBar x:Name="sbSaveStatus" Height="51" VerticalAlignment="Bottom" Background="#FF19F30E">
             <TextBlock x:Name="tbSaveStatus" Text="Saved" Width="1268" TextAlignment="Center" FontWeight="SemiBold" FontSize="18" />
         </StatusBar>
     </Grid>

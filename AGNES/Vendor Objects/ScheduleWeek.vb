@@ -26,7 +26,7 @@ Public Class ScheduleWeek
 
 #Region "Private Methods"
     Private Sub CreateWeekDay(dt, hol)
-        Dim newday As New TextBlock With {.Text = FormatDateTime(dt, DateFormat.ShortDate)}
+        Dim newday As New ScheduleDay(dt, hol)
         If hol = 1 Then newday.IsEnabled = False
         Children.Add(newday)
     End Sub
