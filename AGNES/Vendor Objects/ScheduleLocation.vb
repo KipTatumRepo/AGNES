@@ -79,20 +79,31 @@ Public Class ScheduleLocation
     End Sub
 
     Private Function CheckVendorTypeAllowed()
+        '// Is the vendor type (truck or brand) allowed at the building?
+
+        '//TEST//
         If LocationName = "Building 92" Then
-            VendorSched.tbSaveStatus.Text = "I just hate building 92"
+            VendorSched.tbSaveStatus.Text = "The vendor type is not allowed at this building"
             Return False
         End If
+        '//TEST//
+
         Return True
     End Function
 
     Private Function CheckMaxVendors()
+        '// Would adding the vendor exceed the max number of trucks or local brands allowed at the unit?
+        '// Possibly allow replacing what's already there?
         Return True
     End Function
     Private Function CheckVendorPrereqs()
+        '// Conflicts such as the requirement for a hood at a unit that does not have one available
         Return True
     End Function
     Private Function CheckFoodTypeConflicts()
+        '// Cautionary alert if food type conflicts with an anchor station, another vendor present at the same time, or a food
+        '// type scheduled on adjacent days (the last one should be fun to code. :| )
+
         Return True
     End Function
 
