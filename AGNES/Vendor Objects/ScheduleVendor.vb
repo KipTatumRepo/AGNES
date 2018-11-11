@@ -18,6 +18,7 @@ Public Class ScheduleVendor
         Margin = New Thickness(1, 1, 2, 0)
         AddName()
     End Sub
+
 #End Region
 
 #Region "Public Methods"
@@ -35,4 +36,5 @@ Public Class ScheduleVendor
     End Sub
 
 #End Region
+
 End Class

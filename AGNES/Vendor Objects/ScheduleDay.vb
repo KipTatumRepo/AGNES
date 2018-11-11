@@ -21,6 +21,7 @@ Public Class ScheduleDay
         CreateDayLabel()
         If hol = 0 Then LoadLocations()
     End Sub
+
 #End Region
 
 #Region "Public Methods"
@@ -48,6 +49,7 @@ Public Class ScheduleDay
         Dim newloc2 As New ScheduleLocation("Cafe 16")
         LocationStack.Children.Add(newloc2)
     End Sub
+
 #End Region
 
 End Class

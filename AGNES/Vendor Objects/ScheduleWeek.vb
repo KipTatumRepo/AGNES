@@ -22,6 +22,7 @@ Public Class ScheduleWeek
         Next
 
     End Sub
+
 #End Region
 
 #Region "Private Methods"
@@ -30,5 +31,7 @@ Public Class ScheduleWeek
         If hol = 1 Then newday.IsEnabled = False
         Children.Add(newday)
     End Sub
+
 #End Region
+
 End Class

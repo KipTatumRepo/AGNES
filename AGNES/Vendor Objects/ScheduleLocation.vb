@@ -1,6 +1,7 @@
 ﻿Imports System.ComponentModel
 Public Class ScheduleLocation
     Inherits Border
+
 #Region "Properties"
     Public VendorStack As StackPanel
     Public Property LocationName As String
@@ -22,6 +23,7 @@ Public Class ScheduleLocation
         Child = VendorStack
         AddName()
     End Sub
+
 #End Region
 
 #Region "Public Properties"
@@ -96,10 +98,12 @@ Public Class ScheduleLocation
         '// Possibly allow replacing what's already there?
         Return True
     End Function
+
     Private Function CheckVendorPrereqs()
         '// Conflicts such as the requirement for a hood at a unit that does not have one available
         Return True
     End Function
+
     Private Function CheckFoodTypeConflicts()
         '// Cautionary alert if food type conflicts with an anchor station, another vendor present at the same time, or a food
         '// type scheduled on adjacent days (the last one should be fun to code. :| )
@@ -108,4 +112,5 @@ Public Class ScheduleLocation
     End Function
 
 #End Region
+
 End Class
