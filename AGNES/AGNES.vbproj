@@ -154,6 +154,7 @@
     <Compile Include="Module Orchestrators\VendorModule.vb" />
     <Compile Include="Training Objects\EmployeeObj.vb" />
     <Compile Include="Training Objects\TrainingGridSource.vb" />
+    <Compile Include="Vendor Objects\ScheduleWeek.vb" />
     <Compile Include="XAML Components\Flash\Delegates.xaml.vb">
       <DependentUpon>Delegates.xaml</DependentUpon>
     </Compile>
@@ -884,7 +885,6 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Vendor Objects\" />
     <Folder Include="XAML Components\Campaign Manager\" />
     <Folder Include="XAML Components\Journal\" />
     <Folder Include="XAML Components\Marketing Suite\" />

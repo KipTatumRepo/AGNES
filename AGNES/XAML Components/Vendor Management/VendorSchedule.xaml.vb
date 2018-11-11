@@ -19,7 +19,9 @@
             .Add(sep)
             .Add(Wk)
         End With
+        PopulateVendors()
     End Sub
+
 #End Region
 
 #Region "Public Methods"
@@ -27,6 +29,13 @@
 #End Region
 
 #Region "Private Methods"
+    Private Sub PopulateVendors()
+        '//TEST ONLY
 
+        For x As Byte = 1 To 8
+            Dim nv As New TextBlock With {.Text = "Vendor " & x}
+            stkVendors.Children.Add(nv)
+        Next
+    End Sub
 #End Region
 End Class
