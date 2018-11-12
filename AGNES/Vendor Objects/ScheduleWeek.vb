@@ -2,7 +2,7 @@
 Public Class ScheduleWeek
     Inherits DockPanel
 #Region "Properties"
-
+    Public Property SaveStatus As Boolean
 #End Region
 
 #Region "Constructor"

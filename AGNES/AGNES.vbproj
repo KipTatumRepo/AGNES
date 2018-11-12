@@ -200,6 +200,7 @@
     <Compile Include="Vendor Objects\ScheduleLocation.vb" />
     <Compile Include="Vendor Objects\ScheduleVendor.vb" />
     <Compile Include="Vendor Objects\ScheduleWeek.vb" />
+    <Compile Include="Vendor Objects\VendorInLoc.vb" />
     <Compile Include="XAML Components\Flash\Delegates.xaml.vb">
       <DependentUpon>Delegates.xaml</DependentUpon>
     </Compile>

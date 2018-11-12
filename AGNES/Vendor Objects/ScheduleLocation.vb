@@ -26,11 +26,16 @@ Public Class ScheduleLocation
 
 #End Region
 
-#Region "Public Properties"
+#Region "Public Methods"
+    Public Sub DeleteItem(ByRef v As VendorInLoc)
+        v.ReferencedVendor.UsedSlots -= 1
+        VendorStack.Children.Remove(v)
+        Height -= 16
+    End Sub
 
 #End Region
 
-#Region "Private Properties"
+#Region "Private Methods"
     Private Sub AddName()
         LocationBlock = New TextBlock With {.TextAlignment = TextAlignment.Center, .Text = LocationName, .Background = Brushes.LightYellow}
         VendorStack.Children.Add(LocationBlock)
@@ -47,16 +52,22 @@ Public Class ScheduleLocation
             VendorSched.tbSaveStatus.Text = StatusBarText
             Exit Sub
         End If
-        Dim nv As New TextBlock With {.TextAlignment = TextAlignment.Center, .Text = e.Data.GetData(DataFormats.Text)}
+
+        Dim nv As New VendorInLoc With {.TextAlignment = TextAlignment.Center, .Text = e.Data.GetData(DataFormats.Text),
+        .ReferencedVendor = VendorSched.ActiveVendor, .ReferencedLocation = Me}
         If HighlightColor = True Then nv.Background = Brushes.LightGray
         HighlightColor = Not HighlightColor
         VendorStack.Children.Add(nv)
         Height += 16
         VendorSched.tbSaveStatus.Text = StatusBarText
+        VendorSched.sbSaveStatus.Background = Brushes.LightGreen
+        VendorSched.ActiveVendor.UsedSlots += 1
+        VendorSched.ActiveVendor = Nothing
     End Sub
 
     Private Sub ScheduleLocation_DragLeave(sender As Object, e As DragEventArgs) Handles Me.DragLeave
         VendorSched.tbSaveStatus.Text = StatusBarText
+        VendorSched.sbSaveStatus.Background = Brushes.LightGreen
     End Sub
 
     Private Sub CheckVendorDrag()
@@ -86,6 +97,7 @@ Public Class ScheduleLocation
         '//TEST//
         If LocationName = "Building 92" Then
             VendorSched.tbSaveStatus.Text = "The vendor type is not allowed at this building"
+            VendorSched.sbSaveStatus.Background = Brushes.PaleVioletRed
             Return False
         End If
         '//TEST//
@@ -107,7 +119,24 @@ Public Class ScheduleLocation
     Private Function CheckFoodTypeConflicts()
         '// Cautionary alert if food type conflicts with an anchor station, another vendor present at the same time, or a food
         '// type scheduled on adjacent days (the last one should be fun to code. :| )
+        Dim ft As Byte = VendorSched.ActiveVendor.FoodType
+        For Each vil As Object In VendorStack.Children
+            Try
+                Dim vtmp As VendorInLoc
+                vtmp = CType(vil, VendorInLoc)
+                If vtmp.ReferencedVendor.FoodType = ft Then
+                    If vtmp.ReferencedVendor.VendorItem.Name = VendorSched.ActiveVendor.VendorItem.Name Then
+                        VendorSched.tbSaveStatus.Text = "This vendor is already present at this location on this day"
+                    Else
+                        VendorSched.tbSaveStatus.Text = "This food type conflicts with another vendor present on the same day"
+                    End If
+                    VendorSched.sbSaveStatus.Background = Brushes.LightYellow
+                    Return False
+                End If
+            Catch ex As Exception
 
+            End Try
+        Next
         Return True
     End Function
 

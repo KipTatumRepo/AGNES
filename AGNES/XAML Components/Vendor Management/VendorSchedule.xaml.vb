@@ -4,6 +4,7 @@
     Public Property MSP As PeriodChooser
     Public Property Wk As WeekChooser
     Public wkSched As ScheduleWeek
+    Public ActiveVendor As ScheduleVendor
 #End Region
 
 #Region "Constructor"
@@ -34,21 +35,23 @@
 #End Region
 
 #Region "Public Methods"
-
-#End Region
-
-#Region "Private Methods"
-    Private Sub PopulateVendors(view)   '0=All, 1=Brands, 2=Trucks
+    Public Sub PopulateVendors(view)   '0=All, 1=Retail, 2=Brands, 3=Trucks
+        stkVendors.Children.Clear()
         Dim qvn = From v In VendorData.VendorInfo
                   Where v.VendorType = 2 Or
                       v.VendorType = 3 And
                       v.Active = True
 
         For Each v In qvn
-            Dim nv As New ScheduleVendor(v.Name)
+            Dim nv As New ScheduleVendor(v)
             stkVendors.Children.Add(nv)
         Next
     End Sub
+
+#End Region
+
+#Region "Private Methods"
+
 
 #End Region
 

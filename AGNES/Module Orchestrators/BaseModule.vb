@@ -283,6 +283,28 @@
         Return "Null"
     End Function
 
+    Public Function GetFoodType(ft As Long) As String
+        Dim qft = From t In VendorData.FoodTypes
+                  Where t.PID = ft
+                  Select t
+
+        For Each t In qft
+            Return t.Type
+        Next
+        Return ""
+    End Function
+
+    Public Function GetFoodSubType(ft As Long) As String
+        Dim qft = From t In VendorData.FoodSubTypes
+                  Where t.PID = ft
+                  Select t
+
+        For Each t In qft
+            Return t.Subtype
+        Next
+        Return ""
+    End Function
+
 #End Region
 
 End Module
