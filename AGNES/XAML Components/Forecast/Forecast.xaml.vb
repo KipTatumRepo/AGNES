@@ -520,6 +520,29 @@ Public Class Forecast
         Next
     End Sub
 
+    Private Sub ToggleFlashForecast(sender As Object, e As MouseButtonEventArgs) Handles imgToggle.MouseLeftButtonDown
+        Select Case imgToggle.Tag
+            Case "FO"
+                With imgToggle
+                    .Tag = "FL"
+                    .ToolTip = "Show Forecast in Locked Weeks"
+                End With
+                For Each fg As ForecastGroup In grdFcastGroups.Children
+                    If fg.GroupIsSubTotal = False Then fg.Toggle(0)
+                    fg.Update(fg)
+                Next
+            Case "FL"
+                With imgToggle
+                    .Tag = "FO"
+                    .ToolTip = "Show Flash in Locked Weeks"
+                End With
+                For Each fg As ForecastGroup In grdFcastGroups.Children
+                    If fg.GroupIsSubTotal = False Then fg.Toggle(1)
+                    fg.Update(fg)
+                Next
+        End Select
+    End Sub
+
 #End Region
 
 #End Region

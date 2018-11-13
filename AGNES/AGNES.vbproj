@@ -447,7 +447,6 @@
       <DependentUpon>AgnesSharedDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Flash Objects\FlashGroup.vb" />
-    <Compile Include="Flash Objects\SharedFunctions.vb" />
     <Compile Include="Flash Objects\UnitFlash.vb" />
     <Compile Include="Application Objects\UnitGroup.vb" />
     <Compile Include="Module Orchestrators\AdminModule.vb" />
@@ -886,6 +885,7 @@
       <DependentUpon>WCRModule.edmx</DependentUpon>
       <LastGenOutput>WCRModule.vb</LastGenOutput>
     </Content>
+    <Resource Include="Resources\DblArrow.png" />
     <Resource Include="Resources\LoadPrevious.png" />
     <Resource Include="Resources\FoodTruck.png" />
     <Resource Include="Resources\brands.png" />

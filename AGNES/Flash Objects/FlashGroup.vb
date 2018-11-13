@@ -404,7 +404,7 @@
         CalculateFlash += CurrVal
         FlashContent = CalculateFlash
         Dim tb As TextBox = Notes.Content
-        If tb.Text = "" Then tb.Text = SharedFunctions.FlashNotes
+        If tb.Text = "" Then tb.Text = BaseModule.FlashNotes
     End Sub
 
     Private Sub LoadForecast()
