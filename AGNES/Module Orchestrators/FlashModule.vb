@@ -1,4 +1,5 @@
 ﻿Module FlashModule
+    'TODO: DELEGATES NOT WORKING FOR NON-CAFE UNIT
 
 #Region "Properties"
     Public AvailableUnits As UnitGroup
