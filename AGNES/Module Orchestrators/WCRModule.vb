@@ -2,6 +2,7 @@
     Public WCR As New WCRObject
     Public WCRE As WCREntities
     Public UserClosed As Boolean
+    'TODO: REFACTOR WCR MODULE TO REFLECT CLEARER ENTITY MODELING
 
     Public Sub Runmodule()
         Dim WCRStartPage As New WCRHello

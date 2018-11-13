@@ -21,64 +21,10 @@
           <Property Name="TenderID" Type="bigint" Nullable="false" />
           <Property Name="TenderType" Type="varchar" MaxLength="512" Nullable="false" />
         </EntityType>
-        <EntityType Name="CAMWithholdings">
-          <Key>
-            <PropertyRef Name="PID" />
-          </Key>
-          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Withholding" Type="varchar" MaxLength="64" Nullable="false" />
-        </EntityType>
-        <EntityType Name="KPIWithholdings">
-          <Key>
-            <PropertyRef Name="PID" />
-          </Key>
-          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Withholding" Type="varchar" MaxLength="64" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ReceivedCAMChecks">
-          <Key>
-            <PropertyRef Name="PID" />
-          </Key>
-          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="VendorId" Type="bigint" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="128" Nullable="false" />
-          <Property Name="CheckNumber" Type="varchar" MaxLength="128" Nullable="false" />
-          <Property Name="Date" Type="date" Nullable="false" />
-          <Property Name="DayofWeek" Type="smallint" Nullable="false" />
-          <Property Name="Amount" Type="decimal" Precision="12" Scale="2" Nullable="false" />
-          <Property Name="Notes" Type="varchar" MaxLength="512" />
-        </EntityType>
-        <EntityType Name="VendorInfo">
-          <Key>
-            <PropertyRef Name="PID" />
-          </Key>
-          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="128" Nullable="false" />
-          <Property Name="Invoice" Type="varchar" MaxLength="128" Nullable="false" />
-          <Property Name="Supplier" Type="bigint" Nullable="false" />
-          <Property Name="StoreId" Type="bigint" />
-          <Property Name="VendorType" Type="smallint" Nullable="false" />
-          <Property Name="Active" Type="bit" Nullable="false" />
-          <Property Name="FoodType" Type="int" />
-          <Property Name="FoodSubType" Type="int" />
-          <Property Name="CAMType" Type="smallint" />
-          <Property Name="CAMStart" Type="date" />
-          <Property Name="CAMAmount" Type="decimal" Precision="8" Scale="4" />
-          <Property Name="KPIType" Type="smallint" />
-          <Property Name="KPIStart" Type="date" />
-          <Property Name="KPIAmount" Type="decimal" Precision="8" Scale="4" />
-          <Property Name="RequiresHood" Type="bit" Nullable="false" />
-          <Property Name="InsuranceExpiration" Type="date" />
-          <Property Name="ContractExpiration" Type="date" />
-        </EntityType>
         <EntityContainer Name="WCRModelStoreContainer">
           <EntitySet Name="GLsTenders_Join" EntityType="Self.GLsTenders_Join" Schema="agnes" store:Type="Tables" />
           <EntitySet Name="Tenders" EntityType="Self.Tenders" Schema="agnes" store:Type="Tables" />
-          <EntitySet Name="CAMWithholdings" EntityType="Self.CAMWithholdings" Schema="Vendors" store:Type="Tables" />
-          <EntitySet Name="KPIWithholdings" EntityType="Self.KPIWithholdings" Schema="Vendors" store:Type="Tables" />
-          <EntitySet Name="ReceivedCAMChecks" EntityType="Self.ReceivedCAMChecks" Schema="Vendors" store:Type="Tables" />
-          <EntitySet Name="VendorInfo" EntityType="Self.VendorInfo" Schema="Vendors" store:Type="Tables" />
-        </EntityContainer>
+          </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -86,10 +32,6 @@
         <EntityContainer Name="WCREntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="GLsTenders_Join" EntityType="WCRModel.GLsTenders_Join" />
           <EntitySet Name="Tenders" EntityType="WCRModel.Tenders" />
-          <EntitySet Name="CAMWithholdings" EntityType="WCRModel.CAMWithholdings" />
-          <EntitySet Name="KPIWithholdings" EntityType="WCRModel.KPIWithholdings" />
-          <EntitySet Name="ReceivedCAMChecks" EntityType="WCRModel.ReceivedCAMChecks" />
-          <EntitySet Name="VendorInfo" EntityType="WCRModel.VendorInfo" />
         </EntityContainer>
         <EntityType Name="GLsTenders_Join">
           <Key>
@@ -106,56 +48,6 @@
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TenderID" Type="Int64" Nullable="false" />
           <Property Name="TenderType" Type="String" Nullable="false" MaxLength="512" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="CAMWithholdings">
-          <Key>
-            <PropertyRef Name="PID" />
-          </Key>
-          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Withholding" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="KPIWithholdings">
-          <Key>
-            <PropertyRef Name="PID" />
-          </Key>
-          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Withholding" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="ReceivedCAMChecks">
-          <Key>
-            <PropertyRef Name="PID" />
-          </Key>
-          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="VendorId" Type="Int64" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
-          <Property Name="CheckNumber" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="DayofWeek" Type="Int16" Nullable="false" />
-          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
-          <Property Name="Notes" Type="String" MaxLength="512" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="VendorInfo">
-          <Key>
-            <PropertyRef Name="PID" />
-          </Key>
-          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
-          <Property Name="Invoice" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
-          <Property Name="Supplier" Type="Int64" Nullable="false" />
-          <Property Name="StoreId" Type="Int64" />
-          <Property Name="VendorType" Type="Int16" Nullable="false" />
-          <Property Name="Active" Type="Boolean" Nullable="false" />
-          <Property Name="FoodType" Type="Int32" />
-          <Property Name="FoodSubType" Type="Int32" />
-          <Property Name="CAMType" Type="Int16" />
-          <Property Name="CAMStart" Type="DateTime" Precision="0" />
-          <Property Name="CAMAmount" Type="Decimal" Precision="8" Scale="4" />
-          <Property Name="KPIType" Type="Int16" />
-          <Property Name="KPIStart" Type="DateTime" Precision="0" />
-          <Property Name="KPIAmount" Type="Decimal" Precision="8" Scale="4" />
-          <Property Name="RequiresHood" Type="Boolean" Nullable="false" />
-          <Property Name="InsuranceExpiration" Type="DateTime" Precision="0" />
-          <Property Name="ContractExpiration" Type="DateTime" Precision="0" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -181,61 +73,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CAMWithholdings">
-            <EntityTypeMapping TypeName="WCRModel.CAMWithholdings">
-              <MappingFragment StoreEntitySet="CAMWithholdings">
-                <ScalarProperty Name="Withholding" ColumnName="Withholding" />
-                <ScalarProperty Name="PID" ColumnName="PID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="KPIWithholdings">
-            <EntityTypeMapping TypeName="WCRModel.KPIWithholdings">
-              <MappingFragment StoreEntitySet="KPIWithholdings">
-                <ScalarProperty Name="Withholding" ColumnName="Withholding" />
-                <ScalarProperty Name="PID" ColumnName="PID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ReceivedCAMChecks">
-            <EntityTypeMapping TypeName="WCRModel.ReceivedCAMChecks">
-              <MappingFragment StoreEntitySet="ReceivedCAMChecks">
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="DayofWeek" ColumnName="DayofWeek" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="CheckNumber" ColumnName="CheckNumber" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
-                <ScalarProperty Name="PID" ColumnName="PID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="VendorInfo">
-            <EntityTypeMapping TypeName="WCRModel.VendorInfo">
-              <MappingFragment StoreEntitySet="VendorInfo">
-                <ScalarProperty Name="ContractExpiration" ColumnName="ContractExpiration" />
-                <ScalarProperty Name="InsuranceExpiration" ColumnName="InsuranceExpiration" />
-                <ScalarProperty Name="RequiresHood" ColumnName="RequiresHood" />
-                <ScalarProperty Name="KPIAmount" ColumnName="KPIAmount" />
-                <ScalarProperty Name="KPIStart" ColumnName="KPIStart" />
-                <ScalarProperty Name="KPIType" ColumnName="KPIType" />
-                <ScalarProperty Name="CAMAmount" ColumnName="CAMAmount" />
-                <ScalarProperty Name="CAMStart" ColumnName="CAMStart" />
-                <ScalarProperty Name="CAMType" ColumnName="CAMType" />
-                <ScalarProperty Name="FoodSubType" ColumnName="FoodSubType" />
-                <ScalarProperty Name="FoodType" ColumnName="FoodType" />
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="VendorType" ColumnName="VendorType" />
-                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
-                <ScalarProperty Name="Supplier" ColumnName="Supplier" />
-                <ScalarProperty Name="Invoice" ColumnName="Invoice" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="PID" ColumnName="PID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

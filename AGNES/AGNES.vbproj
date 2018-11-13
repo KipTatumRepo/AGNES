@@ -128,8 +128,32 @@
     <Compile Include="Entities\AssociateShortage.vb">
       <DependentUpon>FlashForecastModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Availability.vb">
+      <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CAMWithholding.vb">
+      <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Contact.vb">
+      <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\FlashAlert.vb">
       <DependentUpon>FlashActualsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\FoodSubType.vb">
+      <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\FoodType.vb">
+      <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\KPIWithholding.vb">
+      <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ProfitCenter.vb">
+      <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ReceivedCAMCheck.vb">
+      <DependentUpon>VendorModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\SickOtRecord.vb">
       <DependentUpon>FlashActualsModel.tt</DependentUpon>
@@ -143,6 +167,24 @@
     <Compile Include="Entities\TrainingRecord.vb">
       <DependentUpon>TrainingModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\VendorInfo.vb">
+      <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\VendorModel.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VendorModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\VendorModel.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VendorModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\VendorModel.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Flash Objects\StatusItem.vb" />
     <Compile Include="Forecast Objects\CalDayObj.vb" />
     <Compile Include="Forecast Objects\CalWeekObj.vb" />
@@ -154,6 +196,11 @@
     <Compile Include="Module Orchestrators\VendorModule.vb" />
     <Compile Include="Training Objects\EmployeeObj.vb" />
     <Compile Include="Training Objects\TrainingGridSource.vb" />
+    <Compile Include="Vendor Objects\ScheduleDay.vb" />
+    <Compile Include="Vendor Objects\ScheduleLocation.vb" />
+    <Compile Include="Vendor Objects\ScheduleVendor.vb" />
+    <Compile Include="Vendor Objects\ScheduleWeek.vb" />
+    <Compile Include="Vendor Objects\VendorInLoc.vb" />
     <Compile Include="XAML Components\Flash\Delegates.xaml.vb">
       <DependentUpon>Delegates.xaml</DependentUpon>
     </Compile>
@@ -212,9 +259,6 @@
     </Compile>
     <Compile Include="Entities\Budgets.vb">
       <DependentUpon>BudgetModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\CAMWithholdings.vb">
-      <DependentUpon>WCRModule.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Communications.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
@@ -336,9 +380,6 @@
     <Compile Include="Entities\Involvements.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\KPIWithholdings.vb">
-      <DependentUpon>WCRModule.tt</DependentUpon>
-    </Compile>
     <Compile Include="Entities\Leaders.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
@@ -365,9 +406,6 @@
     </Compile>
     <Compile Include="Entities\Planners.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\ReceivedCAMChecks.vb">
-      <DependentUpon>WCRModule.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\RefreshEventOrigin.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
@@ -450,9 +488,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\VendorInfo.vb">
-      <DependentUpon>WCRModule.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\WCRModule.Context.vb">
       <AutoGen>True</AutoGen>
@@ -675,6 +710,13 @@
     <None Include="Entities\TrainingModel.edmx.diagram">
       <DependentUpon>TrainingModel.edmx</DependentUpon>
     </None>
+    <EntityDeploy Include="Entities\VendorModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>VendorModel.Designer.vb</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Entities\VendorModel.edmx.diagram">
+      <DependentUpon>VendorModel.edmx</DependentUpon>
+    </None>
     <None Include="Entities\WCRModule.edmx.diagram">
       <DependentUpon>WCRModule.edmx</DependentUpon>
     </None>
@@ -823,6 +865,16 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>TrainingModel.edmx</DependentUpon>
       <LastGenOutput>TrainingModel.vb</LastGenOutput>
+    </Content>
+    <Content Include="Entities\VendorModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>VendorModel.edmx</DependentUpon>
+      <LastGenOutput>VendorModel.Context.vb</LastGenOutput>
+    </Content>
+    <Content Include="Entities\VendorModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>VendorModel.edmx</DependentUpon>
+      <LastGenOutput>VendorModel.vb</LastGenOutput>
     </Content>
     <Content Include="Entities\WCRModule.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
