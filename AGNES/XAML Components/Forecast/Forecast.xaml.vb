@@ -1,8 +1,12 @@
 ﻿Imports System.ComponentModel
 Public Class Forecast
-    'TODO: BUG ON MULTIPLE UNIT FORECASTS - WHEN FLIPPING TO NEW UNIT WITH UNSAVED DATA, OPTING TO **NOT** DISCARD THE INFORMATION
-    '      STILL DISCARDS IT
-    'TODO: BUG ON CAFE 16 DISCARD CHANGES - REPROMPTS MULTIPLE TIMES
+
+    'TODO: BUG ON CAFE 16 DISCARD CHANGES - REPROMPTS MULTIPLE TIMES - CANNOT REPLICATE 11/15/18
+
+    'TODO: MOVE PERIOD (AND WEEK CHOOSER) EVENTS TO FORECAST XAML PAGE VB TO AVOID DISCARD BUGS - PROBABLY NEED TO DO THIS FOR FLASH AS WELL
+
+    'TODO: FOR FORECASTS, EVALUATE WHETHER A FIX IS NEEDED FOR THE PTD VIEW (DISCARDS DATA, BUT THIS MIGHT BE CONCEPTUALLY CORRECT)
+
 #Region "Properties"
     Dim SalesGroup As ForecastGroup
     Dim CamGroup As ForecastGroup
@@ -77,7 +81,9 @@ Public Class Forecast
         Dim currmsp As Byte = GetCurrentPeriod(FormatDateTime(Now(), DateFormat.ShortDate))
         Dim currwk As Byte = GetCurrentWeek(FormatDateTime(Now(), DateFormat.ShortDate))
         Wk = New WeekChooser(1, currwk, currwk)
+
         MSP = New PeriodChooser(Wk, currmsp, 12, currmsp)
+        AddHandler MSP.PropertyChanged, AddressOf PeriodChanged
         MSP.DisableSelectAll = True
 
         Select Case FT
@@ -260,6 +266,7 @@ Public Class Forecast
                     grdFcastGroups.Margin = New Thickness(0, 74, 0, 0)
                 End If
                 Units = New UnitChooser(AvailableUnits)
+
                 If qsu.Count > 0 Then Units.AllowMultiSelect = True
 
                 '// Add forecast groups (categories)
@@ -448,6 +455,8 @@ Public Class Forecast
 #End Region
         End Select
 
+        AddHandler Units.PropertyChanged, AddressOf UnitChanged
+
         For Each fg As ForecastGroup In grdFcastGroups.Children
             fg.Load()
             If fg.GroupIsSubTotal = True Then fg.Update(fg)
@@ -544,6 +553,62 @@ Public Class Forecast
     End Sub
 
 #End Region
+
+#End Region
+
+#Region "Event Listeners"
+
+    Private Sub PeriodChanged()
+        If SaveStatus = 0 And MSP.SystemChange = False Then
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
+                                                18,,,, "Discard unsaved changes?")
+            amsg.ShowDialog()
+            If amsg.ReturnResult = "No" Then
+                MSP.SystemChange = True
+                MSP.CurrentPeriod = MSP.HeldPeriod
+                amsg.Close()
+                Exit Sub
+            Else
+                amsg.Close()
+            End If
+        End If
+
+        If MSP.SystemChange = True Then
+            MSP.SystemChange = False
+        Else
+            For Each fg As ForecastGroup In grdFcastGroups.Children
+                fg.Load()
+                If fg.GroupIsSubTotal = True Then fg.Update(fg)
+            Next
+            SaveStatus = 1
+        End If
+    End Sub
+
+    Private Sub UnitChanged()
+        If SaveStatus = 0 And Units.SystemChange = False Then
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
+                                                18,,,, "Discard unsaved changes?")
+            amsg.ShowDialog()
+            If amsg.ReturnResult = "No" Then
+                Units.SystemChange = True
+                Units.CurrentUnit = Units.HeldUnit
+                amsg.Close()
+                Exit Sub
+            Else
+                amsg.Close()
+            End If
+        End If
+
+        If Units.SystemChange = True Then
+            Units.SystemChange = False
+        Else
+            For Each fg As ForecastGroup In grdFcastGroups.Children
+                fg.Load()
+                If fg.GroupIsSubTotal = True Then fg.Update(fg)
+            Next
+            SaveStatus = 1
+        End If
+    End Sub
 
 #End Region
 
