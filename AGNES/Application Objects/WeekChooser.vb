@@ -8,6 +8,7 @@ Public Class WeekChooser
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
 
     Public SystemChange As Boolean
+    Public PeriodChange As Boolean
     Public Property MinWeek As Byte
     Public Property MaxWeek As Byte
     Public Property HeldWeek As Byte

@@ -535,16 +535,17 @@ Public Class Flash
     Private Sub PeriodChanged()
         If SaveStatus = 0 And MSP.SystemChange = False Then
             Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
-                                                18,,,, "Discard unsaved changes?")
+                                                18,,,, "Discard unsaved changes? [Period]")
             amsg.ShowDialog()
             If amsg.ReturnResult = "No" Then
                 Dim TempWkHold As Byte = Wk.CurrentWeek
                 MSP.SystemChange = True
-                Wk.SystemChange = True
+                Wk.PeriodChange = True
                 MSP.CurrentPeriod = MSP.HeldPeriod
                 Wk.CurrentWeek = TempWkHold
                 Wk.HeldWeek = TempWkHold
                 amsg.Close()
+                MsgBox("Done (killed)!")
                 Exit Sub
             Else
                 amsg.Close()
@@ -560,12 +561,14 @@ Public Class Flash
                 If fg.GroupIsSubTotal = True Then fg.Update(fg)
             Next
         End If
+        MsgBox("Done!")
+
     End Sub
 
     Private Sub WeekChanged()
         If SaveStatus = 0 And Wk.SystemChange = False Then
             Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
-                                                18,,,, "Discard unsaved changes?")
+                                                18,,,, "Discard unsaved changes? [Week]")
             amsg.ShowDialog()
             If amsg.ReturnResult = "No" Then
                 Wk.SystemChange = True
