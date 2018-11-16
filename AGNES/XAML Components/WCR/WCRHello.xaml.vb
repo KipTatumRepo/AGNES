@@ -1,5 +1,5 @@
 ﻿Public Class WCRHello
-
+    'TODO: ADJUST WCR TENDER PULL ROUTINE TO INCLUDE PARAMETER FOR VENDOR TYPE (AS COMMONS VENDOR ONLY - TYPE 0); CONFLICT WITH VENDORS WHO ARE ALSO BRANDS
 #Region "Properties"
     Private Property _currentstate As Integer
     Private ActiveWCR As WCRObject = WCRModule.WCR
