@@ -1,7 +1,7 @@
 ﻿Public Class FlashGroup
     Inherits DockPanel
-    'TODO: REPLACE TEXTBOXES WITH PERCENTAGE BOXES
-    'TODO: REPLACE REFERENCED WEEK, PERIOD, AND UNIT CHOOSERS WITH ACTUALS BOUND TO XAML PAGES
+    'REFRESH: REPLACE TEXTBOXES WITH PERCENTAGE BOXES
+    'REFRESH: REPLACE REFERENCED WEEK, PERIOD, AND UNIT CHOOSERS WITH ACTUALS BOUND TO XAML PAGES
 
 #Region "Properties"
     Public GroupCategory As String
@@ -334,7 +334,7 @@
     End Sub
 
     Private Sub LoadFlash()
-        'TODO: REFACTOR FLASH LOAD ROUTINES
+        'REFRESH: REFACTOR FLASH LOAD ROUTINES
         IsEnabled = True
         Dim CurrVal As Double = 0, WeekCount As Byte, UnitCount As Byte
         Dim unitbrd As Border, weekbrd As Border, unittb As TextBlock, weektb As TextBlock, tmpsavestatus As Byte, notestb As TextBox = Notes.Content
