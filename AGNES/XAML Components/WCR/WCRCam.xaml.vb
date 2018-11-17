@@ -45,7 +45,7 @@ Public Class WCRCam
         tbCam.Text = "Okay!  Let's move on to CAM checks.  I'll hang out down here so I'm not in your way, but I'll continue to walk you through the process."
         dt.Stop()
         AddHandler dt2.Tick, AddressOf PauseBeforeCamChecks
-        dt2.Interval = New TimeSpan(0, 0, 4)
+        dt2.Interval = New TimeSpan(0, 0, 2)
         dt2.Start()
     End Sub
 

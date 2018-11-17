@@ -4,6 +4,8 @@
     Dim HoverDrop As Effects.DropShadowEffect, LeaveDrop As Effects.DropShadowEffect
     Public Property InBalance As Boolean
     Public Property CancelDueToBalanceIssue As Boolean
+
+    Public Property PrintFailed As Boolean
 #End Region
 
 #Region "Constructor"
@@ -18,7 +20,9 @@
 #Region "Private Methods"
 
     Private Sub PrintInvoices_Click(sender As Object, e As MouseButtonEventArgs) Handles tbPrintInvoices.MouseDown
+        PrintFailed = False
         WCRModule.WCR.PrintInvoices()
+        If PrintFailed = True Then Exit Sub
         tbPrintInvoices.Visibility = Visibility.Hidden
         If WCRModule.WCR.InvoicesArePresent > 0 Then
             tbFinal.Text = "Invoices have been created!  Last thing - go ahead and print the WCR backup..."
@@ -29,7 +33,9 @@
     End Sub
 
     Private Sub PrintWCR_Click(sender As Object, e As MouseButtonEventArgs) Handles tbPrintWCR.MouseDown
+        PrintFailed = False
         WCRModule.WCR.PrintWCR(Me)
+        If PrintFailed = True Then Exit Sub
         If InBalance = True Then
             tbFinal.Text = "That's everything!  The WCR is in balance, but please make sure that you double check the numbers before you enter anything into MyFi - you're on your own from here on out!"
         Else

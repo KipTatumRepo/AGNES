@@ -1,6 +1,8 @@
 ﻿Public Class ForecastGroup
     Inherits DockPanel
 
+    'REFRESH: REPLACE REFERENCED WEEK, PERIOD, AND UNIT CHOOSERS WITH ACTUALS BOUND TO XAML PAGES
+
 #Region "Properties"
     Public GroupCategory As String
     Public SalesFcastGroup As ForecastGroup
@@ -154,10 +156,7 @@
         End If
 
         PeriodChooseObject = PC
-        AddHandler PeriodChooseObject.PropertyChanged, AddressOf PeriodChanged
-
         UnitChooseObject = UC
-        AddHandler UnitChooseObject.PropertyChanged, AddressOf UnitChanged
 
         AddHandler DRR.PropertyChanged, AddressOf ForecastChanged
         AddHandler W1Val.PropertyChanged, AddressOf ForecastChanged
@@ -746,42 +745,6 @@
 #End Region
 
 #Region "Event Listeners"
-    Private Sub PeriodChanged()
-        If FcastPage.SaveStatus = 0 Then
-            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
-                                                18,,,, "Discard unsaved changes?")
-            amsg.ShowDialog()
-            If amsg.ReturnResult = "No" Then
-                FcastPage.SaveStatus = 1
-                PeriodChooseObject.CurrentPeriod = PeriodChooseObject.HeldPeriod
-                amsg.Close()
-                Exit Sub
-            Else
-                amsg.Close()
-            End If
-        End If
-        Load()
-        Update(Me)
-    End Sub
-
-    Private Sub UnitChanged()
-        If FcastPage.SaveStatus = 0 Then
-            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
-                                                18,,,, "Discard unsaved changes?")
-            amsg.ShowDialog()
-            If amsg.ReturnResult = "No" Then
-                FcastPage.SaveStatus = 1
-                UnitChooseObject.CurrentUnit = UnitChooseObject.HeldUnit
-                amsg.Close()
-                Exit Sub
-            Else
-                amsg.Close()
-            End If
-        End If
-        Load()
-        Update(Me)
-    End Sub
-
     Private Sub ForecastChanged()
         Update(Me)
         UpdateSubtotals()

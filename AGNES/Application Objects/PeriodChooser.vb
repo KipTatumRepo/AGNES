@@ -6,7 +6,7 @@ Public Class PeriodChooser
 
 #Region "Properties"
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
-
+    Public SystemChange As Boolean
     Private _currentperiod As Byte
     Private Week As WeekChooser
 
