@@ -68,7 +68,7 @@
         Set(value As String)
             _vendorname = value
             Dim q = From c In VendorData.VendorInfo
-                    Where c.Name = value
+                    Where c.Name = value And c.VendorType = 0
                     Select c
             For Each c In q
                 InvoiceName = Trim(c.Invoice)

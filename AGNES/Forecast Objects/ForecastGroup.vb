@@ -1,14 +1,26 @@
 ﻿Public Class ForecastGroup
     Inherits DockPanel
 
+    'REFRESH: REPLACE REFERENCED WEEK, PERIOD, AND UNIT CHOOSERS WITH ACTUALS BOUND TO XAML PAGES
+
 #Region "Properties"
     Public GroupCategory As String
     Public SalesFcastGroup As ForecastGroup
     Public DRR As CurrencyBox
+    Private W1FlVal As Double
+    Private W1FoVal As Double
     Public W1Val As CurrencyBox
+    Private W2FlVal As Double
+    Private W2FoVal As Double
     Public W2Val As CurrencyBox
+    Private W3FlVal As Double
+    Private W3FoVal As Double
     Public W3Val As CurrencyBox
+    Private W4FlVal As Double
+    Private W4FoVal As Double
     Public W4Val As CurrencyBox
+    Private W5FlVal As Double
+    Private W5FoVal As Double
     Public W5Val As CurrencyBox
     Public PeriodTotalVal As CurrencyBox
     Public TotalPercent As PercentBox
@@ -144,10 +156,7 @@
         End If
 
         PeriodChooseObject = PC
-        AddHandler PeriodChooseObject.PropertyChanged, AddressOf PeriodChanged
-
         UnitChooseObject = UC
-        AddHandler UnitChooseObject.PropertyChanged, AddressOf UnitChanged
 
         AddHandler DRR.PropertyChanged, AddressOf ForecastChanged
         AddHandler W1Val.PropertyChanged, AddressOf ForecastChanged
@@ -163,8 +172,9 @@
 #Region "Public Methods"
     Public Sub Load()
         CheckWeekFive()
-        LockPreviousWeeks()
+        LoadFlash()
         LoadForecast()
+        LockPreviousWeeks()
         LoadPeriodBudget()
         CalculateRunRate()
     End Sub
@@ -321,6 +331,54 @@
         If W5Val.Visibility = Visibility.Visible Then W5Val.IsEnabled = True
     End Sub
 
+    Public Sub Toggle(t)
+        Select Case t
+            Case 0 'Show Flash values
+                If W1Val.IsEnabled = False Then
+                    If W1FlVal <> 0 Then
+                        W1Val.SetAmount = W1FlVal
+                    Else
+                        W1Val.SetAmount = W1FoVal
+                    End If
+                End If
+                If W2Val.IsEnabled = False Then
+                    If W2FlVal <> 0 Then
+                        W2Val.SetAmount = W2FlVal
+                    Else
+                        W2Val.SetAmount = W2FoVal
+                    End If
+                End If
+                If W3Val.IsEnabled = False Then
+                    If W3FlVal <> 0 Then
+                        W3Val.SetAmount = W3FlVal
+                    Else
+                        W3Val.SetAmount = W3FoVal
+                    End If
+                End If
+                If W4Val.IsEnabled = False Then
+                    If W4FlVal <> 0 Then
+                        W4Val.SetAmount = W4FlVal
+                    Else
+                        W4Val.SetAmount = W4FoVal
+                    End If
+                End If
+                If W5Val.Visibility = Visibility.Visible And W5Val.IsEnabled = False Then
+                    If W5FlVal <> 0 Then
+                        W5Val.SetAmount = W5FlVal
+                    Else
+                        W5Val.SetAmount = W5FoVal
+                    End If
+                End If
+
+            Case 1 'Show Forecast values
+                If W1Val.IsEnabled = False Then W1Val.SetAmount = W1FoVal
+                If W2Val.IsEnabled = False Then W2Val.SetAmount = W2FoVal
+                If W3Val.IsEnabled = False Then W3Val.SetAmount = W3FoVal
+                If W4Val.IsEnabled = False Then W4Val.SetAmount = W4FoVal
+                If W5Val.Visibility = Visibility.Visible And W5Val.IsEnabled = False Then W5Val.SetAmount = W5FoVal
+        End Select
+    End Sub
+
     Public Function Save(SaveType) As Boolean
         Dim SaveOkay As Boolean
         '// SaveType only influences the value saved to the status field; the status bar is updated via the Fcastpage that calls this routine
@@ -382,12 +440,27 @@
         BudgetContent = CalculateBudget
     End Sub
 
+    Private Sub LoadFlash()
+        Dim w1 = LoadSingleWeekAndUnitFlash(GroupCategory, UnitChooseObject.CurrentUnit, CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, 1)
+        W1FlVal = w1.fv
+        Dim w2 = LoadSingleWeekAndUnitFlash(GroupCategory, UnitChooseObject.CurrentUnit, CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, 2)
+        W2FlVal = w2.fv
+        Dim w3 = LoadSingleWeekAndUnitFlash(GroupCategory, UnitChooseObject.CurrentUnit, CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, 3)
+        W3FlVal = w3.fv
+        Dim w4 = LoadSingleWeekAndUnitFlash(GroupCategory, UnitChooseObject.CurrentUnit, CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, 4)
+        W4FlVal = w4.fv
+        If W5Val.Visibility = Visibility.Visible Then
+            Dim w5 = LoadSingleWeekAndUnitFlash(GroupCategory, UnitChooseObject.CurrentUnit, CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, 5)
+            W5FlVal = w5.fv
+        End If
+    End Sub
+
     Private Sub LoadForecast()
-        W1Val.SetAmount = LoadSingleWeekAndUnitForecast(GroupCategory, UnitChooseObject.CurrentUnit, CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, 1)
-        W2Val.SetAmount = LoadSingleWeekAndUnitForecast(GroupCategory, UnitChooseObject.CurrentUnit, CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, 2)
-        W3Val.SetAmount = LoadSingleWeekAndUnitForecast(GroupCategory, UnitChooseObject.CurrentUnit, CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, 3)
-        W4Val.SetAmount = LoadSingleWeekAndUnitForecast(GroupCategory, UnitChooseObject.CurrentUnit, CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, 4)
-        If W5Val.Visibility = Visibility.Visible Then W5Val.SetAmount = LoadSingleWeekAndUnitForecast(GroupCategory, UnitChooseObject.CurrentUnit, CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, 5)
+        W1FoVal = LoadSingleWeekAndUnitForecast(GroupCategory, UnitChooseObject.CurrentUnit, CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, 1)
+        W2FoVal = LoadSingleWeekAndUnitForecast(GroupCategory, UnitChooseObject.CurrentUnit, CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, 2)
+        W3FoVal = LoadSingleWeekAndUnitForecast(GroupCategory, UnitChooseObject.CurrentUnit, CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, 3)
+        W4FoVal = LoadSingleWeekAndUnitForecast(GroupCategory, UnitChooseObject.CurrentUnit, CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, 4)
+        If W5Val.Visibility = Visibility.Visible Then W5FoVal = LoadSingleWeekAndUnitForecast(GroupCategory, UnitChooseObject.CurrentUnit, CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, 5)
     End Sub
 
     Private Sub UpdateSubtotals()
@@ -511,82 +584,167 @@
         Select Case openwk
             Case 0
                 W1Val.IsEnabled = True
+                W1Val.SetAmount = W1FoVal
                 W2Val.IsEnabled = True
+                W2Val.SetAmount = W2FoVal
                 W3Val.IsEnabled = True
+                W3Val.SetAmount = W3FoVal
                 W4Val.IsEnabled = True
-                If W5Val.Visibility = Visibility.Visible Then W5Val.IsEnabled = True
+                W4Val.SetAmount = W4FoVal
+                If W5Val.Visibility = Visibility.Visible Then
+                    W5Val.IsEnabled = True
+                    W5Val.SetAmount = W5FoVal
+                End If
             Case 1
                 W1Val.IsEnabled = False
+                If W1FlVal <> 0 Then
+                    W1Val.SetAmount = W1FlVal
+                Else
+                    W1Val.SetAmount = W1FoVal
+                End If
+
                 W2Val.IsEnabled = True
+                W2Val.SetAmount = W2FoVal
+
                 W3Val.IsEnabled = True
+                W3Val.SetAmount = W3FoVal
+
                 W4Val.IsEnabled = True
-                If W5Val.Visibility = Visibility.Visible Then W5Val.IsEnabled = True
+                W4Val.SetAmount = W4FoVal
+
+                If W5Val.Visibility = Visibility.Visible Then
+                    W5Val.IsEnabled = True
+                    W5Val.SetAmount = W5FoVal
+                End If
             Case 2
                 W1Val.IsEnabled = False
+                If W1FlVal <> 0 Then
+                    W1Val.SetAmount = W1FlVal
+                Else
+                    W1Val.SetAmount = W1FoVal
+                End If
+
                 W2Val.IsEnabled = False
+                If W2FlVal <> 0 Then
+                    W2Val.SetAmount = W2FlVal
+                Else
+                    W2Val.SetAmount = W1FoVal
+                End If
+
                 W3Val.IsEnabled = True
+                W3Val.SetAmount = W3FoVal
+
                 W4Val.IsEnabled = True
-                If W5Val.Visibility = Visibility.Visible Then W5Val.IsEnabled = True
+                W4Val.SetAmount = W4FoVal
+
+                If W5Val.Visibility = Visibility.Visible Then
+                    W5Val.IsEnabled = True
+                    W5Val.SetAmount = W5FoVal
+                End If
             Case 3
                 W1Val.IsEnabled = False
+                If W1FlVal <> 0 Then
+                    W1Val.SetAmount = W1FlVal
+                Else
+                    W1Val.SetAmount = W1FoVal
+                End If
+
                 W2Val.IsEnabled = False
+                If W2FlVal <> 0 Then
+                    W2Val.SetAmount = W2FlVal
+                Else
+                    W2Val.SetAmount = W1FoVal
+                End If
+
                 W3Val.IsEnabled = False
+                If W3FlVal <> 0 Then
+                    W3Val.SetAmount = W3FlVal
+                Else
+                    W3Val.SetAmount = W3FoVal
+                End If
+
                 W4Val.IsEnabled = True
-                If W5Val.Visibility = Visibility.Visible Then W5Val.IsEnabled = True
+                W4Val.SetAmount = W4FoVal
+
+                If W5Val.Visibility = Visibility.Visible Then
+                    W5Val.IsEnabled = True
+                    W5Val.SetAmount = W5FoVal
+                End If
             Case 4
                 W1Val.IsEnabled = False
+                If W1FlVal <> 0 Then
+                    W1Val.SetAmount = W1FlVal
+                Else
+                    W1Val.SetAmount = W1FoVal
+                End If
+
                 W2Val.IsEnabled = False
+                If W2FlVal <> 0 Then
+                    W2Val.SetAmount = W2FlVal
+                Else
+                    W2Val.SetAmount = W1FoVal
+                End If
+
                 W3Val.IsEnabled = False
+                If W3FlVal <> 0 Then
+                    W3Val.SetAmount = W3FlVal
+                Else
+                    W3Val.SetAmount = W3FoVal
+                End If
+
                 W4Val.IsEnabled = False
-                If W5Val.Visibility = Visibility.Visible Then W5Val.IsEnabled = True
+                If W4FlVal <> 0 Then
+                    W4Val.SetAmount = W4FlVal
+                Else
+                    W4Val.SetAmount = W4FoVal
+                End If
+
+                If W5Val.Visibility = Visibility.Visible Then
+                    W5Val.IsEnabled = True
+                    W5Val.SetAmount = W5FoVal
+                End If
             Case 5
                 W1Val.IsEnabled = False
+                If W1FlVal <> 0 Then
+                    W1Val.SetAmount = W1FlVal
+                Else
+                    W1Val.SetAmount = W1FoVal
+                End If
+
                 W2Val.IsEnabled = False
+                If W2FlVal <> 0 Then
+                    W2Val.SetAmount = W2FlVal
+                Else
+                    W2Val.SetAmount = W1FoVal
+                End If
+
                 W3Val.IsEnabled = False
+                If W3FlVal <> 0 Then
+                    W3Val.SetAmount = W3FlVal
+                Else
+                    W3Val.SetAmount = W3FoVal
+                End If
+
                 W4Val.IsEnabled = False
+                If W4FlVal <> 0 Then
+                    W4Val.SetAmount = W4FlVal
+                Else
+                    W4Val.SetAmount = W4FoVal
+                End If
+
                 W5Val.IsEnabled = False
+                If W5FlVal <> 0 Then
+                    W5Val.SetAmount = W5FlVal
+                Else
+                    W5Val.SetAmount = W5FoVal
+                End If
+
         End Select
     End Sub
 
 #End Region
 
 #Region "Event Listeners"
-    Private Sub PeriodChanged()
-        If FcastPage.SaveStatus = 0 Then
-            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
-                                                18,,,, "Discard unsaved changes?")
-            amsg.ShowDialog()
-            If amsg.ReturnResult = "No" Then
-                FcastPage.SaveStatus = 1
-                PeriodChooseObject.CurrentPeriod = PeriodChooseObject.HeldPeriod
-                amsg.Close()
-                Exit Sub
-            Else
-                amsg.Close()
-            End If
-        End If
-        Load()
-        Update(Me)
-    End Sub
-
-    Private Sub UnitChanged()
-        If FcastPage.SaveStatus = 0 Then
-            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
-                                                18,,,, "Discard unsaved changes?")
-            amsg.ShowDialog()
-            If amsg.ReturnResult = "No" Then
-                FcastPage.SaveStatus = 1
-                UnitChooseObject.CurrentUnit = UnitChooseObject.HeldUnit
-                amsg.Close()
-                Exit Sub
-            Else
-                amsg.Close()
-            End If
-        End If
-        Load()
-        Update(Me)
-    End Sub
-
     Private Sub ForecastChanged()
         Update(Me)
         UpdateSubtotals()

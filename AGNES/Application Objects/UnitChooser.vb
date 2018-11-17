@@ -6,7 +6,7 @@ Public Class UnitChooser
 
 #Region "Properties"
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
-
+    Public SystemChange As Boolean
     Private Week As WeekChooser
 
     Public Property HeldUnit As Long

@@ -1,7 +1,8 @@
 ﻿Imports System.ComponentModel
-'TODO: GLITCH WHEN OPENING DRAFT FLASH - UNABLE TO RESAVE (STATUSSAVE?)  ISSUE WAS WITH FARGO P5W1
-'TODO: BUG ON MULTIPLE UNIT FLASHES - WHEN FLIPPING TO NEW UNIT WITH UNSAVED DATA, OPTING TO **NOT** DISCARD THE INFORMATION
-'      STILL DISCARDS IT
+'WATCH: GLITCH WHEN OPENING DRAFT FLASH - UNABLE TO RESAVE (STATUSSAVE?)  ISSUE WAS WITH FARGO P5W1 - COULD NOT REPLICATE 11/17/18
+
+'CRITICAL: BUG WITH DISCARDING DURING MOVE TO ANOTHER PERIOD - WEEK EVENT GETS THROWN TWICE (SAVE STATUS BEING RESET TOO EARLY)
+
 Public Class Flash
 
 #Region "Properties"
@@ -89,7 +90,10 @@ Public Class Flash
         Dim currmsp As Byte = GetCurrentPeriod(FormatDateTime(Now(), DateFormat.ShortDate))
         Dim currwk As Byte = GetCurrentWeek(FormatDateTime(Now(), DateFormat.ShortDate))
         Wk = New WeekChooser(1, currwk, currwk)
+        AddHandler Wk.PropertyChanged, AddressOf WeekChanged
+
         MSP = New PeriodChooser(Wk, 1, currmsp, currmsp)
+        AddHandler MSP.PropertyChanged, AddressOf PeriodChanged
         MSP.DisableSelectAll = False
 
         Select Case FT
@@ -411,6 +415,8 @@ Public Class Flash
 #End Region
         End Select
 
+        AddHandler Units.PropertyChanged, AddressOf UnitChanged
+
         For Each fg As FlashGroup In grdFlashGroups.Children
             fg.Load()
             If fg.GroupIsSubTotal = True Then fg.Update(fg)
@@ -524,4 +530,92 @@ Public Class Flash
 
 #End Region
 
+#Region "Event Listeners"
+    Private Sub PeriodChanged()
+        If SaveStatus = 0 And MSP.SystemChange = False Then
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
+                                                18,,,, "Discard unsaved changes? [Period]")
+            amsg.ShowDialog()
+            If amsg.ReturnResult = "No" Then
+                Dim TempWkHold As Byte = Wk.CurrentWeek
+                MSP.SystemChange = True
+                Wk.PeriodChange = True
+                MSP.CurrentPeriod = MSP.HeldPeriod
+                Wk.CurrentWeek = TempWkHold
+                Wk.HeldWeek = TempWkHold
+                amsg.Close()
+                MsgBox("Done (killed)!")
+                Exit Sub
+            Else
+                amsg.Close()
+            End If
+        End If
+
+        If MSP.SystemChange = True Then
+            MSP.SystemChange = False
+        Else
+            SaveStatus = 2
+            For Each fg As FlashGroup In grdFlashGroups.Children
+                fg.Load()
+                If fg.GroupIsSubTotal = True Then fg.Update(fg)
+            Next
+        End If
+        MsgBox("Done!")
+
+    End Sub
+
+    Private Sub WeekChanged()
+        If SaveStatus = 0 And Wk.SystemChange = False Then
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
+                                                18,,,, "Discard unsaved changes? [Week]")
+            amsg.ShowDialog()
+            If amsg.ReturnResult = "No" Then
+                Wk.SystemChange = True
+                Wk.CurrentWeek = Wk.HeldWeek
+                amsg.Close()
+                Exit Sub
+            Else
+                amsg.Close()
+            End If
+        End If
+
+        If Wk.SystemChange = True Then
+            Wk.SystemChange = False
+        Else
+            SaveStatus = 2
+            For Each fg As FlashGroup In grdFlashGroups.Children
+                fg.Load()
+                If fg.GroupIsSubTotal = True Then fg.Update(fg)
+            Next
+        End If
+    End Sub
+
+    Private Sub UnitChanged()
+        If SaveStatus = 0 And Units.SystemChange = False Then
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
+                                                18,,,, "Discard unsaved changes?")
+            amsg.ShowDialog()
+            If amsg.ReturnResult = "No" Then
+                Units.SystemChange = True
+                Units.CurrentUnit = Units.HeldUnit
+                amsg.Close()
+                Exit Sub
+            Else
+                amsg.Close()
+            End If
+        End If
+
+        If Units.SystemChange = True Then
+            Units.SystemChange = False
+        Else
+            SaveStatus = 2
+            For Each fg As FlashGroup In grdFlashGroups.Children
+                fg.Load()
+                If fg.GroupIsSubTotal = True Then fg.Update(fg)
+            Next
+
+        End If
+    End Sub
+
+#End Region
 End Class
