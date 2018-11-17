@@ -1,8 +1,6 @@
 ﻿Imports System.ComponentModel
 'WATCH: GLITCH WHEN OPENING DRAFT FLASH - UNABLE TO RESAVE (STATUSSAVE?)  ISSUE WAS WITH FARGO P5W1 - COULD NOT REPLICATE 11/17/18
 
-'CRITICAL: BUG WITH DISCARDING DURING MOVE TO ANOTHER PERIOD - WEEK EVENT GETS THROWN TWICE (SAVE STATUS BEING RESET TOO EARLY)
-
 Public Class Flash
 
 #Region "Properties"
@@ -541,10 +539,7 @@ Public Class Flash
                 MSP.SystemChange = True
                 Wk.PeriodChange = True
                 MSP.CurrentPeriod = MSP.HeldPeriod
-                Wk.CurrentWeek = TempWkHold
-                Wk.HeldWeek = TempWkHold
                 amsg.Close()
-                MsgBox("Done (killed)!")
                 Exit Sub
             Else
                 amsg.Close()
@@ -553,6 +548,7 @@ Public Class Flash
 
         If MSP.SystemChange = True Then
             MSP.SystemChange = False
+            Wk.SystemChange = True
         Else
             SaveStatus = 2
             For Each fg As FlashGroup In grdFlashGroups.Children
@@ -560,8 +556,6 @@ Public Class Flash
                 If fg.GroupIsSubTotal = True Then fg.Update(fg)
             Next
         End If
-        MsgBox("Done!")
-
     End Sub
 
     Private Sub WeekChanged()
@@ -618,4 +612,5 @@ Public Class Flash
     End Sub
 
 #End Region
+
 End Class

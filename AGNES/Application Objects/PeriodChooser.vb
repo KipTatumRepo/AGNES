@@ -40,6 +40,7 @@ Public Class PeriodChooser
             RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(“Period”))
         End Set
     End Property
+
 #End Region
 
 #Region "Constructor"
