@@ -1,8 +1,6 @@
 ﻿Imports System.ComponentModel
 'WATCH: GLITCH WHEN OPENING DRAFT FLASH - UNABLE TO RESAVE (STATUSSAVE?)  ISSUE WAS WITH FARGO P5W1 - COULD NOT REPLICATE 11/17/18
 
-'CRITICAL: BUG WITH DISCARDING DURING MOVE TO ANOTHER PERIOD - WEEK EVENT GETS THROWN TWICE (SAVE STATUS BEING RESET TOO EARLY)
-
 Public Class Flash
 
 #Region "Properties"
@@ -281,7 +279,7 @@ Public Class Flash
 #Region "Beverage"
             Case 5      ' Beverage Flash
                 Title = "Beverage Weekly Financial Flash"
-                Height = 510
+                Height = 560
 
                 AvailableUnits = New UnitGroup With {.Summoner = 0, .UnitGroupName = "BV"}
 
@@ -309,11 +307,11 @@ Public Class Flash
                 '// Add flash-specific flashgroups (categories)
                 SalesGroup = New FlashGroup(MSP, Wk, Units, "Sales", False, 0, True, False, True, False, False) With {.SpreadByWeeks = True}
                 SalesTaxGroup = New FlashGroup(MSP, Wk, Units, "Sales Tax", False, 47, False, False, True, False, False) With {.SpreadByWeeks = True}
-                CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", True, 94, False, False, True, False, False) With {.SalesFlashGroup = TotalSalesGroup, .SpreadByWeeks = True}
-                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", True, 141, True, False, True, False, False) With {.SalesFlashGroup = TotalSalesGroup, .SpreadByWeeks = True}
-                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", True, 188, False, False, True, False, False) With {.SalesFlashGroup = TotalSalesGroup, .SpreadByWeeks = True}
-                FeesGroup = New FlashGroup(MSP, Wk, Units, "Fees", True, 235, True, False, True, False, False) With {.SalesFlashGroup = TotalSalesGroup, .SpreadByWeeks = True}
-                SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", True, 282, True, True, True, False, False, New List(Of FlashGroup) From {SalesGroup, SalesTaxGroup, CogsGroup, LaborGroup, OpexGroup, FeesGroup}) With {.SalesFlashGroup = TotalSalesGroup}
+                CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", False, 141, False, False, True, False, False) With {.SpreadByWeeks = True}
+                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", False, 188, True, False, True, False, False) With {.SpreadByWeeks = True}
+                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", False, 235, False, False, True, False, False) With {.SpreadByWeeks = True}
+                FeesGroup = New FlashGroup(MSP, Wk, Units, "Fees", False, 282, True, False, True, False, False) With {.SpreadByWeeks = True}
+                SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", False, 329, True, True, True, False, False, New List(Of FlashGroup) From {SalesGroup, SalesTaxGroup, CogsGroup, LaborGroup, OpexGroup, FeesGroup})
 
                 With grdFlashGroups.Children
                     .Add(SalesGroup)
@@ -321,7 +319,6 @@ Public Class Flash
                     .Add(CogsGroup)
                     .Add(LaborGroup)
                     .Add(OpexGroup)
-                    '.Add(DemoGroup)
                     .Add(FeesGroup)
                     .Add(SubsidyGroup)
                 End With
@@ -329,6 +326,44 @@ Public Class Flash
 
 #Region "Catering"
             Case 6      ' Catering Flash
+                Title = "Catering Weekly Financial Flash - Unit " & FU
+                Height = 420
+                AvailableUnits = New UnitGroup With {.Summoner = 0, .UnitGroupName = "Catering"}
+
+                '// Add Unit and/or Subunits
+                Dim qsu = From su In AGNESShared.UnitsSubunits
+                          Where su.UnitNumber = FU
+                          Select su
+
+                If qsu.Count > 0 Then
+                    For Each su In qsu
+                        Dim subunit As New UnitFlash With {.FlashType = AvailableUnits.UnitGroupName, .UnitNumber = su.SubUnitNumber}
+                        AvailableUnits.UnitsInGroup.Add(subunit)
+                        tlbUnits.Visibility = Visibility.Visible
+                    Next
+                Else
+                    Dim FlashUnit As New UnitFlash With {.FlashType = AvailableUnits.UnitGroupName, .UnitNumber = FU}
+                    AvailableUnits.UnitsInGroup.Add(FlashUnit)
+                    tlbUnits.Visibility = Visibility.Hidden
+                    grdColumnLabels.Margin = New Thickness(0, 42, 0, 0)
+                    grdFlashGroups.Margin = New Thickness(0, 74, 0, 0)
+                End If
+                Units = New UnitChooser(AvailableUnits)
+                If qsu.Count > 0 Then Units.AllowMultiSelect = True
+
+                '// Add flash-specific flashgroups (categories)
+                SalesGroup = New FlashGroup(MSP, Wk, Units, "Total Sales", False, 0, True, False, True, True, False) With {.SpreadByWeeks = True} ' Increments of 47 for flashgroup spacing 
+                CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", True, 47, False, False, True, False, True) With {.SpreadByWeeks = True, .SalesFlashGroup = SalesGroup}
+                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", True, 94, True, False, True, False, True) With {.SpreadByWeeks = True, .SalesFlashGroup = SalesGroup}
+                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", True, 141, False, False, True, False, True) With {.SpreadByWeeks = True, .SalesFlashGroup = SalesGroup}
+                SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", True, 188, True, True, True, False, False, New List(Of FlashGroup) From {SalesGroup, CogsGroup, LaborGroup, OpexGroup}) With {.SalesFlashGroup = SalesGroup}
+                With grdFlashGroups.Children
+                    .Add(SalesGroup)
+                    .Add(CogsGroup)
+                    .Add(LaborGroup)
+                    .Add(OpexGroup)
+                    .Add(SubsidyGroup)
+                End With
 #End Region
 
 #Region "Overhead"
@@ -374,7 +409,7 @@ Public Class Flash
 #Region "Eventions"
             Case 8
                 Title = "Eventions Weekly Financial Flash"
-                Height = 369
+                Height = 460
                 AvailableUnits = New UnitGroup With {.Summoner = 0, .UnitGroupName = "Eventions"}
 
                 '// Add Unit and/or Subunits
@@ -400,13 +435,16 @@ Public Class Flash
 
                 '// Add flash-specific flashgroups (categories)
                 SalesGroup = New FlashGroup(MSP, Wk, Units, "Total Sales", False, 0, True, False, True, False, False) With {.SpreadByWeeks = True}
-                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", False, 47, False, False, True, False, False) With {.SpreadByWeeks = True}
-                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", False, 94, True, False, True, False, False) With {.SpreadByWeeks = True}
-                FeesGroup = New FlashGroup(MSP, Wk, Units, "Fees", False, 141, False, False, True, False, False) With {.SpreadByWeeks = True}
-                SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", True, 188, True, True, True, False, False, New List(Of FlashGroup) From {SalesGroup, LaborGroup, OpexGroup, FeesGroup})
+                CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", False, 47, False, False, True, False, False) With {.SpreadByWeeks = True, .SalesFlashGroup = SalesGroup}
+                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", False, 94, False, False, True, False, False) With {.SpreadByWeeks = True, .SalesFlashGroup = SalesGroup}
+                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", False, 141, True, False, True, False, False) With {.SpreadByWeeks = True, .SalesFlashGroup = SalesGroup}
+                FeesGroup = New FlashGroup(MSP, Wk, Units, "Fees", False, 188, False, False, True, False, False) With {.SpreadByWeeks = True, .SalesFlashGroup = SalesGroup}
+                SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", False, 235, True, True, True, False, False, New List(Of FlashGroup) From {SalesGroup, CogsGroup, LaborGroup, OpexGroup, FeesGroup}) With {.SalesFlashGroup = SalesGroup}
+
 
                 With grdFlashGroups.Children
                     .Add(SalesGroup)
+                    .Add(CogsGroup)
                     .Add(LaborGroup)
                     .Add(OpexGroup)
                     .Add(FeesGroup)
@@ -534,17 +572,14 @@ Public Class Flash
     Private Sub PeriodChanged()
         If SaveStatus = 0 And MSP.SystemChange = False Then
             Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
-                                                18,,,, "Discard unsaved changes? [Period]")
+                                                18,,,, "Discard unsaved changes?")
             amsg.ShowDialog()
             If amsg.ReturnResult = "No" Then
                 Dim TempWkHold As Byte = Wk.CurrentWeek
                 MSP.SystemChange = True
                 Wk.PeriodChange = True
                 MSP.CurrentPeriod = MSP.HeldPeriod
-                Wk.CurrentWeek = TempWkHold
-                Wk.HeldWeek = TempWkHold
                 amsg.Close()
-                MsgBox("Done (killed)!")
                 Exit Sub
             Else
                 amsg.Close()
@@ -553,6 +588,7 @@ Public Class Flash
 
         If MSP.SystemChange = True Then
             MSP.SystemChange = False
+            Wk.SystemChange = True
         Else
             SaveStatus = 2
             For Each fg As FlashGroup In grdFlashGroups.Children
@@ -560,14 +596,12 @@ Public Class Flash
                 If fg.GroupIsSubTotal = True Then fg.Update(fg)
             Next
         End If
-        MsgBox("Done!")
-
     End Sub
 
     Private Sub WeekChanged()
         If SaveStatus = 0 And Wk.SystemChange = False Then
             Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
-                                                18,,,, "Discard unsaved changes? [Week]")
+                                                18,,,, "Discard unsaved changes?")
             amsg.ShowDialog()
             If amsg.ReturnResult = "No" Then
                 Wk.SystemChange = True
@@ -618,4 +652,5 @@ Public Class Flash
     End Sub
 
 #End Region
+
 End Class

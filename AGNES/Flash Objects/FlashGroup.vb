@@ -448,10 +448,18 @@
                 .GLCategory = GroupCategory
                 .FlashValue = FlashVal.SetAmount
                 .FlashNotes = tb.Text
-                .OpDaysWeek = getweekoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, WeekChooseObject.CurrentWeek)
-                .OpDaysPeriod = getperiodoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod)
                 .SavedBy = My.Settings.UserName
             End With
+            If SpreadByWeeks = False Then
+                nf.OpDaysWeek = getweekoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, WeekChooseObject.CurrentWeek)
+                nf.OpDaysPeriod = getperiodoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod)
+            Else
+                Dim tempopdays = 4
+                If getperiodoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod) > 20 Then tempopdays = 5
+                nf.OpDaysWeek = 1
+                nf.OpDaysPeriod = tempopdays
+            End If
+
             If FlashPage.imgEscalate.Tag = "On" Then
                 nf.Alert = True
             Else
@@ -487,10 +495,20 @@
                 .Status = SaveType
                 .FlashValue = FlashVal.SetAmount
                 .FlashNotes = tb.Text
-                .OpDaysWeek = getweekoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, WeekChooseObject.CurrentWeek)
-                .OpDaysPeriod = getperiodoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod)
                 .SavedBy = My.Settings.UserName
             End With
+
+            If SpreadByWeeks = False Then
+                uf.OpDaysWeek = getweekoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, WeekChooseObject.CurrentWeek)
+                uf.OpDaysPeriod = getperiodoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod)
+            Else
+                Dim tempopdays = 4
+                If getperiodoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod) > 20 Then tempopdays = 5
+                uf.OpDaysWeek = 1
+                uf.OpDaysPeriod = tempopdays
+            End If
+
+
             If FlashPage.imgEscalate.Tag = "On" Then
                 uf.Alert = True
             Else

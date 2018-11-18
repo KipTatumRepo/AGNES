@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+'INFRASTRUCTURE: BUILD MAX VENDOR SLOTS INTO DATABASE
 Public Class ScheduleVendor
     Inherits Border
 
@@ -23,7 +24,7 @@ Public Class ScheduleVendor
         Set(value As Byte)
             _usedslots = value
             Visibility = Visibility.Visible
-            SlotsText.Text = "Max schedule: " & (3 - UsedSlots) & "/" & MaxSlots 'TODO: BUILD MAX VENDOR SLOTS INTO DATABASE
+            SlotsText.Text = "Max schedule: " & (3 - UsedSlots) & "/" & MaxSlots
             If value = MaxSlots Then Visibility = Visibility.Collapsed
         End Set
     End Property
