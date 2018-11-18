@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGNES"
         mc:Ignorable="d"
-        Title="HRAudit" Height="450" Width="960">
-
+        Title="HRAudit" Height="450" Width="960" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Icon="/AGNES;component/Resources/Audit.png">
+    <Window.Effect>
+        <DropShadowEffect Opacity="0.7" BlurRadius="14" ShadowDepth="6" Direction="240"/>
+    </Window.Effect>
     <Grid x:Name="grdMain">
     </Grid>
 </Window>

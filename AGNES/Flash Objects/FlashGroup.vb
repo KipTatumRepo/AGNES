@@ -1,5 +1,7 @@
 ﻿Public Class FlashGroup
     Inherits DockPanel
+    'REFRESH: REPLACE TEXTBOXES WITH PERCENTAGE BOXES
+    'REFRESH: REPLACE REFERENCED WEEK, PERIOD, AND UNIT CHOOSERS WITH ACTUALS BOUND TO XAML PAGES
 
 #Region "Properties"
     Public GroupCategory As String
@@ -187,13 +189,8 @@
         End If
 
         WeekChooseObject = WC
-        AddHandler WeekChooseObject.PropertyChanged, AddressOf WeekChanged
-
         PeriodChooseObject = PC
-        AddHandler PeriodChooseObject.PropertyChanged, AddressOf PeriodChanged
-
         UnitChooseObject = UC
-        AddHandler UnitChooseObject.PropertyChanged, AddressOf UnitChanged
 
         AddHandler FlashVal.PropertyChanged, AddressOf FlashChanged
     End Sub
@@ -337,7 +334,7 @@
     End Sub
 
     Private Sub LoadFlash()
-        'TODO: REFACTOR FLASH LOAD ROUTINES
+        'REFRESH: REFACTOR FLASH LOAD ROUTINES
         IsEnabled = True
         Dim CurrVal As Double = 0, WeekCount As Byte, UnitCount As Byte
         Dim unitbrd As Border, weekbrd As Border, unittb As TextBlock, weektb As TextBlock, tmpsavestatus As Byte, notestb As TextBox = Notes.Content
@@ -404,7 +401,7 @@
         CalculateFlash += CurrVal
         FlashContent = CalculateFlash
         Dim tb As TextBox = Notes.Content
-        If tb.Text = "" Then tb.Text = SharedFunctions.FlashNotes
+        If tb.Text = "" Then tb.Text = BaseModule.FlashNotes
     End Sub
 
     Private Sub LoadForecast()
@@ -451,10 +448,18 @@
                 .GLCategory = GroupCategory
                 .FlashValue = FlashVal.SetAmount
                 .FlashNotes = tb.Text
-                .OpDaysWeek = getweekoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, WeekChooseObject.CurrentWeek)
-                .OpDaysPeriod = getperiodoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod)
                 .SavedBy = My.Settings.UserName
             End With
+            If SpreadByWeeks = False Then
+                nf.OpDaysWeek = getweekoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, WeekChooseObject.CurrentWeek)
+                nf.OpDaysPeriod = getperiodoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod)
+            Else
+                Dim tempopdays = 4
+                If getperiodoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod) > 20 Then tempopdays = 5
+                nf.OpDaysWeek = 1
+                nf.OpDaysPeriod = tempopdays
+            End If
+
             If FlashPage.imgEscalate.Tag = "On" Then
                 nf.Alert = True
             Else
@@ -490,10 +495,20 @@
                 .Status = SaveType
                 .FlashValue = FlashVal.SetAmount
                 .FlashNotes = tb.Text
-                .OpDaysWeek = getweekoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, WeekChooseObject.CurrentWeek)
-                .OpDaysPeriod = getperiodoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod)
                 .SavedBy = My.Settings.UserName
             End With
+
+            If SpreadByWeeks = False Then
+                uf.OpDaysWeek = getweekoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, WeekChooseObject.CurrentWeek)
+                uf.OpDaysPeriod = getperiodoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod)
+            Else
+                Dim tempopdays = 4
+                If getperiodoperatingdays(CurrentFiscalYear, PeriodChooseObject.CurrentPeriod) > 20 Then tempopdays = 5
+                uf.OpDaysWeek = 1
+                uf.OpDaysPeriod = tempopdays
+            End If
+
+
             If FlashPage.imgEscalate.Tag = "On" Then
                 uf.Alert = True
             Else
@@ -557,64 +572,6 @@
 #End Region
 
 #Region "Event Listeners"
-    Private Sub PeriodChanged()
-        If FlashPage.SaveStatus = 0 Then
-            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
-                                                18,,,, "Discard unsaved changes?")
-            amsg.ShowDialog()
-            If amsg.ReturnResult = "No" Then
-                Dim TempWkHold As Byte = WeekChooseObject.CurrentWeek
-                FlashPage.SaveStatus = 2
-                PeriodChooseObject.CurrentPeriod = PeriodChooseObject.HeldPeriod
-                WeekChooseObject.CurrentWeek = TempWkHold
-                WeekChooseObject.HeldWeek = TempWkHold
-                amsg.Close()
-                Exit Sub
-            Else
-                amsg.Close()
-            End If
-        End If
-        Load()
-        Update(Me)
-    End Sub
-
-    Private Sub WeekChanged()
-        If FlashPage.SaveStatus = 0 Then
-            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
-                                                18,,,, "Discard unsaved changes?")
-            amsg.ShowDialog()
-            If amsg.ReturnResult = "No" Then
-                FlashPage.SaveStatus = 2
-                WeekChooseObject.CurrentWeek = WeekChooseObject.HeldWeek
-                amsg.Close()
-                Exit Sub
-            Else
-                amsg.Close()
-            End If
-
-        End If
-        Load()
-        Update(Me)
-    End Sub
-
-    Private Sub UnitChanged()
-        If FlashPage.SaveStatus = 0 Then
-            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.BottomOnly, AgnesMessageBox.MsgBoxType.YesNo,
-                                                18,,,, "Discard unsaved changes?")
-            amsg.ShowDialog()
-            If amsg.ReturnResult = "No" Then
-                FlashPage.SaveStatus = 2
-                UnitChooseObject.CurrentUnit = UnitChooseObject.HeldUnit
-                amsg.Close()
-                Exit Sub
-            Else
-                amsg.Close()
-            End If
-        End If
-        Load()
-        Update(Me)
-    End Sub
-
     Private Sub FlashChanged()
         Update(Me)
         UpdateSubtotals()

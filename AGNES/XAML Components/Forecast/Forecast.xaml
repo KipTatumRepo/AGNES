@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGNES"
         mc:Ignorable="d"
-        Title="Period Financial Forecast" Height="561" Width="1000" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
+        Title="Period Financial Forecast" Height="561" Width="1000" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Icon="/AGNES;component/Resources/Forecast.png">
     <Window.Effect>
-        <DropShadowEffect Opacity="0.5"/>
+        <DropShadowEffect Opacity="0.7" BlurRadius="14" ShadowDepth="6" Direction="240"/>
     </Window.Effect>
     <Grid x:Name="grdMain">
         <ToolBar x:Name="tlbFcast" Height="41" VerticalAlignment="Top" UseLayoutRounding="False">
@@ -25,6 +25,8 @@
             <Separator />
             <Image x:Name="imgUnlock" Source="/AGNES;component/Resources/unlocked.png" ToolTip="Unlock All Weeks" />
             <Separator x:Name="sepUnlock" />
+            <Image x:Name="imgToggle" Height="36" VerticalAlignment="Top" Width="45" Source="/AGNES;component/Resources/DblArrow.png" Stretch="Fill" ToolTip="Show Forecast in Locked Weeks" Tag="FL"/>
+            <Separator />
         </ToolBar>
         <ToolBar x:Name="tlbUnits" Height="41" VerticalAlignment="Top" UseLayoutRounding="False" Margin="0,38.896,0,0"/>
         <Grid x:Name="grdColumnLabels" Margin="0,87,0,0" Height="27" VerticalAlignment="Top">

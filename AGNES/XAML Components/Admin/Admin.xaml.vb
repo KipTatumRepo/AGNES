@@ -2,6 +2,8 @@
 Imports System.Linq
 Public Class Admin
 
+    'TODO: MODULE DELETE FUNCTION NOT WORKING CORRECTLY
+
 #Region "Properties"
     Private RecordExists As Boolean
     Private UserId As Long
@@ -293,6 +295,7 @@ Public Class Admin
         cbxFlashType.Text = ""
         LoadModules()
         LoadUnits()
+        lbxAvailableModules.IsEnabled = True
     End Sub
 
     Private Sub ValidateInfo()

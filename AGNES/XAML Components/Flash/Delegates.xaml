@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGNES"
         mc:Ignorable="d"
-        Title="Delegate Manager" Height="445" Width="355" Background="OldLace" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="Delegate Manager" Height="445" Width="355" Background="OldLace" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="/AGNES;component/Resources/Delegates.png">
+    <Window.Effect>
+        <DropShadowEffect Opacity="0.7" BlurRadius="14" ShadowDepth="6" Direction="240"/>
+    </Window.Effect>
     <Grid>
         <ListBox x:Name="lbxAvailable" TabIndex="0" HorizontalAlignment="Left" Height="195" Margin="10,169,0,0" VerticalAlignment="Top" Width="156"/>
         <ListBox x:Name="lbxDelegates" TabIndex="1" HorizontalAlignment="Left" Height="195" Margin="174,169,0,0" VerticalAlignment="Top" Width="156"/>

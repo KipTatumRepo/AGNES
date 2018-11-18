@@ -1,23 +1,28 @@
 ﻿Module WCRModule
-    Public WCR As New WCRObject
+    Public WCRStartPage As WCRHello
+    Public WCR As WCRObject
     Public WCRE As WCREntities
+    Public WCRCamPage As WCRCam
+    Public WCRFinalPage As WCRFinal
     Public UserClosed As Boolean
+    'REFRESH: REFACTOR WCR MODULE TO REFLECT CLEARER ENTITY MODELING
 
     Public Sub Runmodule()
-        Dim WCRStartPage As New WCRHello
+        WCRStartPage = New WCRHello
+        WCR = New WCRObject
         WCRE = New WCREntities
         WCRStartPage.ShowDialog()
         If UserClosed = True Then
             WCR = Nothing
             Exit Sub
         End If
-        Dim WCRCamPage As New WCRCam
+        WCRCamPage = New WCRCam
         WCRCamPage.ShowDialog()
         If UserClosed = True Then
             WCR = Nothing
             Exit Sub
         End If
-        Dim WCRFinalPage As New WCRFinal
+        WCRFinalPage = New WCRFinal
         WCRFinalPage.ShowDialog()
         WCR = Nothing
     End Sub

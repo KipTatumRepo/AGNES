@@ -1,6 +1,6 @@
 ﻿Imports System.ComponentModel
 Imports System.Reflection
-'TODO: CLEAN UP LOCATIONS FILE - SPECIFICALLY, THE FLASH TYPE COLUMN!  MISSING AV UNITS, ETC
+'INFRASTRUCTURE: CLEAN UP LOCATIONS FILE - SPECIFICALLY, THE FLASH TYPE COLUMN!  MISSING AV UNITS, ETC
 Public Class RadialPortal
 
 #Region "Properties"
@@ -81,6 +81,14 @@ Public Class RadialPortal
             '    .UserID = 10095
             '    .UserLevel = 4
             'End With
+
+            'With My.Settings
+            '    .UserName = "Ian"
+            '    .UserShortName = "Ian"
+            '    .UserID = 10140
+            '    .UserLevel = 4
+            'End With
+
 
             'With My.Settings
             '    .UserName = "Mike Shea"
@@ -260,6 +268,8 @@ Public Class RadialPortal
                 AdminModule.Runmodule()
             Case "Training"
                 TrainingModule.RunModule()
+            Case "Vendor Manager"
+                VendorModule.Runmodule()
         End Select
         Show()
     End Sub

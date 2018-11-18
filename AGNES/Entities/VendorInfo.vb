@@ -15,6 +15,7 @@ Partial Public Class VendorInfo
     Public Property Name As String
     Public Property Invoice As String
     Public Property Supplier As Long
+    Public Property ProductClassId As Nullable(Of Integer)
     Public Property StoreId As Nullable(Of Long)
     Public Property VendorType As Short
     Public Property Active As Boolean

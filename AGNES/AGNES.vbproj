@@ -128,8 +128,32 @@
     <Compile Include="Entities\AssociateShortage.vb">
       <DependentUpon>FlashForecastModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Availability.vb">
+      <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CAMWithholding.vb">
+      <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Contact.vb">
+      <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\FlashAlert.vb">
       <DependentUpon>FlashActualsModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\FoodSubType.vb">
+      <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\FoodType.vb">
+      <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\KPIWithholding.vb">
+      <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ProfitCenter.vb">
+      <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ReceivedCAMCheck.vb">
+      <DependentUpon>VendorModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\SickOtRecord.vb">
       <DependentUpon>FlashActualsModel.tt</DependentUpon>
@@ -143,6 +167,24 @@
     <Compile Include="Entities\TrainingRecord.vb">
       <DependentUpon>TrainingModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\VendorInfo.vb">
+      <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\VendorModel.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VendorModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\VendorModel.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VendorModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\VendorModel.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Flash Objects\StatusItem.vb" />
     <Compile Include="Forecast Objects\CalDayObj.vb" />
     <Compile Include="Forecast Objects\CalWeekObj.vb" />
@@ -151,8 +193,14 @@
     <Compile Include="Forecast Objects\UnitFcast.vb" />
     <Compile Include="Module Orchestrators\FlashStatusModule.vb" />
     <Compile Include="Module Orchestrators\ForecastModule.vb" />
+    <Compile Include="Module Orchestrators\VendorModule.vb" />
     <Compile Include="Training Objects\EmployeeObj.vb" />
     <Compile Include="Training Objects\TrainingGridSource.vb" />
+    <Compile Include="Vendor Objects\ScheduleDay.vb" />
+    <Compile Include="Vendor Objects\ScheduleLocation.vb" />
+    <Compile Include="Vendor Objects\ScheduleVendor.vb" />
+    <Compile Include="Vendor Objects\ScheduleWeek.vb" />
+    <Compile Include="Vendor Objects\VendorInLoc.vb" />
     <Compile Include="XAML Components\Flash\Delegates.xaml.vb">
       <DependentUpon>Delegates.xaml</DependentUpon>
     </Compile>
@@ -211,9 +259,6 @@
     </Compile>
     <Compile Include="Entities\Budgets.vb">
       <DependentUpon>BudgetModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\CAMWithholdings.vb">
-      <DependentUpon>WCRModule.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Communications.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
@@ -335,9 +380,6 @@
     <Compile Include="Entities\Involvements.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\KPIWithholdings.vb">
-      <DependentUpon>WCRModule.tt</DependentUpon>
-    </Compile>
     <Compile Include="Entities\Leaders.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
@@ -364,9 +406,6 @@
     </Compile>
     <Compile Include="Entities\Planners.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\ReceivedCAMChecks.vb">
-      <DependentUpon>WCRModule.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\RefreshEventOrigin.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
@@ -408,7 +447,6 @@
       <DependentUpon>AgnesSharedDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Flash Objects\FlashGroup.vb" />
-    <Compile Include="Flash Objects\SharedFunctions.vb" />
     <Compile Include="Flash Objects\UnitFlash.vb" />
     <Compile Include="Application Objects\UnitGroup.vb" />
     <Compile Include="Module Orchestrators\AdminModule.vb" />
@@ -450,9 +488,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\VendorInfo.vb">
-      <DependentUpon>WCRModule.tt</DependentUpon>
-    </Compile>
     <Compile Include="Entities\WCRModule.Context.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -491,6 +526,9 @@
     </Compile>
     <Compile Include="XAML Components\Training\Training.xaml.vb">
       <DependentUpon>Training.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="XAML Components\Vendor Management\VendorSchedule.xaml.vb">
+      <DependentUpon>VendorSchedule.xaml</DependentUpon>
     </Compile>
     <Compile Include="XAML Components\WCR\WCRCam.xaml.vb">
       <DependentUpon>WCRCam.xaml</DependentUpon>
@@ -559,6 +597,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="XAML Components\Training\Training.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XAML Components\Vendor Management\VendorSchedule.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -666,6 +708,13 @@
     </EntityDeploy>
     <None Include="Entities\TrainingModel.edmx.diagram">
       <DependentUpon>TrainingModel.edmx</DependentUpon>
+    </None>
+    <EntityDeploy Include="Entities\VendorModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>VendorModel.Designer.vb</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Entities\VendorModel.edmx.diagram">
+      <DependentUpon>VendorModel.edmx</DependentUpon>
     </None>
     <None Include="Entities\WCRModule.edmx.diagram">
       <DependentUpon>WCRModule.edmx</DependentUpon>
@@ -816,6 +865,16 @@
       <DependentUpon>TrainingModel.edmx</DependentUpon>
       <LastGenOutput>TrainingModel.vb</LastGenOutput>
     </Content>
+    <Content Include="Entities\VendorModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>VendorModel.edmx</DependentUpon>
+      <LastGenOutput>VendorModel.Context.vb</LastGenOutput>
+    </Content>
+    <Content Include="Entities\VendorModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>VendorModel.edmx</DependentUpon>
+      <LastGenOutput>VendorModel.vb</LastGenOutput>
+    </Content>
     <Content Include="Entities\WCRModule.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>WCRModule.edmx</DependentUpon>
@@ -826,6 +885,10 @@
       <DependentUpon>WCRModule.edmx</DependentUpon>
       <LastGenOutput>WCRModule.vb</LastGenOutput>
     </Content>
+    <Resource Include="Resources\DblArrow.png" />
+    <Resource Include="Resources\LoadPrevious.png" />
+    <Resource Include="Resources\FoodTruck.png" />
+    <Resource Include="Resources\brands.png" />
     <Resource Include="Resources\eye.png" />
     <Resource Include="Resources\Class.png" />
     <Resource Include="Resources\Trainer.png" />
@@ -878,7 +941,6 @@
     <Folder Include="XAML Components\Marketing Suite\" />
     <Folder Include="XAML Components\Menu Engineering\" />
     <Folder Include="XAML Components\QA Suite\" />
-    <Folder Include="XAML Components\Vendor Management\" />
     <Folder Include="XAML Components\Waste\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

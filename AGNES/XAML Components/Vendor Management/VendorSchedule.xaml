@@ -1,0 +1,33 @@
+﻿<Window x:Class="VendorSchedule"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AGNES"
+        mc:Ignorable="d"
+        Title="Vendor Scheduling" Height="800" Width="1280" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" Icon="/AGNES;component/Resources/Vendors.png">
+    <Window.Effect>
+        <DropShadowEffect Opacity="0.7" BlurRadius="14" ShadowDepth="6" Direction="240"/>
+    </Window.Effect>
+
+    <Grid Height="771" VerticalAlignment="Top">
+        <ToolBar x:Name="tlbVendors" HorizontalAlignment="Left" Width="1274" Height="60" VerticalAlignment="Top">
+            <Image Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/LoadPrevious.png" ToolTip="Import Previous Week" Margin="0,5,0,0" />
+            <Image Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/save.png" ToolTip="Save Schedule" Margin="0,5,0,0" />
+            <Separator />
+            <Image Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/brands.png" ToolTip="Show Local Brands" Margin="0,5,0,0" />
+            <Image Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/FoodTruck.png" ToolTip="Show Food Trucks" Margin="0,5,0,0" />
+            <Separator />
+        </ToolBar>
+        <Border BorderBrush="Black" BorderThickness="1,1,1,1" Width="253" Height ="50" HorizontalAlignment="left" VerticalAlignment="Top" Margin="0,61,0,0">
+            <TextBlock TextWrapping="Wrap" Text="Vendors" FontSize="24" TextAlignment="Center" Background="Black" Foreground="White"/>
+        </Border>
+        <Border BorderBrush="Black" BorderThickness="1,1,1,1" HorizontalAlignment="Left" Width="253" Margin="0,111,0,52">
+            <StackPanel x:Name="stkVendors" HorizontalAlignment="Left" Width="257" CanVerticallyScroll="True" ScrollViewer.CanContentScroll="True"/>
+        </Border>
+        <Grid x:Name="grdWeek" HorizontalAlignment="Right" Width="1010" Height="658" VerticalAlignment="Top" Margin="0,61,1,0"/>
+        <StatusBar x:Name="sbSaveStatus" Height="51" VerticalAlignment="Bottom" Background="#FF19F30E">
+            <TextBlock x:Name="tbSaveStatus" Text="Saved" Width="1268" TextAlignment="Center" FontWeight="SemiBold" FontSize="18" />
+        </StatusBar>
+    </Grid>
+</Window>

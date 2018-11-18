@@ -5,11 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGNES"
         mc:Ignorable="d"
-        Title="SingleUserInput" Height="127.152" Width="300" IsTabStop="False" WindowStyle="None" WindowStartupLocation="CenterScreen">
+        Title="SingleUserInput" Height="127.152" Width="300" IsTabStop="False" WindowStyle="None" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid Margin="0,0,0,2">
         <TextBlock x:Name="lblInputDirection" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="272" TextAlignment="Center" Height="40"/>
         <TextBox x:Name="txtUserInput" HorizontalAlignment="Left" Height="23" Margin="10,55,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="272" UndoLimit="32" MaxLines="1" MaxLength="64" IsUndoEnabled="True" TabIndex="0"/>
         <Button x:Name="btnOkay" Content="OK" HorizontalAlignment="Left" Margin="108,87,0,0" VerticalAlignment="Top" Width="76" TabIndex="1"/>
 
     </Grid>
+    <Window.Effect>
+        <DropShadowEffect Opacity="0.7" BlurRadius="14" ShadowDepth="6" Direction="240"/>
+    </Window.Effect>
 </Window>

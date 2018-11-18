@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGNES"
         mc:Ignorable="d"
-        Title="Weekly Financial Flash" Height="561" Width="990" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
+        Title="Weekly Financial Flash" Height="561" Width="990" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Icon="/AGNES;component/Resources/Flash.png">
     <Window.Effect>
-        <DropShadowEffect Opacity="0.5"/>
+        <DropShadowEffect Opacity="0.7" BlurRadius="14" ShadowDepth="6" Direction="240"/>
     </Window.Effect>
 
     <Grid x:Name="grdMain">
@@ -30,10 +30,8 @@
             <TextBlock HorizontalAlignment = "Left" Margin="100,0,0,0" TextWrapping="Wrap" Text="Flash" VerticalAlignment="Top" Width="124" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Flashed amount"/>
             <TextBlock Margin="265,87,0,0" TextWrapping="Wrap" Text="%" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Percentage against flashed revenue" HorizontalAlignment="Left" Width="34" Height="24" VerticalAlignment="Top"/>
             <TextBlock HorizontalAlignment = "Left" Margin="314,0,0,0" TextWrapping="Wrap" Text="Budget" VerticalAlignment="Top" Width="124" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Budget amount"/>
-            <TextBlock HorizontalAlignment = "Left" Margin="443,0,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Width="34" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Percentage against budgeted revenue"/>
             <TextBlock HorizontalAlignment = "Left" Margin="488,0,0,0" TextWrapping="Wrap" Text="Variance to Budget" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Variance of flash to budget"/>
             <TextBlock x:Name = "lblForecast" HorizontalAlignment="Left" Margin="631,0,0,0" TextWrapping="Wrap" Text="Forecast" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Forecast amount" />
-            <TextBlock x:Name = "lblForecastPercentage" HorizontalAlignment="Left" Margin="771,0,0,0" TextWrapping="Wrap" Text="%" VerticalAlignment="Top" Width="34" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Percentage against forecasted revenue"/>
             <TextBlock x:Name = "lblForecastVariance" HorizontalAlignment="Left" Margin="817,0,0,0" TextWrapping="Wrap" Text="Variance to Forecast" VerticalAlignment="Top" Width="136" Height="24" TextAlignment="Center" FontSize="14" FontWeight="SemiBold" LineHeight="16" ToolTip="Variance of flash to forecast"/>
         </Grid>
 

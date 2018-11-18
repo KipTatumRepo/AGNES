@@ -7,11 +7,7 @@
       <Diagram DiagramId="4561f9d9a3eb4403b97d0ee8f80406e3" Name="Diagram1">
         <EntityTypeShape EntityType="WCRModel.GLsTenders_Join" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="WCRModel.Tenders" Width="1.5" PointX="2.75" PointY="0.75" />
-        <EntityTypeShape EntityType="WCRModel.CAMWithholdings" Width="1.5" PointX="0.75" PointY="3.75" />
-        <EntityTypeShape EntityType="WCRModel.KPIWithholdings" Width="1.5" PointX="2.75" PointY="3.75" />
-        <EntityTypeShape EntityType="WCRModel.ReceivedCAMChecks" Width="1.5" PointX="4.75" PointY="0.75" />
-        <EntityTypeShape EntityType="WCRModel.VendorInfo" Width="1.5" PointX="7" PointY="0.875" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

@@ -24,9 +24,5 @@ Partial Public Class WCREntities
 
     Public Overridable Property GLsTenders_Join() As DbSet(Of GLsTenders_Join)
     Public Overridable Property Tenders() As DbSet(Of Tenders)
-    Public Overridable Property CAMWithholdings() As DbSet(Of CAMWithholdings)
-    Public Overridable Property KPIWithholdings() As DbSet(Of KPIWithholdings)
-    Public Overridable Property ReceivedCAMChecks() As DbSet(Of ReceivedCAMChecks)
-    Public Overridable Property VendorInfo() As DbSet(Of VendorInfo)
 
 End Class

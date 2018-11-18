@@ -6,8 +6,6 @@ Imports System.Windows.Xps
 Public Class WCRObject
 
 #Region "Properties"
-
-
     Public WeekStart As Date
     Public Vendors As New List(Of VendorObject)
     Public CamChecks As New List(Of CamCheck)
@@ -109,6 +107,14 @@ Public Class WCRObject
                                     Else
                                         v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, "AMEXClearing", FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
                                     End If
+                                Case 10
+                                    If v.VendorName = "Concierge" And FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2) <> 0 Then
+                                        Dim notifymsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                                             14,, "Meal card credit found!",, "The Mealcard credit was in the amount of " & FormatCurrency(-CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                                        notifymsg.ShowDialog()
+                                        notifymsg.Close()
+                                        v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, CType(ws.Cells(ct, 2), Excel.Range).Value, FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
+                                    End If
                                 Case Else
                                     v.AddTender(CType(ws.Cells(ct, 1), Excel.Range).Value, CType(ws.Cells(ct, 2), Excel.Range).Value, FormatNumber(CType(ws.Cells(ct, 3), Excel.Range).Value, 0), FormatNumber(CType(ws.Cells(ct, 9), Excel.Range).Value, 2))
                             End Select
@@ -161,7 +167,7 @@ Public Class WCRObject
     Public Sub AddCamCheck(VID As Integer, VNm As String, Num As String, Amt As Double, Dte As Date, Dow As Byte, Nts As String)
         Dim c As New CamCheck With {.VendorID = VID, .VendorName = VNm, .CheckNumber = Num, .CheckAmt = Amt, .DepositDate = Dte, .DayofWeek = Dow, .Notes = Nts}
         Try
-            Dim cc As New ReceivedCAMChecks
+            Dim cc As New ReceivedCAMCheck
             With cc
                 .VendorId = c.VendorID
                 .Name = c.VendorName
@@ -171,7 +177,7 @@ Public Class WCRObject
                 .Amount = c.CheckAmt
                 .Notes = c.Notes
             End With
-            WCRE.ReceivedCAMChecks.Add(cc)
+            VendorData.ReceivedCAMChecks.Add(cc)
         Catch excep As Exception
             Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
                                                 18, True, "Unexpected error!",, excep.Message)
@@ -185,7 +191,10 @@ Public Class WCRObject
         Dim pd As PrintDialog, fd As FlowDocument
         Try
             pd = New PrintDialog
-            pd.ShowDialog()
+            If pd.ShowDialog() <> True Then
+                WCRFinalPage.PrintFailed = True
+                Exit Sub
+            End If
             fd = New FlowDocument With {.ColumnGap = 0, .ColumnWidth = pd.PrintableAreaWidth}
         Catch
             Exit Sub
@@ -242,7 +251,24 @@ Public Class WCRObject
 
         Dim xps_writer As XpsDocumentWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue)
         Dim idps As IDocumentPaginatorSource = CType(fd, IDocumentPaginatorSource)
-        xps_writer.Write(idps.DocumentPaginator)
+        Try
+            xps_writer.Write(idps.DocumentPaginator)
+        Catch ex As System.Runtime.CompilerServices.RuntimeWrappedException
+            Dim notifymsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                     18,, "Unable to print!",, "This error usually occurs if you have the PDF file you're trying to overwrite open.  Close the file and try again!")
+            notifymsg.ShowDialog()
+            notifymsg.Close()
+            ResetValues()
+            WCRFinalPage.PrintFailed = True
+        Catch ex As Exception
+            Dim notifymsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                     18,, "Operation failed!",, "Error: " & ex.Message)
+            notifymsg.ShowDialog()
+            notifymsg.Close()
+            ResetValues()
+            WCRFinalPage.PrintFailed = True
+        End Try
+
 
     End Sub
 
@@ -250,7 +276,10 @@ Public Class WCRObject
         Dim pd As PrintDialog, fd As FlowDocument
         Try
             pd = New PrintDialog
-            pd.ShowDialog()
+            If pd.ShowDialog() <> True Then
+                WCRFinalPage.PrintFailed = True
+                Exit Sub
+            End If
             fd = New FlowDocument With {.ColumnGap = 0, .ColumnWidth = pd.PrintableAreaWidth}
         Catch
             Exit Sub
@@ -271,13 +300,30 @@ Public Class WCRObject
         If InvoicesArePresent > 0 Then
             Dim xps_writer As XpsDocumentWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue)
             Dim idps As IDocumentPaginatorSource = CType(fd, IDocumentPaginatorSource)
-            xps_writer.Write(idps.DocumentPaginator)
+            Try
+                xps_writer.Write(idps.DocumentPaginator)
+            Catch ex As System.Runtime.CompilerServices.RuntimeWrappedException
+                Dim notifymsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                         12,, "Unable to print!",, "This error usually occurs if you have the PDF file you're trying to overwrite open.  Close the file and try again!")
+                notifymsg.ShowDialog()
+                notifymsg.Close()
+                ResetValues()
+                WCRFinalPage.PrintFailed = True
+            Catch ex As Exception
+                Dim notifymsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                         12,, "Operation failed!",, "Error: " & ex.Message)
+                notifymsg.ShowDialog()
+                notifymsg.Close()
+                ResetValues()
+                WCRFinalPage.PrintFailed = True
+            End Try
+
         End If
     End Sub
 
     Public Function GetVendorID(vnm)
         Dim vid As Integer
-        Dim q = From c In WCRE.VendorInfo
+        Dim q = From c In VendorData.VendorInfo
                 Where c.Name Is vnm
                 Select c
         For Each c In q
@@ -287,10 +333,8 @@ Public Class WCRObject
     End Function
 
     Public Function CheckDoesNotExist(cn As Long, vid As Integer) As Boolean
-        Dim ef As New WCREntities
         Try
-
-            Dim qce = From vcv In ef.ReceivedCAMChecks
+            Dim qce = From vcv In VendorData.ReceivedCAMChecks
                       Select vcv
                       Where vcv.CheckNumber = cn And
                           vcv.VendorId = vid
@@ -862,20 +906,6 @@ Public Class WCRObject
         DepositArray(7, 2) = FormatCurrency(AmexClear, 2)
     End Sub
 
-    Private Function GetVendorNameFromString(st)
-        Dim vn As String = st
-        Dim si As Integer = vn.IndexOf("(")
-        Dim li As Integer = vn.IndexOf(")")
-        Dim vnum As Integer = FormatNumber(vn.Substring(si + 1, (li - si) - 1))
-        Dim q = From c In WCRE.VendorInfo
-                Where c.StoreId = vnum
-                Select c
-        For Each c In q
-            vn = Trim(c.Name)
-        Next
-        Return vn
-    End Function
-
     Private Sub ReleaseObject(ByVal obj As Object)
         Try
             System.Runtime.InteropServices.Marshal.ReleaseComObject(obj)
@@ -884,6 +914,44 @@ Public Class WCRObject
             obj = Nothing
         End Try
     End Sub
+
+    Private Sub ResetValues()
+        GrossSales = 0
+        SalesTax = 0
+        NetSales = 0
+        ConciergeCash = 0
+        CamToCompass = 0
+        PotentialKpi = 0
+        MealCardPayments = 0
+        MealCardCredits = 0
+        Ecoupons = 0
+        Ecash = 0
+        ScratchCoupons = 0
+        ExpiredCards = 0
+        IoCharges = 0
+        CompassPayment = 0
+        VendorPayment = 0
+        DueFromVendors = 0
+        FreedomPay = 0
+        Amex = 0
+        VisaMcDisc = 0
+        CCClear = 0
+        AmexClear = 0
+    End Sub
+
+    Private Function GetVendorNameFromString(st)
+        Dim vn As String = st
+        Dim si As Integer = vn.IndexOf("(")
+        Dim li As Integer = vn.IndexOf(")")
+        Dim vnum As Integer = FormatNumber(vn.Substring(si + 1, (li - si) - 1))
+        Dim q = From c In VendorData.VendorInfo
+                Where c.StoreId = vnum
+                Select c
+        For Each c In q
+            vn = Trim(c.Name)
+        Next
+        Return vn
+    End Function
 
     Private Function WCRInBalance() As Double
         Dim creditsection As Double, debitanddepositsection As Double
@@ -894,7 +962,6 @@ Public Class WCRObject
         Return Math.Round(creditsection, 2) - Math.Round(debitanddepositsection, 2)
 
     End Function
-
 
 #End Region
 

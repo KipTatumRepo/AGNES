@@ -24,7 +24,7 @@ Public Class WCRCam
         AddHandler dt.Tick, AddressOf PauseForMinimizing
         dt.Interval = New TimeSpan(0, 0, 1)
         dt.Start()
-        Dim q = From c In WCRE.VendorInfo
+        Dim q = From c In VendorData.VendorInfo
                 Where c.VendorType = 1 And c.Active = True
                 Select c
         Dim ct As Integer = q.Count
@@ -45,7 +45,7 @@ Public Class WCRCam
         tbCam.Text = "Okay!  Let's move on to CAM checks.  I'll hang out down here so I'm not in your way, but I'll continue to walk you through the process."
         dt.Stop()
         AddHandler dt2.Tick, AddressOf PauseBeforeCamChecks
-        dt2.Interval = New TimeSpan(0, 0, 4)
+        dt2.Interval = New TimeSpan(0, 0, 2)
         dt2.Start()
     End Sub
 

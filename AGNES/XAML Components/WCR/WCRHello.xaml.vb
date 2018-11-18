@@ -2,7 +2,6 @@
 
 #Region "Properties"
     Private Property _currentstate As Integer
-    Private ActiveWCR As WCRObject = WCRModule.WCR
     Dim HoverDrop As Effects.DropShadowEffect, LeaveDrop As Effects.DropShadowEffect
 #End Region
 
@@ -18,6 +17,7 @@
         tbAnother.Visibility = Visibility.Visible
         tbDone.Visibility = Visibility.Visible
     End Sub
+
 #End Region
 
 #Region "Private Methods"
@@ -36,7 +36,7 @@
             wkst = wkst.AddDays(-1)
         Loop
         tbHello.Text = "Sounds good, " & My.Settings.UserShortName & ".  Let's get started on the WCR for the week starting " & wkst & "." & Chr(13) & Chr(13) & "First things first, choose a vendor's Sales Tender Summary file and I'll pull in the information."
-        ActiveWCR.WeekStart = wkst
+        WCRModule.WCR.WeekStart = wkst
     End Sub
 
     Private Sub LoadTenderFile(sender As Object, e As MouseEventArgs) Handles tbLoadTenders.MouseDown, tbAnother.MouseDown
