@@ -279,7 +279,7 @@ Public Class Flash
 #Region "Beverage"
             Case 5      ' Beverage Flash
                 Title = "Beverage Weekly Financial Flash"
-                Height = 510
+                Height = 560
 
                 AvailableUnits = New UnitGroup With {.Summoner = 0, .UnitGroupName = "BV"}
 
@@ -307,11 +307,11 @@ Public Class Flash
                 '// Add flash-specific flashgroups (categories)
                 SalesGroup = New FlashGroup(MSP, Wk, Units, "Sales", False, 0, True, False, True, False, False) With {.SpreadByWeeks = True}
                 SalesTaxGroup = New FlashGroup(MSP, Wk, Units, "Sales Tax", False, 47, False, False, True, False, False) With {.SpreadByWeeks = True}
-                CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", True, 94, False, False, True, False, False) With {.SalesFlashGroup = TotalSalesGroup, .SpreadByWeeks = True}
-                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", True, 141, True, False, True, False, False) With {.SalesFlashGroup = TotalSalesGroup, .SpreadByWeeks = True}
-                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", True, 188, False, False, True, False, False) With {.SalesFlashGroup = TotalSalesGroup, .SpreadByWeeks = True}
-                FeesGroup = New FlashGroup(MSP, Wk, Units, "Fees", True, 235, True, False, True, False, False) With {.SalesFlashGroup = TotalSalesGroup, .SpreadByWeeks = True}
-                SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", True, 282, True, True, True, False, False, New List(Of FlashGroup) From {SalesGroup, SalesTaxGroup, CogsGroup, LaborGroup, OpexGroup, FeesGroup}) With {.SalesFlashGroup = TotalSalesGroup}
+                CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", False, 141, False, False, True, False, False) With {.SpreadByWeeks = True}
+                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", False, 188, True, False, True, False, False) With {.SpreadByWeeks = True}
+                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", False, 235, False, False, True, False, False) With {.SpreadByWeeks = True}
+                FeesGroup = New FlashGroup(MSP, Wk, Units, "Fees", False, 282, True, False, True, False, False) With {.SpreadByWeeks = True}
+                SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", False, 329, True, True, True, False, False, New List(Of FlashGroup) From {SalesGroup, SalesTaxGroup, CogsGroup, LaborGroup, OpexGroup, FeesGroup})
 
                 With grdFlashGroups.Children
                     .Add(SalesGroup)
@@ -319,7 +319,6 @@ Public Class Flash
                     .Add(CogsGroup)
                     .Add(LaborGroup)
                     .Add(OpexGroup)
-                    '.Add(DemoGroup)
                     .Add(FeesGroup)
                     .Add(SubsidyGroup)
                 End With
@@ -357,7 +356,7 @@ Public Class Flash
                 CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", True, 47, False, False, True, False, True) With {.SpreadByWeeks = True, .SalesFlashGroup = SalesGroup}
                 LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", True, 94, True, False, True, False, True) With {.SpreadByWeeks = True, .SalesFlashGroup = SalesGroup}
                 OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", True, 141, False, False, True, False, True) With {.SpreadByWeeks = True, .SalesFlashGroup = SalesGroup}
-                SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", True, 188, True, True, True, False, False, New List(Of FlashGroup) From {SalesGroup, CogsGroup, LaborGroup, OpexGroup}) With {.SalesFlashGroup = CamGroup}
+                SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", True, 188, True, True, True, False, False, New List(Of FlashGroup) From {SalesGroup, CogsGroup, LaborGroup, OpexGroup}) With {.SalesFlashGroup = SalesGroup}
                 With grdFlashGroups.Children
                     .Add(SalesGroup)
                     .Add(CogsGroup)
