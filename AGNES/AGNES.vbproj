@@ -26,7 +26,7 @@
     <PublisherName>Compass Business Intelligence</PublisherName>
     <SuiteName>Compass Business Intelligence Application Suite</SuiteName>
     <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>2.5.0.%2a</ApplicationVersion>
+    <ApplicationVersion>2.6.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
