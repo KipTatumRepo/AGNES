@@ -41,6 +41,23 @@
         pd.PrintVisual(obj, Desc)
     End Sub
 
+    Public Function CheckForHoliday()
+        '// Checks for a holiday on the upcoming Thursday and/or Friday, requiring the next week to be available early
+        Dim dt As Date = FormatDateTime(Now(), DateFormat.ShortDate)
+        If Weekday(dt, FirstDayOfWeek.Monday) > 2 Then
+            dt = dt.AddDays(1)
+            Dim df = From d In SharedDataGroup.Dates
+                     Where d.Date_ID = dt
+                     Select d
+            For Each d In df
+                If d.IS_WEEKEND_HOLIDAY = True Then
+                    Return True
+                End If
+            Next
+        End If
+        Return False
+    End Function
+
     Public Function GetCurrentPeriod(dt As Date) As Byte
         dt = dt.AddDays(-1)
         Dim df = From d In SharedDataGroup.Dates
