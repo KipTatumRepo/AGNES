@@ -191,6 +191,7 @@
     <Compile Include="Forecast Objects\FcastUnitGroup.vb" />
     <Compile Include="Forecast Objects\ForecastGroup.vb" />
     <Compile Include="Forecast Objects\UnitFcast.vb" />
+    <Compile Include="Module Orchestrators\BirthdayModule.vb" />
     <Compile Include="Module Orchestrators\FlashStatusModule.vb" />
     <Compile Include="Module Orchestrators\ForecastModule.vb" />
     <Compile Include="Module Orchestrators\VendorModule.vb" />
@@ -201,6 +202,9 @@
     <Compile Include="Vendor Objects\ScheduleVendor.vb" />
     <Compile Include="Vendor Objects\ScheduleWeek.vb" />
     <Compile Include="Vendor Objects\VendorInLoc.vb" />
+    <Compile Include="XAML Components\EasterEggs\Birthday.xaml.vb">
+      <DependentUpon>Birthday.xaml</DependentUpon>
+    </Compile>
     <Compile Include="XAML Components\Flash\Delegates.xaml.vb">
       <DependentUpon>Delegates.xaml</DependentUpon>
     </Compile>
@@ -540,6 +544,10 @@
       <DependentUpon>WCRHello.xaml</DependentUpon>
     </Compile>
     <Compile Include="WCR Objects\WCRObject.vb" />
+    <Page Include="XAML Components\EasterEggs\Birthday.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="XAML Components\Flash\Delegates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -885,6 +893,7 @@
       <DependentUpon>WCRModule.edmx</DependentUpon>
       <LastGenOutput>WCRModule.vb</LastGenOutput>
     </Content>
+    <Resource Include="Resources\BirthdayBalloons.png" />
     <Resource Include="Resources\DblArrow.png" />
     <Resource Include="Resources\LoadPrevious.png" />
     <Resource Include="Resources\FoodTruck.png" />

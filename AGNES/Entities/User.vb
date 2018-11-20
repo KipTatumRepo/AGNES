@@ -20,5 +20,6 @@ Partial Public Class User
     Public Property AccessLevelId As Long
     Public Property DateAdded As Date
     Public Property SavedBy As String
+    Public Property DOB As Nullable(Of Date)
 
 End Class
