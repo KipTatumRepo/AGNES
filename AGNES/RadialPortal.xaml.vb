@@ -5,6 +5,7 @@ Public Class RadialPortal
 
 #Region "Properties"
 
+    Private bday As Boolean
     Private _buttonrest As Byte
     Private _buttonhover As Byte
     Private _itemcount As Byte
@@ -71,7 +72,18 @@ Public Class RadialPortal
                     .UserID = c.PID
                     .UserLevel = c.AccessLevelId
                 End With
+                Try
+                    If Month(Now()) = Month(c.DOB) And Day(Now()) = Day(c.DOB) Then bday = True
+                Catch ex As Exception
+
+                End Try
             Next
+
+            '// You say it's your birthday....it's my birthday, too yeaaaaaah
+            If bday = True Then
+                Dim bdaypg As Birthday = New Birthday
+                bdaypg.ShowDialog()
+            End If
 
 #Region "Impersonation for testing"
             '// IMPERSONATION - Change to whichever userID and Access Level needed to test

@@ -87,6 +87,21 @@ Public Class Flash
         '// Add period, week, and unit chooser controls 
         Dim currmsp As Byte = GetCurrentPeriod(FormatDateTime(Now(), DateFormat.ShortDate))
         Dim currwk As Byte = GetCurrentWeek(FormatDateTime(Now(), DateFormat.ShortDate))
+        '// Check for a holiday on Thursday or Friday that would require early data entry
+        If CheckForHoliday() = True Then
+            If GetMaxWeeks(currmsp) < currwk + 1 Then
+                If currmsp + 1 > 12 Then
+                    CurrentFiscalYear += 1
+                    currmsp = 1
+                    currwk = 1
+                Else
+                    currmsp += 1
+                    currwk = 1
+                End If
+            Else
+                currwk += 1
+            End If
+        End If
         Wk = New WeekChooser(1, currwk, currwk)
         AddHandler Wk.PropertyChanged, AddressOf WeekChanged
 

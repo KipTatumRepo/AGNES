@@ -87,6 +87,7 @@
           <Property Name="AccessLevelId" Type="bigint" Nullable="false" />
           <Property Name="DateAdded" Type="date" Nullable="false" />
           <Property Name="SavedBy" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="DOB" Type="date" />
         </EntityType>
         <EntityContainer Name="AGNESSharedDataModelStoreContainer">
           <EntitySet Name="AccessLevels" EntityType="Self.AccessLevels" Schema="agnes" store:Type="Tables" />
@@ -150,6 +151,7 @@
           <Property Name="AccessLevelId" Type="Int64" Nullable="false" />
           <Property Name="DateAdded" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="SavedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DOB" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityContainer Name="AGNESSharedDataEntity" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AccessLevels" EntityType="Self.AccessLevel" />
@@ -244,6 +246,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="AGNESSharedDataModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="UserAlias" ColumnName="UserAlias" />
