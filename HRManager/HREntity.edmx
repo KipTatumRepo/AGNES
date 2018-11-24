@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="HREmployees.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="EmployeeList">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PersonnelArea" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="PSubArea" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="PersonnelSubArea" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="RegionName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="DistrictManager" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="CostCenterNumber" Type="bigint" Nullable="false" />
+          <Property Name="CostCenter" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="PersNumber" Type="bigint" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="MiddleName" Type="varchar" MaxLength="128" />
+          <Property Name="FirstName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="NickName" Type="varchar" MaxLength="128" />
+          <Property Name="EmployeeSubGroup" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="Job" Type="bigint" Nullable="false" />
+          <Property Name="Position" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="PSGroup" Type="int" />
+          <Property Name="Crcy" Type="varchar" MaxLength="128" />
+          <Property Name="DateOfHire" Type="date" Nullable="false" />
+          <Property Name="BirthDate" Type="date" />
+          <Property Name="RacialCat1" Type="varchar" MaxLength="128" />
+          <Property Name="RacialCat2" Type="varchar" MaxLength="128" />
+          <Property Name="RacialCat3" Type="varchar" MaxLength="128" />
+          <Property Name="Gender" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="256" />
+          <Property Name="SecondAddressLine" Type="varchar" MaxLength="128" />
+          <Property Name="City" Type="varchar" MaxLength="128" />
+          <Property Name="State" Type="varchar" MaxLength="32" />
+          <Property Name="Zip" Type="varchar" MaxLength="32" />
+          <Property Name="Telephone" Type="varchar" MaxLength="32" />
+          <Property Name="Email" Type="varchar" MaxLength="128" />
+        </EntityType>
+        <EntityContainer Name="HREmployeesStoreContainer">
+          <EntitySet Name="EmployeeList" EntityType="Self.EmployeeList" Schema="HR" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="HREmployees" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="EmployeeList">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PersonnelArea" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PSubArea" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PersonnelSubArea" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RegionName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DistrictManager" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CostCenterNumber" Type="Int64" Nullable="false" />
+          <Property Name="CostCenter" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PersNumber" Type="Int64" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MiddleName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="FirstName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NickName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeSubGroup" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Job" Type="Int64" Nullable="false" />
+          <Property Name="Position" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PSGroup" Type="Int32" />
+          <Property Name="Crcy" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="DateOfHire" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="BirthDate" Type="DateTime" Precision="0" />
+          <Property Name="RacialCat1" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="RacialCat2" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="RacialCat3" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="Gender" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="SecondAddressLine" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="Zip" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="Telephone" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityContainer Name="HREntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="EmployeeLists" EntityType="Self.EmployeeList" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="HREmployeesStoreContainer" CdmEntityContainer="HREntities">
+          <EntitySetMapping Name="EmployeeLists">
+            <EntityTypeMapping TypeName="HREmployees.EmployeeList">
+              <MappingFragment StoreEntitySet="EmployeeList">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="PersonnelArea" ColumnName="PersonnelArea" />
+                <ScalarProperty Name="PSubArea" ColumnName="PSubArea" />
+                <ScalarProperty Name="PersonnelSubArea" ColumnName="PersonnelSubArea" />
+                <ScalarProperty Name="RegionName" ColumnName="RegionName" />
+                <ScalarProperty Name="DistrictManager" ColumnName="DistrictManager" />
+                <ScalarProperty Name="CostCenterNumber" ColumnName="CostCenterNumber" />
+                <ScalarProperty Name="CostCenter" ColumnName="CostCenter" />
+                <ScalarProperty Name="PersNumber" ColumnName="PersNumber" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="NickName" ColumnName="NickName" />
+                <ScalarProperty Name="EmployeeSubGroup" ColumnName="EmployeeSubGroup" />
+                <ScalarProperty Name="Job" ColumnName="Job" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="PSGroup" ColumnName="PSGroup" />
+                <ScalarProperty Name="Crcy" ColumnName="Crcy" />
+                <ScalarProperty Name="DateOfHire" ColumnName="DateOfHire" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="RacialCat1" ColumnName="RacialCat1" />
+                <ScalarProperty Name="RacialCat2" ColumnName="RacialCat2" />
+                <ScalarProperty Name="RacialCat3" ColumnName="RacialCat3" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="SecondAddressLine" ColumnName="SecondAddressLine" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
