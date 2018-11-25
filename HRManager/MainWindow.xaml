@@ -1,0 +1,19 @@
+﻿<Window x:Class="HRManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HRManager"
+        mc:Ignorable="d"
+        Title="HR Associate Manager" Height="600" Width="965" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+    <Grid>
+        <ToolBar x:Name="tlbHRMgr" HorizontalAlignment="Left" Height="41" VerticalAlignment="Top" Width="954">
+            <ComboBox x:Name="cbxCostCenters" Height="36" Margin="0" VerticalAlignment="Top" Width="202"/>
+        </ToolBar>
+        <TextBlock x:Name="tbAssociates" HorizontalAlignment="Left" Margin="10,46,0,0" TextWrapping="Wrap" Text="Associates" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Width="466" Height="34" TextAlignment="Center"/>
+        <ListBox x:Name ="lbxAssociates" HorizontalAlignment="Left" Height="459" Margin="10,80,0,0" VerticalAlignment="Top" Width="466"/>
+        <TextBlock x:Name="tbHistory" HorizontalAlignment="Left" Margin="481,46,0,0" TextWrapping="Wrap" Text="Event History" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Width="466" Height="34" TextAlignment="Center"/>
+        <ListBox x:Name="lbxHistory" HorizontalAlignment="Left" Height="459" Margin="481,80,0,0" VerticalAlignment="Top" Width="466"/>
+        <StatusBar x:Name="sbHRMgr" HorizontalAlignment="Left" Height="27" Margin="0,544,0,0" VerticalAlignment="Top" Width="954"/>
+    </Grid>
+</Window>

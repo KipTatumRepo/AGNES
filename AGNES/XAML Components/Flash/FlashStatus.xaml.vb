@@ -1,5 +1,5 @@
 ﻿Public Class FlashStatus
-    'CRITICAL: ALERT MESSAGE ISN'T SHOWING IN FIELD SITES & SECONDARY UNIT ALERTS AREN'T SHOWING AT ALL
+    'TODO: ALERT MESSAGE ISN'T SHOWING FOR SUBUNITS
 #Region "Properties"
     Public TypeofFlash As Byte
     Public StatusWk As WeekChooser
