@@ -3,6 +3,7 @@ Imports System.Linq
 Public Class Admin
 
     'TODO: MODULE DELETE FUNCTION NOT WORKING CORRECTLY
+    'REFRESH: ADD GROUP BUNDLE OPTION
 
 #Region "Properties"
     Private RecordExists As Boolean

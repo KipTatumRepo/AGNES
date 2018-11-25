@@ -1,6 +1,6 @@
 ﻿Imports System.ComponentModel
 Public Class UnitChooser
-    'TODO:  ADD MULTISELECT FUNCTIONALITY TO UNIT CHOOSER
+    'REFRESH:  ADD MULTISELECT FUNCTIONALITY TO UNIT CHOOSER
     Inherits DockPanel
     Implements INotifyPropertyChanged
 

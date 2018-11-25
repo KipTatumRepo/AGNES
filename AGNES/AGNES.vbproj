@@ -893,6 +893,7 @@
       <DependentUpon>WCRModule.edmx</DependentUpon>
       <LastGenOutput>WCRModule.vb</LastGenOutput>
     </Content>
+    <Resource Include="Resources\HRMgr.png" />
     <Resource Include="Resources\BirthdayBalloons.png" />
     <Resource Include="Resources\DblArrow.png" />
     <Resource Include="Resources\LoadPrevious.png" />

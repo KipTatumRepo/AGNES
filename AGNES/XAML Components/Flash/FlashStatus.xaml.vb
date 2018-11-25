@@ -1,5 +1,5 @@
 ﻿Public Class FlashStatus
-    'TODO: ALERT MESSAGE ISN'T SHOWING FOR SUBUNITS
+    'PENDING: ALERT MESSAGE ISN'T SHOWING FOR SUBUNITS - DEPENDING ON DIRECTION OF NEW LOCATIONS TABLE, EITHER ADD SUBROUTINE TO EVALUATE SUBUNITS AND ADD TO STATUS WINDOW, OR ALL UNITS WILL BE IN TABLE AND SHOW
 #Region "Properties"
     Public TypeofFlash As Byte
     Public StatusWk As WeekChooser
@@ -42,7 +42,7 @@
             Dim CurrentFlashStatus As String = GetFlashstatus(uig.Unit_Number)
             Select Case CurrentFlashStatus
                 Case "None"
-                    ' Pending - add item, but disable
+                    ' Flash pending - add item, but disable
                     Dim NewStatusItem As New StatusItem(uig.Unit_Number & "-" & uig.Unit, 0, False, "", uig.Unit_Number)
                     NewStatusItem.IsEnabled = False
                     NewStatusItem.MSP = StatusMsp.CurrentPeriod
