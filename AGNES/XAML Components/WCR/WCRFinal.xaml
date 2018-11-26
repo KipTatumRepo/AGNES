@@ -28,6 +28,8 @@
                     <DropShadowEffect BlurRadius="2" ShadowDepth="4" Color="#FFEBEBEB" Direction="200"/>
                 </TextBlock.Effect>
             </TextBlock>
+            <DatePicker x:Name="dtpWeekStart" HorizontalAlignment="Left" Margin="411,117,0,0" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="411,101,0,0" TextWrapping="Wrap" Text="Week Start Date" VerticalAlignment="Top" Width="102" TextAlignment="Center"/>
         </Grid>
     </Viewbox>
 </Window>
