@@ -19,7 +19,7 @@ Public Class ScheduleDay
         LocationStack = New StackPanel
         Child = LocationStack
         CreateDayLabel()
-        If hol = 0 Then LoadLocations()
+        If hol = 0 Then LoadAndAddLocations()
     End Sub
 
 #End Region
@@ -43,10 +43,11 @@ Public Class ScheduleDay
         LocationStack.Children.Add(brd)
     End Sub
 
-    Private Sub LoadLocations()
-        Dim newloc As New ScheduleLocation("Building 92")
+    Private Sub LoadAndAddLocations()
+        'Dim locs(20) As String = {"4", "9", "16", "25", "26", "31", "34", "36"}
+        Dim newloc As New ScheduleLocation("Building 92", 1)
         LocationStack.Children.Add(newloc)
-        Dim newloc2 As New ScheduleLocation("Cafe 16")
+        Dim newloc2 As New ScheduleLocation("Cafe 16", 2)
         LocationStack.Children.Add(newloc2)
     End Sub
 

@@ -4,17 +4,18 @@
     Dim HoverDrop As Effects.DropShadowEffect, LeaveDrop As Effects.DropShadowEffect
     Public Property InBalance As Boolean
     Public Property CancelDueToBalanceIssue As Boolean
-
     Public Property PrintFailed As Boolean
 #End Region
 
 #Region "Constructor"
     Public Sub New()
         InitializeComponent()
+        dtpWeekStart.SelectedDate = WCR.WeekStart
         tbFinal.Text = "Okay, we're almost done!  Let's print invoices next - click the button when you're ready."
         HoverDrop = New Effects.DropShadowEffect With {.Color = Color.FromRgb(235, 235, 235), .Direction = 200, .Opacity = 100, .ShadowDepth = 6, .BlurRadius = 2, .RenderingBias = Effects.RenderingBias.Performance}
         LeaveDrop = New Effects.DropShadowEffect With {.Color = Color.FromRgb(235, 235, 235), .Direction = 200, .Opacity = 100, .ShadowDepth = 4, .BlurRadius = 2, .RenderingBias = Effects.RenderingBias.Performance}
     End Sub
+
 #End Region
 
 #Region "Private Methods"
@@ -90,6 +91,11 @@
             WCRModule.UserClosed = False
         End If
         Close()
+    End Sub
+
+    Private Sub dtpWeekStart_SelectedDateChanged(sender As Object, e As SelectionChangedEventArgs) Handles dtpWeekStart.SelectedDateChanged
+        Dim tempdt As Date = dtpWeekStart.SelectedDate
+        If tempdt.DayOfWeek = DayOfWeek.Friday Then WCRModule.WCR.WeekStart = dtpWeekStart.SelectedDate
     End Sub
 
 #End Region
