@@ -25,7 +25,7 @@
     <ProductName>AGNES</ProductName>
     <PublisherName>Compass Business Intelligence</PublisherName>
     <SuiteName>Compass Business Intelligence Application Suite</SuiteName>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>2.6.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -201,7 +201,8 @@
     <Compile Include="Vendor Objects\ScheduleLocation.vb" />
     <Compile Include="Vendor Objects\ScheduleVendor.vb" />
     <Compile Include="Vendor Objects\ScheduleWeek.vb" />
-    <Compile Include="Vendor Objects\VendorInLoc.vb" />
+    <Compile Include="Vendor Objects\ScheduleStation.vb" />
+    <Compile Include="Vendor Objects\VendorInStation.vb" />
     <Compile Include="XAML Components\EasterEggs\Birthday.xaml.vb">
       <DependentUpon>Birthday.xaml</DependentUpon>
     </Compile>

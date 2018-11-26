@@ -1,9 +1,9 @@
-﻿Public Class VendorInLoc
+﻿Public Class VendorInStation
     Inherits TextBlock
 
 #Region "Properties"
     Public Property ReferencedVendor As ScheduleVendor
-    Public Property ReferencedLocation As ScheduleLocation
+    Public Property ReferencedLocation As ScheduleStation
     Private DeleteContextMenu As ContextMenu
 #End Region
 
