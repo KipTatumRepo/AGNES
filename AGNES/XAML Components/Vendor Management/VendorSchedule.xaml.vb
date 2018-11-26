@@ -10,6 +10,7 @@
 #Region "Constructor"
     Public Sub New()
         InitializeComponent()
+        Height = System.Windows.SystemParameters.PrimaryScreenHeight
         '// Add period and week slicers
         Dim currmsp As Byte = GetCurrentPeriod(FormatDateTime(Now(), DateFormat.ShortDate))
         Dim currwk As Byte = GetCurrentWeek(FormatDateTime(Now(), DateFormat.ShortDate))

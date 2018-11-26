@@ -32,7 +32,7 @@ Public Class ScheduleLocation
 
 #Region "Private Methods"
     Private Sub AddName()
-        LocationBlock = New TextBlock With {.TextAlignment = TextAlignment.Center, .Text = LocationName, .Background = Brushes.LightYellow}
+        LocationBlock = New TextBlock With {.TextAlignment = TextAlignment.Center, .Text = LocationName}
         StationStack.Children.Add(LocationBlock)
     End Sub
 

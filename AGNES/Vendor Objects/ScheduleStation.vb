@@ -6,7 +6,6 @@
     Public Property StationName As String
     Public Property StationNumber As Byte
     Public Property StationBlock As TextBlock
-    Private Property HighlightColor As Boolean = True
     Private Property DropAllowed As Boolean = True
     Private StatusBarText As String
 #End Region
@@ -14,7 +13,7 @@
 #Region "Constructor"
     Public Sub New(sn)
         AllowDrop = True
-        Height = 14
+        Height = 16
         BorderBrush = Brushes.Black
         BorderThickness = New Thickness(1, 1, 1, 1)
         Margin = New Thickness(1, 1, 1, 0)
@@ -38,7 +37,7 @@
 
 #Region "Private Methods"
     Private Sub AddName()
-        StationBlock = New TextBlock With {.TextAlignment = TextAlignment.Center, .Text = StationName, .FontSize = 8}
+        StationBlock = New TextBlock With {.TextAlignment = TextAlignment.Center, .Text = StationName, .FontSize = 10}
         VendorStack.Children.Add(StationBlock)
     End Sub
 
@@ -55,9 +54,8 @@
         End If
 
         Dim nv As New VendorInStation With {.TextAlignment = TextAlignment.Center, .Text = e.Data.GetData(DataFormats.Text),
-        .ReferencedVendor = VendorSched.ActiveVendor, .ReferencedLocation = Me, .FontSize = 10}
-        If HighlightColor = True Then nv.Background = Brushes.LightGray
-        HighlightColor = Not HighlightColor
+        .ReferencedVendor = VendorSched.ActiveVendor, .ReferencedLocation = Me, .FontSize = 12}
+        nv.Background = Brushes.LightGray
         VendorStack.Children.Add(nv)
         Height += 16
         VendorSched.tbSaveStatus.Text = StatusBarText
@@ -104,6 +102,7 @@
         End If
         Return True
     End Function
+
     Private Function CheckVendorTypeAllowed()
         '// Is the vendor type (truck or brand) allowed at the building?
 
