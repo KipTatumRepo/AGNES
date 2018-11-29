@@ -53,19 +53,19 @@ Public Class ScheduleDay
         Dim singlelocs() As String = {"4", "16", "26", "34", "37", "41", "43", "50", "83", "112", "121",
             "CCP", "LS", "Millennium", "RTC", "Samm-C", "Studio H"}
         For x = 1 To singlelocs.Count
-            Dim newloc As New ScheduleLocation(singlelocs(x - 1), 1)
+            Dim newloc As New ScheduleLocation(singlelocs(x - 1), 1, Me)
             LocationStack.Children.Add(newloc)
         Next
 
         Dim doublelocs() As String = {"86", "Redwest", "31"}
         For x = 1 To doublelocs.Count
-            Dim newloc As New ScheduleLocation(doublelocs(x - 1), 2)
+            Dim newloc As New ScheduleLocation(doublelocs(x - 1), 2, Me)
             LocationStack.Children.Add(newloc)
         Next
 
         Dim triplelocs() As String = {"Advanta"}
         For x = 1 To triplelocs.Count
-            Dim newloc As New ScheduleLocation(triplelocs(x - 1), 3)
+            Dim newloc As New ScheduleLocation(triplelocs(x - 1), 3, Me)
             LocationStack.Children.Add(newloc)
         Next
 

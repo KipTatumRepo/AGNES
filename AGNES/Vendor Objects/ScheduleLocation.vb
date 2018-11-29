@@ -9,10 +9,12 @@ Public Class ScheduleLocation
     Public Property StationCount As Byte
     Private Property HighlightColor As Boolean = True
     Private StatusBarText As String
+    Public Property CurrentWeekDay As ScheduleDay
 #End Region
 
 #Region "Constructor"
-    Public Sub New(locname, sc)
+    Public Sub New(locname As String, sc As Byte, ByRef cwd As ScheduleDay)
+        CurrentWeekDay = cwd
         StationCount = sc
         BorderBrush = Brushes.Black
         BorderThickness = New Thickness(1, 1, 1, 1)
@@ -38,7 +40,7 @@ Public Class ScheduleLocation
 
     Private Sub AddStations()
         For x As Byte = 1 To StationCount
-            Dim station As New ScheduleStation(x)
+            Dim station As New ScheduleStation(x, CurrentWeekDay, Me)
             StationStack.Children.Add(station)
         Next
     End Sub

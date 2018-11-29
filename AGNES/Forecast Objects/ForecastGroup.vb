@@ -565,6 +565,7 @@
     Private Sub CheckWeekFive()
         If GetMaxWeeks(PeriodChooseObject.CurrentPeriod) = 4 Then
             W5Val.Visibility = Visibility.Hidden
+            W5Val.SetAmount = 0
             W5Val.IsEnabled = False
             FcastPage.lblWeek5.Foreground = Brushes.LightGray
         Else
