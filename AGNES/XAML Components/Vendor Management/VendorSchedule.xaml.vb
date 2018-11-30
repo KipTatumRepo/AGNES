@@ -1,7 +1,6 @@
 ﻿Public Class VendorSchedule
 
 #Region "Properties"
-    Public Property MSP As PeriodChooser
     Public Property CAL As MonthChooser
     Public Property Wk As WeekChooser
     Public wkSched As ScheduleWeek
@@ -16,12 +15,12 @@
         Dim CurrMonth As Byte = Now().Month
         Dim CurrWk As Byte = GetCurrentCalendarWeek(FormatDateTime(Now(), DateFormat.ShortDate))
         Wk = New WeekChooser(1, GetMaxCalendarWeeks(CurrMonth), CurrWk)
+        Wk.DisableSelectAllWeeks = True
         AddHandler Wk.PropertyChanged, AddressOf WeekChanged
         CAL = New MonthChooser(Wk, 1, 12, 11)
         CAL.DisableSelectAll = False
         Dim sep As New Separator
         With tlbVendors.Items
-            '.Add(MSP)
             .Add(CAL)
             .Add(sep)
             .Add(Wk)

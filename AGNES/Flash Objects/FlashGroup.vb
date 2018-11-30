@@ -70,6 +70,7 @@
         Get
             Return _largepercentage
         End Get
+
         Set(value As Boolean)
             _largepercentage = value
             If value = True Then

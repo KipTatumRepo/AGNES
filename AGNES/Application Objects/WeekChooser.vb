@@ -14,7 +14,7 @@ Public Class WeekChooser
     Public Property HeldWeek As Byte
     Public Property ChooserParent As Object
     Public Property SelectedCount As Byte
-
+    Public Property DisableSelectAllWeeks As Boolean
     Private _currentweek As Byte
     Public Property CurrentWeek As Byte
         Get
@@ -150,7 +150,7 @@ Public Class WeekChooser
         If FormatNumber(tb.Tag, 0) <> CurrentWeek Then
             CurrentWeek = FormatNumber(tb.Tag, 0)
         Else
-            If CurrentWeek <> 0 Then Reset()
+            If CurrentWeek <> 0 And DisableSelectAllWeeks = False Then Reset()
         End If
     End Sub
 
