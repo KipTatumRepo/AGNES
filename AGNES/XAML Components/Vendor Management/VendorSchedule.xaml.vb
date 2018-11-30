@@ -10,6 +10,7 @@
 #Region "Constructor"
     Public Sub New()
         InitializeComponent()
+        Height = System.Windows.SystemParameters.PrimaryScreenHeight
         '// Add period and week slicers
         Dim currmsp As Byte = GetCurrentPeriod(FormatDateTime(Now(), DateFormat.ShortDate))
         Dim currwk As Byte = GetCurrentWeek(FormatDateTime(Now(), DateFormat.ShortDate))
@@ -38,13 +39,14 @@
     Public Sub PopulateVendors(view)   '0=All, 1=Retail, 2=Brands, 3=Trucks
         stkVendors.Children.Clear()
         Dim qvn = From v In VendorData.VendorInfo
-                  Where v.VendorType = 2 Or
-                      v.VendorType = 3 And
-                      v.Active = True
+                  Where v.Active = True And
+                      (v.VendorType = 2 Or v.VendorType = 3)
 
         For Each v In qvn
+            Dim s As String = v.Name
             Dim nv As New ScheduleVendor(v)
             stkVendors.Children.Add(nv)
+            nv.UsedWeeklySlots = 0
         Next
     End Sub
 

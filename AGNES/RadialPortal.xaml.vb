@@ -53,6 +53,7 @@ Public Class RadialPortal
         '// If present, assign their information to custome application settings for global use
 
         Dim usr As String = Environment.UserName
+
         Dim qwl = From c In ef.Users
                   Where c.UserAlias = usr
                   Select c

@@ -21,6 +21,8 @@
 #Region "Public Methods"
     Private Sub RemoveItem()
         ReferencedLocation.DeleteItem(Me)
+        ReferencedVendor.UsedWeeklySlots -= 1
+
     End Sub
 
 #End Region

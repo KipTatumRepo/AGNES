@@ -11,25 +11,26 @@ Public Class ScheduleVendor
     Public FoodType As Integer
     Public SubType As Integer
     Public SlotsText As TextBlock
-    Private MaxSlots As Byte = 3     '//TEST
+    Public MaxDailySlots As Byte = 0
+    Public MaxWeeklySlots As Byte = 0
     Public VendorContextMenu As ContextMenu
     Private cmiEdit As MenuItem
     Private cmiDeactivate As MenuItem
     Private cmiReceipts As MenuItem
-    Private _usedslots As Byte
-    Public Property UsedSlots As Byte
+    Private _usedweeklyslots As Byte
+
+    Public Property UsedWeeklySlots As Byte
         Get
-            Return _usedslots
+            Return _usedweeklyslots
         End Get
+
         Set(value As Byte)
-            _usedslots = value
+            _usedweeklyslots = value
             Visibility = Visibility.Visible
-            SlotsText.Text = "Max schedule: " & (3 - UsedSlots) & "/" & MaxSlots
-            If value = MaxSlots Then Visibility = Visibility.Collapsed
+            SlotsText.Text = "Weekly Slots:" & (MaxWeeklySlots - _usedweeklyslots) & "/" & MaxWeeklySlots
+            If value = MaxWeeklySlots Then Visibility = Visibility.Collapsed
         End Set
     End Property
-
-
 #End Region
 
 #Region "Constructor"
@@ -42,12 +43,11 @@ Public Class ScheduleVendor
         BorderThickness = New Thickness(1, 1, 1, 1)
         Margin = New Thickness(1, 1, 2, 0)
         CreateContextMenu()
-
+        MaxDailySlots = vndr.MaximumDailyCafes
+        MaxWeeklySlots = MaxDailySlots * VendorModule.NumberOfDaysInWeek
         AddName()
-        AddFoodType()
         AddSlots()
-        UsedSlots = 0
-
+        AddFoodType()
         Child = stkVendorInfo
     End Sub
 
@@ -80,7 +80,7 @@ Public Class ScheduleVendor
     End Sub
 
     Private Sub AddSlots()
-        SlotsText = New TextBlock With {.TextAlignment = TextAlignment.Center}
+        SlotsText = New TextBlock With {.TextAlignment = TextAlignment.Center, .Text = "0/0"}
         stkVendorInfo.Children.Add(SlotsText)
     End Sub
 

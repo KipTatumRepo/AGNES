@@ -290,6 +290,7 @@
                     My.Settings.SessionId = usi.PID
                 Next
             Case 1      ' Conclude session
+                If My.Settings.SessionId = 0 Then Exit Sub
                 Dim sessionend As DateTime = Format(Now(), "MM/dd/yy hh:mm:ss")
                 Dim qsi = From usi In SharedDataGroup.ApplicationSessions
                           Select usi

@@ -5,6 +5,7 @@ Public Class ScheduleDay
 #Region "Properties"
     Public Property DateValue As Date
     Public Property IsHoliday As Boolean
+    Public LocationScrollViewer As ScrollViewer
     Public LocationStack As StackPanel
 #End Region
 
@@ -14,12 +15,16 @@ Public Class ScheduleDay
         IsHoliday = hol
         BorderThickness = New Thickness(1, 1, 1, 1)
         BorderBrush = Brushes.Black
-        Height = 658
-        Width = 202
-        LocationStack = New StackPanel
-        Child = LocationStack
+        Width = 198
+        LocationScrollViewer = New ScrollViewer
+        LocationStack = New StackPanel With {.CanVerticallyScroll = True}
         CreateDayLabel()
-        If hol = 0 Then LoadAndAddLocations()
+        If hol = 0 Then
+            LoadAndAddLocations()
+        End If
+        LocationScrollViewer.Content = LocationStack
+        Child = LocationScrollViewer
+
     End Sub
 
 #End Region
@@ -30,9 +35,9 @@ Public Class ScheduleDay
 
 #Region "Private Methods"
     Private Sub CreateDayLabel()
-        Dim brd As New Border With {.Background = Brushes.Black, .Width = 200, .Height = 50, .HorizontalAlignment = HorizontalAlignment.Left,
+        Dim brd As New Border With {.Background = Brushes.Black, .Width = 178, .Height = 50, .HorizontalAlignment = HorizontalAlignment.Left,
             .VerticalAlignment = VerticalAlignment.Top}
-        Dim tblk As New TextBlock With {.TextWrapping = TextWrapping.Wrap, .FontSize = 18, .TextAlignment = TextAlignment.Center,
+        Dim tblk As New TextBlock With {.TextWrapping = TextWrapping.Wrap, .FontSize = 14, .TextAlignment = TextAlignment.Center,
             .Foreground = Brushes.White, .Text = FormatDateTime(DateValue, DateFormat.LongDate)}
         If IsHoliday = True Then
             tblk.Background = Brushes.DarkGray
@@ -44,11 +49,26 @@ Public Class ScheduleDay
     End Sub
 
     Private Sub LoadAndAddLocations()
-        'Dim locs(20) As String = {"4", "9", "16", "25", "26", "31", "34", "36"}
-        Dim newloc As New ScheduleLocation("Building 92", 1)
-        LocationStack.Children.Add(newloc)
-        Dim newloc2 As New ScheduleLocation("Cafe 16", 2)
-        LocationStack.Children.Add(newloc2)
+        Dim x As Byte
+        Dim singlelocs() As String = {"4", "16", "26", "34", "37", "41", "43", "50", "83", "112", "121",
+            "CCP", "LS", "Millennium", "RTC", "Samm-C", "Studio H"}
+        For x = 1 To singlelocs.Count
+            Dim newloc As New ScheduleLocation(singlelocs(x - 1), 1, Me)
+            LocationStack.Children.Add(newloc)
+        Next
+
+        Dim doublelocs() As String = {"86", "Redwest", "31"}
+        For x = 1 To doublelocs.Count
+            Dim newloc As New ScheduleLocation(doublelocs(x - 1), 2, Me)
+            LocationStack.Children.Add(newloc)
+        Next
+
+        Dim triplelocs() As String = {"Advanta"}
+        For x = 1 To triplelocs.Count
+            Dim newloc As New ScheduleLocation(triplelocs(x - 1), 3, Me)
+            LocationStack.Children.Add(newloc)
+        Next
+
     End Sub
 
 #End Region

@@ -30,5 +30,6 @@ Partial Public Class VendorInfo
     Public Property RequiresHood As Boolean
     Public Property InsuranceExpiration As Nullable(Of Date)
     Public Property ContractExpiration As Nullable(Of Date)
+    Public Property MaximumDailyCafes As Nullable(Of Short)
 
 End Class

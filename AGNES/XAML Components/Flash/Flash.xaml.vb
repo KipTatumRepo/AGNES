@@ -1,6 +1,5 @@
 ﻿Imports System.ComponentModel
 'WATCH: GLITCH WHEN OPENING DRAFT FLASH - UNABLE TO RESAVE (STATUSSAVE?)  ISSUE WAS WITH FARGO P5W1 - COULD NOT REPLICATE 11/17/18
-
 Public Class Flash
 
 #Region "Properties"

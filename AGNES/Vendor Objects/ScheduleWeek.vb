@@ -12,6 +12,7 @@ Public Class ScheduleWeek
 #Region "Public Methods"
     Public Sub Update(p As Byte, w As Byte)
         Children.Clear()
+        VendorModule.NumberOfDaysInWeek = 0
         Dim qwd = From f As Dates In SharedDataGroup.Dates
                   Where f.MS_FY = CurrentFiscalYear And
                       f.MS_Period = p And
@@ -28,7 +29,11 @@ Public Class ScheduleWeek
 #Region "Private Methods"
     Private Sub CreateWeekDay(dt, hol)
         Dim newday As New ScheduleDay(dt, hol)
-        If hol = 1 Then newday.IsEnabled = False
+        If hol = True Then
+            newday.IsEnabled = False
+        Else
+            VendorModule.NumberOfDaysInWeek += 1
+        End If
         Children.Add(newday)
     End Sub
 
