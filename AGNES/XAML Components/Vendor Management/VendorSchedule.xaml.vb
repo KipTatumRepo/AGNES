@@ -2,6 +2,7 @@
 
 #Region "Properties"
     Public Property MSP As PeriodChooser
+    Public Property CAL As MonthChooser
     Public Property Wk As WeekChooser
     Public wkSched As ScheduleWeek
     Public ActiveVendor As ScheduleVendor
@@ -12,22 +13,23 @@
         InitializeComponent()
         Height = System.Windows.SystemParameters.PrimaryScreenHeight
         '// Add period and week slicers
-        Dim currmsp As Byte = GetCurrentPeriod(FormatDateTime(Now(), DateFormat.ShortDate))
-        Dim currwk As Byte = GetCurrentWeek(FormatDateTime(Now(), DateFormat.ShortDate))
-        Wk = New WeekChooser(1, GetMaxWeeks(currmsp), currwk)
+        Dim CurrMonth As Byte = Now().Month
+        Dim CurrWk As Byte = GetCurrentCalendarWeek(FormatDateTime(Now(), DateFormat.ShortDate))
+        Wk = New WeekChooser(1, GetMaxCalendarWeeks(CurrMonth), CurrWk)
         AddHandler Wk.PropertyChanged, AddressOf WeekChanged
-        MSP = New PeriodChooser(Wk, 1, 12, currmsp)
-        MSP.DisableSelectAll = False
+        CAL = New MonthChooser(Wk, 1, 12, 11)
+        CAL.DisableSelectAll = False
         Dim sep As New Separator
         With tlbVendors.Items
-            .Add(MSP)
+            '.Add(MSP)
+            .Add(CAL)
             .Add(sep)
             .Add(Wk)
         End With
 
         '// Add week object, with days, locations, and data load being subfunctions
         wkSched = New ScheduleWeek
-        wkSched.Update(MSP.CurrentPeriod, Wk.CurrentWeek)
+        wkSched.Update(CAL.CurrentMonth, Wk.CurrentWeek)
         grdWeek.Children.Add(wkSched)
 
         PopulateVendors(0) '//   Any consideration of day-to-day vendor availability as to whether to show them?
@@ -59,7 +61,7 @@
 
 #Region "Event Listeners"
     Private Sub WeekChanged()
-        wkSched.Update(MSP.CurrentPeriod, Wk.CurrentWeek)
+        wkSched.Update(CAL.CurrentMonth, Wk.CurrentWeek)
     End Sub
 
 #End Region
