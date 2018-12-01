@@ -10,12 +10,12 @@ Public Class ScheduleWeek
 #End Region
 
 #Region "Public Methods"
-    Public Sub Update(m As Byte, w As Byte)
+    Public Sub Update(y As Integer, m As Byte, w As Byte)
         Children.Clear()
         VendorModule.NumberOfDaysInWeek = 0
 
         Dim IncrementDate As Date, WeekEndDate As Date, MondayCount As Byte = 0
-        Dim DateString As String = m & "/1/" & Now().Year
+        Dim DateString As String = m & "/1/" & y
         IncrementDate = FormatDateTime(DateString, DateFormat.ShortDate)
         Do Until MondayCount = w
             If IncrementDate.DayOfWeek = DayOfWeek.Monday Then MondayCount += 1

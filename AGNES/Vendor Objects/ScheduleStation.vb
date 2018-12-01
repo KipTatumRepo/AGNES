@@ -57,19 +57,16 @@
     End Sub
 
     Private Sub ScheduleStation_DragEnter(sender As Object, e As DragEventArgs) Handles Me.DragEnter
-        StatusBarText = VendorSched.tbSaveStatus.Text
         CheckVendorDrag(e.Data.GetData(DataFormats.Text))
     End Sub
 
     Private Sub ScheduleStation_DragLeave(sender As Object, e As DragEventArgs) Handles Me.DragLeave
-        VendorSched.tbSaveStatus.Text = StatusBarText
-        VendorSched.sbSaveStatus.Background = StatusBarColor
+        VendorSched.SaveStatus = VendorSched.SaveStatus
     End Sub
 
     Private Sub ScheduleStation_Drop(sender As Object, e As DragEventArgs) Handles Me.Drop
         If DropAllowed = False Then
-            VendorSched.tbSaveStatus.Text = StatusBarText
-            VendorSched.sbSaveStatus.Background = StatusBarColor
+            VendorSched.SaveStatus = VendorSched.SaveStatus
             Exit Sub
         End If
 
@@ -80,8 +77,7 @@
         VendorStack.Children.Add(nv)
         nv.ReferencedVendor.UsedWeeklySlots += 1
         Height += 16
-        VendorSched.tbSaveStatus.Text = "Changes Not Saved"
-        StatusBarColor = Brushes.Red
+        VendorSched.SaveStatus = False
         VendorSched.ActiveVendor = Nothing
     End Sub
 

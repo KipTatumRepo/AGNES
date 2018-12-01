@@ -51,11 +51,11 @@ Public Class MonthChooser
         Dim BorderLabel As New Border With {.BorderBrush = Brushes.Black, .VerticalAlignment = VerticalAlignment.Center,
             .Name = "brdLabel", .Tag = "Label"}
         Dim TextLabel As New TextBlock With {.Text = "  Month: ", .TextAlignment = TextAlignment.Center,
-        .HorizontalAlignment = HorizontalAlignment.Center, .FontSize = 14, .Name = "tbLabel", .Tag = "Label"}
+        .HorizontalAlignment = HorizontalAlignment.Center, .FontSize = 12, .Name = "tbLabel", .Tag = "Label"}
         BorderLabel.Child = TextLabel
         Children.Add(BorderLabel)
         For ct = 1 To 12
-            Dim brdMonth As New Border With {.BorderBrush = Brushes.Black, .Width = 48, .VerticalAlignment = VerticalAlignment.Center,
+            Dim brdMonth As New Border With {.BorderBrush = Brushes.Black, .Width = 40, .VerticalAlignment = VerticalAlignment.Center,
             .Name = "brdM" & ct}
             Dim tbMonth As New TextBlock With {.Text = MonthName(ct, True), .TextAlignment = TextAlignment.Center, .HorizontalAlignment = HorizontalAlignment.Center,
                 .FontSize = 14, .Tag = ct, .Name = "tbM" & ct}
@@ -96,7 +96,7 @@ Public Class MonthChooser
             Dim brd As Border = sender
             tb = brd.Child
         End If
-        tb.FontSize = 24
+        tb.FontSize = 20
     End Sub
 
     Private Sub LeaveMonth(sender As Object, e As MouseEventArgs)
@@ -110,7 +110,7 @@ Public Class MonthChooser
         If FormatNumber(tb.Tag, 0) <> CurrentMonth Then
             tb.FontSize = 14
         Else
-            tb.FontSize = 20
+            tb.FontSize = 18
         End If
     End Sub
 

@@ -104,6 +104,7 @@
             If IncrementDate.DayOfWeek = DayOfWeek.Monday Then MondayCount += 1
             IncrementDate = IncrementDate.AddDays(1)
         Loop
+        If MondayCount = 0 Then MondayCount = 1 '// Force a week 1 value when the 1st falls on Tues-Sun and module is opened on any of those gap days
         Return MondayCount
     End Function
 
