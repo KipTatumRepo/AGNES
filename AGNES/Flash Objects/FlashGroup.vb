@@ -297,6 +297,10 @@
         End If
     End Sub
 
+    Public Sub SetFocus()
+        FlashVal.tb.Focus()
+    End Sub
+
 #End Region
 
 #Region "Private Methods"

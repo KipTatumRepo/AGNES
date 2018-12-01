@@ -44,7 +44,8 @@
     Public Function CheckForHoliday()
         '// Checks for a holiday on the upcoming Thursday and/or Friday, requiring the next week to be available early
         Dim dt As Date = FormatDateTime(Now(), DateFormat.ShortDate)
-        If Weekday(dt, FirstDayOfWeek.Monday) > 2 Then
+        Dim wkd As Byte = Weekday(dt, FirstDayOfWeek.Monday)
+        If wkd > 2 And wkd < 5 Then
             dt = dt.AddDays(1)
             Dim df = From d In SharedDataGroup.Dates
                      Where d.Date_ID = dt
