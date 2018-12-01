@@ -28,7 +28,7 @@
         CurrentWeekDay = cwd
         CurrentLocation = cloc
         AllowDrop = True
-        Height = 16
+        Height = 32
         BorderBrush = Brushes.Black
         BorderThickness = New Thickness(1, 1, 1, 1)
         Margin = New Thickness(1, 1, 1, 0)
@@ -42,9 +42,6 @@
 #End Region
 
 #Region "Public Methods"
-    Public Sub DeleteItem(ByRef v As VendorInStation)
-        ' CurrentLocation.Children.Remove(Me)
-    End Sub
 
 #End Region
 

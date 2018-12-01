@@ -25,10 +25,11 @@ Public Class ScheduleLocation
 #End Region
 
 #Region "Constructor"
-    Public Sub New(locname As String, sc As Byte, ByRef cwd As ScheduleDay)
+    Public Sub New(locname As String, sc As Byte, ByRef cwd As ScheduleDay, Highlight As Boolean)
         CurrentWeekDay = cwd
         StationCount = sc
         BorderBrush = Brushes.Black
+        'If Highlight = True Then Background = Brushes.Ivory
         BorderThickness = New Thickness(1, 1, 1, 1)
         Margin = New Thickness(1, 1, 1, 0)
         LocationName = locname
@@ -42,13 +43,17 @@ Public Class ScheduleLocation
 #End Region
 
 #Region "Public Methods"
+    Public Sub DeleteItem(ByRef v As VendorInStation)
+        StationStack.Children.Remove(v.ReferencedTruckStation)
+        Height -= 32
+    End Sub
 
 #End Region
 
 #Region "Private Methods"
 
     Private Sub AddName()
-        LocationBlock = New TextBlock With {.TextAlignment = TextAlignment.Center, .Text = LocationName}
+        LocationBlock = New TextBlock With {.TextAlignment = TextAlignment.Center, .Text = LocationName, .FontSize = 14, .FontWeight = FontWeights.SemiBold}
         StationStack.Children.Add(LocationBlock)
     End Sub
 
@@ -78,15 +83,16 @@ Public Class ScheduleLocation
 
         Dim tb As New ScheduleTruckStation(VendorSched.ActiveVendor.VendorItem.Name, CurrentWeekDay, Me)
         StationStack.Children.Add(tb)
-        'Dim nv As New VendorInStation With {.TextAlignment = TextAlignment.Center, .Text = e.Data.GetData(DataFormats.Text),
-        '.ReferencedVendor = VendorSched.ActiveVendor, .ReferencedLocation = Me, .FontSize = 12}
-        'nv.Background = Brushes.LightGray
-        'VendorStack.Children.Add(nv)
-        'nv.ReferencedVendor.UsedWeeklySlots += 1
-        'Height += 16
-        'VendorSched.tbSaveStatus.Text = "Changes Not Saved"
-        'StatusBarColor = Brushes.Red
-        'VendorSched.ActiveVendor = Nothing
+        Dim nv As New VendorInStation With {.TextAlignment = TextAlignment.Center, .Text = e.Data.GetData(DataFormats.Text),
+.ReferencedVendor = VendorSched.ActiveVendor, .ReferencedLoc = Me, .FontSize = 12, .ReferencedTruckStation = tb}
+        nv.Background = Brushes.LightGray
+        tb.TruckStack.Children.Add(nv)
+        nv.ReferencedVendor.UsedWeeklySlots += 1
+        Height += 32
+
+        VendorSched.tbSaveStatus.Text = "Changes Not Saved"
+        StatusBarColor = Brushes.Red
+        VendorSched.ActiveVendor = Nothing
     End Sub
 
     Private Sub CheckVendorDrag(vn As String)
@@ -124,12 +130,9 @@ Public Class ScheduleLocation
     End Sub
 
     Private Function IsVendorTypeAllowedAtBuilding()
-        If VendorSched.ActiveVendor.VendorItem.VendorType = 2 Then
-            VendorSched.tbSaveStatus.Text = StatusBarText
-            VendorSched.tbSaveStatus.Background = StatusBarColor
-            Return False
-        End If
-
+        If VendorSched.ActiveVendor.VendorItem.VendorType = 2 Then Return False
+        VendorSched.tbSaveStatus.Text = StatusBarText
+        VendorSched.tbSaveStatus.Background = StatusBarColor
         Return True
     End Function
 

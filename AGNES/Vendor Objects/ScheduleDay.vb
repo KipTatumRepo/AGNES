@@ -7,6 +7,7 @@ Public Class ScheduleDay
     Public Property IsHoliday As Boolean
     Public LocationScrollViewer As ScrollViewer
     Public LocationStack As StackPanel
+    Private Highlight As Boolean
 #End Region
 
 #Region "Constructor"
@@ -53,20 +54,23 @@ Public Class ScheduleDay
         Dim singlelocs() As String = {"4", "16", "26", "34", "37", "41", "43", "50", "83", "112", "121",
             "CCP", "LS", "Millennium", "RTC", "Samm-C", "Studio H"}
         For x = 1 To singlelocs.Count
-            Dim newloc As New ScheduleLocation(singlelocs(x - 1), 1, Me)
+            Dim newloc As New ScheduleLocation(singlelocs(x - 1), 1, Me, Highlight)
             LocationStack.Children.Add(newloc)
+            Highlight = Not Highlight
         Next
 
         Dim doublelocs() As String = {"86", "Redwest", "31"}
         For x = 1 To doublelocs.Count
-            Dim newloc As New ScheduleLocation(doublelocs(x - 1), 2, Me)
+            Dim newloc As New ScheduleLocation(doublelocs(x - 1), 2, Me, Highlight)
             LocationStack.Children.Add(newloc)
+            Highlight = Not Highlight
         Next
 
         Dim triplelocs() As String = {"Advanta"}
         For x = 1 To triplelocs.Count
-            Dim newloc As New ScheduleLocation(triplelocs(x - 1), 3, Me)
+            Dim newloc As New ScheduleLocation(triplelocs(x - 1), 3, Me, Highlight)
             LocationStack.Children.Add(newloc)
+            Highlight = Not Highlight
         Next
 
     End Sub

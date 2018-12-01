@@ -30,6 +30,7 @@
         AllowDrop = True
         Height = 16
         BorderBrush = Brushes.Black
+        Background = Brushes.WhiteSmoke
         BorderThickness = New Thickness(1, 1, 1, 1)
         Margin = New Thickness(1, 1, 1, 0)
         StationNumber = sn
@@ -73,7 +74,8 @@
         End If
 
         Dim nv As New VendorInStation With {.TextAlignment = TextAlignment.Center, .Text = e.Data.GetData(DataFormats.Text),
-        .ReferencedVendor = VendorSched.ActiveVendor, .ReferencedLocation = Me, .FontSize = 12}
+        .ReferencedVendor = VendorSched.ActiveVendor, .ReferencedStation = Me, .FontSize = 12}
+        nv.IsBrand = True
         nv.Background = Brushes.LightGray
         VendorStack.Children.Add(nv)
         nv.ReferencedVendor.UsedWeeklySlots += 1
