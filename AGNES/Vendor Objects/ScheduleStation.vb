@@ -85,19 +85,16 @@
 
     Private Sub CheckVendorDrag(vn As String)
         'Validation routines to preemptively notify about whether vendor is allowed to be scheduled
+        DropAllowed = True
         VendorSched.tbSaveStatus.Text = "Okay to add"
         VendorSched.sbSaveStatus.Background = Brushes.LightGreen
-        If IsStationAvailable() = False Then          '//     Check for the presence of a vendor in the station
+
+        If IsVendorTypeAllowedAtStation() = False Then    '//     Check if vendor type is a brand (and allowed at a station)
             DropAllowed = False
             Exit Sub
         End If
 
-        If IsVendorTypeAllowedAtStation() = False Then    '//     Check if vendor type (truck or brand) is allowed at station
-            DropAllowed = False
-            Exit Sub
-        End If
-
-        If IsVendorTypeAllowedAtBuilding() = False Then    '//     Check if vendor type (truck or brand) is allowed at building
+        If IsStationAvailable() = False Then            '//     Check for the presence of a vendor in the station
             DropAllowed = False
             Exit Sub
         End If
@@ -112,13 +109,25 @@
             Exit Sub
         End If
 
-        If IsNoFoodTypeConflictPresent() = False Then
-            DropAllowed = False
+        If IsVendorNotAlreadyAtLocation() = False Then     '//     Check for the presence of the vendor in another station at the location
             Exit Sub
         End If
 
+        If IsNoFoodTypeConflictPresent() = False Then
+            Exit Sub
+        End If
 
     End Sub
+
+    Private Function IsVendorTypeAllowedAtStation()
+        If VendorSched.ActiveVendor.VendorItem.VendorType = 3 Then
+            VendorSched.tbSaveStatus.Text = StatusBarText
+            VendorSched.tbSaveStatus.Background = StatusBarColor
+            Return False
+        End If
+
+        Return True
+    End Function
 
     Private Function IsStationAvailable()
         If VendorStack.Children.Count > 1 Then
@@ -129,20 +138,8 @@
         Return True
     End Function
 
-    Private Function IsVendorTypeAllowedAtStation()
-        '// Is the vendor type (truck or brand) allowed at the station?
-        '// Check locations table; if vendor is a brand, confirm the station field has a value greater than zero
-        '// No additional logic identified yet (11/27)
-
-        Return True
-    End Function
-
-    Private Function IsVendorTypeAllowedAtBuilding()
-        '// Is the vendor type (truck or brand) allowed at the building?
-
-        '// Previous check (Allowed@Station) will rule out brands disallowed at building
-        '// For trucks, check locations table for a TRUE value in the FoodTrucks field
-
+    Private Function AreVendorPrereqsMet()
+        '// Conflicts such as the requirement for a hood at a unit that does not have one available
         Return True
     End Function
 
@@ -179,8 +176,27 @@
         Return True
     End Function
 
-    Private Function AreVendorPrereqsMet()
-        '// Conflicts such as the requirement for a hood at a unit that does not have one available
+    Private Function IsVendorNotAlreadyAtLocation()
+        For Each obj In CurrentLocation.StationStack.Children
+            If TypeOf (obj) Is ScheduleStation Then
+                Dim station As ScheduleStation = obj
+                If station.VendorStack.Children.Count > 0 Then
+                    Dim vndor As VendorInStation
+                    For Each ooobj In station.VendorStack.Children
+                        If TypeOf (ooobj) Is VendorInStation Then
+                            vndor = ooobj
+                            If vndor.ReferencedVendor.VendorItem.Name = VendorSched.ActiveVendor.VendorItem.Name Then
+                                With VendorSched
+                                    .tbSaveStatus.Text = "This vendor is already present at this location on this day."
+                                    .sbSaveStatus.Background = Brushes.LightYellow
+                                End With
+                                Return False
+                            End If
+                        End If
+                    Next
+                End If
+            End If
+        Next
         Return True
     End Function
 
@@ -201,6 +217,7 @@
                                     .tbSaveStatus.Text = "This food type conflicts with another vendor present on the same day"
                                     .sbSaveStatus.Background = Brushes.LightYellow
                                 End With
+                                Return False
                             End If
                         End If
                     Next

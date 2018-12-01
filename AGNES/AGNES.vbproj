@@ -200,6 +200,7 @@
     <Compile Include="Training Objects\TrainingGridSource.vb" />
     <Compile Include="Vendor Objects\ScheduleDay.vb" />
     <Compile Include="Vendor Objects\ScheduleLocation.vb" />
+    <Compile Include="Vendor Objects\ScheduleTruckStation.vb" />
     <Compile Include="Vendor Objects\ScheduleVendor.vb" />
     <Compile Include="Vendor Objects\ScheduleWeek.vb" />
     <Compile Include="Vendor Objects\ScheduleStation.vb" />
