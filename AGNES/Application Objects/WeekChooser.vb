@@ -14,7 +14,8 @@ Public Class WeekChooser
     Public Property HeldWeek As Byte
     Public Property ChooserParent As Object
     Public Property SelectedCount As Byte
-
+    Public Property DisableSelectAllWeeks As Boolean
+    Public Property DisableHideWeeks As Boolean
     Private _currentweek As Byte
     Public Property CurrentWeek As Byte
         Get
@@ -85,7 +86,7 @@ Public Class WeekChooser
         For Each brd As Border In Children
             If brd.Tag <> "Label" Then
                 Dim tb As TextBlock = brd.Child
-                If (FormatNumber(tb.Tag, 0) < MinWeek) Or (FormatNumber(tb.Tag, 0) > MaxWeek) Then
+                If DisableHideWeeks = False And ((FormatNumber(tb.Tag, 0) < MinWeek) Or (FormatNumber(tb.Tag, 0) > MaxWeek)) Then
                     brd.IsEnabled = False
                     brd.Visibility = Visibility.Hidden
                 Else
@@ -150,7 +151,7 @@ Public Class WeekChooser
         If FormatNumber(tb.Tag, 0) <> CurrentWeek Then
             CurrentWeek = FormatNumber(tb.Tag, 0)
         Else
-            If CurrentWeek <> 0 Then Reset()
+            If CurrentWeek <> 0 And DisableSelectAllWeeks = False Then Reset()
         End If
     End Sub
 

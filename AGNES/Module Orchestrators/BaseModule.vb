@@ -69,6 +69,22 @@
         Return 12
     End Function
 
+    Public Function GetLastCalendarDayOfMonth(m) As Byte
+        Select Case m
+            Case 1, 3, 5, 7, 8, 10, 12
+                Return 31
+            Case 4, 6, 9, 11
+                Return 30
+            Case 2
+                If Date.IsLeapYear(Now.Year) = True Then
+                    Return 29
+                Else
+                    Return 28
+                End If
+        End Select
+        Return 1
+    End Function
+
     Public Function GetCurrentWeek(dt As Date) As Byte
         dt = dt.AddDays(-1)
         Dim df = From d In SharedDataGroup.Dates
@@ -78,6 +94,18 @@
             Return (d.Week)
         Next
         Return 5
+    End Function
+
+    Public Function GetCurrentCalendarWeek(dt As Date) As Byte
+        Dim IncrementDate As Date, MondayCount As Byte = 0
+        Dim DateString As String = dt.Month & "/1/" & Now().Year
+        IncrementDate = FormatDateTime(DateString, DateFormat.ShortDate)
+        Do Until IncrementDate > dt
+            If IncrementDate.DayOfWeek = DayOfWeek.Monday Then MondayCount += 1
+            IncrementDate = IncrementDate.AddDays(1)
+        Loop
+        If MondayCount = 0 Then MondayCount = 1 '// Force a week 1 value when the 1st falls on Tues-Sun and module is opened on any of those gap days
+        Return MondayCount
     End Function
 
     Public Function GetMaxWeeks(p As Byte) As Byte
@@ -90,6 +118,17 @@
             Return 4
         End If
         Return 5
+    End Function
+
+    Public Function GetMaxCalendarWeeks(m As Byte) As Byte
+        Dim IncrementDate As Date, MondayCount As Byte = 0
+        Dim DateString As String = m & "/1/" & Now().Year
+        IncrementDate = FormatDateTime(DateString, DateFormat.ShortDate)
+        Do Until IncrementDate.Month <> m
+            If IncrementDate.DayOfWeek = DayOfWeek.Monday Then MondayCount += 1
+            IncrementDate = IncrementDate.AddDays(1)
+        Loop
+        Return MondayCount
     End Function
 
     Public Function getweekoperatingdays(fy As Integer, p As Byte, w As Byte) As Byte

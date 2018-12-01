@@ -1,6 +1,7 @@
 ﻿Imports System.ComponentModel
 Public Class ScheduleWeek
     Inherits DockPanel
+
 #Region "Properties"
     Public Property SaveStatus As Boolean
 #End Region
@@ -10,17 +11,29 @@ Public Class ScheduleWeek
 #End Region
 
 #Region "Public Methods"
-    Public Sub Update(p As Byte, w As Byte)
+    Public Sub Update(y As Integer, m As Byte, w As Byte)
         Children.Clear()
         VendorModule.NumberOfDaysInWeek = 0
+
+        Dim IncrementDate As Date, WeekEndDate As Date, MondayCount As Byte = 0
+        Dim DateString As String = m & "/1/" & y
+        IncrementDate = FormatDateTime(DateString, DateFormat.ShortDate)
+        Do Until MondayCount = w
+            If IncrementDate.DayOfWeek = DayOfWeek.Monday Then MondayCount += 1
+            IncrementDate = IncrementDate.AddDays(1)
+        Loop
+        IncrementDate = IncrementDate.AddDays(-1)
+        WeekEndDate = IncrementDate.AddDays(4)
+
         Dim qwd = From f As Dates In SharedDataGroup.Dates
-                  Where f.MS_FY = CurrentFiscalYear And
-                      f.MS_Period = p And
-                      f.Week = w
+                  Where f.Date_ID >= IncrementDate And
+                      f.Date_ID <= WeekEndDate
 
         For Each f In qwd
-            If Weekday(f.Date_ID, FirstDayOfWeek.Monday) < 6 Then CreateWeekDay(f.Date_ID, f.IS_WEEKEND_HOLIDAY)
+            CreateWeekDay(f.Date_ID, f.IS_WEEKEND_HOLIDAY)
         Next
+
+
 
     End Sub
 

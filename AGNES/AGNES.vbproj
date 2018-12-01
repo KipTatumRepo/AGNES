@@ -121,7 +121,9 @@
     </ApplicationDefinition>
     <Compile Include="Admin Objects\ModuleListItem.vb" />
     <Compile Include="Application Objects\AgnesBaseInput.vb" />
+    <Compile Include="Application Objects\MonthChooser.vb" />
     <Compile Include="Application Objects\PercentBox.vb" />
+    <Compile Include="Application Objects\YearChooser.vb" />
     <Compile Include="Entities\ApplicationSession.vb">
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
     </Compile>
@@ -199,6 +201,7 @@
     <Compile Include="Training Objects\TrainingGridSource.vb" />
     <Compile Include="Vendor Objects\ScheduleDay.vb" />
     <Compile Include="Vendor Objects\ScheduleLocation.vb" />
+    <Compile Include="Vendor Objects\ScheduleTruckStation.vb" />
     <Compile Include="Vendor Objects\ScheduleVendor.vb" />
     <Compile Include="Vendor Objects\ScheduleWeek.vb" />
     <Compile Include="Vendor Objects\ScheduleStation.vb" />
@@ -894,6 +897,7 @@
       <DependentUpon>WCRModule.edmx</DependentUpon>
       <LastGenOutput>WCRModule.vb</LastGenOutput>
     </Content>
+    <Resource Include="Resources\dollarsignb.png" />
     <Resource Include="Resources\HRMgr.png" />
     <Resource Include="Resources\BirthdayBalloons.png" />
     <Resource Include="Resources\DblArrow.png" />
