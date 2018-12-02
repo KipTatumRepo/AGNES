@@ -42,7 +42,7 @@ Public Class RadialPortal
 
     Private Sub GetVersion()
         Dim v As Version = Assembly.GetExecutingAssembly().GetName().Version
-        txtVersion.Text = "Beta Version " & v.Major & "." & v.Minor
+        txtVersion.Text = "Version " & v.Major & "." & v.Minor
     End Sub
 
     Private Sub GetUserInfo()
