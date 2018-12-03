@@ -42,7 +42,7 @@ Public Class RadialPortal
 
     Private Sub GetVersion()
         Dim v As Version = Assembly.GetExecutingAssembly().GetName().Version
-        txtVersion.Text = "Beta Version " & v.Major & "." & v.Minor
+        txtVersion.Text = "Version " & v.Major & "." & v.Minor
     End Sub
 
     Private Sub GetUserInfo()
@@ -101,7 +101,6 @@ Public Class RadialPortal
             '    .UserID = 10140
             '    .UserLevel = 4
             'End With
-
 
             'With My.Settings
             '    .UserName = "Mike Shea"
@@ -289,6 +288,17 @@ Public Class RadialPortal
 
     Private Sub ClosingEvents(sender As Object, e As CancelEventArgs) Handles Me.Closing
         SessionLog(1)
+    End Sub
+
+    Private Sub txtVersion_PreviewMouseLeftButtonDown(sender As Object, e As MouseButtonEventArgs) Handles txtVersion.PreviewMouseLeftButtonDown
+        If e.ClickCount = 2 Then
+            OpenMicrosoftWord("\\compasspowerbi\compassbiapplications\agnes\AGNESDocumentation.docx")
+        End If
+    End Sub
+
+    Private Sub OpenMicrosoftWord(ByVal f As String)
+        Dim startInfo As New ProcessStartInfo With {.FileName = "WINWORD.EXE", .Arguments = f}
+        Process.Start(startInfo)
     End Sub
 
 #End Region

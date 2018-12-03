@@ -1,12 +1,10 @@
 ﻿Imports System.ComponentModel
 'WATCH: GLITCH WHEN OPENING DRAFT FLASH - UNABLE TO RESAVE (STATUSSAVE?)  ISSUE WAS WITH FARGO P5W1 - COULD NOT REPLICATE 11/17/18
-'CRITICAL: UPON OPEN, HIGHLIGHT THE ENTIRE TEXT BLOCK IN THE FIRST FIELD (SALES, ETC.) TO PREVENT FOLLOWING ZEROES IN THE DATA
-'CRITICAL: PERIOD/WEEK CHOOSER FOR FLASH IS BEHAVING ODDLY - WHEN AT THE JUNCTION OF PERIOD CHANGES, CURRENT WEEK IS BEING BROUGHT FORWARD
-'          EXAMPLE: AT THE "PHYSICAL" END OF PERIOD 5, IF PERIOD 6 IS CHOSEN, WEEK 5 IS ALSO CHOSEN.  POTENTIAL BIG PROBLEMS IF SUBSEQUENT
-'          PERIOD IS 4 WEEKS AFTER A 5 WEEK
+
 Public Class Flash
 
 #Region "Properties"
+    Dim InitialFocus As FlashGroup
     Dim SalesGroup As FlashGroup
     Dim CamGroup As FlashGroup
     Dim CafeSalesGroup As FlashGroup
@@ -153,6 +151,7 @@ Public Class Flash
                     .Add(OpexGroup)
                     .Add(SubsidyGroup)
                 End With
+                InitialFocus = CamGroup
 #End Region
 
 #Region "Cafes"
@@ -195,6 +194,7 @@ Public Class Flash
                     .Add(OpexGroup)
                     .Add(SubsidyGroup)
                 End With
+                InitialFocus = SalesGroup
 #End Region
 
 #Region "A/V"
@@ -240,7 +240,7 @@ Public Class Flash
                     .Add(FeesGroup)
                     .Add(SubsidyGroup)
                 End With
-
+                InitialFocus = SalesGroup
 #End Region
 
 #Region "Field Sites"
@@ -292,6 +292,7 @@ Public Class Flash
                     .Add(FeesGroup)
                     .Add(SubsidyGroup)
                 End With
+                InitialFocus = CafeSalesGroup
 #End Region
 
 #Region "Beverage"
@@ -340,6 +341,7 @@ Public Class Flash
                     .Add(FeesGroup)
                     .Add(SubsidyGroup)
                 End With
+                InitialFocus = SalesGroup
 #End Region
 
 #Region "Catering"
@@ -382,6 +384,7 @@ Public Class Flash
                     .Add(OpexGroup)
                     .Add(SubsidyGroup)
                 End With
+                InitialFocus = SalesGroup
 #End Region
 
 #Region "Overhead"
@@ -422,6 +425,7 @@ Public Class Flash
                     .Add(OpexGroup)
                     .Add(SubsidyGroup)
                 End With
+                InitialFocus = CogsGroup
 #End Region
 
 #Region "Eventions"
@@ -468,6 +472,7 @@ Public Class Flash
                     .Add(FeesGroup)
                     .Add(SubsidyGroup)
                 End With
+                InitialFocus = SalesGroup
 #End Region
         End Select
 
@@ -486,7 +491,7 @@ Public Class Flash
         End With
         tlbUnits.Items.Add(Units)
         If Units.NumberOfAvailableUnits = 1 Then Units.IsEnabled = False
-
+        InitialFocus.SetFocus()
     End Sub
 
 #Region "Toolbar Methods"
@@ -614,6 +619,7 @@ Public Class Flash
                 If fg.GroupIsSubTotal = True Then fg.Update(fg)
             Next
         End If
+        InitialFocus.SetFocus()
     End Sub
 
     Private Sub WeekChanged()
@@ -640,6 +646,7 @@ Public Class Flash
                 If fg.GroupIsSubTotal = True Then fg.Update(fg)
             Next
         End If
+        InitialFocus.SetFocus()
     End Sub
 
     Private Sub UnitChanged()
@@ -665,8 +672,8 @@ Public Class Flash
                 fg.Load()
                 If fg.GroupIsSubTotal = True Then fg.Update(fg)
             Next
-
         End If
+        InitialFocus.SetFocus()
     End Sub
 
 #End Region

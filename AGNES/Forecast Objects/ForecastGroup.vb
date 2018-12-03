@@ -567,7 +567,7 @@
             W5Val.Visibility = Visibility.Hidden
             W5Val.SetAmount = 0
             W5Val.IsEnabled = False
-            FcastPage.lblWeek5.Foreground = Brushes.LightGray
+            '           ForecastModule.FcastPage.lblWeek5.Foreground = Brushes.LightGray
         Else
             W5Val.Visibility = Visibility.Visible
             W5Val.IsEnabled = True
