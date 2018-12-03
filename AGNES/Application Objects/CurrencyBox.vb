@@ -11,7 +11,7 @@ Public Class CurrencyBox
     Public Highlight As Boolean
     Private SystemChange As Boolean
     Private HeldValue As String
-
+    Public tb As TextBox
     Private _credit As Boolean
     Public Property Credit As Boolean
         Get
@@ -39,7 +39,6 @@ Public Class CurrencyBox
         End Get
         Set(value As Double)
             _setamount = value
-            Dim tb As TextBox = Children(1)
             tb.Text = FormatCurrency(_setamount, 2)
         End Set
     End Property
@@ -54,10 +53,10 @@ Public Class CurrencyBox
         _debitonly = ForceDebit
         _creditonly = ForceCredit
         Highlight = SelectAllUponEnteringField
-        Dim t As TextBox = Children(1)
-        AddHandler t.GotFocus, AddressOf EnterField
-        AddHandler t.LostFocus, AddressOf ExitField
-        AddHandler t.TextChanged, AddressOf ValidateText
+        tb = Children(1)
+        AddHandler tb.GotFocus, AddressOf EnterField
+        AddHandler tb.LostFocus, AddressOf ExitField
+        AddHandler tb.TextChanged, AddressOf ValidateText
         ' Field width for 8pt = 80
         '             for 12pt= 112
         '             for 16pt= 140

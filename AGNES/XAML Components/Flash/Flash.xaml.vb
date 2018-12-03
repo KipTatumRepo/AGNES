@@ -4,6 +4,7 @@
 Public Class Flash
 
 #Region "Properties"
+    Dim InitialFocus As FlashGroup
     Dim SalesGroup As FlashGroup
     Dim CamGroup As FlashGroup
     Dim CafeSalesGroup As FlashGroup
@@ -150,6 +151,7 @@ Public Class Flash
                     .Add(OpexGroup)
                     .Add(SubsidyGroup)
                 End With
+                InitialFocus = CamGroup
 #End Region
 
 #Region "Cafes"
@@ -192,6 +194,7 @@ Public Class Flash
                     .Add(OpexGroup)
                     .Add(SubsidyGroup)
                 End With
+                InitialFocus = SalesGroup
 #End Region
 
 #Region "A/V"
@@ -237,7 +240,7 @@ Public Class Flash
                     .Add(FeesGroup)
                     .Add(SubsidyGroup)
                 End With
-
+                InitialFocus = SalesGroup
 #End Region
 
 #Region "Field Sites"
@@ -289,6 +292,7 @@ Public Class Flash
                     .Add(FeesGroup)
                     .Add(SubsidyGroup)
                 End With
+                InitialFocus = CafeSalesGroup
 #End Region
 
 #Region "Beverage"
@@ -337,6 +341,7 @@ Public Class Flash
                     .Add(FeesGroup)
                     .Add(SubsidyGroup)
                 End With
+                InitialFocus = SalesGroup
 #End Region
 
 #Region "Catering"
@@ -379,6 +384,7 @@ Public Class Flash
                     .Add(OpexGroup)
                     .Add(SubsidyGroup)
                 End With
+                InitialFocus = SalesGroup
 #End Region
 
 #Region "Overhead"
@@ -419,6 +425,7 @@ Public Class Flash
                     .Add(OpexGroup)
                     .Add(SubsidyGroup)
                 End With
+                InitialFocus = CogsGroup
 #End Region
 
 #Region "Eventions"
@@ -465,6 +472,7 @@ Public Class Flash
                     .Add(FeesGroup)
                     .Add(SubsidyGroup)
                 End With
+                InitialFocus = SalesGroup
 #End Region
         End Select
 
@@ -483,7 +491,7 @@ Public Class Flash
         End With
         tlbUnits.Items.Add(Units)
         If Units.NumberOfAvailableUnits = 1 Then Units.IsEnabled = False
-
+        InitialFocus.SetFocus()
     End Sub
 
 #Region "Toolbar Methods"
@@ -611,6 +619,7 @@ Public Class Flash
                 If fg.GroupIsSubTotal = True Then fg.Update(fg)
             Next
         End If
+        InitialFocus.SetFocus()
     End Sub
 
     Private Sub WeekChanged()
@@ -637,6 +646,7 @@ Public Class Flash
                 If fg.GroupIsSubTotal = True Then fg.Update(fg)
             Next
         End If
+        InitialFocus.SetFocus()
     End Sub
 
     Private Sub UnitChanged()
@@ -662,8 +672,8 @@ Public Class Flash
                 fg.Load()
                 If fg.GroupIsSubTotal = True Then fg.Update(fg)
             Next
-
         End If
+        InitialFocus.SetFocus()
     End Sub
 
 #End Region

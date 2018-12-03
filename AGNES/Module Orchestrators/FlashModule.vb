@@ -29,7 +29,7 @@
                         osp.Week = FlashPage.Wk.CurrentWeek And
                         osp.UnitNumber = SelectedFlashUnit
 
-                If qsp.Count = 0 And (FlashPage.SaveStatus = 1 Or FlashPage.SaveStatus = 3) Then ' Add new
+                If qsp.Count = 0 And FlashPage.SaveStatus = 3 Then ' Add new
                     Dim SickPay As New SingleUserInput(True)
                     With SickPay
                         .InputType = 1

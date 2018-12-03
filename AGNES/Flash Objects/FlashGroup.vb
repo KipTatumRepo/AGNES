@@ -70,6 +70,7 @@
         Get
             Return _largepercentage
         End Get
+
         Set(value As Boolean)
             _largepercentage = value
             If value = True Then
@@ -294,6 +295,10 @@
                 TargetFlashGroup.LargePercentage = False
             End If
         End If
+    End Sub
+
+    Public Sub SetFocus()
+        FlashVal.tb.Focus()
     End Sub
 
 #End Region

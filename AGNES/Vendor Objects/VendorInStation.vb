@@ -3,7 +3,10 @@
 
 #Region "Properties"
     Public Property ReferencedVendor As ScheduleVendor
-    Public Property ReferencedLocation As ScheduleStation
+    Public Property ReferencedStation As ScheduleStation
+    Public Property ReferencedLoc As ScheduleLocation
+    Public Property ReferencedTruckStation As ScheduleTruckStation
+    Public Property IsBrand As Boolean
     Private DeleteContextMenu As ContextMenu
 #End Region
 
@@ -19,8 +22,21 @@
 #End Region
 
 #Region "Public Methods"
+    Private Sub RemoveItemFromStation()
+        ReferencedStation.DeleteItem(Me)
+        ReferencedVendor.UsedWeeklySlots -= 1
+
+    End Sub
+
     Private Sub RemoveItem()
-        ReferencedLocation.DeleteItem(Me)
+        Select Case IsBrand
+            Case True
+                ReferencedStation.DeleteItem(Me)
+            Case False
+                ReferencedLoc.DeleteItem(Me)
+        End Select
+        ReferencedVendor.UsedWeeklySlots -= 1
+
     End Sub
 
 #End Region
