@@ -1,7 +1,5 @@
 ﻿Module BaseModule
 
-    'CRITICAL: USE CORRECT CYCLE FOR BUDGET QUERIES
-
 #Region "Properties"
     Public SharedDataGroup As BIEntities
     Public AGNESShared As AGNESSharedDataEntity
@@ -157,24 +155,37 @@
     End Function
 
     Public Function LoadSingleUnitBudget(category As String, unit As Int64, yr As Int16, period As Byte) As Double
-
+        Dim CurrentCycle As Integer = GetCorrectBudgetCycle(period)
         Dim bf = From b In FlashBudgets.Budgets
                  Where b.Category = category And
                      b.MSFY = yr And
                      b.MSP = period And
-                     b.UnitNumber = unit
+                     b.UnitNumber = unit And
+                     b.Cycle = CurrentCycle
                  Select b
-
-        ' b.Cycle = GetCorrectBudgetCycle(period)
-
-
         For Each b In bf
-                Return b.Budget1
-            Next
-            Return 0
+            Return b.Budget1
+        Next
+
+        Return 0
     End Function
 
-    Public Function GetCorrectBudgetCycle(p)
+    Public Function LoadSingleWeekAndUnitBudget(category As String, unit As Int64, yr As Int16, period As Byte, weekoperatingdays As Byte, periodoperatingdays As Byte) As Double
+        Dim CurrentCycle As Integer = GetCorrectBudgetCycle(period)
+        Dim bf = From b In FlashBudgets.Budgets
+                 Where b.Category = category And
+                     b.MSFY = yr And
+                     b.MSP = period And
+                     b.UnitNumber = unit And
+                     b.Cycle = CurrentCycle
+                 Select b
+        For Each b In bf
+            Return (b.Budget1 / periodoperatingdays) * weekoperatingdays
+        Next
+        Return 0
+    End Function
+
+    Public Function GetCorrectBudgetCycle(p) As Integer
         Select Case p
             Case 1 To 3
                 Return 1
@@ -187,19 +198,6 @@
             Case Else
                 Return 1
         End Select
-    End Function
-
-    Public Function LoadSingleWeekAndUnitBudget(category As String, unit As Int64, yr As Int16, period As Byte, weekoperatingdays As Byte, periodoperatingdays As Byte) As Double
-        Dim bf = From b In FlashBudgets.Budgets
-                 Where b.Category = category And
-                     b.MSFY = yr And
-                     b.MSP = period And
-                     b.UnitNumber = unit
-                 Select b
-        For Each b In bf
-            Return (b.Budget1 / periodoperatingdays) * weekoperatingdays
-        Next
-        Return 0
     End Function
 
     Public Function LoadSingleWeekAndUnitFlash(category As String, unit As Int64, yr As Int16, period As Byte, wk As Byte) As (fv As Double, Stts As String, Notes As String, alert As Boolean)
