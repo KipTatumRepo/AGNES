@@ -102,7 +102,6 @@ Public Class RadialPortal
             '    .UserLevel = 4
             'End With
 
-
             'With My.Settings
             '    .UserName = "Mike Shea"
             '    .UserShortName = "Mike"
