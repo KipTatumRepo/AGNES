@@ -116,12 +116,12 @@ Public Class RadialPortal
             '    .UserLevel = 4
             'End With
 
-            'With My.Settings
-            '    .UserName = "James Normandin"
-            '    .UserShortName = "Jim"
-            '    .UserID = 10096
-            '    .UserLevel = 4
-            'End With
+            With My.Settings
+                .UserName = "James Normandin"
+                .UserShortName = "Jim"
+                .UserID = 10096
+                .UserLevel = 4
+            End With
 
             'With My.Settings
             '    .UserName = "Robert Price"

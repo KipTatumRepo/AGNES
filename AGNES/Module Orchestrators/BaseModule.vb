@@ -1,5 +1,7 @@
 ﻿Module BaseModule
 
+    'CRITICAL: USE CORRECT CYCLE FOR BUDGET QUERIES
+
 #Region "Properties"
     Public SharedDataGroup As BIEntities
     Public AGNESShared As AGNESSharedDataEntity
@@ -155,16 +157,36 @@
     End Function
 
     Public Function LoadSingleUnitBudget(category As String, unit As Int64, yr As Int16, period As Byte) As Double
+
         Dim bf = From b In FlashBudgets.Budgets
                  Where b.Category = category And
                      b.MSFY = yr And
                      b.MSP = period And
                      b.UnitNumber = unit
                  Select b
+
+        ' b.Cycle = GetCorrectBudgetCycle(period)
+
+
         For Each b In bf
-            Return b.Budget1
-        Next
-        Return 0
+                Return b.Budget1
+            Next
+            Return 0
+    End Function
+
+    Public Function GetCorrectBudgetCycle(p)
+        Select Case p
+            Case 1 To 3
+                Return 1
+            Case 4 To 6
+                Return 2
+            Case 7 To 9
+                Return 3
+            Case 10 To 12
+                Return 4
+            Case Else
+                Return 1
+        End Select
     End Function
 
     Public Function LoadSingleWeekAndUnitBudget(category As String, unit As Int64, yr As Int16, period As Byte, weekoperatingdays As Byte, periodoperatingdays As Byte) As Double
