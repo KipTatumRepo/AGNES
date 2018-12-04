@@ -15,7 +15,34 @@
     Public ForecastVariance As CurrencyBox
     Public Notes As Expander
     Private NotesText As TextBox
-    Public NoteContent As String = ""
+    Private _notestate As Boolean
+    Private Property NoteState As Boolean
+        Get
+            Return _notestate
+        End Get
+        Set(value As Boolean)
+            _notestate = value
+            If value = True Then
+                Notes.Background = Brushes.Transparent
+            Else
+                If NoteContent <> "" Then Notes.Background = Brushes.Red
+            End If
+        End Set
+    End Property
+    Private _notescontent As String
+    Public Property NoteContent As String
+        Get
+            Return _notescontent
+        End Get
+        Set(value As String)
+            _notescontent = value
+            If value <> "" Then
+                Notes.Background = Brushes.Red
+            Else
+                Notes.Background = Brushes.Transparent
+            End If
+        End Set
+    End Property
     Public WeekChooseObject As WeekChooser
     Public PeriodChooseObject As PeriodChooser
     Public UnitChooseObject As UnitChooser
@@ -117,11 +144,13 @@
         If GroupIsSubTotal = True Then IsEnabled = False
 
         '// Create expander for notes
-        Notes = New Expander With {.Height = 32, .ExpandDirection = ExpandDirection.Right, .IsExpanded = False, .ToolTip = "Add Notes"}
-        NotesText = New TextBox With {.MaxLength = 130, .Width = 715}
+        Notes = New Expander With {.Height = 24, .ExpandDirection = ExpandDirection.Right, .IsExpanded = False, .ToolTip = "Add Notes"}
+        NotesText = New TextBox With {.MaxLength = 130, .Width = 715, .Background = Brushes.White, .Opacity = 1}
         AddHandler NotesText.GotFocus, AddressOf EnterNoteField
         AddHandler NotesText.LostFocus, AddressOf LeaveNoteField
         AddHandler NotesText.TextChanged, AddressOf NotesChanged
+        AddHandler Notes.Expanded, AddressOf NotesExpanderChanged
+        AddHandler Notes.Collapsed, AddressOf NotesExpanderChanged
         Notes.Content = NotesText
 
         '// Create flash percentage textbox.  Hide if it doesn't belong with this group (preserving spacing)
@@ -560,6 +589,10 @@
         Next
         Return InternalCounter
     End Function
+
+    Private Sub NotesExpanderChanged()
+        NoteState = Notes.IsExpanded
+    End Sub
 
     Private Sub LeaveNoteField()
         Notes.IsExpanded = False
