@@ -82,7 +82,7 @@
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\AgnesIcon.ico</ApplicationIcon>
+    <ApplicationIcon>AgnesIcon2.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -807,6 +807,7 @@
     <Resource Include="Resources\Commons.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="AgnesIcon2.ico" />
     <Content Include="Entities\AgnesSharedDataModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>AgnesSharedDataModel.edmx</DependentUpon>
