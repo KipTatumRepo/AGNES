@@ -37,6 +37,7 @@
           <Property Name="GL" Type="bigint" Nullable="false" />
           <Property Name="GLCategory" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="ForecastValue" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="SavedBy" Type="varchar" MaxLength="128" />
         </EntityType>
         <EntityContainer Name="ForecastModelStoreContainer">
           <EntitySet Name="AssociateShortages" EntityType="Self.AssociateShortages" Schema="agnes" store:Type="Tables" />
@@ -69,6 +70,7 @@
           <Property Name="GL" Type="Int64" Nullable="false" />
           <Property Name="GLCategory" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ForecastValue" Type="Decimal" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="SavedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityContainer Name="ForecastEntity" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ForecastAudits" EntityType="ForecastModel.ForecastAudits" />
@@ -105,6 +107,7 @@
           <EntitySetMapping Name="Forecasts">
             <EntityTypeMapping TypeName="ForecastModel.Forecasts">
               <MappingFragment StoreEntitySet="Forecasts">
+                <ScalarProperty Name="SavedBy" ColumnName="SavedBy" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
                 <ScalarProperty Name="MSFY" ColumnName="MSFY" />
                 <ScalarProperty Name="MSP" ColumnName="MSP" />
