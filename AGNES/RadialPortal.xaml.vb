@@ -34,11 +34,30 @@ Public Class RadialPortal
         BaseModule.Runmodule()
         SessionLog(0)
         ConstructRadialMenu()
+        PortalEasterEggs()
     End Sub
 
 #End Region
 
 #Region "Private Methods"
+    Private Sub PortalEasterEggs()
+        Dim m As Byte = Now.Month
+        Dim d As Byte = Now.Day
+
+        'Skynet day
+        If m = 8 And d = 29 Then
+            imgAGNES.Source = New BitmapImage(New Uri("Resources/AGNES800.png", UriKind.Relative))
+            txtVersion.Text = "Model T-800"
+        End If
+
+        ' Mrs. Claus
+        If m = 12 And (d > 13 And d < 25) Then
+            imgAGNES.Source = New BitmapImage(New Uri("Resources/AGNESXmas.png", UriKind.Relative))
+            txtVersion.Text = "Happy Holidays!"
+        End If
+
+
+    End Sub
 
     Private Sub GetVersion()
         Dim v As Version = Assembly.GetExecutingAssembly().GetName().Version
