@@ -50,14 +50,33 @@ Public Class ScheduleDay
     End Sub
 
     Private Sub LoadAndAddLocations()
+
+        'TODO: THIS CODE WILL BE REPLACED BY A QUERY ON THE FoodTruckSite FIELD IN THE FINAL NEW LOCATIONS TABLE
+        Dim Loc92 As New ScheduleLocation("92 (Trucks Only)", 0, Me, Highlight)
+        Loc92.AllowsFoodTrucks = True
+        LocationStack.Children.Add(Loc92)
+        Highlight = Not Highlight
+
+
+        'TODO: THIS CODE WILL BE REPLACED BY A QUERY ON THE STATION COUNT FIELD IN THE FINAL NEW LOCATIONS TABLE
         Dim x As Byte
-        Dim singlelocs() As String = {"4", "16", "26", "34", "37", "41", "43", "50", "83", "112", "121",
-            "CCP", "LS", "Millennium", "RTC", "Samm-C", "Studio H"}
+        Dim singlelocs() As String = {"4", "16", "26", "34", "37", "41", "50", "83", "112", "121",
+            "CCP", "LS", "RTC", "Samm-C", "Studio H"}
         For x = 1 To singlelocs.Count
             Dim newloc As New ScheduleLocation(singlelocs(x - 1), 1, Me, Highlight)
             LocationStack.Children.Add(newloc)
             Highlight = Not Highlight
         Next
+
+        Dim Loc43 As New ScheduleLocation("43", 1, Me, Highlight)
+        Loc43.AllowsFoodTrucks = True
+        LocationStack.Children.Add(Loc43)
+        Highlight = Not Highlight
+
+        Dim LocMill As New ScheduleLocation("Millennium", 1, Me, Highlight)
+        LocMill.AllowsFoodTrucks = True
+        LocationStack.Children.Add(LocMill)
+        Highlight = Not Highlight
 
         Dim doublelocs() As String = {"86", "Redwest", "31"}
         For x = 1 To doublelocs.Count

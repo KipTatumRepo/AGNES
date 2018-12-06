@@ -421,6 +421,10 @@
         Return True
     End Function
 
+    Public Sub SetFocus()
+        DRR.tb.Focus()
+    End Sub
+
 #End Region
 
 #Region "Private Methods"
@@ -500,6 +504,7 @@
                 .GL = 0
                 .GLCategory = GroupCategory
                 .ForecastValue = WkObj.SetAmount
+                .SavedBy = My.Settings.UserName
             End With
             FlashForecasts.Forecasts.Add(nf)
             FlashForecasts.SaveChanges()
@@ -538,6 +543,7 @@
             prevval = quf.ForecastValue
             With quf
                 .ForecastValue = wkobj.SetAmount
+                .SavedBy = My.Settings.UserName
             End With
             FlashForecasts.SaveChanges()
             SaveAuditTrail(quf.PID, prevval)

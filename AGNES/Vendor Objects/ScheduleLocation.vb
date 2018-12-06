@@ -7,6 +7,7 @@ Public Class ScheduleLocation
     Public Property LocationName As String
     Public Property LocationBlock As TextBlock
     Public Property StationCount As Byte
+    Public Property AllowsFoodTrucks As Boolean
     Private Property HighlightColor As Boolean = True
     Public Property CurrentWeekDay As ScheduleDay
     Private Property DropAllowed As Boolean = True
@@ -29,7 +30,8 @@ Public Class ScheduleLocation
         CurrentWeekDay = cwd
         StationCount = sc
         BorderBrush = Brushes.Black
-        'If Highlight = True Then Background = Brushes.Ivory
+        Dim bc As New BrushConverter
+        Background = bc.ConvertFrom("#FFBFE8F7")
         BorderThickness = New Thickness(1, 1, 1, 1)
         Margin = New Thickness(1, 1, 1, 0)
         LocationName = locname
@@ -37,7 +39,7 @@ Public Class ScheduleLocation
         Child = StationStack
         AllowDrop = True
         AddName()
-        AddStations()
+        If sc > 0 Then AddStations()
     End Sub
 
 #End Region
@@ -125,7 +127,7 @@ Public Class ScheduleLocation
     End Sub
 
     Private Function IsVendorTypeAllowedAtBuilding()
-        If VendorSched.ActiveVendor.VendorItem.VendorType = 2 Then Return False
+        If VendorSched.ActiveVendor.VendorItem.VendorType = 2 Or AllowsFoodTrucks = False Then Return False
         VendorSched.tbSaveStatus.Text = StatusBarText
         VendorSched.tbSaveStatus.Background = StatusBarColor
         Return True

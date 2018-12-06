@@ -151,6 +151,7 @@
         AddHandler NotesText.TextChanged, AddressOf NotesChanged
         AddHandler Notes.Expanded, AddressOf NotesExpanderChanged
         AddHandler Notes.Collapsed, AddressOf NotesExpanderChanged
+        AddHandler Notes.PreviewKeyDown, AddressOf EnterKeyCheck
         Notes.Content = NotesText
 
         '// Create flash percentage textbox.  Hide if it doesn't belong with this group (preserving spacing)
@@ -605,6 +606,41 @@
 
     Private Sub NotesChanged()
         If NotesText.Text <> NoteContent Then FlashPage.SaveStatus = 0
+    End Sub
+
+    Private Sub EnterKeyCheck(sender As Object, e As KeyEventArgs)
+        If e.Key = Key.Enter Then
+            Dim ct As Byte = 0, target As Byte, fgcount As Byte
+            For Each fg As FlashGroup In FlashPage.grdFlashGroups.Children
+                fgcount += 1
+            Next
+
+            For Each fg As FlashGroup In FlashPage.grdFlashGroups.Children
+                If fg Is Me Then
+                    target = ct
+                    Exit For
+                End If
+                ct += 1
+            Next
+            ct = 0
+            For Each fg As FlashGroup In FlashPage.grdFlashGroups.Children
+                If ct >= target + 1 Then
+                    If fg.IsEnabled = True Then
+                        fg.SetFocus()
+                        e.Handled = True
+                        Exit Sub
+                    End If
+                End If
+                ct += 1
+                If ct >= fgcount Then
+                    For Each fg2 As FlashGroup In FlashPage.grdFlashGroups.Children
+                        fg2.SetFocus()
+                        e.Handled = True
+                        Exit Sub
+                    Next
+                End If
+            Next
+        End If
     End Sub
 
 #End Region

@@ -19,5 +19,6 @@ Partial Public Class Forecasts
     Public Property GL As Long
     Public Property GLCategory As String
     Public Property ForecastValue As Decimal
+    Public Property SavedBy As String
 
 End Class
