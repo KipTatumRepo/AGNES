@@ -15,8 +15,8 @@
             <Image Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/LoadPrevious.png" ToolTip="Import Previous Week" Margin="0,5,0,0" />
             <Image Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/save.png" ToolTip="Save Schedule" Margin="0,5,0,0" />
             <Separator />
-            <Image Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/brands.png" ToolTip="Show Local Brands" Margin="0,5,0,0" />
-            <Image Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/FoodTruck.png" ToolTip="Show Food Trucks" Margin="0,5,0,0" />
+            <Image x:Name="imgBrands" Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/brands.png" ToolTip="Show Local Brands" Margin="0,5,0,0" />
+            <Image x:Name="imgTrucks" Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/FoodTruck.png" ToolTip="Show Food Trucks" Margin="0,5,0,0" />
             <Separator />
         </ToolBar>
         <Border BorderBrush="Black" BorderThickness="1,1,1,1" Width="253" Height ="50" HorizontalAlignment="left" VerticalAlignment="Top" Margin="0,61,0,0">

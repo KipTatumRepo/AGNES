@@ -1,5 +1,7 @@
 ﻿Imports System.ComponentModel
 
+'CRITICAL:  VENDOR DROP MESSAGES AREN'T SHOWING PROPERLY
+'CRITICAL:  WEEKLY LOCATIONS AREN'T CALCULATING PROPERLY WHEN HOLIDAYS ARE PRESENT
 Public Class VendorSchedule
 
 #Region "Properties"
@@ -12,6 +14,7 @@ Public Class VendorSchedule
     Private CurrYear As Integer
     Private CurrMonth As Byte
     Private CurrWeek As Byte
+    Private CurrentVendorView As Byte
     Public Property SaveStatus As Boolean
         Get
             Return _savestatus
@@ -101,6 +104,98 @@ Public Class VendorSchedule
         End If
     End Sub
 
+    Private Sub ShowBrandsOnly(sender As Object, e As MouseButtonEventArgs) Handles imgBrands.MouseLeftButtonDown
+        If CurrentVendorView = 2 Then
+            imgBrands.Effect = Nothing
+            imgTrucks.Effect = Nothing
+            CurrentVendorView = 0
+            ShowSegment(0)
+            ExpandLocations()
+            Exit Sub
+        End If
+        imgTrucks.Effect = New Effects.BlurEffect With {.KernelType = Effects.KernelType.Box, .Radius = 5,
+            .RenderingBias = Effects.RenderingBias.Performance}
+        imgBrands.Effect = Nothing
+        CurrentVendorView = 2
+        ExpandLocations()
+        ShowSegment(2)
+        CollapseTrucks()
+
+    End Sub
+
+    Private Sub ShowTrucksOnly(sender As Object, e As MouseButtonEventArgs) Handles imgTrucks.MouseLeftButtonDown
+        If CurrentVendorView = 3 Then
+            imgBrands.Effect = Nothing
+            imgTrucks.Effect = Nothing
+            CurrentVendorView = 0
+            ShowSegment(0)
+            ExpandLocations()
+            Exit Sub
+        End If
+        imgBrands.Effect = New Effects.BlurEffect With {.KernelType = Effects.KernelType.Box, .Radius = 5,
+            .RenderingBias = Effects.RenderingBias.Performance}
+        imgTrucks.Effect = Nothing
+        CurrentVendorView = 3
+        ExpandLocations()
+        ShowSegment(3)
+        CollapseBrands()
+
+    End Sub
+
+    Private Sub ShowSegment(vendortype)
+        For Each v In stkVendors.Children
+            If TypeOf (v) Is ScheduleVendor Then
+                Dim vt As ScheduleVendor = v
+                If vt.VendorType <> vendortype And vendortype <> 0 Then
+                    vt.Visibility = Visibility.Collapsed
+                Else
+                    vt.Visibility = Visibility.Visible
+                End If
+            End If
+        Next
+    End Sub
+
+    Private Sub ExpandLocations()
+        For Each sd In wkSched.Children
+            If TypeOf (sd) Is ScheduleDay Then
+                Dim TargetDay As ScheduleDay = sd
+                For Each Location In TargetDay.LocationStack.Children
+                    If TypeOf (Location) Is ScheduleLocation Then
+                        Dim TargetLoc As ScheduleLocation = Location
+                        TargetLoc.Visibility = Visibility.Visible
+                    End If
+                Next
+            End If
+        Next
+    End Sub
+
+    Private Sub CollapseBrands()
+        For Each sd In wkSched.Children
+            If TypeOf (sd) Is ScheduleDay Then
+                Dim TargetDay As ScheduleDay = sd
+                For Each Location In TargetDay.LocationStack.Children
+                    If TypeOf (Location) Is ScheduleLocation Then
+                        Dim TargetLoc As ScheduleLocation = Location
+                        If TargetLoc.AllowsFoodTrucks = False Then TargetLoc.Visibility = Visibility.Collapsed
+                    End If
+                Next
+            End If
+        Next
+    End Sub
+
+    Private Sub CollapseTrucks()
+        For Each sd In wkSched.Children
+            If TypeOf (sd) Is ScheduleDay Then
+                Dim TargetDay As ScheduleDay = sd
+                For Each Location In TargetDay.LocationStack.Children
+                    If TypeOf (Location) Is ScheduleLocation Then
+                        Dim TargetLoc As ScheduleLocation = Location
+                        If TargetLoc.AllowsFoodTrucks = True Then TargetLoc.Visibility = Visibility.Collapsed
+                    End If
+                Next
+            End If
+        Next
+    End Sub
 #End Region
 
 #Region "Event Listeners"
