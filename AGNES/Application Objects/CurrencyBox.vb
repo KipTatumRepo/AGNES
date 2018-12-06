@@ -54,6 +54,7 @@ Public Class CurrencyBox
         _creditonly = ForceCredit
         Highlight = SelectAllUponEnteringField
         tb = Children(1)
+        AddHandler tb.KeyDown, AddressOf EnterKeyIsTab
         AddHandler tb.GotFocus, AddressOf EnterField
         AddHandler tb.LostFocus, AddressOf ExitField
         AddHandler tb.TextChanged, AddressOf ValidateText
@@ -66,6 +67,14 @@ Public Class CurrencyBox
 #End Region
 
 #Region "Private Methods"
+    Private Sub EnterKeyIsTab(sender As Object, e As KeyEventArgs)
+        If e.Key = Key.Enter Then
+            Dim dr As New TraversalRequest(FocusNavigationDirection.Next)
+            tb.MoveFocus(dr)
+            e.Handled = True
+        End If
+    End Sub
+
     Private Sub ValidateText(sender As Object, e As EventArgs)
         Dim t As TextBox = sender
         If SystemChange = True Then Exit Sub
@@ -136,6 +145,7 @@ Public Class CurrencyBox
         If t.Text = HeldValue Then Exit Sub
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(“Amountchanged”))
     End Sub
+
 
 #End Region
 

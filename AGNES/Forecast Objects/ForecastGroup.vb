@@ -421,6 +421,10 @@
         Return True
     End Function
 
+    Public Sub SetFocus()
+        DRR.tb.Focus()
+    End Sub
+
 #End Region
 
 #Region "Private Methods"

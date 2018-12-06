@@ -7,6 +7,7 @@ Public Class Forecast
     'TODO: FOR FORECASTS, EVALUATE WHETHER A FIX IS NEEDED FOR THE PTD VIEW (DISCARDS DATA, BUT THIS MIGHT BE CONCEPTUALLY CORRECT)
 
 #Region "Properties"
+    Dim InitialFocus As ForecastGroup
     Dim SalesGroup As ForecastGroup
     Dim CamGroup As ForecastGroup
     Dim CafeSalesGroup As ForecastGroup
@@ -54,6 +55,7 @@ Public Class Forecast
         InitializeComponent()
         TypeOfFcast = FcastType
         ConstructTemplate(FcastType, FCastUnit)
+
         Dim adminunlock As Byte = My.Settings.UserLevel
         If adminunlock < 3 Then
             imgUnlock.Visibility = Visibility.Visible
@@ -131,6 +133,7 @@ Public Class Forecast
                     .Add(OpexGroup)
                     .Add(SubsidyGroup)
                 End With
+                InitialFocus = CamGroup
 #End Region
 
 #Region "Cafes"
@@ -180,6 +183,7 @@ Public Class Forecast
                     .Add(OpexGroup)
                     .Add(SubsidyGroup)
                 End With
+                InitialFocus = SalesGroup
 #End Region
 
 #Region "A/V"
@@ -235,7 +239,7 @@ Public Class Forecast
                     .Add(FeesGroup)
                     .Add(SubsidyGroup)
                 End With
-
+                InitialFocus = SalesGroup
 #End Region
 
 #Region "Field Sites"
@@ -298,6 +302,7 @@ Public Class Forecast
                     .Add(FeesGroup)
                     .Add(SubsidyGroup)
                 End With
+                InitialFocus = CafeSalesGroup
 #End Region
 
 #Region "Beverage"
@@ -357,6 +362,7 @@ Public Class Forecast
                     .Add(FeesGroup)
                     .Add(SubsidyGroup)
                 End With
+                InitialFocus = SalesGroup
 #End Region
 
 #Region "Catering"
@@ -408,6 +414,7 @@ Public Class Forecast
                     .Add(OpexGroup)
                     .Add(SubsidyGroup)
                 End With
+                InitialFocus = SalesGroup
 #End Region
 
 #Region "Overhead"
@@ -453,6 +460,7 @@ Public Class Forecast
                     .Add(OpexGroup)
                     .Add(SubsidyGroup)
                 End With
+                InitialFocus = CogsGroup
 #End Region
 
 #Region "Eventions"
@@ -507,6 +515,7 @@ Public Class Forecast
                     .Add(FeesGroup)
                     .Add(SubsidyGroup)
                 End With
+                InitialFocus = SalesGroup
 
 #End Region
         End Select
@@ -521,7 +530,7 @@ Public Class Forecast
         tlbFcast.Items.Add(MSP)
         tlbUnits.Items.Add(Units)
         If Units.NumberOfAvailableUnits = 1 Then Units.IsEnabled = False
-
+        InitialFocus.SetFocus()
     End Sub
 
     Private Sub Forecast_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
