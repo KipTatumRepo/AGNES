@@ -30,7 +30,9 @@
         AllowDrop = True
         Height = 16
         BorderBrush = Brushes.Black
-        Background = Brushes.WhiteSmoke
+
+        Dim bc As New BrushConverter()
+        Background = bc.ConvertFrom("#FFFBF1C6")
         BorderThickness = New Thickness(1, 1, 1, 1)
         Margin = New Thickness(1, 1, 1, 0)
         StationNumber = sn
@@ -73,7 +75,7 @@
         Dim nv As New VendorInStation With {.TextAlignment = TextAlignment.Center, .Text = e.Data.GetData(DataFormats.Text),
         .ReferencedVendor = VendorSched.ActiveVendor, .ReferencedStation = Me, .FontSize = 12}
         nv.IsBrand = True
-        nv.Background = Brushes.LightGray
+        nv.Background = Brushes.WhiteSmoke
         VendorStack.Children.Add(nv)
         nv.ReferencedVendor.UsedWeeklySlots += 1
         Height += 16

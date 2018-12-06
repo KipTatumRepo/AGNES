@@ -7,6 +7,7 @@ Public Class ScheduleVendor
     Public VendorItem As VendorInfo
     Private stkVendorInfo As StackPanel
     Public NameText As TextBlock
+    Public VendorType As Byte
     Public TypeText As TextBlock
     Public FoodType As Integer
     Public SubType As Integer
@@ -38,13 +39,14 @@ Public Class ScheduleVendor
         VendorItem = vndr
         stkVendorInfo = New StackPanel
         Height = 60
-        Background = Brushes.LightBlue
+        Background = Brushes.WhiteSmoke
         BorderBrush = Brushes.Black
         BorderThickness = New Thickness(1, 1, 1, 1)
         Margin = New Thickness(1, 1, 2, 0)
         CreateContextMenu()
         MaxDailySlots = vndr.MaximumDailyCafes
         MaxWeeklySlots = MaxDailySlots * VendorModule.NumberOfDaysInWeek
+        VendorType = vndr.VendorType
         AddName()
         AddSlots()
         AddFoodType()

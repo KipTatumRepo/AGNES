@@ -51,7 +51,7 @@ Public Class RadialPortal
         End If
 
         ' Mrs. Claus
-        If m = 12 And (d > 13 And d < 25) Then
+        If m = 12 And (d > 14 And d < 25) Then
             imgAGNES.Source = New BitmapImage(New Uri("Resources/AGNESXmas.png", UriKind.Relative))
             txtVersion.Text = "Happy Holidays!"
         End If
@@ -117,7 +117,14 @@ Public Class RadialPortal
             'With My.Settings
             '    .UserName = "Ian"
             '    .UserShortName = "Ian"
-            '    .UserID = 10140
+            '    .UserID = 10132
+            '    .UserLevel = 4
+            'End With
+
+            'With My.Settings
+            '    .UserName = "Bryan"
+            '    .UserShortName = "Robinson"
+            '    .UserID = 10154
             '    .UserLevel = 4
             'End With
 
