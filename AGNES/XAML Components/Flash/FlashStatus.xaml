@@ -10,9 +10,10 @@
         <DropShadowEffect Opacity="0.7" BlurRadius="14" ShadowDepth="6" Direction="240"/>
     </Window.Effect>
     <Grid>
-        <TextBlock HorizontalAlignment="Left" Margin="10,53,0,0" TextWrapping="Wrap" Text="Submission Status" VerticalAlignment="Top" Width="772" TextAlignment="Center" FontSize="24"/>
+        <TextBlock x:Name="tbHeader" HorizontalAlignment="Left" Margin="10,53,0,0" TextWrapping="Wrap" Text="Submission Status" VerticalAlignment="Top" Width="772" TextAlignment="Center" FontSize="24"/>
         <WrapPanel x:Name="wrpFlashes" HorizontalAlignment="Left" Height="457" Margin="10,90,0,0" VerticalAlignment="Top" Width="750"/>
         <ToolBar x:Name="tlbTimePeriods" HorizontalAlignment="Left" Height="48" VerticalAlignment="Top" Width="782"/>
+        <TextBox x:Name="tbRefresh" HorizontalAlignment="Left" Height="23" Margin="0,547,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="784" FontSize="10" TextAlignment="Center" BorderBrush="{x:Null}"/>
     </Grid>
 
 

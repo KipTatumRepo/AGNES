@@ -13,17 +13,23 @@
         WCRE = New WCREntities
         WCRStartPage.ShowDialog()
         If UserClosed = True Then
+            TimerOne = Nothing
+            TimerTwo = Nothing
             WCR = Nothing
             Exit Sub
         End If
         WCRCamPage = New WCRCam
         WCRCamPage.ShowDialog()
         If UserClosed = True Then
+            TimerOne = Nothing
+            TimerTwo = Nothing
             WCR = Nothing
             Exit Sub
         End If
         WCRFinalPage = New WCRFinal
         WCRFinalPage.ShowDialog()
         WCR = Nothing
+        TimerOne = Nothing
+        TimerTwo = Nothing
     End Sub
 End Module

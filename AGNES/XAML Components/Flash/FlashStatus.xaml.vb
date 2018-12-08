@@ -1,4 +1,6 @@
-﻿Public Class FlashStatus
+﻿Imports System.ComponentModel
+Imports System.Windows.Threading
+Public Class FlashStatus
     'PENDING: ALERT MESSAGE ISN'T SHOWING FOR SUBUNITS - DEPENDING ON DIRECTION OF NEW LOCATIONS TABLE, EITHER ADD SUBROUTINE TO EVALUATE SUBUNITS AND ADD TO STATUS WINDOW, OR ALL UNITS WILL BE IN TABLE AND SHOW
 #Region "Properties"
     Public TypeofFlash As Byte
@@ -29,7 +31,7 @@
 
 #Region "Public Methods"
     Public Sub PopulateUnits()
-
+        TimerOne = Nothing
         wrpFlashes.Children.Clear()
         '// Acquire all units belonging to the selected flash group
 
@@ -68,14 +70,23 @@
                     NewStatusItem.Wk = StatusWk.CurrentWeek
                     wrpFlashes.Children.Add(NewStatusItem)
             End Select
-
         Next
 
+        '// Set timer to 1:00 for refreshing
+        tbRefresh.Text = "Last refresh: " & Now.ToShortTimeString
+        TimerOne = New DispatcherTimer()
+        AddHandler TimerOne.Tick, AddressOf RefreshStatus
+        TimerOne.Interval = New TimeSpan(0, 5, 0)
+        TimerOne.Start()
     End Sub
 
 #End Region
 
 #Region "Private Methods"
+    Private Sub RefreshStatus()
+        TimerOne.Stop()
+        PopulateUnits()
+    End Sub
 
     Private Function GetFlashstatus(unum As Long) As String
         Dim p As Byte = StatusMsp.CurrentPeriod, w As Byte = StatusWk.CurrentWeek
@@ -128,6 +139,10 @@
         End If
         Return ""
     End Function
+
+    Private Sub FlashStatus_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+        TimerOne = Nothing
+    End Sub
 
 #End Region
 
