@@ -1,4 +1,5 @@
-﻿Module BaseModule
+﻿Imports System.Windows.Threading
+Module BaseModule
 
 #Region "Properties"
     Public SharedDataGroup As BIEntities
@@ -9,6 +10,8 @@
     Public TrainingData As TrainingEntities
     Public VendorData As VendorEntity
     Public BGE As BGCRMEntity
+    Public TimerOne As DispatcherTimer
+    Public TimerTwo As DispatcherTimer
     Public CurrentFiscalYear As Integer = 2019
     Public Property FlashNotes As String
 #End Region
