@@ -5,7 +5,6 @@ Public Class CurrencyBox
 
 #Region "Properties"
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
-
     Private _debitonly As Boolean
     Private _creditonly As Boolean
     Public Highlight As Boolean
@@ -40,6 +39,16 @@ Public Class CurrencyBox
         Set(value As Double)
             _setamount = value
             tb.Text = FormatCurrency(_setamount, 2)
+        End Set
+    End Property
+
+    Private _fieldineditmode As Boolean
+    Public Property FieldInEditMode As Boolean
+        Get
+            Return _fieldineditmode
+        End Get
+        Set(value As Boolean)
+            _fieldineditmode = value
         End Set
     End Property
 
@@ -88,6 +97,7 @@ Public Class CurrencyBox
     End Sub
 
     Private Sub EnterField(sender As Object, e As EventArgs)
+        FieldInEditMode = True
         Dim t As TextBox = sender
         HeldValue = t.Text
         SystemChange = True
@@ -111,6 +121,7 @@ Public Class CurrencyBox
     End Sub
 
     Private Sub ExitField(sender As Object, e As EventArgs)
+        FieldInEditMode = False
         Dim t As TextBox = sender
 
         Try
