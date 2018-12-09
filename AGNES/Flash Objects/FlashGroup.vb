@@ -2,7 +2,6 @@
     Inherits DockPanel
     'REFRESH: REPLACE TEXTBOXES WITH PERCENTAGE BOXES
     'REFRESH: REPLACE REFERENCED WEEK, PERIOD, AND UNIT CHOOSERS WITH ACTUALS BOUND TO XAML PAGES
-    'CRITICAL:  ADD VALIDATION ROUTINE TO SAVE TO CHECK FOR FOCUSED (EDIT MODE) FIELDS WITH UNCOMMITTED VALUES
 #Region "Properties"
     Public GroupCategory As String
     Public FlashVal As CurrencyBox
@@ -236,9 +235,39 @@
         LoadForecast()
         AlertOverride = False
     End Sub
+
     Public Function Save(SaveType) As Boolean
         Dim SaveOkay As Boolean
         '// SaveType only influences the value saved to the status field; the status bar is updated via the Flashpage that calls this routine
+
+        '// Check to see if textbox is in edit mode 
+        If FlashVal.FieldInEditMode = True Then
+            '// Compare value with saved value; if a match, ignore and proceed.  If not, prompt.
+            Dim cval As Double
+            Try
+                cval = FormatNumber(FlashVal.tb.Text, 2)
+            Catch ex As Exception
+                cval = FlashVal.SetAmount
+            End Try
+
+            If cval <> FlashVal.SetAmount Then
+                Dim msg As String = "It looks like you may still be editing " & GroupCategory & ".  Do you want " &
+                    FormatCurrency(FlashVal.tb.Text, 2) & " to be the amount saved?  Selecting No aborts your save."
+                Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText,
+                                        AgnesMessageBox.MsgBoxType.YesNo, 18,, "Uncommitted data",, msg, AgnesMessageBox.ImageType.Danger)
+                amsg.ShowDialog()
+                If amsg.ReturnResult = "No" Then
+                    amsg.Close()
+                    Return False
+                    Exit Function
+                Else
+                    amsg.Close()
+                    FlashVal.tb.Text = FormatCurrency(cval, 2)
+                    FlashVal.SetAmount = FormatNumber(cval, 2)
+                End If
+            End If
+        End If
+
 
         '// Check to see if multiple units, weeks, or periods are selected. If so, kill routine 
         If CheckIfMultipleAreSelected() > 3 Then
@@ -270,6 +299,7 @@
         End Try
         Return True
     End Function
+
     Public Sub Update(TargetFlashGroup As FlashGroup)
         '//     Recalculate subtotals, if applicable
         If TargetFlashGroup.GroupIsSubTotal = True Then
