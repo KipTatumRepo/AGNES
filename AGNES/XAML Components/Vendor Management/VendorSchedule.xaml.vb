@@ -1,7 +1,6 @@
 ﻿Imports System.ComponentModel
 
 'CRITICAL:  VENDOR DROP MESSAGES AREN'T SHOWING PROPERLY
-'CRITICAL:  WEEKLY LOCATIONS AREN'T CALCULATING PROPERLY WHEN HOLIDAYS ARE PRESENT
 Public Class VendorSchedule
 
 #Region "Properties"
@@ -253,6 +252,7 @@ Public Class VendorSchedule
         CurrMonth = CAL.CurrentMonth
         CurrWeek = Wk.CurrentWeek
         wkSched.Update(CurrYear, CurrMonth, CurrWeek)
+        PopulateVendors(CurrentVendorView)
         SaveStatus = True
     End Sub
 
