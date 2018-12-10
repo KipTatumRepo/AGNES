@@ -372,10 +372,10 @@ Public Class Flash
                 If qsu.Count > 0 Then Units.AllowMultiSelect = True
 
                 '// Add flash-specific flashgroups (categories)
-                SalesGroup = New FlashGroup(MSP, Wk, Units, "Total Sales", False, 0, True, False, True, True, False) With {.SpreadByWeeks = True} ' Increments of 47 for flashgroup spacing 
-                CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", True, 47, False, False, True, False, True) With {.SpreadByWeeks = True, .SalesFlashGroup = SalesGroup}
-                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", True, 94, True, False, True, False, True) With {.SpreadByWeeks = True, .SalesFlashGroup = SalesGroup}
-                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", True, 141, False, False, True, False, True) With {.SpreadByWeeks = True, .SalesFlashGroup = SalesGroup}
+                SalesGroup = New FlashGroup(MSP, Wk, Units, "Total Sales", False, 0, True, False, True, False, False) With {.SpreadByWeeks = True} ' Increments of 47 for flashgroup spacing 
+                CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", True, 47, False, False, True, False, False) With {.SpreadByWeeks = True, .SalesFlashGroup = SalesGroup}
+                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", True, 94, True, False, True, False, False) With {.SpreadByWeeks = True, .SalesFlashGroup = SalesGroup}
+                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", True, 141, False, False, True, False, False) With {.SpreadByWeeks = True, .SalesFlashGroup = SalesGroup}
                 SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", True, 188, True, True, True, False, False, New List(Of FlashGroup) From {SalesGroup, CogsGroup, LaborGroup, OpexGroup}) With {.SalesFlashGroup = SalesGroup}
                 With grdFlashGroups.Children
                     .Add(SalesGroup)
