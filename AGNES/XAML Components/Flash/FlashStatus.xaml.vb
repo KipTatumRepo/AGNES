@@ -1,15 +1,16 @@
 ﻿Imports System.ComponentModel
 Imports System.Windows.Threading
 Public Class FlashStatus
+
 #Region "Properties"
-    Public TypeofFlash As Byte
+    Public TypeofFlash As Long
     Public StatusWk As WeekChooser
     Public StatusMsp As PeriodChooser
 
 #End Region
 
 #Region "Constructor"
-    Public Sub New(ft As Byte)
+    Public Sub New(ft As Long)
         InitializeComponent()
         TypeofFlash = ft
         Dim currwk As Byte = GetCurrentWeek(FormatDateTime(Now(), DateFormat.ShortDate))

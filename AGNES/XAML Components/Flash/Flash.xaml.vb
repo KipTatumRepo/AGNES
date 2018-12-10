@@ -18,7 +18,7 @@ Public Class Flash
     Dim SubsidyGroup As FlashGroup
     Dim TotalGroup As FlashGroup
     Dim Units As UnitChooser
-    Public Property TypeOfFlash As Byte
+    Public Property TypeOfFlash As Long
     Public Property MSP As PeriodChooser
     Public Property Wk As WeekChooser
     Private _savestatus As Byte
@@ -83,7 +83,7 @@ Public Class Flash
 #End Region
 
 #Region "Private Methods"
-    Private Sub ConstructTemplate(FT As Byte, FU As Long)
+    Private Sub ConstructTemplate(FT As Long, FU As Long)
         grdFlashGroups.Children.Clear()
         '// Add period, week, and unit chooser controls 
         Dim currmsp As Byte = GetCurrentPeriod(FormatDateTime(Now(), DateFormat.ShortDate))
@@ -473,6 +473,47 @@ Public Class Flash
                     .Add(SubsidyGroup)
                 End With
                 InitialFocus = SalesGroup
+#End Region
+
+#Region "Urban Farming"
+            Case 10002      ' Overhead Flash
+                Title = "Urban Farming Weekly Financial Flash"
+                Height = 329
+                AvailableUnits = New UnitGroup With {.Summoner = 0, .UnitGroupName = "Urban Farming"}
+
+                '// Add Unit and/or Subunits
+                Dim qsu = From su In AGNESShared.UnitsSubunits
+                          Where su.UnitNumber = FU
+                          Select su
+
+                If qsu.Count > 0 Then
+                    For Each su In qsu
+                        Dim subunit As New UnitFlash With {.FlashType = AvailableUnits.UnitGroupName, .UnitNumber = su.SubUnitNumber}
+                        AvailableUnits.UnitsInGroup.Add(subunit)
+                        tlbUnits.Visibility = Visibility.Visible
+                    Next
+                Else
+                    Dim FlashUnit As New UnitFlash With {.FlashType = AvailableUnits.UnitGroupName, .UnitNumber = FU}
+                    AvailableUnits.UnitsInGroup.Add(FlashUnit)
+                    tlbUnits.Visibility = Visibility.Hidden
+                    grdColumnLabels.Margin = New Thickness(0, 42, 0, 0)
+                    grdFlashGroups.Margin = New Thickness(0, 74, 0, 0)
+                End If
+                Units = New UnitChooser(AvailableUnits)
+                If qsu.Count > 0 Then Units.AllowMultiSelect = True
+
+                '// Add flash-specific flashgroups (categories)
+                CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", False, 0, False, False, True, False, False) With {.SpreadByWeeks = True}
+                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", False, 47, True, False, True, False, False) With {.SpreadByWeeks = True}
+                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", False, 94, False, False, True, False, False) With {.SpreadByWeeks = True}
+                SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", True, 141, True, True, True, False, False, New List(Of FlashGroup) From {CogsGroup, LaborGroup, OpexGroup})
+                With grdFlashGroups.Children
+                    .Add(CogsGroup)
+                    .Add(LaborGroup)
+                    .Add(OpexGroup)
+                    .Add(SubsidyGroup)
+                End With
+                InitialFocus = CogsGroup
 #End Region
         End Select
 

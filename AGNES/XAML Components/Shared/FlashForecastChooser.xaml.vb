@@ -3,12 +3,12 @@
 #Region "Properties"
     Public Property UserChoice As Long
 
-    Private _choosertype As Byte
-    Public Property ChooserType As Byte
+    Private _choosertype As Long
+    Public Property ChooserType As Long
         Get
             Return _choosertype
         End Get
-        Set(value As Byte)
+        Set(value As Long)
             _choosertype = value
             Select Case value
                 Case 0
