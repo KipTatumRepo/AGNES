@@ -232,8 +232,8 @@ Module BaseModule
         Return 0
     End Function
 
-    Public Function SelectFlashForecastTypeAndUnit(Optional ignoreunits As Boolean = False) As (flashselection As Byte, unitselection As Long)
-        Dim fs As Byte, us As Long, availableflashtypes As New List(Of Long), availableunits As New List(Of Long), usr As Integer, ulvl As Byte
+    Public Function SelectFlashForecastTypeAndUnit(Optional ignoreunits As Boolean = False) As (flashselection As Long, unitselection As Long)
+        Dim fs As Long, us As Long, availableflashtypes As New List(Of Long), availableunits As New List(Of Long), usr As Integer, ulvl As Byte
         Dim LocalAGNESShared As AGNESSharedDataEntity = New AGNESSharedDataEntity
         usr = My.Settings.UserID : ulvl = My.Settings.UserLevel
 
@@ -322,6 +322,8 @@ Module BaseModule
                 us = 1852
             Case 8  ' Eventions
                 us = 9890
+            Case 10002 ' Urban Farming
+                us = 31878
         End Select
         Return (fs, us)
     End Function

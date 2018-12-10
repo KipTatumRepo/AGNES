@@ -39,7 +39,7 @@
           <Property Name="State" Type="varchar" MaxLength="2" />
           <Property Name="ZIP Code" Type="varchar" MaxLength="5" />
           <Property Name="DM" Type="nvarchar" MaxLength="50" />
-          <Property Name="FlashType" Type="tinyint" />
+          <Property Name="FlashType" Type="bigint" />
           <Property Name="TotalSqFt" Type="bigint" />
           <Property Name="BOHSqFt" Type="bigint" />
           <Property Name="FOHSqFt" Type="bigint" />
@@ -171,7 +171,7 @@
           <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
           <Property Name="ZIP_Code" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
           <Property Name="DM" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FlashType" Type="Byte" />
+          <Property Name="FlashType" Type="Int64" />
           <Property Name="TotalSqFt" Type="Int64" />
           <Property Name="BOHSqFt" Type="Int64" />
           <Property Name="FOHSqFt" Type="Int64" />

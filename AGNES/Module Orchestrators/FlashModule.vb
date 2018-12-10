@@ -9,7 +9,7 @@
 
 #Region "Public Methods"
     Public Sub Runmodule()
-        Dim SelectedFlashType As Byte, SelectedFlashUnit As Long
+        Dim SelectedFlashType As Long, SelectedFlashUnit As Long
         Dim GetSelections = SelectFlashForecastTypeAndUnit()
         SelectedFlashType = GetSelections.flashselection
         SelectedFlashUnit = GetSelections.unitselection

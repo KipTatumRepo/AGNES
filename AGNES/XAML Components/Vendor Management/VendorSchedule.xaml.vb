@@ -163,9 +163,16 @@ Public Class VendorSchedule
                     If TypeOf (Location) Is ScheduleLocation Then
                         Dim TargetLoc As ScheduleLocation = Location
                         TargetLoc.Visibility = Visibility.Visible
+                        ExpandStations(TargetLoc)
                     End If
                 Next
             End If
+        Next
+    End Sub
+
+    Private Sub ExpandStations(ByRef LocObject As ScheduleLocation)
+        For Each s In LocObject.StationStack.Children
+            s.Visibility = Visibility.Visible
         Next
     End Sub
 
@@ -176,7 +183,11 @@ Public Class VendorSchedule
                 For Each Location In TargetDay.LocationStack.Children
                     If TypeOf (Location) Is ScheduleLocation Then
                         Dim TargetLoc As ScheduleLocation = Location
-                        If TargetLoc.AllowsFoodTrucks = False Then TargetLoc.Visibility = Visibility.Collapsed
+                        If TargetLoc.AllowsFoodTrucks = False Then
+                            TargetLoc.Visibility = Visibility.Collapsed
+                        Else
+                            CollapseStations(1, TargetLoc)
+                        End If
                     End If
                 Next
             End If
@@ -190,12 +201,37 @@ Public Class VendorSchedule
                 For Each Location In TargetDay.LocationStack.Children
                     If TypeOf (Location) Is ScheduleLocation Then
                         Dim TargetLoc As ScheduleLocation = Location
-                        If TargetLoc.AllowsFoodTrucks = True Then TargetLoc.Visibility = Visibility.Collapsed
+                        If TargetLoc.AllowsFoodTrucks = True And TargetLoc.StationCount = 0 Then
+                            TargetLoc.Visibility = Visibility.Collapsed
+                        Else
+                            CollapseStations(0, TargetLoc)
+                        End If
                     End If
                 Next
             End If
         Next
     End Sub
+
+    Private Sub CollapseStations(ByVal CollapseType As Byte, ByRef LocObject As ScheduleLocation)
+        Select Case CollapseType
+            Case 0  '   Collapse trucks
+                For Each s In LocObject.StationStack.Children
+                    If TypeOf (s) Is ScheduleTruckStation Then
+                        Dim scollapse As ScheduleTruckStation = s
+                        scollapse.Visibility = Visibility.Collapsed
+                    End If
+                Next
+            Case 1  '   Collapse brands
+                For Each s In LocObject.StationStack.Children
+                    If TypeOf (s) Is ScheduleStation Then
+                        Dim scollapse As ScheduleStation = s
+                        scollapse.Visibility = Visibility.Collapsed
+                    End If
+                Next
+
+        End Select
+    End Sub
+
 #End Region
 
 #Region "Event Listeners"

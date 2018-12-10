@@ -23,7 +23,7 @@ Partial Public Class LOCATION
     Public Property State As String
     Public Property ZIP_Code As String
     Public Property DM As String
-    Public Property FlashType As Nullable(Of Byte)
+    Public Property FlashType As Nullable(Of Long)
     Public Property TotalSqFt As Nullable(Of Long)
     Public Property BOHSqFt As Nullable(Of Long)
     Public Property FOHSqFt As Nullable(Of Long)
