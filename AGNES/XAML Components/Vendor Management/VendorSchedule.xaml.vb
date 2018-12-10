@@ -1,7 +1,5 @@
 ﻿Imports System.ComponentModel
 
-'CRITICAL:  VENDOR DROP MESSAGES AREN'T SHOWING PROPERLY
-'CRITICAL:  WEEKLY LOCATIONS AREN'T CALCULATING PROPERLY WHEN HOLIDAYS ARE PRESENT
 Public Class VendorSchedule
 
 #Region "Properties"
@@ -22,16 +20,12 @@ Public Class VendorSchedule
         Set(value As Boolean)
             _savestatus = value
             If value = False Then
-                sbSaveStatus.Background = Brushes.Red
-                tbSaveStatus.Text = "Changes Not Saved"
+                UpdateStatusBar("NotSaved")
             Else
-                sbSaveStatus.Background = Brushes.White
-                tbSaveStatus.Text = ""
-
+                UpdateStatusBar("Default")
             End If
         End Set
     End Property
-
 
 #End Region
 
@@ -82,6 +76,19 @@ Public Class VendorSchedule
             stkVendors.Children.Add(nv)
             nv.UsedWeeklySlots = 0
         Next
+    End Sub
+
+    Public Sub UpdateStatusBar(status)
+        Select Case status
+            Case "Default"
+                sbSaveStatus.Background = Brushes.White
+                tbSaveStatus.Text = ""
+            Case "NotSaved"
+                sbSaveStatus.Background = Brushes.Red
+                tbSaveStatus.Text = "Changes Not Saved"
+
+        End Select
+
     End Sub
 
 #End Region
@@ -253,6 +260,7 @@ Public Class VendorSchedule
         CurrMonth = CAL.CurrentMonth
         CurrWeek = Wk.CurrentWeek
         wkSched.Update(CurrYear, CurrMonth, CurrWeek)
+        PopulateVendors(CurrentVendorView)
         SaveStatus = True
     End Sub
 
