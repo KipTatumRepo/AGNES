@@ -10,6 +10,7 @@ Public Class ScheduleLocation
     Public Property AllowsFoodTrucks As Boolean
     Private Property HighlightColor As Boolean = True
     Public Property CurrentWeekDay As ScheduleDay
+    Public Property DraggingIntoStation As Boolean
     Private Property DropAllowed As Boolean = True
     Private StatusBarText As String
     Private _statusbarcolor As SolidColorBrush
@@ -67,6 +68,7 @@ Public Class ScheduleLocation
     End Sub
 
     Private Sub ScheduleLocation_DragEnter(sender As Object, e As DragEventArgs) Handles Me.DragEnter
+        If DraggingIntoStation = True Then Exit Sub
         CheckVendorDrag(e.Data.GetData(DataFormats.Text))
     End Sub
 
@@ -75,7 +77,7 @@ Public Class ScheduleLocation
     End Sub
 
     Private Sub ScheduleLocation_Drop(sender As Object, e As DragEventArgs) Handles Me.Drop
-        If DropAllowed = False Then
+        If DropAllowed = False Or DraggingIntoStation = True Then
             VendorSched.SaveStatus = VendorSched.SaveStatus
             Exit Sub
         End If
@@ -95,8 +97,7 @@ Public Class ScheduleLocation
     Private Sub CheckVendorDrag(vn As String)
         'Validation routines to preemptively notify about whether vendor is allowed to be scheduled
         DropAllowed = True
-        VendorSched.tbSaveStatus.Text = "Okay to add"
-        VendorSched.sbSaveStatus.Background = Brushes.LightGreen
+
 
         If IsVendorTypeAllowedAtBuilding() = False Then    '//     Check if vendor type (truck or brand) is allowed at building
             DropAllowed = False
@@ -123,13 +124,22 @@ Public Class ScheduleLocation
         '    Exit Sub
         'End If
 
+        VendorSched.tbSaveStatus.Text = "Okay to add"
+        VendorSched.sbSaveStatus.Background = Brushes.LightGreen
 
     End Sub
 
     Private Function IsVendorTypeAllowedAtBuilding()
-        If VendorSched.ActiveVendor.VendorItem.VendorType = 2 Or AllowsFoodTrucks = False Then Return False
-        VendorSched.tbSaveStatus.Text = StatusBarText
-        VendorSched.tbSaveStatus.Background = StatusBarColor
+        If VendorSched.ActiveVendor.VendorItem.VendorType = 2 Then
+            VendorSched.tbSaveStatus.Text = "Add brands to specific stations."
+            VendorSched.sbSaveStatus.Background = Brushes.PaleVioletRed
+            Return False
+        End If
+        If AllowsFoodTrucks = False Then
+            VendorSched.tbSaveStatus.Text = "This location does not support food trucks."
+            VendorSched.sbSaveStatus.Background = Brushes.PaleVioletRed
+            Return False
+        End If
         Return True
     End Function
 

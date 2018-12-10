@@ -1,6 +1,7 @@
 ﻿Public Class ScheduleStation
     Inherits Border
 
+    'TODO: UPDATE VENDOR/LOCATION PREREQS (HOOD, ETC.)
 #Region "Properties"
     Public VendorStack As StackPanel
     Public Property StationName As String
@@ -63,7 +64,10 @@
     End Sub
 
     Private Sub ScheduleStation_DragLeave(sender As Object, e As DragEventArgs) Handles Me.DragLeave
+        CurrentLocation.DraggingIntoStation = False
         VendorSched.SaveStatus = VendorSched.SaveStatus
+        VendorSched.tbSaveStatus.Text = StatusBarText
+        VendorSched.tbSaveStatus.Background = StatusBarColor
     End Sub
 
     Private Sub ScheduleStation_Drop(sender As Object, e As DragEventArgs) Handles Me.Drop
@@ -81,51 +85,47 @@
         Height += 16
         VendorSched.SaveStatus = False
         VendorSched.ActiveVendor = Nothing
+        CurrentLocation.DraggingIntoStation = False
     End Sub
 
     Private Sub CheckVendorDrag(vn As String)
-        'Validation routines to preemptively notify about whether vendor is allowed to be scheduled
+        '//Validation routines to preemptively notify about whether vendor is allowed to be scheduled
+        CurrentLocation.DraggingIntoStation = True
+
+        '// Check if vendor type is a brand (and allowed at a station)
+        If IsVendorTypeAllowedAtStation() = False Then Exit Sub
+
+        '// Check for the presence of a vendor in the station
+        If IsStationAvailable() = False Then Exit Sub
+
+        '// Check to ensure vendor prereqs are met at this station/location
+        If AreVendorPrereqsMet() = False Then Exit Sub
+
+        '// Check to make sure vendor placement does not exceed their max daily placements
+        If DoesVendorHaveCapacity(vn) = False Then Exit Sub
+
+        '// Check for the presence of the vendor in another station at the location - Warning only
+        If IsVendorNotAlreadyAtLocation() = False Then Exit Sub
+
+        '// Check to see if the food type is already present at the location on the same day - Warning only
+        If IsNoSameDayFoodTypeConflictPresent() = False Then Exit Sub
+
+        '// Check to see if the food type is present at the location on adjacent days - Warning only
+        If IsNoAdjacentDayFoodTypeConflictPresent() = False Then Exit Sub
+
         DropAllowed = True
         VendorSched.tbSaveStatus.Text = "Okay to add"
         VendorSched.sbSaveStatus.Background = Brushes.LightGreen
 
-        If IsVendorTypeAllowedAtStation() = False Then    '//     Check if vendor type is a brand (and allowed at a station)
-            DropAllowed = False
-            Exit Sub
-        End If
-
-        If IsStationAvailable() = False Then            '//     Check for the presence of a vendor in the station
-            DropAllowed = False
-            Exit Sub
-        End If
-
-        If AreVendorPrereqsMet() = False Then
-            DropAllowed = False
-            Exit Sub
-        End If
-
-        If DoesVendorHaveCapacity(vn) = False Then
-            DropAllowed = False
-            Exit Sub
-        End If
-
-        If IsVendorNotAlreadyAtLocation() = False Then     '//     Check for the presence of the vendor in another station at the location
-            Exit Sub
-        End If
-
-        If IsNoFoodTypeConflictPresent() = False Then
-            Exit Sub
-        End If
-
     End Sub
 
     Private Function IsVendorTypeAllowedAtStation()
-        If VendorSched.ActiveVendor.VendorItem.VendorType = 3 Then
-            VendorSched.tbSaveStatus.Text = StatusBarText
-            VendorSched.tbSaveStatus.Background = StatusBarColor
+        If VendorSched.ActiveVendor.VendorItem.VendorType = 3 Then  ' Food truck...not allowed in station
+            VendorSched.tbSaveStatus.Text = "Food trucks cannot be added to stations"
+            VendorSched.sbSaveStatus.Background = Brushes.PaleVioletRed
+            DropAllowed = False
             Return False
         End If
-
         Return True
     End Function
 
@@ -133,6 +133,7 @@
         If VendorStack.Children.Count > 1 Then
             VendorSched.tbSaveStatus.Text = "Only one vendor can be added to a station."
             VendorSched.sbSaveStatus.Background = Brushes.PaleVioletRed
+            DropAllowed = False
             Return False
         End If
         Return True
@@ -171,6 +172,7 @@
         If CountCurrentVendorDeployments > VendorSched.ActiveVendor.MaxDailySlots Then
             VendorSched.tbSaveStatus.Text = "Vendor has reached the maximum number of cafes per day."
             VendorSched.sbSaveStatus.Background = Brushes.PaleVioletRed
+            DropAllowed = False
             Return False
         End If
         Return True
@@ -190,6 +192,7 @@
                                     .tbSaveStatus.Text = "This vendor is already present at this location on this day."
                                     .sbSaveStatus.Background = Brushes.LightYellow
                                 End With
+                                DropAllowed = True
                                 Return False
                             End If
                         End If
@@ -200,7 +203,7 @@
         Return True
     End Function
 
-    Private Function IsNoFoodTypeConflictPresent()
+    Private Function IsNoSameDayFoodTypeConflictPresent()
         '// Cautionary alert if food type conflicts with an anchor station, another vendor present at the same time, or a food
         '// type scheduled on adjacent days (the last one should be fun to code. :| )
 
@@ -217,6 +220,7 @@
                                     .tbSaveStatus.Text = "This food type conflicts with another vendor present on the same day"
                                     .sbSaveStatus.Background = Brushes.LightYellow
                                 End With
+                                DropAllowed = True
                                 Return False
                             End If
                         End If
@@ -224,6 +228,66 @@
                 End If
             End If
         Next
+
+
+        Return True
+    End Function
+
+    Private Function IsNoAdjacentDayFoodTypeConflictPresent() As Boolean
+        Dim CurrLocName As String = CurrentLocation.LocationName
+        Dim CurrentDayIndex As Byte = VendorSched.wkSched.Children.IndexOf(CurrentWeekDay)
+        Dim AdjacentDayOkay As Boolean = True
+
+        If CurrentDayIndex > 0 Then AdjacentDayOkay = CheckAdjacentDay(CurrLocName, CurrentDayIndex - 1)
+        If AdjacentDayOkay = False Then
+            With VendorSched
+                .tbSaveStatus.Text = "This food type is present at this location on the previous day"
+                .sbSaveStatus.Background = Brushes.LightYellow
+            End With
+            DropAllowed = True
+            Return False
+        End If
+
+        If CurrentDayIndex < 4 Then AdjacentDayOkay = CheckAdjacentDay(CurrLocName, CurrentDayIndex + 1)
+        If AdjacentDayOkay = False Then
+            With VendorSched
+                .tbSaveStatus.Text = "This food type is present at this location the next day"
+                .sbSaveStatus.Background = Brushes.LightYellow
+            End With
+            DropAllowed = True
+            Return False
+        End If
+
+        Return True
+    End Function
+
+    Private Function CheckAdjacentDay(locationname, dayindex) As Boolean
+        Dim AdjDay As ScheduleDay = VendorSched.wkSched.Children(dayindex)
+
+        For Each locobj In AdjDay.LocationStack.Children
+            If TypeOf (locobj) Is ScheduleLocation Then
+                Dim loc As ScheduleLocation = locobj
+                If loc.LocationName = locationname Then
+                    For Each stationobj In loc.StationStack.Children
+                        If TypeOf (stationobj) Is ScheduleStation Then
+                            Dim station As ScheduleStation = stationobj
+                            If station.VendorStack.Children.Count > 1 Then
+                                Dim vndor As VendorInStation
+                                For Each ooobj In station.VendorStack.Children
+                                    If TypeOf (ooobj) Is VendorInStation Then
+                                        vndor = ooobj
+                                        If vndor.ReferencedVendor.FoodType = VendorSched.ActiveVendor.FoodType Then
+                                            Return False
+                                        End If
+                                    End If
+                                Next
+                            End If
+                        End If
+                    Next
+                End If
+            End If
+        Next
+
         Return True
     End Function
 
