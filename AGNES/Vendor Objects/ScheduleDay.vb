@@ -57,6 +57,15 @@ Public Class ScheduleDay
         LocationStack.Children.Add(Loc92)
         Highlight = Not Highlight
 
+        Dim LocX As New ScheduleLocation("Studio X (Trucks Only)", 0, Me, Highlight)
+        LocX.AllowsFoodTrucks = True
+        LocationStack.Children.Add(LocX)
+        Highlight = Not Highlight
+
+        Dim Loc32 As New ScheduleLocation("32 (Trucks Only)", 0, Me, Highlight)
+        Loc32.AllowsFoodTrucks = True
+        LocationStack.Children.Add(Loc32)
+        Highlight = Not Highlight
 
         'TODO: THIS CODE WILL BE REPLACED BY A QUERY ON THE STATION COUNT FIELD IN THE FINAL NEW LOCATIONS TABLE
         Dim x As Byte

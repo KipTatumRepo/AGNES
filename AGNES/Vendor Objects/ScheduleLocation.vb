@@ -51,6 +51,21 @@ Public Class ScheduleLocation
         Height -= 32
     End Sub
 
+    Public Sub DropTruckIntoLocation(ByVal TruckName As String, ByRef RV As ScheduleVendor)
+        Dim tb As New ScheduleTruckStation(TruckName, CurrentWeekDay, Me)
+        StationStack.Children.Add(tb)
+        Dim nv As New VendorInStation With {.TextAlignment = TextAlignment.Center, .Text = TruckName,
+            .ReferencedVendor = RV, .ReferencedLoc = Me, .FontSize = 12, .ReferencedTruckStation = tb}
+        nv.Background = Brushes.LightGray
+        tb.TruckStack.Children.Add(nv)
+        '//TEST
+        Dim st As String = nv.ReferencedVendor.NameText.Text
+        nv.ReferencedVendor.UsedWeeklySlots += 1
+        Height += 32
+        VendorSched.SaveStatus = 0
+        VendorSched.ActiveVendor = Nothing
+    End Sub
+
     Public Sub PurgeDatabase()
         Dim qdr = From dr In VendorData.Schedules
                   Where dr.ScheduleDate = CurrentWeekDay.DateValue And
@@ -61,6 +76,41 @@ Public Class ScheduleLocation
             VendorData.Schedules.Remove(dr)
         Next
         VendorData.SaveChanges()
+    End Sub
+
+    Public Sub Load(loaddate As Date)
+        ClearExistingData()
+        Dim vn As String
+        Dim sv As ScheduleVendor = Nothing
+        Dim qsi = From si In VendorData.Schedules
+                  Where si.Location = LocationName And
+                      si.ScheduleDate = loaddate
+
+        For Each si In qsi
+            ' Get vendor name from database & increase used vendor slots, if they're present in the vendor panel
+            Dim qvi = (From vi In VendorData.VendorInfo
+                       Where vi.PID = si.VendorId).ToList(0)
+            vn = qvi.Name
+            For Each v In VendorSched.stkVendors.Children
+                If TypeOf (v) Is ScheduleVendor Then
+                    sv = v
+                    If sv.VendorItem.PID = si.VendorId Then Exit For
+                End If
+            Next
+
+            If si.Station <> "Truck" Then
+                ' Locate station and add vendor, if it's present in the vendor panel (assumes vendor is therefore active)
+                For Each s In StationStack.Children
+                    If TypeOf (s) Is ScheduleStation Then
+                        Dim st As ScheduleStation = s
+                        If st.StationName = si.Station And sv IsNot Nothing Then st.DropVendorIntoStation(vn, sv)
+                    End If
+                Next
+            Else
+                ' Create a truck station and add vendor, if it's present in the vendor panel (assumes vendor is therefore active)
+                If sv IsNot Nothing Then DropTruckIntoLocation(vn, sv)
+            End If
+        Next
     End Sub
 
 #End Region
@@ -93,17 +143,7 @@ Public Class ScheduleLocation
             VendorSched.SaveStatus = VendorSched.SaveStatus
             Exit Sub
         End If
-
-        Dim tb As New ScheduleTruckStation(VendorSched.ActiveVendor.VendorItem.Name, CurrentWeekDay, Me)
-        StationStack.Children.Add(tb)
-        Dim nv As New VendorInStation With {.TextAlignment = TextAlignment.Center, .Text = e.Data.GetData(DataFormats.Text),
-.ReferencedVendor = VendorSched.ActiveVendor, .ReferencedLoc = Me, .FontSize = 12, .ReferencedTruckStation = tb}
-        nv.Background = Brushes.LightGray
-        tb.TruckStack.Children.Add(nv)
-        nv.ReferencedVendor.UsedWeeklySlots += 1
-        Height += 32
-        VendorSched.SaveStatus = False
-        VendorSched.ActiveVendor = Nothing
+        DropTruckIntoLocation(e.Data.GetData(DataFormats.Text), VendorSched.ActiveVendor)
     End Sub
 
     Private Sub CheckVendorDrag(vn As String)
@@ -139,6 +179,22 @@ Public Class ScheduleLocation
         VendorSched.tbSaveStatus.Text = "Okay to add"
         VendorSched.sbSaveStatus.Background = Brushes.LightGreen
 
+    End Sub
+
+    Private Sub ClearExistingData()
+        For Each s In StationStack.Children
+            If TypeOf (s) Is ScheduleStation Then
+                Dim ss As ScheduleStation = s
+                For Each v In ss.VendorStack.Children
+                    If TypeOf (v) Is VendorInStation Then ss.VendorStack.Children.Remove(v)
+                Next
+            End If
+
+            If TypeOf (s) Is ScheduleTruckStation Then
+                Dim ts As ScheduleTruckStation = s
+                StationStack.Children.Remove(ts)
+            End If
+        Next
     End Sub
 
     Private Function IsVendorTypeAllowedAtBuilding()
