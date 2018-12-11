@@ -58,8 +58,6 @@ Public Class ScheduleLocation
             .ReferencedVendor = RV, .ReferencedLoc = Me, .FontSize = 12, .ReferencedTruckStation = tb}
         nv.Background = Brushes.LightGray
         tb.TruckStack.Children.Add(nv)
-        '//TEST
-        Dim st As String = nv.ReferencedVendor.NameText.Text
         nv.ReferencedVendor.UsedWeeklySlots += 1
         Height += 32
         VendorSched.SaveStatus = 0
@@ -182,19 +180,32 @@ Public Class ScheduleLocation
     End Sub
 
     Private Sub ClearExistingData()
+        Dim truckremovallist As New List(Of ScheduleTruckStation)
         For Each s In StationStack.Children
             If TypeOf (s) Is ScheduleStation Then
                 Dim ss As ScheduleStation = s
                 For Each v In ss.VendorStack.Children
-                    If TypeOf (v) Is VendorInStation Then ss.VendorStack.Children.Remove(v)
+                    If TypeOf (v) Is VendorInStation Then
+                        ss.VendorStack.Children.Remove(v)
+                        Height -= 16
+                    End If
                 Next
             End If
 
             If TypeOf (s) Is ScheduleTruckStation Then
                 Dim ts As ScheduleTruckStation = s
-                StationStack.Children.Remove(ts)
+                truckremovallist.Add(ts)
+                Height -= 32
             End If
         Next
+
+        ' Remove trucks now, so the collection enumeration is not disrupted
+        If truckremovallist.Count > 0 Then
+            Dim x As Integer
+            For x = (truckremovallist.Count - 1) To 0 Step -1
+                StationStack.Children.Remove(truckremovallist(x))
+            Next
+        End If
     End Sub
 
     Private Function IsVendorTypeAllowedAtBuilding()

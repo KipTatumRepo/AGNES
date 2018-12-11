@@ -1,5 +1,5 @@
 ﻿Imports System.ComponentModel
-'CRITICAL: ERROR BEING THROWN AFTER VENDOR IS DELETED AND ANOTHER VENDOR IS ACQUIRED (CURRENT VENDOR NOT UPDATING?)
+'WATCH: ERROR BEING THROWN AFTER VENDOR IS DELETED AND ANOTHER VENDOR IS ACQUIRED (CURRENT VENDOR NOT UPDATING?)
 'TODO: Changing weeks resets filters in practice, but does not reset filter flags or buttons
 Public Class VendorSchedule
 
@@ -62,11 +62,13 @@ Public Class VendorSchedule
         wkSched.Update(YR.CurrentYear, CAL.CurrentMonth, Wk.CurrentWeek)
         grdWeek.Children.Add(wkSched)
         PopulateVendors(0) '//   Any consideration of day-to-day vendor availability as to whether to show them?
+        UpdateStatusBar("Loading")
     End Sub
 
     Private Sub InitialScheduleLoad(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
         LoadSchedule(0)
         SaveStatus = 1
+        UpdateStatusBar("Default")
     End Sub
 
 #End Region
@@ -97,6 +99,12 @@ Public Class VendorSchedule
             Case "Saved"
                 sbSaveStatus.Background = Brushes.LightGreen
                 tbSaveStatus.Text = "Changes Saved"
+            Case "Loading"
+                sbSaveStatus.Background = Brushes.Yellow
+                tbSaveStatus.Text = "Loading..."
+            Case "Saving"
+                sbSaveStatus.Background = Brushes.Yellow
+                tbSaveStatus.Text = "Saving..."
         End Select
 
     End Sub
@@ -115,6 +123,7 @@ Public Class VendorSchedule
 
     Private Sub SaveSchedule(sender As Object, e As MouseButtonEventArgs) Handles imgSave.MouseLeftButtonDown
         If SaveStatus > 0 Then Exit Sub
+
         'Loop through days
         'Loop through locations
         'Purge DB of current entries for the day
@@ -209,7 +218,10 @@ Public Class VendorSchedule
                 End If
             Next
         Catch ex As Exception
-
+            Dim amsg = New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText,
+                    AgnesMessageBox.MsgBoxType.OkOnly, 18,, "Unhandled Error",, "AGNES encountered " & ex.Message & ".")
+            amsg.ShowDialog()
+            amsg.Close()
         End Try
     End Sub
 
