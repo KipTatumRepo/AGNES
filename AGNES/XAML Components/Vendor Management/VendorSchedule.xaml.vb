@@ -1,5 +1,7 @@
 ﻿Imports System.ComponentModel
-
+'CRITICAL: DELETING VENDORS IN STATIONS VIACONTEXT MENU DOES NOT MODIFY SAVESTATUS FLAG
+'CRITICAL: ERROR BEING THROWN AFTER VENDOR IS DELETED AND ANOTHER VENDOR IS ACQUIRED (CURRENT VENDOR NOT UPDATING?)
+'TODO: Update statusbar after schedule save
 Public Class VendorSchedule
 
 #Region "Properties"
@@ -94,21 +96,36 @@ Public Class VendorSchedule
 #End Region
 
 #Region "Private Methods"
-    Private Function DiscardCheck() As Boolean
-        Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.YesNo, 12, False,, "Discard unsaved data?",, AgnesMessageBox.ImageType.Danger)
-        amsg.ShowDialog()
-        If amsg.ReturnResult = "No" Then
-            amsg.Close()
-            Return False
-        End If
-        amsg.Close()
-        Return True
-    End Function
+    Private Sub SaveSchedule(sender As Object, e As MouseButtonEventArgs) Handles imgSave.MouseLeftButtonDown
+        If SaveStatus = True Then Exit Sub
+        'Loop through days
+        'Loop through locations
+        'Purge DB of current entries for the day
+        'Loop through stations and truck entries and save data
 
-    Private Sub VendorSchedule_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
-        If SaveStatus = False Then
-            If DiscardCheck() = False Then e.Cancel = True
-        End If
+        For Each wd As ScheduleDay In wkSched.Children
+            If TypeOf (wd) Is ScheduleDay Then
+                Dim wday As ScheduleDay = wd
+                For Each loc As Object In wday.LocationStack.Children
+                    If TypeOf (loc) Is ScheduleLocation Then
+                        Dim locitem As ScheduleLocation = loc
+                        locitem.PurgeDatabase()
+                        For Each sat In locitem.StationStack.Children
+                            If TypeOf (sat) Is ScheduleStation Then
+                                Dim s As ScheduleStation = sat
+                                s.Save()
+                            End If
+                            If TypeOf (sat) Is ScheduleTruckStation Then
+                                Dim s As ScheduleTruckStation = sat
+                                s.Save()
+                            End If
+                        Next
+                    End If
+                Next
+            End If
+        Next
+        VendorData.SaveChanges()
+        SaveStatus = True
     End Sub
 
     Private Sub ShowBrandsOnly(sender As Object, e As MouseButtonEventArgs) Handles imgBrands.MouseLeftButtonDown
@@ -147,6 +164,23 @@ Public Class VendorSchedule
         ShowSegment(3)
         CollapseBrands()
 
+    End Sub
+
+    Private Function DiscardCheck() As Boolean
+        Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.YesNo, 12, False,, "Discard unsaved data?",, AgnesMessageBox.ImageType.Danger)
+        amsg.ShowDialog()
+        If amsg.ReturnResult = "No" Then
+            amsg.Close()
+            Return False
+        End If
+        amsg.Close()
+        Return True
+    End Function
+
+    Private Sub VendorSchedule_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+        If SaveStatus = False Then
+            If DiscardCheck() = False Then e.Cancel = True
+        End If
     End Sub
 
     Private Sub ShowSegment(vendortype)
@@ -263,6 +297,8 @@ Public Class VendorSchedule
         PopulateVendors(CurrentVendorView)
         SaveStatus = True
     End Sub
+
+
 
 #End Region
 

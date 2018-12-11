@@ -51,6 +51,18 @@ Public Class ScheduleLocation
         Height -= 32
     End Sub
 
+    Public Sub PurgeDatabase()
+        Dim qdr = From dr In VendorData.Schedules
+                  Where dr.ScheduleDate = CurrentWeekDay.DateValue And
+                      dr.Location = LocationName
+                  Select dr
+
+        For Each dr In qdr
+            VendorData.Schedules.Remove(dr)
+        Next
+        VendorData.SaveChanges()
+    End Sub
+
 #End Region
 
 #Region "Private Methods"

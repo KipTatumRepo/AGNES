@@ -42,6 +42,20 @@
 #End Region
 
 #Region "Public Methods"
+    Public Sub Save()
+        If TruckStack.Children.Count = 1 Then Exit Sub
+        Dim vndr As VendorInStation = TruckStack.Children(1)
+        Dim ns As New Schedule
+        With ns
+            .ScheduleDate = CurrentWeekDay.DateValue
+            .Location = CurrentLocation.LocationName
+            .Station = "Truck"
+            .VendorId = vndr.ReferencedVendor.VendorItem.PID
+            .SavedBy = My.Settings.UserName
+        End With
+        VendorData.Schedules.Add(ns)
+
+    End Sub
 
 #End Region
 

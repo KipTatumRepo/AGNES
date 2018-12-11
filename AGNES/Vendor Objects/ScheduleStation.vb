@@ -46,6 +46,35 @@
 #End Region
 
 #Region "Public Methods"
+    Public Sub Save()
+        If VendorStack.Children.Count = 1 Then Exit Sub
+        Dim vndr As VendorInStation = VendorStack.Children(1)
+        Try
+            Dim qee = (From e In VendorData.Schedules
+                       Where e.ScheduleDate = CurrentWeekDay.DateValue And
+                          e.Location = CurrentLocation.LocationName
+                       Select e).ToList(0)
+
+            With qee
+                .ScheduleDate = CurrentWeekDay.DateValue
+                .Location = CurrentLocation.LocationName
+                .Station = StationName
+                .VendorId = vndr.ReferencedVendor.VendorItem.PID
+                .SavedBy = My.Settings.UserName
+            End With
+        Catch ex As Exception
+            '// Save as new entry
+            Dim ns As New Schedule
+            With ns
+                .ScheduleDate = CurrentWeekDay.DateValue
+                .Location = CurrentLocation.LocationName
+                .Station = StationName
+                .VendorId = vndr.ReferencedVendor.VendorItem.PID
+                .SavedBy = My.Settings.UserName
+            End With
+            VendorData.Schedules.Add(ns)
+        End Try
+    End Sub
     Public Sub DeleteItem(ByRef v As VendorInStation)
         VendorStack.Children.Remove(v)
         Height -= 16

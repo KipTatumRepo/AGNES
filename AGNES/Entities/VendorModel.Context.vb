@@ -31,5 +31,6 @@ Partial Public Class VendorEntity
     Public Overridable Property ProfitCenters() As DbSet(Of ProfitCenter)
     Public Overridable Property ReceivedCAMChecks() As DbSet(Of ReceivedCAMCheck)
     Public Overridable Property VendorInfo() As DbSet(Of VendorInfo)
+    Public Overridable Property Schedules() As DbSet(Of Schedule)
 
 End Class
