@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel
-
+'WATCH: ERROR BEING THROWN AFTER VENDOR IS DELETED AND ANOTHER VENDOR IS ACQUIRED (CURRENT VENDOR NOT UPDATING?)
+'TODO: Changing weeks resets filters in practice, but does not reset filter flags or buttons
 Public Class VendorSchedule
 
 #Region "Properties"
@@ -8,22 +9,25 @@ Public Class VendorSchedule
     Public Property Wk As WeekChooser
     Public wkSched As ScheduleWeek
     Public ActiveVendor As ScheduleVendor
-    Private _savestatus As Boolean
+    Private _savestatus As Byte
     Private CurrYear As Integer
     Private CurrMonth As Byte
     Private CurrWeek As Byte
     Private CurrentVendorView As Byte
-    Public Property SaveStatus As Boolean
+    Public Property SaveStatus As Byte
         Get
             Return _savestatus
         End Get
-        Set(value As Boolean)
+        Set(value As Byte)
             _savestatus = value
-            If value = False Then
-                UpdateStatusBar("NotSaved")
-            Else
-                UpdateStatusBar("Default")
-            End If
+            Select Case value
+                Case 0
+                    UpdateStatusBar("NotSaved")
+                Case 1
+                    UpdateStatusBar("Default")
+                Case 2
+                    UpdateStatusBar("Saved")
+            End Select
         End Set
     End Property
 
@@ -32,7 +36,7 @@ Public Class VendorSchedule
 #Region "Constructor"
     Public Sub New()
         InitializeComponent()
-        SaveStatus = True
+        SaveStatus = 1
         Height = System.Windows.SystemParameters.PrimaryScreenHeight
         '// Add period and week slicers
         CurrYear = Now().Year
@@ -57,8 +61,14 @@ Public Class VendorSchedule
         wkSched = New ScheduleWeek
         wkSched.Update(YR.CurrentYear, CAL.CurrentMonth, Wk.CurrentWeek)
         grdWeek.Children.Add(wkSched)
-
         PopulateVendors(0) '//   Any consideration of day-to-day vendor availability as to whether to show them?
+        UpdateStatusBar("Loading")
+    End Sub
+
+    Private Sub InitialScheduleLoad(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
+        LoadSchedule(0)
+        SaveStatus = 1
+        UpdateStatusBar("Default")
     End Sub
 
 #End Region
@@ -86,7 +96,15 @@ Public Class VendorSchedule
             Case "NotSaved"
                 sbSaveStatus.Background = Brushes.Red
                 tbSaveStatus.Text = "Changes Not Saved"
-
+            Case "Saved"
+                sbSaveStatus.Background = Brushes.LightGreen
+                tbSaveStatus.Text = "Changes Saved"
+            Case "Loading"
+                sbSaveStatus.Background = Brushes.Yellow
+                tbSaveStatus.Text = "Loading..."
+            Case "Saving"
+                sbSaveStatus.Background = Brushes.Yellow
+                tbSaveStatus.Text = "Saving..."
         End Select
 
     End Sub
@@ -94,21 +112,53 @@ Public Class VendorSchedule
 #End Region
 
 #Region "Private Methods"
-    Private Function DiscardCheck() As Boolean
-        Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.YesNo, 12, False,, "Discard unsaved data?",, AgnesMessageBox.ImageType.Danger)
-        amsg.ShowDialog()
-        If amsg.ReturnResult = "No" Then
-            amsg.Close()
-            Return False
-        End If
-        amsg.Close()
-        Return True
-    End Function
 
-    Private Sub VendorSchedule_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
-        If SaveStatus = False Then
-            If DiscardCheck() = False Then e.Cancel = True
+#Region "Toolbar"
+    Private Sub ImportPreviousWeek(sender As Object, e As MouseButtonEventArgs) Handles imgImport.MouseLeftButtonDown
+        If SaveStatus = 0 Then
+            If DiscardCheck() = False Then Exit Sub
         End If
+        LoadSchedule(-7)
+    End Sub
+
+    Private Sub SaveSchedule(sender As Object, e As MouseButtonEventArgs) Handles imgSave.MouseLeftButtonDown
+        If SaveStatus > 0 Then Exit Sub
+
+        'Loop through days
+        'Loop through locations
+        'Purge DB of current entries for the day
+        'Loop through stations and truck entries and save data
+
+        Try
+            For Each wd As ScheduleDay In wkSched.Children
+                If TypeOf (wd) Is ScheduleDay Then
+                    Dim wday As ScheduleDay = wd
+                    For Each loc As Object In wday.LocationStack.Children
+                        If TypeOf (loc) Is ScheduleLocation Then
+                            Dim locitem As ScheduleLocation = loc
+                            locitem.PurgeDatabase()
+                            For Each sat In locitem.StationStack.Children
+                                If TypeOf (sat) Is ScheduleStation Then
+                                    Dim s As ScheduleStation = sat
+                                    s.Save()
+                                End If
+                                If TypeOf (sat) Is ScheduleTruckStation Then
+                                    Dim s As ScheduleTruckStation = sat
+                                    s.Save()
+                                End If
+                            Next
+                        End If
+                    Next
+                End If
+            Next
+            VendorData.SaveChanges()
+            SaveStatus = 2
+        Catch ex As Exception
+            Dim amsg = New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText,
+                                AgnesMessageBox.MsgBoxType.OkOnly, 18,, "Unable to save",, "AGNES encountered " & ex.Message & ".  Please review and try again.  If the error continues, contact the BI team.")
+            amsg.ShowDialog()
+            amsg.Close()
+        End Try
     End Sub
 
     Private Sub ShowBrandsOnly(sender As Object, e As MouseButtonEventArgs) Handles imgBrands.MouseLeftButtonDown
@@ -147,6 +197,32 @@ Public Class VendorSchedule
         ShowSegment(3)
         CollapseBrands()
 
+    End Sub
+
+#End Region
+
+    Private Sub LoadSchedule(LoadType As Integer)
+        ' Loadtype 0 = load current week
+        ' Loadtype -7 = import previous week into current week
+        Try
+            For Each wd As ScheduleDay In wkSched.Children
+                If TypeOf (wd) Is ScheduleDay Then
+                    Dim wday As ScheduleDay = wd
+                    Dim targetdate As Date = wd.DateValue.AddDays(LoadType)
+                    For Each loc As Object In wday.LocationStack.Children
+                        If TypeOf (loc) Is ScheduleLocation Then
+                            Dim locitem As ScheduleLocation = loc
+                            locitem.Load(targetdate)
+                        End If
+                    Next
+                End If
+            Next
+        Catch ex As Exception
+            Dim amsg = New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText,
+                    AgnesMessageBox.MsgBoxType.OkOnly, 18,, "Unhandled Error",, "AGNES encountered " & ex.Message & ".")
+            amsg.ShowDialog()
+            amsg.Close()
+        End Try
     End Sub
 
     Private Sub ShowSegment(vendortype)
@@ -239,6 +315,23 @@ Public Class VendorSchedule
         End Select
     End Sub
 
+    Private Sub VendorSchedule_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+        If SaveStatus = 0 Then
+            If DiscardCheck() = False Then e.Cancel = True
+        End If
+    End Sub
+
+    Private Function DiscardCheck() As Boolean
+        Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.YesNo, 12, False,, "Discard unsaved data?",, AgnesMessageBox.ImageType.Danger)
+        amsg.ShowDialog()
+        If amsg.ReturnResult = "No" Then
+            amsg.Close()
+            Return False
+        End If
+        amsg.Close()
+        Return True
+    End Function
+
 #End Region
 
 #Region "Event Listeners"
@@ -247,7 +340,7 @@ Public Class VendorSchedule
             Wk.SystemChange = False
             Exit Sub
         End If
-        If SaveStatus = False Then
+        If SaveStatus = 0 Then
             If DiscardCheck() = False Then
                 Wk.SystemChange = True
                 YR.CurrentYear = CurrYear
@@ -259,9 +352,10 @@ Public Class VendorSchedule
         CurrYear = YR.CurrentYear
         CurrMonth = CAL.CurrentMonth
         CurrWeek = Wk.CurrentWeek
-        wkSched.Update(CurrYear, CurrMonth, CurrWeek)
         PopulateVendors(CurrentVendorView)
-        SaveStatus = True
+        wkSched.Update(CurrYear, CurrMonth, CurrWeek)
+        LoadSchedule(0)
+        SaveStatus = 1
     End Sub
 
 #End Region

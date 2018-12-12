@@ -12,8 +12,8 @@
 
     <Grid>
         <ToolBar x:Name="tlbVendors" HorizontalAlignment="Left" Width="1274" Height="60" VerticalAlignment="Top">
-            <Image Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/LoadPrevious.png" ToolTip="Import Previous Week" Margin="0,5,0,0" />
-            <Image Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/save.png" ToolTip="Save Schedule" Margin="0,5,0,0" />
+            <Image x:Name="imgImport" Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/LoadPrevious.png" ToolTip="Import Previous Week" Margin="0,5,0,0" />
+            <Image x:Name="imgSave" Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/save.png" ToolTip="Save Schedule" Margin="0,5,0,0" />
             <Separator />
             <Image x:Name="imgBrands" Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/brands.png" ToolTip="Show Local Brands" Margin="0,5,0,0" />
             <Image x:Name="imgTrucks" Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/FoodTruck.png" ToolTip="Show Food Trucks" Margin="0,5,0,0" />

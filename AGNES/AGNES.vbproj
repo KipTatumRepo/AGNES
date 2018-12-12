@@ -157,6 +157,9 @@
     <Compile Include="Entities\ReceivedCAMCheck.vb">
       <DependentUpon>VendorModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Schedule.vb">
+      <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\SickOtRecord.vb">
       <DependentUpon>FlashActualsModel.tt</DependentUpon>
     </Compile>

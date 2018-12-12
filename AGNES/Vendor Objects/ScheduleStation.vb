@@ -46,6 +46,49 @@
 #End Region
 
 #Region "Public Methods"
+    Public Sub Save()
+        If VendorStack.Children.Count = 1 Then Exit Sub
+        Dim vndr As VendorInStation = VendorStack.Children(1)
+        Try
+            Dim qee = (From e In VendorData.Schedules
+                       Where e.ScheduleDate = CurrentWeekDay.DateValue And
+                          e.Location = CurrentLocation.LocationName
+                       Select e).ToList(0)
+
+            With qee
+                .ScheduleDate = CurrentWeekDay.DateValue
+                .Location = CurrentLocation.LocationName
+                .Station = StationName
+                .VendorId = vndr.ReferencedVendor.VendorItem.PID
+                .SavedBy = My.Settings.UserName
+            End With
+        Catch ex As Exception
+            '// Save as new entry
+            Dim ns As New Schedule
+            With ns
+                .ScheduleDate = CurrentWeekDay.DateValue
+                .Location = CurrentLocation.LocationName
+                .Station = StationName
+                .VendorId = vndr.ReferencedVendor.VendorItem.PID
+                .SavedBy = My.Settings.UserName
+            End With
+            VendorData.Schedules.Add(ns)
+        End Try
+    End Sub
+
+    Public Sub DropVendorIntoStation(ByVal VendorName As String, ByRef RV As ScheduleVendor)
+        Dim nv As New VendorInStation With {.TextAlignment = TextAlignment.Center, .Text = VendorName,
+            .ReferencedVendor = RV, .ReferencedStation = Me, .FontSize = 12}
+        nv.IsBrand = True
+        nv.Background = Brushes.WhiteSmoke
+        VendorStack.Children.Add(nv)
+        nv.ReferencedVendor.UsedWeeklySlots += 1
+        Height += 16
+        VendorSched.SaveStatus = 0
+        VendorSched.ActiveVendor = Nothing
+        CurrentLocation.DraggingIntoStation = False
+    End Sub
+
     Public Sub DeleteItem(ByRef v As VendorInStation)
         VendorStack.Children.Remove(v)
         Height -= 16
@@ -75,17 +118,7 @@
             VendorSched.SaveStatus = VendorSched.SaveStatus
             Exit Sub
         End If
-
-        Dim nv As New VendorInStation With {.TextAlignment = TextAlignment.Center, .Text = e.Data.GetData(DataFormats.Text),
-        .ReferencedVendor = VendorSched.ActiveVendor, .ReferencedStation = Me, .FontSize = 12}
-        nv.IsBrand = True
-        nv.Background = Brushes.WhiteSmoke
-        VendorStack.Children.Add(nv)
-        nv.ReferencedVendor.UsedWeeklySlots += 1
-        Height += 16
-        VendorSched.SaveStatus = False
-        VendorSched.ActiveVendor = Nothing
-        CurrentLocation.DraggingIntoStation = False
+        DropVendorIntoStation(e.Data.GetData(DataFormats.Text), VendorSched.ActiveVendor)
     End Sub
 
     Private Sub CheckVendorDrag(vn As String)
