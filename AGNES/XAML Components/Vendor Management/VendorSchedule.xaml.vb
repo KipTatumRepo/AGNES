@@ -166,41 +166,35 @@ Public Class VendorSchedule
         End Try
     End Sub
 
-    Private Sub ShowBrandsOnly(sender As Object, e As MouseButtonEventArgs) Handles imgBrands.MouseLeftButtonDown
-        If CurrentVendorView = 2 Then
+    Private Sub BrandsFilterClicked(sender As Object, e As RoutedEventArgs) Handles tglBrands.Click
+        If tglBrands.IsChecked = False Then
             ResetVendorFilters()
             Exit Sub
         End If
-        imgTrucks.Effect = New Effects.BlurEffect With {.KernelType = Effects.KernelType.Box, .Radius = 5,
-            .RenderingBias = Effects.RenderingBias.Performance}
-        imgBrands.Effect = Nothing
+        tglTrucks.IsChecked = False
         CurrentVendorView = 2
         ExpandLocations()
         ShowSegment(2)
         CollapseTrucks()
-
     End Sub
 
-    Private Sub ShowTrucksOnly(sender As Object, e As MouseButtonEventArgs) Handles imgTrucks.MouseLeftButtonDown
-        If CurrentVendorView = 3 Then
+    Private Sub TrucksFilterClicked(sender As Object, e As RoutedEventArgs) Handles tglTrucks.Click
+        If tglTrucks.IsChecked = False Then
             ResetVendorFilters()
             Exit Sub
         End If
-        imgBrands.Effect = New Effects.BlurEffect With {.KernelType = Effects.KernelType.Box, .Radius = 5,
-            .RenderingBias = Effects.RenderingBias.Performance}
-        imgTrucks.Effect = Nothing
+        tglBrands.IsChecked = False
         CurrentVendorView = 3
         ExpandLocations()
         ShowSegment(3)
         CollapseBrands()
-
     End Sub
 
 #End Region
 
     Private Sub ResetVendorFilters()
-        imgBrands.Effect = Nothing
-        imgTrucks.Effect = Nothing
+        tglBrands.IsChecked = False
+        tglTrucks.IsChecked = False
         CurrentVendorView = 0
         ShowSegment(0)
         ExpandLocations()
@@ -362,6 +356,10 @@ Public Class VendorSchedule
         LoadSchedule(0)
         SaveStatus = 1
     End Sub
+
+
+
+
 
 #End Region
 
