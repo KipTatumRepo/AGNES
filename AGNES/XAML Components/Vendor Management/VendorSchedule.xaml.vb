@@ -110,6 +110,13 @@ Public Class VendorSchedule
 
     End Sub
 
+    Public Sub ResetVendorFilters()
+        tglBrands.IsChecked = False
+        tglTrucks.IsChecked = False
+        CurrentVendorView = 0
+        ShowSegment(0)
+        ExpandLocations()
+    End Sub
 #End Region
 
 #Region "Private Methods"
@@ -191,14 +198,6 @@ Public Class VendorSchedule
     End Sub
 
 #End Region
-
-    Private Sub ResetVendorFilters()
-        tglBrands.IsChecked = False
-        tglTrucks.IsChecked = False
-        CurrentVendorView = 0
-        ShowSegment(0)
-        ExpandLocations()
-    End Sub
 
     Private Sub LoadSchedule(LoadType As Integer)
         ' Loadtype = number of days back to retrieve (0 for current week, -7 for previous, -14 for two weeks, -21 for three weeks)

@@ -99,7 +99,13 @@ Public Class ScheduleVendor
         AddHandler cmiEdit.Click, AddressOf EditVendor
         Dim cmiDeactivate As New MenuItem With {.Header = "Deactive Vendor"}
         AddHandler cmiDeactivate.Click, AddressOf DeactivateVendor
+        Dim cmiFilter As New MenuItem With {.Header = "Filter on Vendor"}
+        AddHandler cmiFilter.Click, AddressOf VendorFilter
+        Dim cmiKillFilters As New MenuItem With {.Header = "Remove Vendor Filters"}
+        AddHandler cmiKillFilters.Click, AddressOf VendorSched.ResetVendorFilters
         With VendorContextMenu.Items
+            .Add(cmiFilter)
+            .Add(cmiKillFilters)
             .Add(cmiEdit)
             .Add(cmiDeactivate)
         End With
@@ -120,6 +126,30 @@ Public Class ScheduleVendor
 
     Private Sub EnterReceipts()
         Dim ph As String = ""
+    End Sub
+
+    Private Sub VendorFilter()
+        For Each sd In VendorSched.wkSched.Children
+            If TypeOf (sd) Is ScheduleDay Then
+                Dim TargetDay As ScheduleDay = sd
+                For Each Location In TargetDay.LocationStack.Children
+                    If TypeOf (Location) Is ScheduleLocation Then
+                        Dim TargetLoc As ScheduleLocation = Location
+                        For Each s In TargetLoc.StationStack.Children
+                            If TypeOf (s) Is ScheduleStation Then
+                                Dim TargetStation As ScheduleStation = s
+                                For Each v In TargetStation.VendorStack.Children
+                                    If TypeOf (v) Is VendorInStation Then
+                                        Dim targetvendor As VendorInStation = v
+                                        If targetvendor.ReferencedVendor IsNot Me Then TargetStation.Visibility = Visibility.Collapsed
+                                    End If
+                                Next
+                            End If
+                        Next
+                    End If
+                Next
+            End If
+        Next
     End Sub
 
 #End Region
