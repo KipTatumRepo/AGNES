@@ -1,5 +1,6 @@
 ﻿Imports System.ComponentModel
-'WATCH: ERROR BEING THROWN AFTER VENDOR IS DELETED AND ANOTHER VENDOR IS ACQUIRED (CURRENT VENDOR NOT UPDATING?)
+'CRITICAL: ERROR BEING THROWN AFTER VENDOR IS DELETED AND ANOTHER VENDOR IS ACQUIRED (CURRENT VENDOR NOT UPDATING?)
+'           APPEARS TO BE FOOD TRUCKS
 'TODO: Changing weeks resets filters in practice, but does not reset filter flags or buttons
 Public Class VendorSchedule
 
@@ -115,10 +116,14 @@ Public Class VendorSchedule
 
 #Region "Toolbar"
     Private Sub ImportPreviousWeek(sender As Object, e As MouseButtonEventArgs) Handles imgImport.MouseLeftButtonDown
+        Dim daysback As Integer = -7
+
+        If My.Computer.Keyboard.CtrlKeyDown Then daysback = -14
+        If My.Computer.Keyboard.CtrlKeyDown And My.Computer.Keyboard.ShiftKeyDown Then daysback = -21
         If SaveStatus = 0 Then
             If DiscardCheck() = False Then Exit Sub
         End If
-        LoadSchedule(-7)
+        LoadSchedule(daysback)
     End Sub
 
     Private Sub SaveSchedule(sender As Object, e As MouseButtonEventArgs) Handles imgSave.MouseLeftButtonDown
@@ -163,11 +168,7 @@ Public Class VendorSchedule
 
     Private Sub ShowBrandsOnly(sender As Object, e As MouseButtonEventArgs) Handles imgBrands.MouseLeftButtonDown
         If CurrentVendorView = 2 Then
-            imgBrands.Effect = Nothing
-            imgTrucks.Effect = Nothing
-            CurrentVendorView = 0
-            ShowSegment(0)
-            ExpandLocations()
+            ResetVendorFilters()
             Exit Sub
         End If
         imgTrucks.Effect = New Effects.BlurEffect With {.KernelType = Effects.KernelType.Box, .Radius = 5,
@@ -182,11 +183,7 @@ Public Class VendorSchedule
 
     Private Sub ShowTrucksOnly(sender As Object, e As MouseButtonEventArgs) Handles imgTrucks.MouseLeftButtonDown
         If CurrentVendorView = 3 Then
-            imgBrands.Effect = Nothing
-            imgTrucks.Effect = Nothing
-            CurrentVendorView = 0
-            ShowSegment(0)
-            ExpandLocations()
+            ResetVendorFilters()
             Exit Sub
         End If
         imgBrands.Effect = New Effects.BlurEffect With {.KernelType = Effects.KernelType.Box, .Radius = 5,
@@ -201,9 +198,16 @@ Public Class VendorSchedule
 
 #End Region
 
+    Private Sub ResetVendorFilters()
+        imgBrands.Effect = Nothing
+        imgTrucks.Effect = Nothing
+        CurrentVendorView = 0
+        ShowSegment(0)
+        ExpandLocations()
+    End Sub
+
     Private Sub LoadSchedule(LoadType As Integer)
-        ' Loadtype 0 = load current week
-        ' Loadtype -7 = import previous week into current week
+        ' Loadtype = number of days back to retrieve (0 for current week, -7 for previous, -14 for two weeks, -21 for three weeks)
         Try
             For Each wd As ScheduleDay In wkSched.Children
                 If TypeOf (wd) Is ScheduleDay Then
@@ -212,7 +216,7 @@ Public Class VendorSchedule
                     For Each loc As Object In wday.LocationStack.Children
                         If TypeOf (loc) Is ScheduleLocation Then
                             Dim locitem As ScheduleLocation = loc
-                            locitem.Load(targetdate)
+                            locitem.Load(targetdate, LoadType)
                         End If
                     Next
                 End If
@@ -352,6 +356,7 @@ Public Class VendorSchedule
         CurrYear = YR.CurrentYear
         CurrMonth = CAL.CurrentMonth
         CurrWeek = Wk.CurrentWeek
+        ResetVendorFilters()
         PopulateVendors(CurrentVendorView)
         wkSched.Update(CurrYear, CurrMonth, CurrWeek)
         LoadSchedule(0)

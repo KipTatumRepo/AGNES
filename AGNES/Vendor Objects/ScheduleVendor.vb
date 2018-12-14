@@ -38,7 +38,7 @@ Public Class ScheduleVendor
     Public Sub New(ByRef vndr As VendorInfo)
         VendorItem = vndr
         stkVendorInfo = New StackPanel
-        Height = 60
+        Height = 44
         Background = Brushes.WhiteSmoke
         BorderBrush = Brushes.Black
         BorderThickness = New Thickness(1, 1, 1, 1)
@@ -62,13 +62,13 @@ Public Class ScheduleVendor
 #Region "Private Methods"
 
     Private Sub AddName()
-        NameText = New TextBlock With {.TextAlignment = TextAlignment.Center, .Text = VendorItem.Name, .ContextMenu = VendorContextMenu}
+        NameText = New TextBlock With {.TextAlignment = TextAlignment.Center, .Text = VendorItem.Name, .ContextMenu = VendorContextMenu, .FontSize = 10}
         stkVendorInfo.Children.Add(NameText)
     End Sub
 
     Private Sub AddFoodType()
         Dim textstr As String = ""
-        TypeText = New TextBlock With {.TextAlignment = TextAlignment.Center}
+        TypeText = New TextBlock With {.TextAlignment = TextAlignment.Center, .FontSize = 10}
         If VendorItem.FoodType IsNot Nothing Then
             textstr = GetFoodType(VendorItem.FoodType)
             FoodType = VendorItem.FoodType
@@ -82,7 +82,7 @@ Public Class ScheduleVendor
     End Sub
 
     Private Sub AddSlots()
-        SlotsText = New TextBlock With {.TextAlignment = TextAlignment.Center, .Text = "0/0"}
+        SlotsText = New TextBlock With {.TextAlignment = TextAlignment.Center, .Text = "0/0", .FontSize = 10}
         stkVendorInfo.Children.Add(SlotsText)
     End Sub
 

@@ -56,7 +56,7 @@ Public Class ScheduleLocation
         StationStack.Children.Add(tb)
         Dim nv As New VendorInStation With {.TextAlignment = TextAlignment.Center, .Text = TruckName,
             .ReferencedVendor = RV, .ReferencedLoc = Me, .FontSize = 12, .ReferencedTruckStation = tb}
-        nv.Background = Brushes.LightGray
+        nv.Background = Brushes.WhiteSmoke
         tb.TruckStack.Children.Add(nv)
         nv.ReferencedVendor.UsedWeeklySlots += 1
         Height += 32
@@ -76,7 +76,7 @@ Public Class ScheduleLocation
         VendorData.SaveChanges()
     End Sub
 
-    Public Sub Load(loaddate As Date)
+    Public Sub Load(loaddate As Date, lt As Integer)
         ClearExistingData()
         Dim vn As String
         Dim sv As ScheduleVendor = Nothing
@@ -106,7 +106,8 @@ Public Class ScheduleLocation
                 Next
             Else
                 ' Create a truck station and add vendor, if it's present in the vendor panel (assumes vendor is therefore active)
-                If sv IsNot Nothing Then DropTruckIntoLocation(vn, sv)
+                ' Per Rachel Kanner 12/12/18, do not import food trucks from previous weeks
+                If sv IsNot Nothing And lt = 0 Then DropTruckIntoLocation(vn, sv)
             End If
         Next
     End Sub

@@ -166,9 +166,9 @@ Public Class RadialPortal
             'End With
 
             'With My.Settings
-            '    .UserName = "Robert Price"
-            '    .UserShortName = "Robert"
-            '    .UserID = 10097
+            '    .UserName = "Tracy Ducken"
+            '    .UserShortName = "Tracy"
+            '    .UserID = 10117
             '    .UserLevel = 4
             'End With
 
@@ -315,15 +315,22 @@ Public Class RadialPortal
             Case "Flash"
                 FlashModule.Runmodule()
             Case "Flash Status"
-                FlashStatusModule.RunModule()
+                FlashStatusModule.Runmodule()
             Case "Forecast"
                 ForecastModule.Runmodule()
             Case "Admin"
                 AdminModule.Runmodule()
             Case "Training"
-                TrainingModule.RunModule()
+                TrainingModule.Runmodule()
             Case "Vendor Manager"
                 VendorModule.Runmodule()
+            Case "Event Journal"
+
+                '//TEST
+                EventJournal.Runmodule()
+                '//TEST
+
+
         End Select
         Show()
     End Sub
