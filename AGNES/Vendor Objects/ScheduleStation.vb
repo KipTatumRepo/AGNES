@@ -31,10 +31,9 @@
         AllowDrop = True
         Height = 16
         BorderBrush = Brushes.Black
-
+        BorderThickness = New Thickness(1, 1, 1, 1)
         Dim bc As New BrushConverter()
         Background = bc.ConvertFrom("#FFFBF1C6")
-        BorderThickness = New Thickness(1, 1, 1, 1)
         Margin = New Thickness(1, 1, 1, 0)
         StationNumber = sn
         StationName = "Station " & StationNumber

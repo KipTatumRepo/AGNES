@@ -1,5 +1,5 @@
 ﻿Module TrainingModule
-    Public Sub RunModule()
+    Public Sub Runmodule()
         Dim TrainMod As New Training
         TrainMod.ShowDialog()
     End Sub

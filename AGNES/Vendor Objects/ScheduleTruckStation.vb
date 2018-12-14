@@ -31,6 +31,7 @@
         Height = 32
         BorderBrush = Brushes.Black
         BorderThickness = New Thickness(1, 1, 1, 1)
+        Background = Brushes.WhiteSmoke
         Margin = New Thickness(1, 1, 1, 0)
         'StationNumber = sn
         TruckName = tnm
@@ -62,6 +63,8 @@
 #Region "Private Methods"
     Private Sub AddName()
         TruckBlock = New TextBlock With {.TextAlignment = TextAlignment.Center, .Text = "Food Truck", .FontSize = 10}
+        Dim bc As New BrushConverter()
+        TruckBlock.Background = bc.ConvertFrom("#FFFBF1C6")
         TruckStack.Children.Add(TruckBlock)
     End Sub
 
