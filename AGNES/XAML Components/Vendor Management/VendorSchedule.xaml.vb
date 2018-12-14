@@ -357,8 +357,8 @@ Public Class VendorSchedule
         CurrMonth = CAL.CurrentMonth
         CurrWeek = Wk.CurrentWeek
         ResetVendorFilters()
-        PopulateVendors(CurrentVendorView)
         wkSched.Update(CurrYear, CurrMonth, CurrWeek)
+        PopulateVendors(CurrentVendorView)
         LoadSchedule(0)
         SaveStatus = 1
     End Sub
