@@ -3,6 +3,7 @@
 
     'TODO: UPDATE VENDOR/LOCATION PREREQS (HOOD, ETC.)
 #Region "Properties"
+    Private BC As New BrushConverter
     Public VendorStack As StackPanel
     Public Property StationName As String
     Public Property StationNumber As Byte
@@ -110,6 +111,7 @@
         VendorSched.SaveStatus = VendorSched.SaveStatus
         VendorSched.tbSaveStatus.Text = StatusBarText
         VendorSched.tbSaveStatus.Background = StatusBarColor
+        CurrentLocation.Background = BC.ConvertFrom("#FFBFE8F7")
     End Sub
 
     Private Sub ScheduleStation_Drop(sender As Object, e As DragEventArgs) Handles Me.Drop
@@ -118,6 +120,7 @@
             Exit Sub
         End If
         DropVendorIntoStation(e.Data.GetData(DataFormats.Text), VendorSched.ActiveVendor)
+        CurrentLocation.Background = BC.ConvertFrom("#FFBFE8F7")
     End Sub
 
     Private Sub CheckVendorDrag(vn As String)
@@ -148,7 +151,7 @@
         DropAllowed = True
         VendorSched.tbSaveStatus.Text = "Okay to add"
         VendorSched.sbSaveStatus.Background = Brushes.LightGreen
-
+        CurrentLocation.Background = Brushes.LightGreen
     End Sub
 
     Private Function IsVendorTypeAllowedAtStation()

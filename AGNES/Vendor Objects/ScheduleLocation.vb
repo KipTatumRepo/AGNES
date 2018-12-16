@@ -3,6 +3,7 @@ Public Class ScheduleLocation
     Inherits Border
 
 #Region "Properties"
+    Private BC As New BrushConverter
     Public StationStack As StackPanel
     Public Property LocationName As String
     Public Property LocationBlock As TextBlock
@@ -62,6 +63,7 @@ Public Class ScheduleLocation
         Height += 32
         VendorSched.SaveStatus = 0
         VendorSched.ActiveVendor = Nothing
+        Background = BC.ConvertFrom("#FFBFE8F7")
     End Sub
 
     Public Sub PurgeDatabase()
@@ -135,6 +137,7 @@ Public Class ScheduleLocation
 
     Private Sub ScheduleLocation_DragLeave(sender As Object, e As DragEventArgs) Handles Me.DragLeave
         VendorSched.SaveStatus = VendorSched.SaveStatus
+        Background = BC.ConvertFrom("#FFBFE8F7")
     End Sub
 
     Private Sub ScheduleLocation_Drop(sender As Object, e As DragEventArgs) Handles Me.Drop
@@ -177,7 +180,7 @@ Public Class ScheduleLocation
 
         VendorSched.tbSaveStatus.Text = "Okay to add"
         VendorSched.sbSaveStatus.Background = Brushes.LightGreen
-
+        Background = Brushes.LightGreen
     End Sub
 
     Private Sub ClearExistingData()

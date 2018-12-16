@@ -10,6 +10,7 @@ Public Class VendorSchedule
     Public Property Wk As WeekChooser
     Public wkSched As ScheduleWeek
     Public ActiveVendor As ScheduleVendor
+    Public VendorFilterOn As Boolean
     Private _savestatus As Byte
     Private CurrYear As Integer
     Private CurrMonth As Byte
@@ -110,6 +111,15 @@ Public Class VendorSchedule
 
     End Sub
 
+    Public Sub ResetVendorFilters()
+        tglBrands.IsChecked = False
+        tglTrucks.IsChecked = False
+        CurrentVendorView = 0
+        ShowSegment(0)
+        ExpandLocations()
+        VendorFilterOn = False
+    End Sub
+
 #End Region
 
 #Region "Private Methods"
@@ -166,45 +176,31 @@ Public Class VendorSchedule
         End Try
     End Sub
 
-    Private Sub ShowBrandsOnly(sender As Object, e As MouseButtonEventArgs) Handles imgBrands.MouseLeftButtonDown
-        If CurrentVendorView = 2 Then
+    Private Sub BrandsFilterClicked(sender As Object, e As RoutedEventArgs) Handles tglBrands.Click
+        If tglBrands.IsChecked = False Then
             ResetVendorFilters()
             Exit Sub
         End If
-        imgTrucks.Effect = New Effects.BlurEffect With {.KernelType = Effects.KernelType.Box, .Radius = 5,
-            .RenderingBias = Effects.RenderingBias.Performance}
-        imgBrands.Effect = Nothing
+        tglTrucks.IsChecked = False
         CurrentVendorView = 2
         ExpandLocations()
         ShowSegment(2)
         CollapseTrucks()
-
     End Sub
 
-    Private Sub ShowTrucksOnly(sender As Object, e As MouseButtonEventArgs) Handles imgTrucks.MouseLeftButtonDown
-        If CurrentVendorView = 3 Then
+    Private Sub TrucksFilterClicked(sender As Object, e As RoutedEventArgs) Handles tglTrucks.Click
+        If tglTrucks.IsChecked = False Then
             ResetVendorFilters()
             Exit Sub
         End If
-        imgBrands.Effect = New Effects.BlurEffect With {.KernelType = Effects.KernelType.Box, .Radius = 5,
-            .RenderingBias = Effects.RenderingBias.Performance}
-        imgTrucks.Effect = Nothing
+        tglBrands.IsChecked = False
         CurrentVendorView = 3
         ExpandLocations()
         ShowSegment(3)
         CollapseBrands()
-
     End Sub
 
 #End Region
-
-    Private Sub ResetVendorFilters()
-        imgBrands.Effect = Nothing
-        imgTrucks.Effect = Nothing
-        CurrentVendorView = 0
-        ShowSegment(0)
-        ExpandLocations()
-    End Sub
 
     Private Sub LoadSchedule(LoadType As Integer)
         ' Loadtype = number of days back to retrieve (0 for current week, -7 for previous, -14 for two weeks, -21 for three weeks)
@@ -357,11 +353,15 @@ Public Class VendorSchedule
         CurrMonth = CAL.CurrentMonth
         CurrWeek = Wk.CurrentWeek
         ResetVendorFilters()
-        PopulateVendors(CurrentVendorView)
         wkSched.Update(CurrYear, CurrMonth, CurrWeek)
+        PopulateVendors(CurrentVendorView)
         LoadSchedule(0)
         SaveStatus = 1
     End Sub
+
+
+
+
 
 #End Region
 
