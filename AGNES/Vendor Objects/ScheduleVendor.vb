@@ -128,6 +128,7 @@ Public Class ScheduleVendor
             cmiKillFilters.IsEnabled = False
         End If
     End Sub
+
     Private Sub EditVendor()
         Dim ph As String = ""
     End Sub
@@ -135,6 +136,7 @@ Public Class ScheduleVendor
     Private Sub DeactivateVendor()
         Dim ph As String = ""
     End Sub
+
     Private Sub EnterReceipts()
         Dim ph As String = ""
     End Sub

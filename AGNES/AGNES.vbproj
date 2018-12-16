@@ -253,6 +253,7 @@
     <Compile Include="Module Orchestrators\FlashStatusModule.vb" />
     <Compile Include="Module Orchestrators\ForecastModule.vb" />
     <Compile Include="Module Orchestrators\VendorModule.vb" />
+    <Compile Include="Module Orchestrators\WOPRModule.vb" />
     <Compile Include="Training Objects\EmployeeObj.vb" />
     <Compile Include="Training Objects\TrainingGridSource.vb" />
     <Compile Include="Vendor Objects\ScheduleDay.vb" />
@@ -264,6 +265,12 @@
     <Compile Include="Vendor Objects\VendorInStation.vb" />
     <Compile Include="XAML Components\EasterEggs\Birthday.xaml.vb">
       <DependentUpon>Birthday.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="XAML Components\EasterEggs\PacMan.xaml.vb">
+      <DependentUpon>PacMan.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="XAML Components\EasterEggs\WOPR.xaml.vb">
+      <DependentUpon>WOPR.xaml</DependentUpon>
     </Compile>
     <Compile Include="XAML Components\Flash\Delegates.xaml.vb">
       <DependentUpon>Delegates.xaml</DependentUpon>
@@ -608,6 +615,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="XAML Components\EasterEggs\PacMan.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XAML Components\EasterEggs\WOPR.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="XAML Components\Flash\Delegates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -845,6 +860,11 @@
     <Resource Include="Resources\Commons.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\pacmanup.png" />
+    <Resource Include="Resources\pacmanright.png" />
+    <Resource Include="Resources\pacmanleft.png" />
+    <Resource Include="Resources\pacmandown.png" />
+    <Resource Include="Resources\ghost.png" />
     <Resource Include="AgnesIcon2.ico" />
     <Content Include="Entities\AgnesSharedDataModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
