@@ -37,6 +37,15 @@ Public Class ScheduleWeek
 
     End Sub
 
+    Public Sub SyncScrollViews(sender As ScheduleDay, ScrollVertOffset As Double)
+        For Each d In Children
+            If TypeOf (d) Is ScheduleDay Then
+                Dim sd As ScheduleDay = d
+                If sd IsNot sender Then sd.LocationScrollViewer.ScrollToVerticalOffset(ScrollVertOffset)
+            End If
+        Next
+    End Sub
+
 #End Region
 
 #Region "Private Methods"

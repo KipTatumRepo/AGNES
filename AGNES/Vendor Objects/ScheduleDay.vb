@@ -8,6 +8,7 @@ Public Class ScheduleDay
     Public LocationScrollViewer As ScrollViewer
     Public LocationStack As StackPanel
     Private Highlight As Boolean
+    Private SystemCall As Boolean
 #End Region
 
 #Region "Constructor"
@@ -17,7 +18,9 @@ Public Class ScheduleDay
         BorderThickness = New Thickness(1, 1, 1, 1)
         BorderBrush = Brushes.Black
         Width = 198
+        SystemCall = True
         LocationScrollViewer = New ScrollViewer
+        AddHandler LocationScrollViewer.ScrollChanged, AddressOf ScrollView
         LocationStack = New StackPanel With {.CanVerticallyScroll = True}
         CreateDayLabel()
         If hol = 0 Then
@@ -25,7 +28,7 @@ Public Class ScheduleDay
         End If
         LocationScrollViewer.Content = LocationStack
         Child = LocationScrollViewer
-
+        SystemCall = False
     End Sub
 
 #End Region
@@ -101,6 +104,11 @@ Public Class ScheduleDay
             Highlight = Not Highlight
         Next
 
+    End Sub
+
+    Private Sub ScrollView(sender As ScrollViewer, e As ScrollChangedEventArgs)
+        If SystemCall = True Then Exit Sub
+        VendorSched.wkSched.SyncScrollViews(Me, sender.VerticalOffset)
     End Sub
 
 #End Region
