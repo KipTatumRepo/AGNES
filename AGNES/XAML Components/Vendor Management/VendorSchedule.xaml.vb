@@ -10,6 +10,7 @@ Public Class VendorSchedule
     Public Property Wk As WeekChooser
     Public wkSched As ScheduleWeek
     Public ActiveVendor As ScheduleVendor
+    Public VendorFilterOn As Boolean
     Private _savestatus As Byte
     Private CurrYear As Integer
     Private CurrMonth As Byte
@@ -116,7 +117,9 @@ Public Class VendorSchedule
         CurrentVendorView = 0
         ShowSegment(0)
         ExpandLocations()
+        VendorFilterOn = False
     End Sub
+
 #End Region
 
 #Region "Private Methods"

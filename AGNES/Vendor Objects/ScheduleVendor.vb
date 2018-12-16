@@ -5,7 +5,6 @@ Public Class ScheduleVendor
 
 #Region "Properties"
     Public VendorItem As VendorInfo
-    Private stkVendorInfo As StackPanel
     Public NameText As TextBlock
     Public VendorType As Byte
     Public TypeText As TextBlock
@@ -18,7 +17,10 @@ Public Class ScheduleVendor
     Private cmiEdit As MenuItem
     Private cmiDeactivate As MenuItem
     Private cmiReceipts As MenuItem
+    Private cmiFilter As MenuItem
+    Private cmiKillFilters As MenuItem
     Private _usedweeklyslots As Byte
+    Private stkVendorInfo As StackPanel
 
     Public Property UsedWeeklySlots As Byte
         Get
@@ -95,13 +97,14 @@ Public Class ScheduleVendor
 #Region "Context Menu Items"
     Private Sub CreateContextMenu()
         VendorContextMenu = New ContextMenu
-        Dim cmiEdit As New MenuItem With {.Header = "Edit Vendor"}
+        AddHandler VendorContextMenu.Loaded, AddressOf FilterEnable
+        cmiEdit = New MenuItem With {.Header = "Edit Vendor"}
         AddHandler cmiEdit.Click, AddressOf EditVendor
-        Dim cmiDeactivate As New MenuItem With {.Header = "Deactive Vendor"}
+        cmiDeactivate = New MenuItem With {.Header = "Deactivate Vendor"}
         AddHandler cmiDeactivate.Click, AddressOf DeactivateVendor
-        Dim cmiFilter As New MenuItem With {.Header = "Filter on Vendor"}
+        cmiFilter = New MenuItem With {.Header = "Filter on Vendor"}
         AddHandler cmiFilter.Click, AddressOf VendorFilter
-        Dim cmiKillFilters As New MenuItem With {.Header = "Remove Vendor Filters"}
+        cmiKillFilters = New MenuItem With {.Header = "Remove Vendor Filters"}
         AddHandler cmiKillFilters.Click, AddressOf VendorSched.ResetVendorFilters
         With VendorContextMenu.Items
             .Add(cmiFilter)
@@ -116,6 +119,15 @@ Public Class ScheduleVendor
         End If
     End Sub
 
+    Private Sub FilterEnable()
+        If VendorSched.VendorFilterOn = True Then
+            cmiFilter.IsEnabled = False
+            cmiKillFilters.IsEnabled = True
+        Else
+            cmiFilter.IsEnabled = True
+            cmiKillFilters.IsEnabled = False
+        End If
+    End Sub
     Private Sub EditVendor()
         Dim ph As String = ""
     End Sub
@@ -123,7 +135,6 @@ Public Class ScheduleVendor
     Private Sub DeactivateVendor()
         Dim ph As String = ""
     End Sub
-
     Private Sub EnterReceipts()
         Dim ph As String = ""
     End Sub
@@ -138,18 +149,27 @@ Public Class ScheduleVendor
                         For Each s In TargetLoc.StationStack.Children
                             If TypeOf (s) Is ScheduleStation Then
                                 Dim TargetStation As ScheduleStation = s
-                                For Each v In TargetStation.VendorStack.Children
-                                    If TypeOf (v) Is VendorInStation Then
-                                        Dim targetvendor As VendorInStation = v
-                                        If targetvendor.ReferencedVendor IsNot Me Then TargetStation.Visibility = Visibility.Collapsed
-                                    End If
-                                Next
+                                If TargetStation.VendorStack.Children.Count < 2 Then
+                                    TargetStation.Visibility = Visibility.Collapsed
+                                Else
+                                    For Each v In TargetStation.VendorStack.Children
+                                        If TypeOf (v) Is VendorInStation Then
+                                            Dim targetvendor As VendorInStation = v
+                                            If targetvendor.ReferencedVendor IsNot Me Then TargetStation.Visibility = Visibility.Collapsed
+                                        End If
+                                    Next
+                                End If
+                            End If
+                            If TypeOf (s) Is ScheduleTruckStation Then
+                                Dim TargetTruck As ScheduleTruckStation = s
+                                If TargetTruck.TruckName <> Me.VendorItem.Name Then TargetTruck.Visibility = Visibility.Collapsed
                             End If
                         Next
                     End If
                 Next
             End If
         Next
+        VendorSched.VendorFilterOn = True
     End Sub
 
 #End Region
