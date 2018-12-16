@@ -1,0 +1,17 @@
+﻿<Window x:Class="WOPR"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AGNES"
+        mc:Ignorable="d"
+        Title="WOPR" Height="1080" Width="800" Background="Black" WindowStyle="None" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+    <Grid>
+        <StackPanel x:Name="stkWopr">
+            <TextBlock x:Name="tblkHello" HorizontalAlignment="Left" Margin="34,32,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="735" Foreground="White" FontFamily="Global Monospace" FontSize="16" Background="Black"/>
+            <TextBlock x:Name="tblkGamesList" HorizontalAlignment="Left" Margin="34,75,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="735" Foreground="White" FontFamily="Global Monospace" FontSize="16" Background="Black"/>
+            <TextBlock x:Name="tblkChooseGame" HorizontalAlignment="Left" Margin="34,99,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="735" Foreground="White" FontFamily="Global Monospace" FontSize="16" Background="Black"/>
+        </StackPanel>
+ </Grid>
+
+</Window>

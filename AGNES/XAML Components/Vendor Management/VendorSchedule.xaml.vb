@@ -1,7 +1,6 @@
 ﻿Imports System.ComponentModel
 'CRITICAL: ERROR BEING THROWN AFTER VENDOR IS DELETED AND ANOTHER VENDOR IS ACQUIRED (CURRENT VENDOR NOT UPDATING?)
 '           APPEARS TO BE FOOD TRUCKS
-'TODO: Changing weeks resets filters in practice, but does not reset filter flags or buttons
 Public Class VendorSchedule
 
 #Region "Properties"

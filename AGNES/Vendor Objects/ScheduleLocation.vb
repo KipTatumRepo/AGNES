@@ -7,6 +7,8 @@ Public Class ScheduleLocation
     Public StationStack As StackPanel
     Public Property LocationName As String
     Public Property LocationBlock As TextBlock
+    Public Property AnchorFoodType As Long
+    Public Property AnchorFoodSubType As Long
     Public Property StationCount As Byte
     Public Property AllowsFoodTrucks As Boolean
     Private Property HighlightColor As Boolean = True
@@ -29,6 +31,10 @@ Public Class ScheduleLocation
 
 #Region "Constructor"
     Public Sub New(locname As String, sc As Byte, ByRef cwd As ScheduleDay, Highlight As Boolean)
+        'TEST: Anchor station - Shanghai/Watercress
+        AnchorFoodType = 4
+        AnchorFoodSubType = 8
+
         CurrentWeekDay = cwd
         StationCount = sc
         BorderBrush = Brushes.Black
