@@ -13,6 +13,7 @@ Public Class PacMan
     Private gy As Double = 128
     Private xdistance As Double
     Private ydistance As Double
+    Private QuitGame As Boolean
 
 #End Region
 
@@ -216,13 +217,17 @@ Public Class PacMan
 
             Case Key.Space, Key.Escape
                 PauseGame()
+
         End Select
+        If QuitGame = True Then Exit Sub
         GameTimer.Start()
     End Sub
 
     Private Sub PauseGame()
         Dim x As MsgBoxResult = MsgBox("Continue?", vbYesNo, "Game paused")
         If x = vbNo Then
+            GameTimer = Nothing
+            QuitGame = True
             Close()
             Exit Sub
         End If

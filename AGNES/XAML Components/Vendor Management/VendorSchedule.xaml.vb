@@ -1,4 +1,8 @@
 ﻿Imports System.ComponentModel
+Imports Microsoft.Win32
+Imports Microsoft.Office.Interop
+Imports System.Printing
+Imports System.Windows.Xps
 'CRITICAL: ERROR BEING THROWN AFTER VENDOR IS DELETED AND ANOTHER VENDOR IS ACQUIRED (CURRENT VENDOR NOT UPDATING?)
 '           APPEARS TO BE FOOD TRUCKS
 Public Class VendorSchedule
@@ -14,7 +18,10 @@ Public Class VendorSchedule
     Private CurrYear As Integer
     Private CurrMonth As Byte
     Private CurrWeek As Byte
+    Private PrintFailed As Boolean
     Private CurrentVendorView As Byte
+    Private pd As PrintDialog
+    Private fd As FlowDocument
     Public Property SaveStatus As Byte
         Get
             Return _savestatus
@@ -175,6 +182,21 @@ Public Class VendorSchedule
         End Try
     End Sub
 
+    Private Sub PrintSchedule(sender As Object, e As MouseButtonEventArgs) Handles imgPrint.MouseLeftButtonDown
+        Select Case CurrentVendorView
+            Case 0  ' Print all three
+                PrintBrandsbyCafe()
+                PrintCafesbyBrand()
+                PrintTrucks()
+            Case 2  ' Print Brands
+                PrintBrandsbyCafe()
+                PrintCafesbyBrand()
+            Case 3  ' Print Trucks
+                PrintTrucks()
+        End Select
+
+    End Sub
+
     Private Sub BrandsFilterClicked(sender As Object, e As RoutedEventArgs) Handles tglBrands.Click
         If tglBrands.IsChecked = False Then
             ResetVendorFilters()
@@ -320,6 +342,59 @@ Public Class VendorSchedule
         End If
     End Sub
 
+    Private Sub PrintBrandsbyCafe()
+
+        Try
+            pd = New PrintDialog
+            If pd.ShowDialog() <> True Then
+                PrintFailed = True
+                Exit Sub
+            End If
+            fd = New FlowDocument With {.ColumnGap = 0, .ColumnWidth = pd.PrintableAreaWidth}
+        Catch
+            Exit Sub
+        End Try
+
+        '// Build header
+        Dim p As New Paragraph(New Run("Brand Rotation by Cafe for the week of " & GetWeekStart().ToShortDateString)) With
+            {.FontSize = 24, .TextAlignment = TextAlignment.Center, .FontWeight = FontWeights.Bold, .FontFamily = New FontFamily("Segoe UI")}
+
+        '// Build table
+
+
+        With fd.Blocks
+            .Add(p)
+        End With
+
+        'CRITICAL: ADD DOCUMENT CREATION ROUTINES
+
+        Dim xps_writer As XpsDocumentWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue)
+        Dim idps As IDocumentPaginatorSource = CType(fd, IDocumentPaginatorSource)
+        Try
+            xps_writer.Write(idps.DocumentPaginator)
+        Catch ex As System.Runtime.CompilerServices.RuntimeWrappedException
+            Dim notifymsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                     18,, "Unable to print!",, "This error usually occurs if you have the PDF file you're trying to overwrite open.  Close the file and try again!")
+            notifymsg.ShowDialog()
+            notifymsg.Close()
+            PrintFailed = True
+        Catch ex As Exception
+            Dim notifymsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                     18,, "Operation failed!",, "Error: " & ex.Message)
+            notifymsg.ShowDialog()
+            notifymsg.Close()
+            PrintFailed = True
+        End Try
+
+    End Sub
+
+    Private Sub PrintCafesbyBrand()
+        Dim ph As String = ""
+    End Sub
+    Private Sub PrintTrucks()
+        Dim ph As String = ""
+    End Sub
+
     Private Function DiscardCheck() As Boolean
         Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.YesNo, 12, False,, "Discard unsaved data?",, AgnesMessageBox.ImageType.Danger)
         amsg.ShowDialog()
@@ -331,6 +406,11 @@ Public Class VendorSchedule
         Return True
     End Function
 
+    Private Function GetWeekStart() As DateTime
+        Dim dayobj As ScheduleDay
+        dayobj = wkSched.Children(0)
+        Return dayobj.DateValue
+    End Function
 #End Region
 
 #Region "Event Listeners"
@@ -357,10 +437,6 @@ Public Class VendorSchedule
         LoadSchedule(0)
         SaveStatus = 1
     End Sub
-
-
-
-
 
 #End Region
 
