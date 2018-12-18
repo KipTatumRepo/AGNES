@@ -27,5 +27,13 @@ Partial Public Class BIEntities
     Public Overridable Property LOCATIONS() As DbSet(Of LOCATION)
     Public Overridable Property EmployeeLists() As DbSet(Of EmployeeList)
     Public Overridable Property ApplicationSessions() As DbSet(Of ApplicationSession)
+    Public Overridable Property Buildings() As DbSet(Of Building)
+    Public Overridable Property BusinessGroups() As DbSet(Of BusinessGroup)
+    Public Overridable Property Cafes() As DbSet(Of Cafe)
+    Public Overridable Property CostCenters() As DbSet(Of CostCenter)
+    Public Overridable Property LinesOfBusinesses() As DbSet(Of LinesOfBusiness)
+    Public Overridable Property Markets() As DbSet(Of Market)
+    Public Overridable Property Populations() As DbSet(Of Population)
+    Public Overridable Property PopulationAllocations() As DbSet(Of PopulationAllocation)
 
 End Class

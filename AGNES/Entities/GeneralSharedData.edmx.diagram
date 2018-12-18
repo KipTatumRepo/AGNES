@@ -10,6 +10,14 @@
         <EntityTypeShape EntityType="BIModel.LOCATION" Width="1.5" PointX="5.5" PointY="0.5" />
         <EntityTypeShape EntityType="BIModel.EmployeeList" Width="1.5" PointX="7.125" PointY="0.5" />
         <EntityTypeShape EntityType="BIModel.ApplicationSession" Width="1.5" PointX="0.5" PointY="0.5" />
+        <EntityTypeShape EntityType="BIModel.Building" Width="1.5" PointX="9" PointY="8.625" />
+        <EntityTypeShape EntityType="BIModel.BusinessGroup" Width="1.5" PointX="3.75" PointY="10.5" />
+        <EntityTypeShape EntityType="BIModel.Cafe" Width="1.5" PointX="0.5" PointY="6.625" />
+        <EntityTypeShape EntityType="BIModel.CostCenter" Width="1.5" PointX="2.5" PointY="6.625" />
+        <EntityTypeShape EntityType="BIModel.LinesOfBusiness" Width="1.5" PointX="5.375" PointY="10.5" />
+        <EntityTypeShape EntityType="BIModel.Market" Width="1.5" PointX="5.375" PointY="6.75" />
+        <EntityTypeShape EntityType="BIModel.Population" Width="1.5" PointX="0.5" PointY="10.5" />
+        <EntityTypeShape EntityType="BIModel.PopulationAllocation" Width="1.5" PointX="2.125" PointY="10.5" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
