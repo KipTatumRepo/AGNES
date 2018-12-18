@@ -15,6 +15,7 @@
 
             <Image x:Name="imgImport" Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/LoadPrevious.png" ToolTip="Import Previous Week (ctrl for two weeks ago, ctrl+shift for three weeks ago)" Margin="0,5,0,0" />
             <Image x:Name="imgSave" Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/save.png" ToolTip="Save Schedule" Margin="0,5,0,0" />
+            <Image x:Name="imgPrint" Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/print.png" ToolTip="Save Schedule" Margin="0,5,0,0" />
             <Separator />
             <ToggleButton x:Name="tglBrands" Height="50" Width="60">
                 <Image x:Name="imgBrands" Height="41" Width="50" Source="/AGNES;component/Resources/brands.png" ToolTip="Show Local Brands" Margin="0,0,0,0" />
