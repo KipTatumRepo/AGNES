@@ -1,6 +1,5 @@
 ﻿Imports System.ComponentModel
 Imports System.Reflection
-'INFRASTRUCTURE: CLEAN UP LOCATIONS FILE - SPECIFICALLY, THE FLASH TYPE COLUMN!  MISSING AV UNITS, ETC
 Public Class RadialPortal
 
 #Region "Properties"

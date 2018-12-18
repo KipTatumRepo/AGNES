@@ -31,10 +31,6 @@ Public Class ScheduleLocation
 
 #Region "Constructor"
     Public Sub New(locname As String, sc As Byte, ByRef cwd As ScheduleDay, Highlight As Boolean)
-        'TEST: Anchor station - Shanghai/Watercress
-        AnchorFoodType = 4
-        AnchorFoodSubType = 8
-
         CurrentWeekDay = cwd
         StationCount = sc
         BorderBrush = Brushes.Black
@@ -155,34 +151,13 @@ Public Class ScheduleLocation
     End Sub
 
     Private Sub CheckVendorDrag(vn As String)
-        'Validation routines to preemptively notify about whether vendor is allowed to be scheduled
+        'Validation routines to preemptively notify about whether vendor is allowed to be scheduled; this is food trucks at the location level
         DropAllowed = True
-
 
         If IsVendorTypeAllowedAtBuilding() = False Then    '//     Check if vendor type (truck or brand) is allowed at building
             DropAllowed = False
             Exit Sub
         End If
-
-        'If IsStationAvailable() = False Then          '//     Check for the presence of a vendor in the station
-        '    DropAllowed = False
-        '    Exit Sub
-        'End If
-
-        'If AreVendorPrereqsMet() = False Then
-        '    DropAllowed = False
-        '    Exit Sub
-        'End If
-
-        'If DoesVendorHaveCapacity(vn) = False Then
-        '    DropAllowed = False
-        '    Exit Sub
-        'End If
-
-        'If IsNoFoodTypeConflictPresent() = False Then
-        '    DropAllowed = False
-        '    Exit Sub
-        'End If
 
         VendorSched.tbSaveStatus.Text = "Okay to add"
         VendorSched.sbSaveStatus.Background = Brushes.LightGreen

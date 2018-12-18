@@ -218,7 +218,9 @@
     End Function
 
     Private Function IsNoAnchorConflict()
-        If CurrentLocation.AnchorFoodSubType <> 0 And VendorSched.ActiveVendor.VendorItem.FoodSubType IsNot Nothing Then
+        If (CurrentLocation.AnchorFoodSubType <> 0 And CurrentLocation.AnchorFoodSubType <> 10007) And
+            (VendorSched.ActiveVendor.VendorItem.FoodSubType IsNot Nothing And
+            VendorSched.ActiveVendor.VendorItem.FoodSubType <> 10007) Then
             If VendorSched.ActiveVendor.VendorItem.FoodSubType = CurrentLocation.AnchorFoodSubType Then
                 With VendorSched
                     .tbSaveStatus.Text = "This vendor's food subtype conflicts with the anchor station at this location."
@@ -351,7 +353,6 @@
                                     If TypeOf (ooobj) Is VendorInStation Then
                                         vndor = ooobj
                                         If vndor.ReferencedVendor.VendorItem.FoodSubType IsNot Nothing And VendorSched.ActiveVendor.VendorItem.FoodSubType IsNot Nothing Then
-
                                             If vndor.ReferencedVendor.VendorItem.FoodSubType = VendorSched.ActiveVendor.VendorItem.FoodSubType Then Return False
                                         Else
                                             If vndor.ReferencedVendor.FoodType = VendorSched.ActiveVendor.FoodType Then Return False

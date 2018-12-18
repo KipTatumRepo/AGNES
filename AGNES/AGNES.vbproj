@@ -185,11 +185,23 @@
     <Compile Include="Entities\Availability.vb">
       <DependentUpon>VendorModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Building.vb">
+      <DependentUpon>GeneralSharedData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\BusinessGroup.vb">
+      <DependentUpon>GeneralSharedData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Cafe.vb">
+      <DependentUpon>GeneralSharedData.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\CAMWithholding.vb">
       <DependentUpon>VendorModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Contact.vb">
       <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CostCenter.vb">
+      <DependentUpon>GeneralSharedData.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\FlashAlert.vb">
       <DependentUpon>FlashActualsModel.tt</DependentUpon>
@@ -202,6 +214,18 @@
     </Compile>
     <Compile Include="Entities\KPIWithholding.vb">
       <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\LinesOfBusiness.vb">
+      <DependentUpon>GeneralSharedData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Market.vb">
+      <DependentUpon>GeneralSharedData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Population.vb">
+      <DependentUpon>GeneralSharedData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\PopulationAllocation.vb">
+      <DependentUpon>GeneralSharedData.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\ProfitCenter.vb">
       <DependentUpon>VendorModel.tt</DependentUpon>

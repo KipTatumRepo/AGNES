@@ -96,6 +96,103 @@
           <Property Name="Telephone" Type="varchar" MaxLength="32" />
           <Property Name="Email" Type="varchar" MaxLength="128" />
         </EntityType>
+        <EntityType Name="Buildings">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BldgName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="SqFt" Type="bigint" Nullable="false" />
+          <Property Name="Lat" Type="decimal" Precision="8" Scale="4" Nullable="false" />
+          <Property Name="Long" Type="decimal" Precision="8" Scale="4" Nullable="false" />
+          <Property Name="MSCampus" Type="varchar" MaxLength="128" />
+          <Property Name="MSNeighborhood" Type="varchar" MaxLength="128" />
+          <Property Name="ParticipationCampus" Type="varchar" MaxLength="128" />
+          <Property Name="ParticipationNeighborhood" Type="varchar" MaxLength="128" />
+          <Property Name="AllowFoodTrucks" Type="bit" />
+        </EntityType>
+        <EntityType Name="BusinessGroups">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BusinessGroup" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="GroupLeader" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="LOB" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cafes">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CostCenter" Type="bigint" Nullable="false" />
+          <Property Name="BldgId" Type="bigint" Nullable="false" />
+          <Property Name="ProfitCenterId" Type="bigint" Nullable="false" />
+          <Property Name="Manager" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="DistrictManager" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="HasHood" Type="bit" />
+          <Property Name="AnchorStationFoodType" Type="bigint" />
+          <Property Name="AnchorStationFoodSubType" Type="bigint" />
+          <Property Name="BrandStations" Type="smallint" Nullable="false" />
+          <Property Name="SqFt" Type="int" Nullable="false" />
+          <Property Name="FOHSqFt" Type="int" Nullable="false" />
+          <Property Name="BOHSqFt" Type="int" Nullable="false" />
+          <Property Name="EspressoSqFt" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CostCenters">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CostCenter" Type="bigint" Nullable="false" />
+          <Property Name="BusinessGroup" Type="bigint" Nullable="false" />
+          <Property Name="SubUnitOf" Type="bigint" />
+          <Property Name="UnitName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="FlashName" Type="varchar" MaxLength="128" />
+          <Property Name="FlashTemplate" Type="bigint" />
+          <Property Name="HRUnitName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="HRAuditable" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LinesOfBusiness">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LineOfBusiness" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="LobLeader" Type="varchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Markets">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CostCenter" Type="bigint" Nullable="false" />
+          <Property Name="BldgId" Type="bigint" Nullable="false" />
+          <Property Name="ProfitCenterId" Type="bigint" Nullable="false" />
+          <Property Name="SubUnitOfCafe" Type="bigint" />
+          <Property Name="Manager" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="DistrictManager" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="SqFt" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Population">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BldgName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="FY" Type="int" Nullable="false" />
+          <Property Name="MSP" Type="smallint" Nullable="false" />
+          <Property Name="Headcount" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PopulationAllocations">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CafeId" Type="bigint" Nullable="false" />
+          <Property Name="AllocatedBldg" Type="bigint" Nullable="false" />
+          <Property Name="Allocation" Type="decimal" Precision="3" Scale="2" Nullable="false" />
+        </EntityType>
         <EntityType Name="ApplicationSessions">
           <Key>
             <PropertyRef Name="PID" />
@@ -111,6 +208,14 @@
           <EntitySet Name="LOCATIONS" EntityType="Self.LOCATIONS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MasterBuildingList" EntityType="Self.MasterBuildingList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeList" EntityType="Self.EmployeeList" Schema="HR" store:Type="Tables" />
+          <EntitySet Name="Buildings" EntityType="Self.Buildings" Schema="Operations" store:Type="Tables" />
+          <EntitySet Name="BusinessGroups" EntityType="Self.BusinessGroups" Schema="Operations" store:Type="Tables" />
+          <EntitySet Name="Cafes" EntityType="Self.Cafes" Schema="Operations" store:Type="Tables" />
+          <EntitySet Name="CostCenters" EntityType="Self.CostCenters" Schema="Operations" store:Type="Tables" />
+          <EntitySet Name="LinesOfBusiness" EntityType="Self.LinesOfBusiness" Schema="Operations" store:Type="Tables" />
+          <EntitySet Name="Markets" EntityType="Self.Markets" Schema="Operations" store:Type="Tables" />
+          <EntitySet Name="Population" EntityType="Self.Population" Schema="Operations" store:Type="Tables" />
+          <EntitySet Name="PopulationAllocations" EntityType="Self.PopulationAllocations" Schema="Operations" store:Type="Tables" />
           <EntitySet Name="ApplicationSessions" EntityType="Self.ApplicationSessions" Schema="stats" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -136,6 +241,14 @@
           <EntitySet Name="LOCATIONS" EntityType="BIModel.LOCATION" />
           <EntitySet Name="EmployeeLists" EntityType="BIModel.EmployeeList" />
           <EntitySet Name="ApplicationSessions" EntityType="BIModel.ApplicationSession" />
+          <EntitySet Name="Buildings" EntityType="BIModel.Building" />
+          <EntitySet Name="BusinessGroups" EntityType="BIModel.BusinessGroup" />
+          <EntitySet Name="Cafes" EntityType="BIModel.Cafe" />
+          <EntitySet Name="CostCenters" EntityType="BIModel.CostCenter" />
+          <EntitySet Name="LinesOfBusinesses" EntityType="BIModel.LinesOfBusiness" />
+          <EntitySet Name="Markets" EntityType="BIModel.Market" />
+          <EntitySet Name="Populations" EntityType="BIModel.Population" />
+          <EntitySet Name="PopulationAllocations" EntityType="BIModel.PopulationAllocation" />
         </EntityContainer>
         <EntityType Name="Dates">
           <Key>
@@ -224,6 +337,103 @@
           <Property Name="UserId" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
           <Property Name="SessionStart" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="SessionEnd" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Building">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BldgName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="SqFt" Type="Int64" Nullable="false" />
+          <Property Name="Lat" Type="Decimal" Nullable="false" Precision="8" Scale="4" />
+          <Property Name="Long" Type="Decimal" Nullable="false" Precision="8" Scale="4" />
+          <Property Name="MSCampus" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="MSNeighborhood" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="ParticipationCampus" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="ParticipationNeighborhood" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="AllowFoodTrucks" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="BusinessGroup">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BusinessGroup1" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="GroupLeader" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="LOB" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cafe">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CostCenter" Type="Int64" Nullable="false" />
+          <Property Name="BldgId" Type="Int64" Nullable="false" />
+          <Property Name="ProfitCenterId" Type="Int64" Nullable="false" />
+          <Property Name="Manager" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="DistrictManager" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="HasHood" Type="Boolean" />
+          <Property Name="AnchorStationFoodType" Type="Int64" />
+          <Property Name="AnchorStationFoodSubType" Type="Int64" />
+          <Property Name="BrandStations" Type="Int16" Nullable="false" />
+          <Property Name="SqFt" Type="Int32" Nullable="false" />
+          <Property Name="FOHSqFt" Type="Int32" Nullable="false" />
+          <Property Name="BOHSqFt" Type="Int32" Nullable="false" />
+          <Property Name="EspressoSqFt" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CostCenter">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CostCenter1" Type="Int64" Nullable="false" />
+          <Property Name="BusinessGroup" Type="Int64" Nullable="false" />
+          <Property Name="SubUnitOf" Type="Int64" />
+          <Property Name="UnitName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="FlashName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="FlashTemplate" Type="Int64" />
+          <Property Name="HRUnitName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="HRAuditable" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LinesOfBusiness">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LineOfBusiness" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="LobLeader" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Market">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CostCenter" Type="Int64" Nullable="false" />
+          <Property Name="BldgId" Type="Int64" Nullable="false" />
+          <Property Name="ProfitCenterId" Type="Int64" Nullable="false" />
+          <Property Name="SubUnitOfCafe" Type="Int64" />
+          <Property Name="Manager" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="DistrictManager" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="SqFt" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Population">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BldgName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="FY" Type="Int32" Nullable="false" />
+          <Property Name="MSP" Type="Int16" Nullable="false" />
+          <Property Name="Headcount" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PopulationAllocation">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CafeId" Type="Int64" Nullable="false" />
+          <Property Name="AllocatedBldg" Type="Int64" Nullable="false" />
+          <Property Name="Allocation" Type="Decimal" Nullable="false" Precision="3" Scale="2" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -331,6 +541,111 @@
                 <ScalarProperty Name="SessionStart" ColumnName="SessionStart" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Buildings">
+            <EntityTypeMapping TypeName="BIModel.Building">
+              <MappingFragment StoreEntitySet="Buildings">
+                <ScalarProperty Name="AllowFoodTrucks" ColumnName="AllowFoodTrucks" />
+                <ScalarProperty Name="ParticipationNeighborhood" ColumnName="ParticipationNeighborhood" />
+                <ScalarProperty Name="ParticipationCampus" ColumnName="ParticipationCampus" />
+                <ScalarProperty Name="MSNeighborhood" ColumnName="MSNeighborhood" />
+                <ScalarProperty Name="MSCampus" ColumnName="MSCampus" />
+                <ScalarProperty Name="Long" ColumnName="Long" />
+                <ScalarProperty Name="Lat" ColumnName="Lat" />
+                <ScalarProperty Name="SqFt" ColumnName="SqFt" />
+                <ScalarProperty Name="BldgName" ColumnName="BldgName" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BusinessGroups">
+            <EntityTypeMapping TypeName="BIModel.BusinessGroup">
+              <MappingFragment StoreEntitySet="BusinessGroups">
+                <ScalarProperty Name="LOB" ColumnName="LOB" />
+                <ScalarProperty Name="GroupLeader" ColumnName="GroupLeader" />
+                <ScalarProperty Name="BusinessGroup1" ColumnName="BusinessGroup" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cafes">
+            <EntityTypeMapping TypeName="BIModel.Cafe">
+              <MappingFragment StoreEntitySet="Cafes">
+                <ScalarProperty Name="EspressoSqFt" ColumnName="EspressoSqFt" />
+                <ScalarProperty Name="BOHSqFt" ColumnName="BOHSqFt" />
+                <ScalarProperty Name="FOHSqFt" ColumnName="FOHSqFt" />
+                <ScalarProperty Name="SqFt" ColumnName="SqFt" />
+                <ScalarProperty Name="BrandStations" ColumnName="BrandStations" />
+                <ScalarProperty Name="AnchorStationFoodSubType" ColumnName="AnchorStationFoodSubType" />
+                <ScalarProperty Name="AnchorStationFoodType" ColumnName="AnchorStationFoodType" />
+                <ScalarProperty Name="HasHood" ColumnName="HasHood" />
+                <ScalarProperty Name="DistrictManager" ColumnName="DistrictManager" />
+                <ScalarProperty Name="Manager" ColumnName="Manager" />
+                <ScalarProperty Name="ProfitCenterId" ColumnName="ProfitCenterId" />
+                <ScalarProperty Name="BldgId" ColumnName="BldgId" />
+                <ScalarProperty Name="CostCenter" ColumnName="CostCenter" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CostCenters">
+            <EntityTypeMapping TypeName="BIModel.CostCenter">
+              <MappingFragment StoreEntitySet="CostCenters">
+                <ScalarProperty Name="HRAuditable" ColumnName="HRAuditable" />
+                <ScalarProperty Name="HRUnitName" ColumnName="HRUnitName" />
+                <ScalarProperty Name="FlashTemplate" ColumnName="FlashTemplate" />
+                <ScalarProperty Name="FlashName" ColumnName="FlashName" />
+                <ScalarProperty Name="UnitName" ColumnName="UnitName" />
+                <ScalarProperty Name="SubUnitOf" ColumnName="SubUnitOf" />
+                <ScalarProperty Name="BusinessGroup" ColumnName="BusinessGroup" />
+                <ScalarProperty Name="CostCenter1" ColumnName="CostCenter" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LinesOfBusinesses">
+            <EntityTypeMapping TypeName="BIModel.LinesOfBusiness">
+              <MappingFragment StoreEntitySet="LinesOfBusiness">
+                <ScalarProperty Name="LobLeader" ColumnName="LobLeader" />
+                <ScalarProperty Name="LineOfBusiness" ColumnName="LineOfBusiness" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Markets">
+            <EntityTypeMapping TypeName="BIModel.Market">
+              <MappingFragment StoreEntitySet="Markets">
+                <ScalarProperty Name="SqFt" ColumnName="SqFt" />
+                <ScalarProperty Name="DistrictManager" ColumnName="DistrictManager" />
+                <ScalarProperty Name="Manager" ColumnName="Manager" />
+                <ScalarProperty Name="SubUnitOfCafe" ColumnName="SubUnitOfCafe" />
+                <ScalarProperty Name="ProfitCenterId" ColumnName="ProfitCenterId" />
+                <ScalarProperty Name="BldgId" ColumnName="BldgId" />
+                <ScalarProperty Name="CostCenter" ColumnName="CostCenter" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Populations">
+            <EntityTypeMapping TypeName="BIModel.Population">
+              <MappingFragment StoreEntitySet="Population">
+                <ScalarProperty Name="Headcount" ColumnName="Headcount" />
+                <ScalarProperty Name="MSP" ColumnName="MSP" />
+                <ScalarProperty Name="FY" ColumnName="FY" />
+                <ScalarProperty Name="BldgName" ColumnName="BldgName" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PopulationAllocations">
+            <EntityTypeMapping TypeName="BIModel.PopulationAllocation">
+              <MappingFragment StoreEntitySet="PopulationAllocations">
+                <ScalarProperty Name="Allocation" ColumnName="Allocation" />
+                <ScalarProperty Name="AllocatedBldg" ColumnName="AllocatedBldg" />
+                <ScalarProperty Name="CafeId" ColumnName="CafeId" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
               </MappingFragment>
             </EntityTypeMapping>
