@@ -360,10 +360,44 @@ Public Class VendorSchedule
             {.FontSize = 24, .TextAlignment = TextAlignment.Center, .FontWeight = FontWeights.Bold, .FontFamily = New FontFamily("Segoe UI")}
 
         '// Build table
+        Dim t As New Table() With {.CellSpacing = 0, .Background = Brushes.LemonChiffon}
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(140)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.RowGroups.Add(New TableRowGroup())
+
+        '// Alias the current working row for easy reference.
+        Dim cr As New TableRow With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI")}
+
+        '// Add column headers
+        Dim rc As Integer
+        For rc = 1 To 5
+            t.RowGroups(0).Rows.Add(New TableRow())
+        Next rc
+        cr = t.RowGroups(0).Rows(0)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Cafes")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Mon")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Tue")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Wed")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Thu")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Fri")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 1, 1)}))
+
+        '// Build schedule array (locations as row headers, vendors as matrix values 
+
+        '// Populate the rows
+
+        'Array.Clear(LocArray, 0, LocArray.Length)
+        'cr = t.RowGroups(0).Rows(rc + 1)
+        'cr.Cells.Add(New TableCell(New Paragraph(New Run(CreditArray(0, rc))) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+
 
 
         With fd.Blocks
             .Add(p)
+            .Add(t)
         End With
 
         'CRITICAL: ADD DOCUMENT CREATION ROUTINES
