@@ -14,6 +14,7 @@ Public Class ScheduleLocation
     Private Property HighlightColor As Boolean = True
     Public Property CurrentWeekDay As ScheduleDay
     Public Property DraggingIntoStation As Boolean
+    Public Property HasHood As Boolean
     Private Property DropAllowed As Boolean = True
     Private StatusBarText As String
     Private _statusbarcolor As SolidColorBrush

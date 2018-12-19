@@ -86,7 +86,7 @@ Public Class ScheduleDay
             For Each tl In qtl
                 If ss.BldgId = tl.PID Then TrucksToo = True
             Next
-            AddRegularLocation(GetCafeName(ss.CostCenter), 1, TrucksToo, ss.AnchorStationFoodType, ss.AnchorStationFoodSubType)
+            AddRegularLocation(GetCafeName(ss.CostCenter), 1, TrucksToo, ss.AnchorStationFoodType, ss.AnchorStationFoodSubType, ss.HasHood)
         Next
 
 
@@ -101,7 +101,7 @@ Public Class ScheduleDay
             For Each tl In qtl
                 If ss.BldgId = tl.PID Then TrucksToo = True
             Next
-            AddRegularLocation(GetCafeName(ss.CostCenter), 2, TrucksToo, ss.AnchorStationFoodType, ss.AnchorStationFoodSubType)
+            AddRegularLocation(GetCafeName(ss.CostCenter), 2, TrucksToo, ss.AnchorStationFoodType, ss.AnchorStationFoodSubType, ss.HasHood)
         Next
 
         ' Load greater than two stations finally
@@ -115,17 +115,18 @@ Public Class ScheduleDay
             For Each tl In qtl
                 If ss.BldgId = tl.PID Then TrucksToo = True
             Next
-            AddRegularLocation(GetCafeName(ss.CostCenter), ss.BrandStations, TrucksToo, ss.AnchorStationFoodType, ss.AnchorStationFoodSubType)
+            AddRegularLocation(GetCafeName(ss.CostCenter), ss.BrandStations, TrucksToo, ss.AnchorStationFoodType, ss.AnchorStationFoodSubType, ss.HasHood)
         Next
 
     End Sub
 
-    Private Sub AddRegularLocation(bldgnm, statcount, truckok, asft, asfst)
+    Private Sub AddRegularLocation(bldgnm, statcount, truckok, asft, asfst, hh)
         Dim newloc As New ScheduleLocation(bldgnm, statcount, Me, Highlight)
         With newloc
             .AllowsFoodTrucks = truckok
             .AnchorFoodType = asft
             .AnchorFoodSubType = asfst
+            .HasHood = hh
         End With
 
         LocationStack.Children.Add(newloc)

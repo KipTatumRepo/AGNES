@@ -1,7 +1,6 @@
 ﻿Public Class ScheduleStation
     Inherits Border
 
-    'TODO: UPDATE VENDOR/LOCATION PREREQS (HOOD, ETC.)
 #Region "Properties"
     Private BC As New BrushConverter
     Public VendorStack As StackPanel
@@ -180,6 +179,12 @@
 
     Private Function AreVendorPrereqsMet()
         '// Conflicts such as the requirement for a hood at a unit that does not have one available
+        If VendorSched.ActiveVendor.VendorItem.RequiresHood = True And CurrentLocation.HasHood = False Then
+            VendorSched.tbSaveStatus.Text = "Vendor requires a hood, which is unavailable at this station."
+            VendorSched.sbSaveStatus.Background = Brushes.PaleVioletRed
+            DropAllowed = False
+            Return False
+        End If
         Return True
     End Function
 
