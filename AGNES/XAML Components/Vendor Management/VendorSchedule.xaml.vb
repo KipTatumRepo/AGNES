@@ -84,16 +84,53 @@ Public Class VendorSchedule
 #Region "Public Methods"
     Public Sub PopulateVendors(view)   '0=All, 1=Retail, 2=Brands, 3=Trucks
         stkVendors.Children.Clear()
-        Dim qvn = From v In VendorData.VendorInfo
-                  Where v.Active = True And
-                      (v.VendorType = 2 Or v.VendorType = 3)
+        If view = 0 Or view = 3 Then
+            Dim BrandLabel As New TextBlock With {.Text = "Brands", .TextAlignment = TextAlignment.Center, .Background = Brushes.LightBlue,
+                    .Foreground = Brushes.White, .FontSize = 12, .FontWeight = FontWeights.Bold, .Padding = New Thickness(0, 5, 0, 0)}
+            stkVendors.Children.Add(BrandLabel)
+            Dim qbv = From bv In VendorData.VendorInfo
+                      Where bv.Active = True And
+                              bv.VendorType = 2
+                      Order By bv.Name
+                      Select bv
 
-        For Each v In qvn
-            Dim s As String = v.Name
-            Dim nv As New ScheduleVendor(v)
-            stkVendors.Children.Add(nv)
-            nv.UsedWeeklySlots = 0
-        Next
+            For Each bv In qbv
+                Dim s As String = bv.Name
+                Dim nbv As New ScheduleVendor(bv)
+                stkVendors.Children.Add(nbv)
+                nbv.UsedWeeklySlots = 0
+            Next
+        End If
+        If view = 0 Or view = 2 Then
+            Dim Trucklabel As New TextBlock With {.Text = "Trucks", .TextAlignment = TextAlignment.Center, .Background = Brushes.LightBlue,
+                    .Foreground = Brushes.White, .FontSize = 12, .FontWeight = FontWeights.Bold, .Padding = New Thickness(0, 5, 0, 0)}
+            stkVendors.Children.Add(Trucklabel)
+            Dim qtv = From tv In VendorData.VendorInfo
+                      Where tv.Active = True And
+                          tv.VendorType = 3
+                      Order By tv.Name
+                      Select tv
+
+            For Each tv In qtv
+                Dim s As String = tv.Name
+                Dim ntv As New ScheduleVendor(tv)
+                stkVendors.Children.Add(ntv)
+                ntv.UsedWeeklySlots = 0
+            Next
+        End If
+
+        'Dim qvn = From v In VendorData.VendorInfo
+        '          Where v.Active = True And
+        '              (v.VendorType = 2 Or v.VendorType = 3)
+        '          Order By v.Name
+        '          Select v
+
+        'For Each v In qvn
+        '    Dim s As String = v.Name
+        '    Dim nv As New ScheduleVendor(v)
+        '    stkVendors.Children.Add(nv)
+        '    nv.UsedWeeklySlots = 0
+        'Next
     End Sub
 
     Public Sub UpdateStatusBar(status)
@@ -258,6 +295,14 @@ Public Class VendorSchedule
                     vt.Visibility = Visibility.Collapsed
                 Else
                     vt.Visibility = Visibility.Visible
+                End If
+            End If
+            If TypeOf (v) Is TextBlock Then
+                Dim tb As TextBlock = v
+                If (tb.Text = "Trucks" And vendortype = 2) Or (tb.Text = "Brands" And vendortype = 3) Then
+                    tb.Visibility = Visibility.Collapsed
+                Else
+                    tb.Visibility = Visibility.Visible
                 End If
             End If
         Next
