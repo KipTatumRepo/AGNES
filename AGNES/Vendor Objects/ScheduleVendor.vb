@@ -70,7 +70,7 @@ Public Class ScheduleVendor
             TypeText.Foreground = Brushes.LightGray
             SlotsText.Foreground = Brushes.LightGray
         Else
-            DisableDrag = True
+            DisableDrag = False
             NameText.Foreground = Brushes.Black
             TypeText.Foreground = Brushes.Black
             SlotsText.Foreground = Brushes.Black
