@@ -34,7 +34,14 @@
                 <StackPanel x:Name="stkVendors" HorizontalAlignment="Left" Width="257" CanVerticallyScroll="True" ScrollViewer.CanContentScroll="True"/>
             </ScrollViewer>
         </Border>
-        <Grid x:Name="grdWeek" Margin="260,65,5,30"/>
+        <Grid x:Name="grdWeek" Margin="260,65,5,35">
+            <StackPanel x:Name="stkProgBar" Visibility="Collapsed">
+                <TextBlock x:Name="tbPBStatus" Text="Loading" FontSize="36" TextAlignment="Center"/>
+                <ProgressBar x:Name="pbStatus" Height="50" IsIndeterminate="True"/>
+
+            </StackPanel>
+
+        </Grid>
         <StatusBar x:Name="sbSaveStatus" Background="#FF19F30E" Height="30" VerticalAlignment="Bottom">
             <TextBlock x:Name="tbSaveStatus" Text="Saved" Width="1268" TextAlignment="Center" FontWeight="SemiBold" FontSize="12" />
         </StatusBar>

@@ -324,10 +324,10 @@ Public Class RadialPortal
             Case "Vendor Manager"
                 VendorModule.Runmodule()
             Case "Event Journal"
-                If My.Computer.Keyboard.CtrlKeyDown Then WOPRModule.RunModule()
-                '//TEST
-                EventJournal.Runmodule()
-                '//TEST
+                'If My.Computer.Keyboard.CtrlKeyDown Then WOPRModule.RunModule()
+                ''//TEST
+                'EventJournal.Runmodule()
+                ''//TEST
         End Select
         Show()
     End Sub

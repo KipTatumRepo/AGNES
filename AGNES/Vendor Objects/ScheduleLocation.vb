@@ -82,6 +82,7 @@ Public Class ScheduleLocation
     End Sub
 
     Public Sub Load(loaddate As Date, lt As Integer)
+
         ClearExistingData()
         Dim vn As String
         Dim sv As ScheduleVendor = Nothing

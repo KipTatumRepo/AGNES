@@ -144,7 +144,8 @@ Public Class VendorSchedule
 
     Private Sub SaveSchedule(sender As Object, e As MouseButtonEventArgs) Handles imgSave.MouseLeftButtonDown
         If SaveStatus > 0 Then Exit Sub
-
+        VendorSched.tbPBStatus.Text = "Saving"
+        VendorSched.stkProgBar.Visibility = Visibility.Visible
         'Loop through days
         'Loop through locations
         'Purge DB of current entries for the day
@@ -179,6 +180,8 @@ Public Class VendorSchedule
                                 AgnesMessageBox.MsgBoxType.OkOnly, 18,, "Unable to save",, "AGNES encountered " & ex.Message & ".  Please review and try again.  If the error continues, contact the BI team.")
             amsg.ShowDialog()
             amsg.Close()
+        Finally
+            VendorSched.stkProgBar.Visibility = Visibility.Collapsed
         End Try
     End Sub
 
@@ -244,6 +247,7 @@ Public Class VendorSchedule
             amsg.ShowDialog()
             amsg.Close()
         End Try
+
     End Sub
 
     Private Sub ShowSegment(vendortype)
