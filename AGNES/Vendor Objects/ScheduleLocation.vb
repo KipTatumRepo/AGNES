@@ -130,6 +130,7 @@ Public Class ScheduleLocation
     Private Sub AddStations()
         For x As Byte = 1 To StationCount
             Dim station As New ScheduleStation(x, CurrentWeekDay, Me)
+
             StationStack.Children.Add(station)
         Next
     End Sub
