@@ -25,7 +25,7 @@
     Private Sub RemoveItemFromStation()
         ReferencedStation.DeleteItem(Me)
         ReferencedVendor.UsedWeeklySlots -= 1
-
+        VendorSched.SaveStatus = False
     End Sub
 
     Private Sub RemoveItem()
@@ -36,7 +36,7 @@
                 ReferencedLoc.DeleteItem(Me)
         End Select
         ReferencedVendor.UsedWeeklySlots -= 1
-
+        VendorSched.SaveStatus = False
     End Sub
 
 #End Region

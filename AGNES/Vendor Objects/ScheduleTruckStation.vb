@@ -31,6 +31,7 @@
         Height = 32
         BorderBrush = Brushes.Black
         BorderThickness = New Thickness(1, 1, 1, 1)
+        Background = Brushes.WhiteSmoke
         Margin = New Thickness(1, 1, 1, 0)
         'StationNumber = sn
         TruckName = tnm
@@ -42,12 +43,28 @@
 #End Region
 
 #Region "Public Methods"
+    Public Sub Save()
+        If TruckStack.Children.Count = 1 Then Exit Sub
+        Dim vndr As VendorInStation = TruckStack.Children(1)
+        Dim ns As New Schedule
+        With ns
+            .ScheduleDate = CurrentWeekDay.DateValue
+            .Location = CurrentLocation.LocationName
+            .Station = "Truck"
+            .VendorId = vndr.ReferencedVendor.VendorItem.PID
+            .SavedBy = My.Settings.UserName
+        End With
+        VendorData.Schedules.Add(ns)
+
+    End Sub
 
 #End Region
 
 #Region "Private Methods"
     Private Sub AddName()
         TruckBlock = New TextBlock With {.TextAlignment = TextAlignment.Center, .Text = "Food Truck", .FontSize = 10}
+        Dim bc As New BrushConverter()
+        TruckBlock.Background = bc.ConvertFrom("#FFFBF1C6")
         TruckStack.Children.Add(TruckBlock)
     End Sub
 

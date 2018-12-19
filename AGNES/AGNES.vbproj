@@ -84,12 +84,64 @@
   <PropertyGroup>
     <ApplicationIcon>AgnesIcon2.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DocumentationFile>AGNES.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42314</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DocumentationFile>AGNES.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42314</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DocumentationFile>AGNES.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42314</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DocumentationFile>AGNES.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42314</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Outlook, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="ReachFramework" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -133,11 +185,23 @@
     <Compile Include="Entities\Availability.vb">
       <DependentUpon>VendorModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Building.vb">
+      <DependentUpon>GeneralSharedData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\BusinessGroup.vb">
+      <DependentUpon>GeneralSharedData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Cafe.vb">
+      <DependentUpon>GeneralSharedData.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\CAMWithholding.vb">
       <DependentUpon>VendorModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Contact.vb">
       <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CostCenter.vb">
+      <DependentUpon>GeneralSharedData.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\FlashAlert.vb">
       <DependentUpon>FlashActualsModel.tt</DependentUpon>
@@ -151,10 +215,25 @@
     <Compile Include="Entities\KPIWithholding.vb">
       <DependentUpon>VendorModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\LinesOfBusiness.vb">
+      <DependentUpon>GeneralSharedData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Market.vb">
+      <DependentUpon>GeneralSharedData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Population.vb">
+      <DependentUpon>GeneralSharedData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\PopulationAllocation.vb">
+      <DependentUpon>GeneralSharedData.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\ProfitCenter.vb">
       <DependentUpon>VendorModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\ReceivedCAMCheck.vb">
+      <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Schedule.vb">
       <DependentUpon>VendorModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\SickOtRecord.vb">
@@ -194,9 +273,11 @@
     <Compile Include="Forecast Objects\ForecastGroup.vb" />
     <Compile Include="Forecast Objects\UnitFcast.vb" />
     <Compile Include="Module Orchestrators\BirthdayModule.vb" />
+    <Compile Include="Module Orchestrators\EventJournal.vb" />
     <Compile Include="Module Orchestrators\FlashStatusModule.vb" />
     <Compile Include="Module Orchestrators\ForecastModule.vb" />
     <Compile Include="Module Orchestrators\VendorModule.vb" />
+    <Compile Include="Module Orchestrators\WOPRModule.vb" />
     <Compile Include="Training Objects\EmployeeObj.vb" />
     <Compile Include="Training Objects\TrainingGridSource.vb" />
     <Compile Include="Vendor Objects\ScheduleDay.vb" />
@@ -208,6 +289,12 @@
     <Compile Include="Vendor Objects\VendorInStation.vb" />
     <Compile Include="XAML Components\EasterEggs\Birthday.xaml.vb">
       <DependentUpon>Birthday.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="XAML Components\EasterEggs\PacMan.xaml.vb">
+      <DependentUpon>PacMan.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="XAML Components\EasterEggs\WOPR.xaml.vb">
+      <DependentUpon>WOPR.xaml</DependentUpon>
     </Compile>
     <Compile Include="XAML Components\Flash\Delegates.xaml.vb">
       <DependentUpon>Delegates.xaml</DependentUpon>
@@ -552,6 +639,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="XAML Components\EasterEggs\PacMan.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XAML Components\EasterEggs\WOPR.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="XAML Components\Flash\Delegates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -763,24 +858,6 @@
     <Resource Include="Resources\speechleft.png" />
   </ItemGroup>
   <ItemGroup>
-    <COMReference Include="Microsoft.Office.Core">
-      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
-      <VersionMajor>2</VersionMajor>
-      <VersionMinor>8</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="Microsoft.Office.Interop.Excel">
-      <Guid>{00020813-0000-0000-C000-000000000046}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>9</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
     <COMReference Include="VBIDE">
       <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
       <VersionMajor>5</VersionMajor>
@@ -807,6 +884,11 @@
     <Resource Include="Resources\Commons.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\pacmanup.png" />
+    <Resource Include="Resources\pacmanright.png" />
+    <Resource Include="Resources\pacmanleft.png" />
+    <Resource Include="Resources\pacmandown.png" />
+    <Resource Include="Resources\ghost.png" />
     <Resource Include="AgnesIcon2.ico" />
     <Content Include="Entities\AgnesSharedDataModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

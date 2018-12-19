@@ -1,7 +1,10 @@
 ﻿Imports System.ComponentModel
-
-'CRITICAL:  VENDOR DROP MESSAGES AREN'T SHOWING PROPERLY
-'CRITICAL:  WEEKLY LOCATIONS AREN'T CALCULATING PROPERLY WHEN HOLIDAYS ARE PRESENT
+Imports Microsoft.Win32
+Imports Microsoft.Office.Interop
+Imports System.Printing
+Imports System.Windows.Xps
+'CRITICAL: ERROR BEING THROWN AFTER VENDOR IS DELETED AND ANOTHER VENDOR IS ACQUIRED (CURRENT VENDOR NOT UPDATING?)
+'           APPEARS TO BE FOOD TRUCKS
 Public Class VendorSchedule
 
 #Region "Properties"
@@ -10,35 +13,38 @@ Public Class VendorSchedule
     Public Property Wk As WeekChooser
     Public wkSched As ScheduleWeek
     Public ActiveVendor As ScheduleVendor
-    Private _savestatus As Boolean
+    Public VendorFilterOn As Boolean
+    Private _savestatus As Byte
     Private CurrYear As Integer
     Private CurrMonth As Byte
     Private CurrWeek As Byte
+    Private PrintFailed As Boolean
     Private CurrentVendorView As Byte
-    Public Property SaveStatus As Boolean
+    Private pd As PrintDialog
+    Private fd As FlowDocument
+    Public Property SaveStatus As Byte
         Get
             Return _savestatus
         End Get
-        Set(value As Boolean)
+        Set(value As Byte)
             _savestatus = value
-            If value = False Then
-                sbSaveStatus.Background = Brushes.Red
-                tbSaveStatus.Text = "Changes Not Saved"
-            Else
-                sbSaveStatus.Background = Brushes.White
-                tbSaveStatus.Text = ""
-
-            End If
+            Select Case value
+                Case 0
+                    UpdateStatusBar("NotSaved")
+                Case 1
+                    UpdateStatusBar("Default")
+                Case 2
+                    UpdateStatusBar("Saved")
+            End Select
         End Set
     End Property
-
 
 #End Region
 
 #Region "Constructor"
     Public Sub New()
         InitializeComponent()
-        SaveStatus = True
+        SaveStatus = 1
         Height = System.Windows.SystemParameters.PrimaryScreenHeight
         '// Add period and week slicers
         CurrYear = Now().Year
@@ -63,8 +69,14 @@ Public Class VendorSchedule
         wkSched = New ScheduleWeek
         wkSched.Update(YR.CurrentYear, CAL.CurrentMonth, Wk.CurrentWeek)
         grdWeek.Children.Add(wkSched)
-
         PopulateVendors(0) '//   Any consideration of day-to-day vendor availability as to whether to show them?
+        UpdateStatusBar("Loading")
+    End Sub
+
+    Private Sub InitialScheduleLoad(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
+        LoadSchedule(0)
+        SaveStatus = 1
+        UpdateStatusBar("Default")
     End Sub
 
 #End Region
@@ -84,61 +96,157 @@ Public Class VendorSchedule
         Next
     End Sub
 
+    Public Sub UpdateStatusBar(status)
+        Select Case status
+            Case "Default"
+                sbSaveStatus.Background = Brushes.White
+                tbSaveStatus.Text = ""
+            Case "NotSaved"
+                sbSaveStatus.Background = Brushes.Red
+                tbSaveStatus.Text = "Changes Not Saved"
+            Case "Saved"
+                sbSaveStatus.Background = Brushes.LightGreen
+                tbSaveStatus.Text = "Changes Saved"
+            Case "Loading"
+                sbSaveStatus.Background = Brushes.Yellow
+                tbSaveStatus.Text = "Loading..."
+            Case "Saving"
+                sbSaveStatus.Background = Brushes.Yellow
+                tbSaveStatus.Text = "Saving..."
+        End Select
+
+    End Sub
+
+    Public Sub ResetVendorFilters()
+        tglBrands.IsChecked = False
+        tglTrucks.IsChecked = False
+        CurrentVendorView = 0
+        ShowSegment(0)
+        ExpandLocations()
+        VendorFilterOn = False
+    End Sub
+
 #End Region
 
 #Region "Private Methods"
-    Private Function DiscardCheck() As Boolean
-        Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.YesNo, 12, False,, "Discard unsaved data?",, AgnesMessageBox.ImageType.Danger)
-        amsg.ShowDialog()
-        If amsg.ReturnResult = "No" Then
-            amsg.Close()
-            Return False
-        End If
-        amsg.Close()
-        Return True
-    End Function
 
-    Private Sub VendorSchedule_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
-        If SaveStatus = False Then
-            If DiscardCheck() = False Then e.Cancel = True
+#Region "Toolbar"
+    Private Sub ImportPreviousWeek(sender As Object, e As MouseButtonEventArgs) Handles imgImport.MouseLeftButtonDown
+        Dim daysback As Integer = -7
+
+        If My.Computer.Keyboard.CtrlKeyDown Then daysback = -14
+        If My.Computer.Keyboard.CtrlKeyDown And My.Computer.Keyboard.ShiftKeyDown Then daysback = -21
+        If SaveStatus = 0 Then
+            If DiscardCheck() = False Then Exit Sub
         End If
+        LoadSchedule(daysback)
     End Sub
 
-    Private Sub ShowBrandsOnly(sender As Object, e As MouseButtonEventArgs) Handles imgBrands.MouseLeftButtonDown
-        If CurrentVendorView = 2 Then
-            imgBrands.Effect = Nothing
-            imgTrucks.Effect = Nothing
-            CurrentVendorView = 0
-            ShowSegment(0)
-            ExpandLocations()
+    Private Sub SaveSchedule(sender As Object, e As MouseButtonEventArgs) Handles imgSave.MouseLeftButtonDown
+        If SaveStatus > 0 Then Exit Sub
+        VendorSched.tbPBStatus.Text = "Saving"
+        VendorSched.stkProgBar.Visibility = Visibility.Visible
+        'Loop through days
+        'Loop through locations
+        'Purge DB of current entries for the day
+        'Loop through stations and truck entries and save data
+
+        Try
+            For Each wd As ScheduleDay In wkSched.Children
+                If TypeOf (wd) Is ScheduleDay Then
+                    Dim wday As ScheduleDay = wd
+                    For Each loc As Object In wday.LocationStack.Children
+                        If TypeOf (loc) Is ScheduleLocation Then
+                            Dim locitem As ScheduleLocation = loc
+                            locitem.PurgeDatabase()
+                            For Each sat In locitem.StationStack.Children
+                                If TypeOf (sat) Is ScheduleStation Then
+                                    Dim s As ScheduleStation = sat
+                                    s.Save()
+                                End If
+                                If TypeOf (sat) Is ScheduleTruckStation Then
+                                    Dim s As ScheduleTruckStation = sat
+                                    s.Save()
+                                End If
+                            Next
+                        End If
+                    Next
+                End If
+            Next
+            VendorData.SaveChanges()
+            SaveStatus = 2
+        Catch ex As Exception
+            Dim amsg = New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText,
+                                AgnesMessageBox.MsgBoxType.OkOnly, 18,, "Unable to save",, "AGNES encountered " & ex.Message & ".  Please review and try again.  If the error continues, contact the BI team.")
+            amsg.ShowDialog()
+            amsg.Close()
+        Finally
+            VendorSched.stkProgBar.Visibility = Visibility.Collapsed
+        End Try
+    End Sub
+
+    Private Sub PrintSchedule(sender As Object, e As MouseButtonEventArgs) Handles imgPrint.MouseLeftButtonDown
+        Select Case CurrentVendorView
+            Case 0  ' Print all three
+                PrintBrandsbyCafe()
+                PrintCafesbyBrand()
+                PrintTrucks()
+            Case 2  ' Print Brands
+                PrintBrandsbyCafe()
+                PrintCafesbyBrand()
+            Case 3  ' Print Trucks
+                PrintTrucks()
+        End Select
+
+    End Sub
+
+    Private Sub BrandsFilterClicked(sender As Object, e As RoutedEventArgs) Handles tglBrands.Click
+        If tglBrands.IsChecked = False Then
+            ResetVendorFilters()
             Exit Sub
         End If
-        imgTrucks.Effect = New Effects.BlurEffect With {.KernelType = Effects.KernelType.Box, .Radius = 5,
-            .RenderingBias = Effects.RenderingBias.Performance}
-        imgBrands.Effect = Nothing
+        tglTrucks.IsChecked = False
         CurrentVendorView = 2
         ExpandLocations()
         ShowSegment(2)
         CollapseTrucks()
-
     End Sub
 
-    Private Sub ShowTrucksOnly(sender As Object, e As MouseButtonEventArgs) Handles imgTrucks.MouseLeftButtonDown
-        If CurrentVendorView = 3 Then
-            imgBrands.Effect = Nothing
-            imgTrucks.Effect = Nothing
-            CurrentVendorView = 0
-            ShowSegment(0)
-            ExpandLocations()
+    Private Sub TrucksFilterClicked(sender As Object, e As RoutedEventArgs) Handles tglTrucks.Click
+        If tglTrucks.IsChecked = False Then
+            ResetVendorFilters()
             Exit Sub
         End If
-        imgBrands.Effect = New Effects.BlurEffect With {.KernelType = Effects.KernelType.Box, .Radius = 5,
-            .RenderingBias = Effects.RenderingBias.Performance}
-        imgTrucks.Effect = Nothing
+        tglBrands.IsChecked = False
         CurrentVendorView = 3
         ExpandLocations()
         ShowSegment(3)
         CollapseBrands()
+    End Sub
+
+#End Region
+
+    Private Sub LoadSchedule(LoadType As Integer)
+        ' Loadtype = number of days back to retrieve (0 for current week, -7 for previous, -14 for two weeks, -21 for three weeks)
+        Try
+            For Each wd As ScheduleDay In wkSched.Children
+                If TypeOf (wd) Is ScheduleDay Then
+                    Dim wday As ScheduleDay = wd
+                    Dim targetdate As Date = wd.DateValue.AddDays(LoadType)
+                    For Each loc As Object In wday.LocationStack.Children
+                        If TypeOf (loc) Is ScheduleLocation Then
+                            Dim locitem As ScheduleLocation = loc
+                            locitem.Load(targetdate, LoadType)
+                        End If
+                    Next
+                End If
+            Next
+        Catch ex As Exception
+            Dim amsg = New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText,
+                    AgnesMessageBox.MsgBoxType.OkOnly, 18,, "Unhandled Error",, "AGNES encountered " & ex.Message & ".")
+            amsg.ShowDialog()
+            amsg.Close()
+        End Try
 
     End Sub
 
@@ -232,6 +340,116 @@ Public Class VendorSchedule
         End Select
     End Sub
 
+    Private Sub VendorSchedule_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+        If SaveStatus = 0 Then
+            If DiscardCheck() = False Then e.Cancel = True
+        End If
+    End Sub
+
+    Private Sub PrintBrandsbyCafe()
+
+        Try
+            pd = New PrintDialog
+            If pd.ShowDialog() <> True Then
+                PrintFailed = True
+                Exit Sub
+            End If
+            fd = New FlowDocument With {.ColumnGap = 0, .ColumnWidth = pd.PrintableAreaWidth}
+        Catch
+            Exit Sub
+        End Try
+
+        '// Build header
+        Dim p As New Paragraph(New Run("Brand Rotation by Cafe for the week of " & GetWeekStart().ToShortDateString)) With
+            {.FontSize = 24, .TextAlignment = TextAlignment.Center, .FontWeight = FontWeights.Bold, .FontFamily = New FontFamily("Segoe UI")}
+
+        '// Build table
+        Dim t As New Table() With {.CellSpacing = 0, .Background = Brushes.LemonChiffon}
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(140)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.RowGroups.Add(New TableRowGroup())
+
+        '// Alias the current working row for easy reference.
+        Dim cr As New TableRow With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI")}
+
+        '// Add column headers
+        Dim rc As Integer
+        For rc = 1 To 5
+            t.RowGroups(0).Rows.Add(New TableRow())
+        Next rc
+        cr = t.RowGroups(0).Rows(0)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Cafes")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Mon")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Tue")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Wed")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Thu")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Fri")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 1, 1)}))
+
+        '// Build schedule array (locations as row headers, vendors as matrix values 
+
+        '// Populate the rows
+
+        'Array.Clear(LocArray, 0, LocArray.Length)
+        'cr = t.RowGroups(0).Rows(rc + 1)
+        'cr.Cells.Add(New TableCell(New Paragraph(New Run(CreditArray(0, rc))) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+
+
+
+        With fd.Blocks
+            .Add(p)
+            .Add(t)
+        End With
+
+        'CRITICAL: ADD DOCUMENT CREATION ROUTINES
+
+        Dim xps_writer As XpsDocumentWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue)
+        Dim idps As IDocumentPaginatorSource = CType(fd, IDocumentPaginatorSource)
+        Try
+            xps_writer.Write(idps.DocumentPaginator)
+        Catch ex As System.Runtime.CompilerServices.RuntimeWrappedException
+            Dim notifymsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                     18,, "Unable to print!",, "This error usually occurs if you have the PDF file you're trying to overwrite open.  Close the file and try again!")
+            notifymsg.ShowDialog()
+            notifymsg.Close()
+            PrintFailed = True
+        Catch ex As Exception
+            Dim notifymsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                     18,, "Operation failed!",, "Error: " & ex.Message)
+            notifymsg.ShowDialog()
+            notifymsg.Close()
+            PrintFailed = True
+        End Try
+
+    End Sub
+
+    Private Sub PrintCafesbyBrand()
+        Dim ph As String = ""
+    End Sub
+
+    Private Sub PrintTrucks()
+        Dim ph As String = ""
+    End Sub
+
+    Private Function DiscardCheck() As Boolean
+        Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.YesNo, 12, False,, "Discard unsaved data?",, AgnesMessageBox.ImageType.Danger)
+        amsg.ShowDialog()
+        If amsg.ReturnResult = "No" Then
+            amsg.Close()
+            Return False
+        End If
+        amsg.Close()
+        Return True
+    End Function
+
+    Private Function GetWeekStart() As DateTime
+        Dim dayobj As ScheduleDay
+        dayobj = wkSched.Children(0)
+        Return dayobj.DateValue
+    End Function
 #End Region
 
 #Region "Event Listeners"
@@ -240,7 +458,7 @@ Public Class VendorSchedule
             Wk.SystemChange = False
             Exit Sub
         End If
-        If SaveStatus = False Then
+        If SaveStatus = 0 Then
             If DiscardCheck() = False Then
                 Wk.SystemChange = True
                 YR.CurrentYear = CurrYear
@@ -252,8 +470,11 @@ Public Class VendorSchedule
         CurrYear = YR.CurrentYear
         CurrMonth = CAL.CurrentMonth
         CurrWeek = Wk.CurrentWeek
+        ResetVendorFilters()
         wkSched.Update(CurrYear, CurrMonth, CurrWeek)
-        SaveStatus = True
+        PopulateVendors(CurrentVendorView)
+        LoadSchedule(0)
+        SaveStatus = 1
     End Sub
 
 #End Region

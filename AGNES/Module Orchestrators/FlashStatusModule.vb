@@ -2,7 +2,7 @@
     Public FlashStatusPage As FlashStatus
     Public FlashStatusActuals As FlashActualsEntity
 
-    Public Sub RunModule()
+    Public Sub Runmodule()
         FlashActuals = New FlashActualsEntity
         Dim StatusFlashType As Long
         Dim GetSelections = SelectFlashForecastTypeAndUnit(True)

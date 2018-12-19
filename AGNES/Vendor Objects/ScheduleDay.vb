@@ -8,6 +8,7 @@ Public Class ScheduleDay
     Public LocationScrollViewer As ScrollViewer
     Public LocationStack As StackPanel
     Private Highlight As Boolean
+    Private SystemCall As Boolean
 #End Region
 
 #Region "Constructor"
@@ -17,7 +18,9 @@ Public Class ScheduleDay
         BorderThickness = New Thickness(1, 1, 1, 1)
         BorderBrush = Brushes.Black
         Width = 198
+        SystemCall = True
         LocationScrollViewer = New ScrollViewer
+        AddHandler LocationScrollViewer.ScrollChanged, AddressOf ScrollView
         LocationStack = New StackPanel With {.CanVerticallyScroll = True}
         CreateDayLabel()
         If hol = 0 Then
@@ -25,7 +28,7 @@ Public Class ScheduleDay
         End If
         LocationScrollViewer.Content = LocationStack
         Child = LocationScrollViewer
-
+        SystemCall = False
     End Sub
 
 #End Region
@@ -50,49 +53,110 @@ Public Class ScheduleDay
     End Sub
 
     Private Sub LoadAndAddLocations()
+        Dim TrucksToo As Boolean
+        ' Load truck only locations first
+        Dim qtl = From tl As Building In SharedDataGroup.Buildings
+                  Where tl.AllowFoodTrucks = True
+                  Select tl
 
-        'TODO: THIS CODE WILL BE REPLACED BY A QUERY ON THE FoodTruckSite FIELD IN THE FINAL NEW LOCATIONS TABLE
-        Dim Loc92 As New ScheduleLocation("92 (Trucks Only)", 0, Me, Highlight)
-        Loc92.AllowsFoodTrucks = True
-        LocationStack.Children.Add(Loc92)
-        Highlight = Not Highlight
+        ' For each building that allows trucks, see if it's a cafe building with stations.  If it is, ignore it.  If not,
+        ' add a truck-only location
+        For Each tl In qtl
+            Dim qhs = From hs As Cafe In SharedDataGroup.Cafes
+                      Where hs.BldgId = tl.PID
+                      Select hs
 
-
-        'TODO: THIS CODE WILL BE REPLACED BY A QUERY ON THE STATION COUNT FIELD IN THE FINAL NEW LOCATIONS TABLE
-        Dim x As Byte
-        Dim singlelocs() As String = {"4", "16", "26", "34", "37", "41", "50", "83", "112", "121",
-            "CCP", "LS", "RTC", "Samm-C", "Studio H"}
-        For x = 1 To singlelocs.Count
-            Dim newloc As New ScheduleLocation(singlelocs(x - 1), 1, Me, Highlight)
-            LocationStack.Children.Add(newloc)
-            Highlight = Not Highlight
+            If qhs.Count = 0 Then
+                AddTruckOnlyLocation(tl.BldgName)
+            Else
+                For Each hs In qhs
+                    If hs.BrandStations = 0 Then AddTruckOnlyLocation(tl.BldgName)
+                Next
+            End If
         Next
 
-        Dim Loc43 As New ScheduleLocation("43", 1, Me, Highlight)
-        Loc43.AllowsFoodTrucks = True
-        LocationStack.Children.Add(Loc43)
-        Highlight = Not Highlight
+        ' Load single station locations next
+        Dim qss1 = From ss As Cafe In SharedDataGroup.Cafes
+                   Where ss.BrandStations = 1
+                   Select ss
 
-        Dim LocMill As New ScheduleLocation("Millennium", 1, Me, Highlight)
-        LocMill.AllowsFoodTrucks = True
-        LocationStack.Children.Add(LocMill)
-        Highlight = Not Highlight
-
-        Dim doublelocs() As String = {"86", "Redwest", "31"}
-        For x = 1 To doublelocs.Count
-            Dim newloc As New ScheduleLocation(doublelocs(x - 1), 2, Me, Highlight)
-            LocationStack.Children.Add(newloc)
-            Highlight = Not Highlight
+        ' Determine if trucks are also allowed, then add the station
+        For Each ss In qss1
+            TrucksToo = False
+            For Each tl In qtl
+                If ss.BldgId = tl.PID Then TrucksToo = True
+            Next
+            AddRegularLocation(GetCafeName(ss.CostCenter), 1, TrucksToo, ss.AnchorStationFoodType, ss.AnchorStationFoodSubType, ss.HasHood)
         Next
 
-        Dim triplelocs() As String = {"Advanta"}
-        For x = 1 To triplelocs.Count
-            Dim newloc As New ScheduleLocation(triplelocs(x - 1), 3, Me, Highlight)
-            LocationStack.Children.Add(newloc)
-            Highlight = Not Highlight
+
+        ' Load dual station locations next
+        Dim qss2 = From ss As Cafe In SharedDataGroup.Cafes
+                   Where ss.BrandStations = 2
+                   Select ss
+
+        ' Determine if trucks are also allowed, then add the station
+        For Each ss In qss2
+            TrucksToo = False
+            For Each tl In qtl
+                If ss.BldgId = tl.PID Then TrucksToo = True
+            Next
+            AddRegularLocation(GetCafeName(ss.CostCenter), 2, TrucksToo, ss.AnchorStationFoodType, ss.AnchorStationFoodSubType, ss.HasHood)
+        Next
+
+        ' Load greater than two stations finally
+        Dim qss3 = From ss As Cafe In SharedDataGroup.Cafes
+                   Where ss.BrandStations > 2
+                   Select ss
+
+        ' Determine if trucks are also allowed, then add the station
+        For Each ss In qss3
+            TrucksToo = False
+            For Each tl In qtl
+                If ss.BldgId = tl.PID Then TrucksToo = True
+            Next
+            AddRegularLocation(GetCafeName(ss.CostCenter), ss.BrandStations, TrucksToo, ss.AnchorStationFoodType, ss.AnchorStationFoodSubType, ss.HasHood)
         Next
 
     End Sub
+
+    Private Sub AddRegularLocation(bldgnm, statcount, truckok, asft, asfst, hh)
+        Dim newloc As New ScheduleLocation(bldgnm, statcount, Me, Highlight)
+        With newloc
+            .AllowsFoodTrucks = truckok
+            .AnchorFoodType = asft
+            .AnchorFoodSubType = asfst
+            .HasHood = hh
+        End With
+
+        LocationStack.Children.Add(newloc)
+        Highlight = Not Highlight
+    End Sub
+
+    Private Sub AddTruckOnlyLocation(bldgnm)
+        Dim TruckOnlyStation As New ScheduleLocation(bldgnm & "(Trucks Only)", 0, Me, Highlight)
+        TruckOnlyStation.AllowsFoodTrucks = True
+        LocationStack.Children.Add(TruckOnlyStation)
+        Highlight = Not Highlight
+    End Sub
+
+    Private Sub ScrollView(sender As ScrollViewer, e As ScrollChangedEventArgs)
+        If SystemCall = True Then Exit Sub
+        VendorSched.wkSched.SyncScrollViews(Me, sender.VerticalOffset)
+    End Sub
+
+    Private Function GetCafeName(cc As Long) As String
+        'TODO: PROBABLY NEED TO MOVE THIS TO THE BASEMODULE AND REPLACE SOMETHING THAT'S THERE ALREADY
+        Try
+            Dim qun = (From un As CostCenter In SharedDataGroup.CostCenters
+                       Where un.CostCenter1 = cc
+                       Select un).ToList(0)
+            Return qun.FlashName
+        Catch ex As Exception
+            Return ""
+        End Try
+        Return ""
+    End Function
 
 #End Region
 

@@ -78,6 +78,17 @@
           <Property Name="Amount" Type="decimal" Precision="12" Scale="2" Nullable="false" />
           <Property Name="Notes" Type="varchar" MaxLength="512" />
         </EntityType>
+        <EntityType Name="Schedules">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ScheduleDate" Type="date" Nullable="false" />
+          <Property Name="Location" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="Station" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="VendorId" Type="bigint" Nullable="false" />
+          <Property Name="SavedBy" Type="varchar" MaxLength="128" Nullable="false" />
+        </EntityType>
         <EntityType Name="VendorInfo">
           <Key>
             <PropertyRef Name="PID" />
@@ -112,6 +123,7 @@
           <EntitySet Name="KPIWithholdings" EntityType="Self.KPIWithholdings" Schema="Vendors" store:Type="Tables" />
           <EntitySet Name="ProfitCenters" EntityType="Self.ProfitCenters" Schema="Vendors" store:Type="Tables" />
           <EntitySet Name="ReceivedCAMChecks" EntityType="Self.ReceivedCAMChecks" Schema="Vendors" store:Type="Tables" />
+          <EntitySet Name="Schedules" EntityType="Self.Schedules" Schema="Vendors" store:Type="Tables" />
           <EntitySet Name="VendorInfo" EntityType="Self.VendorInfo" Schema="Vendors" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -226,7 +238,19 @@
           <EntitySet Name="ProfitCenters" EntityType="Self.ProfitCenter" />
           <EntitySet Name="ReceivedCAMChecks" EntityType="Self.ReceivedCAMCheck" />
           <EntitySet Name="VendorInfo" EntityType="VendorModel.VendorInfo" />
+          <EntitySet Name="Schedules" EntityType="VendorModel.Schedule" />
         </EntityContainer>
+        <EntityType Name="Schedule">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScheduleDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Location" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="Station" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="SavedBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="VendorId" Type="Int64" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -337,6 +361,18 @@
                 <ScalarProperty Name="RequiresHood" ColumnName="RequiresHood" />
                 <ScalarProperty Name="InsuranceExpiration" ColumnName="InsuranceExpiration" />
                 <ScalarProperty Name="ContractExpiration" ColumnName="ContractExpiration" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Schedules">
+            <EntityTypeMapping TypeName="VendorModel.Schedule">
+              <MappingFragment StoreEntitySet="Schedules">
+                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+                <ScalarProperty Name="SavedBy" ColumnName="SavedBy" />
+                <ScalarProperty Name="Station" ColumnName="Station" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="ScheduleDate" ColumnName="ScheduleDate" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

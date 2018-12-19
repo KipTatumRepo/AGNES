@@ -12,11 +12,18 @@
 
     <Grid>
         <ToolBar x:Name="tlbVendors" HorizontalAlignment="Left" Width="1274" Height="60" VerticalAlignment="Top">
-            <Image Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/LoadPrevious.png" ToolTip="Import Previous Week" Margin="0,5,0,0" />
-            <Image Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/save.png" ToolTip="Save Schedule" Margin="0,5,0,0" />
+
+            <Image x:Name="imgImport" Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/LoadPrevious.png" ToolTip="Import Previous Week (ctrl for two weeks ago, ctrl+shift for three weeks ago)" Margin="0,5,0,0" />
+            <Image x:Name="imgSave" Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/save.png" ToolTip="Save Schedule" Margin="0,5,0,0" />
+            <Image x:Name="imgPrint" Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/print.png" ToolTip="Save Schedule" Margin="0,5,0,0" />
             <Separator />
-            <Image x:Name="imgBrands" Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/brands.png" ToolTip="Show Local Brands" Margin="0,5,0,0" />
-            <Image x:Name="imgTrucks" Height="41" VerticalAlignment="Top" Width="70" Source="/AGNES;component/Resources/FoodTruck.png" ToolTip="Show Food Trucks" Margin="0,5,0,0" />
+            <ToggleButton x:Name="tglBrands" Height="50" Width="60">
+                <Image x:Name="imgBrands" Height="41" Width="50" Source="/AGNES;component/Resources/brands.png" ToolTip="Show Local Brands" Margin="0,0,0,0" />
+            </ToggleButton>
+            <ToggleButton x:Name="tglTrucks" Height="50" Width="60" >
+                <Image x:Name="imgTrucks" Height="41" Width="50" Source="/AGNES;component/Resources/FoodTruck.png" ToolTip="Show Food Trucks" Margin="0,0,0,0" />
+            </ToggleButton>
+
             <Separator />
         </ToolBar>
         <Border BorderBrush="Black" BorderThickness="1,1,1,1" Width="253" Height ="50" HorizontalAlignment="left" VerticalAlignment="Top" Margin="0,61,0,0">
@@ -27,7 +34,14 @@
                 <StackPanel x:Name="stkVendors" HorizontalAlignment="Left" Width="257" CanVerticallyScroll="True" ScrollViewer.CanContentScroll="True"/>
             </ScrollViewer>
         </Border>
-        <Grid x:Name="grdWeek" Margin="260,65,5,30"/>
+        <Grid x:Name="grdWeek" Margin="260,65,5,35">
+            <StackPanel x:Name="stkProgBar" Visibility="Collapsed">
+                <TextBlock x:Name="tbPBStatus" Text="Loading" FontSize="36" TextAlignment="Center"/>
+                <ProgressBar x:Name="pbStatus" Height="50" IsIndeterminate="True"/>
+
+            </StackPanel>
+
+        </Grid>
         <StatusBar x:Name="sbSaveStatus" Background="#FF19F30E" Height="30" VerticalAlignment="Bottom">
             <TextBlock x:Name="tbSaveStatus" Text="Saved" Width="1268" TextAlignment="Center" FontWeight="SemiBold" FontSize="12" />
         </StatusBar>
