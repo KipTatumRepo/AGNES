@@ -1,5 +1,4 @@
 ﻿Imports System.ComponentModel
-'INFRASTRUCTURE: BUILD MAX VENDOR SLOTS INTO DATABASE
 Public Class ScheduleVendor
     Inherits Border
 
@@ -21,6 +20,8 @@ Public Class ScheduleVendor
     Private cmiKillFilters As MenuItem
     Private _usedweeklyslots As Byte
     Private stkVendorInfo As StackPanel
+    Private DisableDrag As Boolean
+
 
     Public Property UsedWeeklySlots As Byte
         Get
@@ -29,9 +30,9 @@ Public Class ScheduleVendor
 
         Set(value As Byte)
             _usedweeklyslots = value
-            Visibility = Visibility.Visible
+            ActiveVendor(1)
             SlotsText.Text = "Weekly Slots:" & (MaxWeeklySlots - _usedweeklyslots) & "/" & MaxWeeklySlots
-            If value = MaxWeeklySlots Then Visibility = Visibility.Collapsed
+            If value = MaxWeeklySlots Then ActiveVendor(0)
         End Set
     End Property
 #End Region
@@ -62,6 +63,19 @@ Public Class ScheduleVendor
 #End Region
 
 #Region "Private Methods"
+    Private Sub ActiveVendor(tf)
+        If tf = 0 Then
+            DisableDrag = True
+            NameText.Foreground = Brushes.LightGray
+            TypeText.Foreground = Brushes.LightGray
+            SlotsText.Foreground = Brushes.LightGray
+        Else
+            DisableDrag = True
+            NameText.Foreground = Brushes.Black
+            TypeText.Foreground = Brushes.Black
+            SlotsText.Foreground = Brushes.Black
+        End If
+    End Sub
 
     Private Sub AddName()
         NameText = New TextBlock With {.TextAlignment = TextAlignment.Center, .Text = VendorItem.Name, .ContextMenu = VendorContextMenu, .FontSize = 10}
@@ -89,6 +103,7 @@ Public Class ScheduleVendor
     End Sub
 
     Private Sub ScheduleVendor_MouseDown(sender As Object, e As MouseButtonEventArgs) Handles Me.MouseLeftButtonDown
+        If DisableDrag = True Then Exit Sub
         VendorSched.ActiveVendor = Me
         DragDrop.DoDragDrop(Me, NameText.Text, DragDropEffects.Copy)
     End Sub
@@ -105,7 +120,7 @@ Public Class ScheduleVendor
         cmiFilter = New MenuItem With {.Header = "Filter on Vendor"}
         AddHandler cmiFilter.Click, AddressOf VendorFilter
         cmiKillFilters = New MenuItem With {.Header = "Remove Vendor Filters"}
-        AddHandler cmiKillFilters.Click, AddressOf VendorSched.ResetVendorFilters
+        AddHandler cmiKillFilters.Click, AddressOf RemoveFilter
         With VendorContextMenu.Items
             .Add(cmiFilter)
             .Add(cmiKillFilters)
@@ -172,6 +187,10 @@ Public Class ScheduleVendor
             End If
         Next
         VendorSched.VendorFilterOn = True
+    End Sub
+
+    Private Sub RemoveFilter()
+        VendorSched.ResetVendorFilters()
     End Sub
 
 #End Region

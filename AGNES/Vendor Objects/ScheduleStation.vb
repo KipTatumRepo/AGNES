@@ -26,19 +26,20 @@
 
 #Region "Constructor"
     Public Sub New(sn As Byte, ByRef cwd As ScheduleDay, ByRef cloc As ScheduleLocation)
+        Dim bc As New BrushConverter()
         CurrentWeekDay = cwd
         CurrentLocation = cloc
         AllowDrop = True
-        Height = 16
-        BorderBrush = Brushes.Black
-        BorderThickness = New Thickness(1, 1, 1, 1)
-        Dim bc As New BrushConverter()
-        Background = bc.ConvertFrom("#FFFBF1C6")
-        Margin = New Thickness(1, 1, 1, 0)
         StationNumber = sn
         StationName = "Station " & StationNumber
         VendorStack = New StackPanel
+        Height = 16
+        Background = bc.ConvertFrom("#FFFBF1C6")
+        Margin = New Thickness(1, 1, 1, 0)
+        BorderBrush = Brushes.Black
+        BorderThickness = New Thickness(1, 1, 1, 1)
         Child = VendorStack
+
         AddName()
     End Sub
 
@@ -181,8 +182,8 @@
         '// Conflicts such as the requirement for a hood at a unit that does not have one available
         If VendorSched.ActiveVendor.VendorItem.RequiresHood = True And CurrentLocation.HasHood = False Then
             VendorSched.tbSaveStatus.Text = "Vendor requires a hood, which is unavailable at this station."
-            VendorSched.sbSaveStatus.Background = Brushes.PaleVioletRed
-            DropAllowed = False
+            VendorSched.sbSaveStatus.Background = Brushes.LightYellow
+            DropAllowed = True
             Return False
         End If
         Return True
