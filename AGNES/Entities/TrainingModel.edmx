@@ -5,6 +5,14 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="TrainingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BusinessGroupTraining_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BusinessGroupId" Type="bigint" Nullable="false" />
+          <Property Name="TrainingId" Type="bigint" Nullable="false" />
+        </EntityType>
         <EntityType Name="Trainers">
           <Key>
             <PropertyRef Name="PID" />
@@ -12,7 +20,7 @@
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TrainerName" Type="varchar" MaxLength="64" Nullable="false" />
         </EntityType>
-        <EntityType Name="TrainerTrainingJoin">
+        <EntityType Name="TrainerTraining_Join">
           <Key>
             <PropertyRef Name="PID" />
           </Key>
@@ -38,7 +46,6 @@
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LOB" Type="varchar" MaxLength="32" />
           <Property Name="TrainingName" Type="varchar" MaxLength="64" Nullable="false" />
           <Property Name="TrainingDescription" Type="varchar" MaxLength="512" />
           <Property Name="Hours" Type="decimal" Precision="6" Scale="2" Nullable="false" />
@@ -47,8 +54,9 @@
           <Property Name="PassCertScore" Type="decimal" Precision="4" Scale="1" Nullable="false" />
         </EntityType>
         <EntityContainer Name="TrainingModelStoreContainer">
+          <EntitySet Name="BusinessGroupTraining_Join" EntityType="Self.BusinessGroupTraining_Join" Schema="Training" store:Type="Tables" />
           <EntitySet Name="Trainers" EntityType="Self.Trainers" Schema="Training" store:Type="Tables" />
-          <EntitySet Name="TrainerTrainingJoin" EntityType="Self.TrainerTrainingJoin" Schema="Training" store:Type="Tables" />
+          <EntitySet Name="TrainerTraining_Join" EntityType="Self.TrainerTraining_Join" Schema="Training" store:Type="Tables" />
           <EntitySet Name="TrainingRecords" EntityType="Self.TrainingRecords" Schema="Training" store:Type="Tables" />
           <EntitySet Name="TrainingTypes" EntityType="Self.TrainingTypes" Schema="Training" store:Type="Tables" />
         </EntityContainer>
@@ -61,7 +69,6 @@
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LOB" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
           <Property Name="TrainingName" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="TrainingDescription" Type="String" MaxLength="512" FixedLength="false" Unicode="false" />
           <Property Name="Hours" Type="Decimal" Precision="6" Scale="2" Nullable="false" />
@@ -73,7 +80,8 @@
           <EntitySet Name="TrainingTypes" EntityType="Self.TrainingType" />
           <EntitySet Name="TrainingRecords" EntityType="TrainingModel.TrainingRecord" />
           <EntitySet Name="Trainers" EntityType="TrainingModel.Trainer" />
-          <EntitySet Name="TrainerTrainingJoins" EntityType="TrainingModel.TrainerTrainingJoin" />
+          <EntitySet Name="BusinessGroupTraining_Join" EntityType="TrainingModel.BusinessGroupTraining_Join" />
+          <EntitySet Name="TrainerTraining_Join" EntityType="TrainingModel.TrainerTraining_Join" />
         </EntityContainer>
         <EntityType Name="TrainingRecord">
           <Key>
@@ -95,7 +103,15 @@
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TrainerName" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="TrainerTrainingJoin">
+        <EntityType Name="BusinessGroupTraining_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BusinessGroupId" Type="Int64" Nullable="false" />
+          <Property Name="TrainingId" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TrainerTraining_Join">
           <Key>
             <PropertyRef Name="PID" />
           </Key>
@@ -114,7 +130,6 @@
               <MappingFragment StoreEntitySet="TrainingTypes">
                 <ScalarProperty Name="PassCertScore" ColumnName="PassCertScore" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
-                <ScalarProperty Name="LOB" ColumnName="LOB" />
                 <ScalarProperty Name="TrainingName" ColumnName="TrainingName" />
                 <ScalarProperty Name="TrainingDescription" ColumnName="TrainingDescription" />
                 <ScalarProperty Name="Hours" ColumnName="Hours" />
@@ -145,9 +160,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TrainerTrainingJoins">
-            <EntityTypeMapping TypeName="TrainingModel.TrainerTrainingJoin">
-              <MappingFragment StoreEntitySet="TrainerTrainingJoin">
+          <EntitySetMapping Name="BusinessGroupTraining_Join">
+            <EntityTypeMapping TypeName="TrainingModel.BusinessGroupTraining_Join">
+              <MappingFragment StoreEntitySet="BusinessGroupTraining_Join">
+                <ScalarProperty Name="TrainingId" ColumnName="TrainingId" />
+                <ScalarProperty Name="BusinessGroupId" ColumnName="BusinessGroupId" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TrainerTraining_Join">
+            <EntityTypeMapping TypeName="TrainingModel.TrainerTraining_Join">
+              <MappingFragment StoreEntitySet="TrainerTraining_Join">
                 <ScalarProperty Name="TrainingId" ColumnName="TrainingId" />
                 <ScalarProperty Name="TrainerId" ColumnName="TrainerId" />
                 <ScalarProperty Name="PID" ColumnName="PID" />

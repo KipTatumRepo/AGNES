@@ -191,6 +191,9 @@
     <Compile Include="Entities\BusinessGroup.vb">
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\BusinessGroupTraining_Join.vb">
+      <DependentUpon>TrainingModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Cafe.vb">
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
     </Compile>
@@ -242,7 +245,7 @@
     <Compile Include="Entities\Trainer.vb">
       <DependentUpon>TrainingModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\TrainerTrainingJoin.vb">
+    <Compile Include="Entities\TrainerTraining_Join.vb">
       <DependentUpon>TrainingModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\TrainingRecord.vb">
@@ -619,6 +622,9 @@
     <Compile Include="XAML Components\HR Audit\HRAudit.xaml.vb">
       <DependentUpon>HRAudit.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XAML Components\Training\NewTraining.xaml.vb">
+      <DependentUpon>NewTraining.xaml</DependentUpon>
+    </Compile>
     <Compile Include="XAML Components\Training\Training.xaml.vb">
       <DependentUpon>Training.xaml</DependentUpon>
     </Compile>
@@ -700,6 +706,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="XAML Components\HR Audit\HRAudit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XAML Components\Training\NewTraining.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -884,6 +894,8 @@
     <Resource Include="Resources\Commons.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Yes.png" />
+    <Resource Include="Resources\No.png" />
     <Resource Include="Resources\pacmanup.png" />
     <Resource Include="Resources\pacmanright.png" />
     <Resource Include="Resources\pacmanleft.png" />
