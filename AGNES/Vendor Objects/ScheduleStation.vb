@@ -103,7 +103,13 @@
     End Sub
 
     Private Sub ScheduleStation_DragEnter(sender As Object, e As DragEventArgs) Handles Me.DragEnter
-        CheckVendorDrag(e.Data.GetData(DataFormats.Text))
+        'TEST - Error trap
+        Try
+            CheckVendorDrag(e.Data.GetData(DataFormats.Text))
+        Catch ex As Exception
+            MsgBox("Error during drag enter function.  Screen shot this error for debugging. " & ex.Message & ex.StackTrace)
+        End Try
+
     End Sub
 
     Private Sub ScheduleStation_DragLeave(sender As Object, e As DragEventArgs) Handles Me.DragLeave
@@ -119,8 +125,13 @@
             VendorSched.SaveStatus = VendorSched.SaveStatus
             Exit Sub
         End If
-        DropVendorIntoStation(e.Data.GetData(DataFormats.Text), VendorSched.ActiveVendor)
-        CurrentLocation.Background = BC.ConvertFrom("#FFBFE8F7")
+        'TEST - Error trap
+        Try
+            DropVendorIntoStation(e.Data.GetData(DataFormats.Text), VendorSched.ActiveVendor)
+            CurrentLocation.Background = BC.ConvertFrom("#FFBFE8F7")
+        Catch ex As Exception
+            MsgBox("Error during drop function.  Screen shot this error for debugging. " & ex.Message & ex.StackTrace)
+        End Try
     End Sub
 
     Private Sub CheckVendorDrag(vn As String)
