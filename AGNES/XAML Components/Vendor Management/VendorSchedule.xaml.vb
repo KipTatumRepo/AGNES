@@ -392,7 +392,8 @@ Public Class VendorSchedule
     End Sub
 
     Private Sub PrintBrandsbyCafe()
-
+        Dim BrandsByCafeArray(40, 6) As String
+#Region "File Dialog for Printing"
         Try
             pd = New PrintDialog
             If pd.ShowDialog() <> True Then
@@ -403,53 +404,102 @@ Public Class VendorSchedule
         Catch
             Exit Sub
         End Try
+#End Region
 
-        '// Build header
+#Region "Build Header and Table"
+        '// Header
         Dim p As New Paragraph(New Run("Brand Rotation by Cafe for the week of " & GetWeekStart().ToShortDateString)) With
-            {.FontSize = 24, .TextAlignment = TextAlignment.Center, .FontWeight = FontWeights.Bold, .FontFamily = New FontFamily("Segoe UI")}
+            {.FontSize = 14, .TextAlignment = TextAlignment.Center, .FontWeight = FontWeights.Bold, .FontFamily = New FontFamily("Segoe UI")}
 
         '// Build table
         Dim t As New Table() With {.CellSpacing = 0, .Background = Brushes.LemonChiffon}
-        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
-        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(140)})
-        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
-        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
-        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
-        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(80)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.LightBlue, .Width = New GridLength(100)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(130)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(130)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(130)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(130)})
+        t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(130)})
         t.RowGroups.Add(New TableRowGroup())
+#End Region
 
-        '// Alias the current working row for easy reference.
+#Region "Gather Information Array"
+        'Loop through locations.  Count the number of non-truck stations and add that many instances of the location to the array
+        Dim activeday As ScheduleDay
+        Dim activeloc As ScheduleLocation
+        Dim activestat As ScheduleStation
+        Dim activevend As VendorInStation
+        Dim RowCount As Integer
+        Dim d As Integer = 0
+        For Each dayobj As Object In wkSched.Children
+            If TypeOf (dayobj) Is ScheduleDay Then
+                activeday = dayobj
+                RowCount = 0
+                For Each loc As Object In activeday.LocationStack.Children
+                    If TypeOf (loc) Is ScheduleLocation Then
+                        activeloc = loc
+                        For Each stat As Object In activeloc.StationStack.Children
+                            If TypeOf (stat) Is ScheduleStation Then
+                                activestat = stat
+                                BrandsByCafeArray(RowCount, 0) = activeloc.LocationName
+                                For Each vis As Object In activestat.VendorStack.Children
+                                    If TypeOf (vis) Is VendorInStation Then
+                                        activevend = vis
+                                        BrandsByCafeArray(RowCount, d + 1) = vis.ReferencedVendor.VendorItem.Name
+                                    End If
+                                Next
+                                RowCount += 1
+                            End If
+                        Next
+                    End If
+                Next
+                d += 1
+            End If
+        Next
+#End Region
+
+#Region "Build Column Rows and Headers"
         Dim cr As New TableRow With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI")}
 
-        '// Add column headers
-        Dim rc As Integer
-        For rc = 1 To 5
-            t.RowGroups(0).Rows.Add(New TableRow())
-        Next rc
+        For rb As Integer = 1 To RowCount + 1
+            t.RowGroups(0).Rows.Add(New TableRow() With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI")})
+        Next rb
+        '// Alias the current working row for easy reference.
         cr = t.RowGroups(0).Rows(0)
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("Cafes")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("Mon")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("Tue")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("Wed")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("Thu")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 0, 1)}))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("Fri")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 0, 1, 1)}))
 
-        '// Build schedule array (locations as row headers, vendors as matrix values 
+        '// Add column headers
+        cr = t.RowGroups(0).Rows(0)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Cafes")) With {.Background = Brushes.LightBlue, .TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 1, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Mon")) With {.Background = Brushes.LightBlue, .TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 1, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Tue")) With {.Background = Brushes.LightBlue, .TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 1, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Wed")) With {.Background = Brushes.LightBlue, .TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 1, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Thu")) With {.Background = Brushes.LightBlue, .TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 1, 0, 1)}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Fri")) With {.Background = Brushes.LightBlue, .TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 1, 1, 1)}))
 
-        '// Populate the rows
+#End Region
 
-        'Array.Clear(LocArray, 0, LocArray.Length)
-        'cr = t.RowGroups(0).Rows(rc + 1)
-        'cr.Cells.Add(New TableCell(New Paragraph(New Run(CreditArray(0, rc))) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(0, 0, 0, 1)}))
+#Region "Populate the Table Rows from the Array"
+        Dim rc As Integer
+        For rc = 1 To RowCount - 1
+            cr = t.RowGroups(0).Rows(rc)
+            Dim ln As String = BrandsByCafeArray(rc, 0)
+            cr.Cells.Add(New TableCell(New Paragraph(New Run(ln)) With {.Background = Brushes.LightBlue, .TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 1, 1, 1)}))
+            For cc = 1 To 5
+                Dim vn As String = BrandsByCafeArray(rc, cc)
+                If vn = "" Then
+                    cr.Cells.Add(New TableCell(New Paragraph(New Run("No Brands")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Light, .FontStyle = FontStyles.Italic, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 1, 1, 1)}))
+                Else
+                    cr.Cells.Add(New TableCell(New Paragraph(New Run(vn)) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Normal, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 1, 1, 1)}))
+                End If
+            Next
+        Next
 
+#End Region
 
-
+#Region "Compose and Print"
         With fd.Blocks
             .Add(p)
             .Add(t)
         End With
-
-        'CRITICAL: ADD DOCUMENT CREATION ROUTINES
 
         Dim xps_writer As XpsDocumentWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue)
         Dim idps As IDocumentPaginatorSource = CType(fd, IDocumentPaginatorSource)
@@ -468,6 +518,7 @@ Public Class VendorSchedule
             notifymsg.Close()
             PrintFailed = True
         End Try
+#End Region
 
     End Sub
 

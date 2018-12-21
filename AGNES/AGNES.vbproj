@@ -894,6 +894,13 @@
     <Resource Include="Resources\Commons.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\reportcard.png" />
+    <Resource Include="Resources\medal.png" />
+    <Resource Include="Resources\inspect.png" />
+    <Resource Include="Resources\crowd.png" />
+    <Resource Include="Resources\clock.png" />
+    <Resource Include="Resources\Book.png" />
+    <Resource Include="Resources\baby.png" />
     <Resource Include="Resources\Yes.png" />
     <Resource Include="Resources\No.png" />
     <Resource Include="Resources\pacmanup.png" />

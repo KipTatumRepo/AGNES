@@ -5,15 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGNES"
         mc:Ignorable="d"
-        Title="Create New Training" Height="243.093" Width="600" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" ResizeMode="NoResize">
-    <Grid>
-        <TextBlock x:Name="tbDirections" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="What do you want to name the new training?" VerticalAlignment="Top" FontSize="24" TextAlignment="Center" Width="572"/>
+        Title="Create New Training" Height="250" Width="700" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" ResizeMode="NoResize">
+    <Grid x:Name="grdMain">
+        <TextBlock x:Name="tbDirections" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="What do you want to name the new training?" VerticalAlignment="Top" FontSize="24" TextAlignment="Center" Width="525"/>
         <TextBox x:Name="txtTrainingName" HorizontalAlignment="Left" Height="23" Margin="10,47,0,0" TextWrapping="Wrap" Text="My Training" VerticalAlignment="Top" Width="572"/>
         <TextBox x:Name="txtDescription" HorizontalAlignment="Left" Height="90" Margin="10,47,0,0" TextWrapping="Wrap" Text="Add description (255 characters)" VerticalAlignment="Top" Width="572" MaxWidth="572" Visibility="Collapsed"/>
-        <ListBox x:Name="lbxBusinessGroups" HorizontalAlignment="Left" Height="105" Margin="10,47,0,0" VerticalAlignment="Top" Width="572" Visibility="Collapsed"/>
-        <TextBox x:Name="txtHours" HorizontalAlignment="Left" Height="23" Margin="238,47,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Visibility="Collapsed"/>
+        <ListBox x:Name="lbxBusinessGroups" HorizontalAlignment="Left" Height="105" Margin="10,47,0,0" VerticalAlignment="Top" Width="572" Visibility="Collapsed" SelectionMode="Extended"/>
         <Image x:Name="imgCheckMark" HorizontalAlignment="Left" Height="50" Margin="271,157,0,0" VerticalAlignment="Top" Width="50" Source="/AGNES;component/Resources/applycheck.png" Visibility="Collapsed"/>
-        <Image x:Name="imgYes" HorizontalAlignment="Left" Height="50" Margin="197,70,0,0" VerticalAlignment="Top" Width="50" Source="/AGNES;component/Resources/Yes.png" Visibility="Collapsed"/>
-        <Image x:Name="imgNo" HorizontalAlignment="Left" Height="50" Margin="340,70,0,0" VerticalAlignment="Top" Width="50" Source="/AGNES;component/Resources/No.png" Visibility="Collapsed"/>
+        <Image x:Name="imgScoreYes" HorizontalAlignment="Left" Height="50" Margin="197,70,0,0" VerticalAlignment="Top" Width="50" Source="/AGNES;component/Resources/Yes.png" Visibility="Collapsed"/>
+        <Image x:Name="imgScoreNo" HorizontalAlignment="Left" Height="50" Margin="340,70,0,0" VerticalAlignment="Top" Width="50" Source="/AGNES;component/Resources/No.png" Visibility="Collapsed"/>
+        <Image x:Name="imgCertYes" HorizontalAlignment="Left" Height="50" Margin="197,70,0,0" VerticalAlignment="Top" Width="50" Source="/AGNES;component/Resources/Yes.png" Visibility="Collapsed"/>
+        <Image x:Name="imgCertNo" HorizontalAlignment="Left" Height="50" Margin="340,70,0,0" VerticalAlignment="Top" Width="50" Source="/AGNES;component/Resources/No.png" Visibility="Collapsed"/>
+        <Image x:Name="imgIcon" HorizontalAlignment="Left" Height="100" Margin="583,10,0,0" VerticalAlignment="Top" Width="100" Source="/AGNES;component/Resources/baby.png" RenderTransformOrigin="12.952,-1.119"/>
+    
     </Grid>
 </Window>
