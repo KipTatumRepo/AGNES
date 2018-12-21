@@ -223,6 +223,15 @@ Public Class VendorSchedule
     End Sub
 
     Private Sub PrintSchedule(sender As Object, e As MouseButtonEventArgs) Handles imgPrint.MouseLeftButtonDown
+        Try
+            pd = New PrintDialog
+            If pd.ShowDialog() <> True Then
+                PrintFailed = True
+                Exit Sub
+            End If
+        Catch
+            Exit Sub
+        End Try
         Select Case CurrentVendorView
             Case 0  ' Print all three
                 PrintBrandsbyCafe()
@@ -393,18 +402,7 @@ Public Class VendorSchedule
 
     Private Sub PrintBrandsbyCafe()
         Dim BrandsByCafeArray(40, 6) As String
-#Region "File Dialog for Printing"
-        Try
-            pd = New PrintDialog
-            If pd.ShowDialog() <> True Then
-                PrintFailed = True
-                Exit Sub
-            End If
-            fd = New FlowDocument With {.ColumnGap = 0, .ColumnWidth = pd.PrintableAreaWidth}
-        Catch
-            Exit Sub
-        End Try
-#End Region
+        fd = New FlowDocument With {.ColumnGap = 0, .ColumnWidth = pd.PrintableAreaWidth}
 
 #Region "Build Header and Table"
         '// Header
@@ -523,7 +521,14 @@ Public Class VendorSchedule
     End Sub
 
     Private Sub PrintCafesbyBrand()
-        Dim ph As String = ""
+        Dim activevndr As ScheduleVendor
+        fd = New FlowDocument With {.ColumnGap = 0, .ColumnWidth = pd.PrintableAreaWidth}
+        For Each v In stkVendors.Children
+            If TypeOf (v) Is ScheduleVendor Then
+                activevndr = v
+                'CRITICAL:  LEFT OFF HERE
+            End If
+        Next
     End Sub
 
     Private Sub PrintTrucks()
