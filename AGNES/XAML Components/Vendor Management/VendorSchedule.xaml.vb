@@ -238,7 +238,7 @@ Public Class VendorSchedule
                 PrintCafesbyBrand()
                 PrintTrucks()
             Case 2  ' Print Brands
-                PrintBrandsbyCafe()
+                'PrintBrandsbyCafe()
                 PrintCafesbyBrand()
             Case 3  ' Print Trucks
                 PrintTrucks()
@@ -521,14 +521,122 @@ Public Class VendorSchedule
     End Sub
 
     Private Sub PrintCafesbyBrand()
-        Dim activevndr As ScheduleVendor
+
+#Region "Build Header"
+        Dim p As New Paragraph(New Run("Brand Rotation by Cafe for the week of " & GetWeekStart().ToShortDateString)) With
+            {.FontSize = 14, .TextAlignment = TextAlignment.Center, .FontWeight = FontWeights.Bold, .FontFamily = New FontFamily("Segoe UI")}
+
+#End Region
+
+        Dim activevndr As ScheduleVendor, activeday As ScheduleDay, activeloc As ScheduleLocation, activestation As ScheduleStation,
+            activeVIS As VendorInStation, vp As Paragraph
+        Dim dc As Byte, ar As Byte, rg As Byte
         fd = New FlowDocument With {.ColumnGap = 0, .ColumnWidth = pd.PrintableAreaWidth}
+        fd.Blocks.Add(p)
         For Each v In stkVendors.Children
+            Dim activevendorarray(12, 5) As String
             If TypeOf (v) Is ScheduleVendor Then
                 activevndr = v
-                'CRITICAL:  LEFT OFF HERE
+                dc = 1
+                ' Search through each day
+                For Each d In VendorSched.wkSched.Children
+                    If TypeOf (d) Is ScheduleDay Then
+                        activeday = d
+                        ar = 1
+                        For Each l In activeday.LocationStack.Children
+                            If TypeOf (l) Is ScheduleLocation Then
+                                activeloc = l
+                                For Each s In activeloc.StationStack.Children
+                                    If TypeOf (s) Is ScheduleStation Then
+                                        activestation = s
+                                        For Each vis In activestation.VendorStack.Children
+                                            If TypeOf (vis) Is VendorInStation Then
+                                                activeVIS = vis
+                                                If activeVIS.ReferencedVendor Is v Then
+                                                    activevendorarray(ar, dc) = activeloc.LocationName
+                                                    ar += 1
+                                                End If
+                                            End If
+                                        Next
+                                    End If
+                                Next
+                            End If
+                        Next
+                    End If
+                    dc += 1
+                Next
+            End If
+            ' If activevendorarry.count > 0 then pass to subroutine to add as a printgroup
+            If activevendorarray(1, 1) <> "" Then
+
+                '// Build table
+                Dim t As New Table() With {.CellSpacing = 0, .Background = Brushes.LemonChiffon}
+                t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(130)})
+                t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(130)})
+                t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(130)})
+                t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(130)})
+                t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(130)})
+                t.RowGroups.Add(New TableRowGroup())
+
+#Region "Build Column Rows and Headers into new rowgroup"
+                vp = New Paragraph(New Run(activevndr.VendorItem.Name)) With
+            {.FontSize = 12, .TextAlignment = TextAlignment.Center, .FontWeight = FontWeights.SemiBold, .FontFamily = New FontFamily("Segoe UI")}
+
+                Dim cr As New TableRow With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI")}
+                t.RowGroups(0).Rows.Add(New TableRow() With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI")})
+                cr = t.RowGroups(0).Rows(0)
+                '// Add column headers
+                cr = t.RowGroups(0).Rows(0)
+                cr.Cells.Add(New TableCell(New Paragraph(New Run("Mon")) With {.Background = Brushes.LightBlue, .TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 1, 0, 1)}))
+                cr.Cells.Add(New TableCell(New Paragraph(New Run("Tue")) With {.Background = Brushes.LightBlue, .TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 1, 0, 1)}))
+                cr.Cells.Add(New TableCell(New Paragraph(New Run("Wed")) With {.Background = Brushes.LightBlue, .TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 1, 0, 1)}))
+                cr.Cells.Add(New TableCell(New Paragraph(New Run("Thu")) With {.Background = Brushes.LightBlue, .TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 1, 0, 1)}))
+                cr.Cells.Add(New TableCell(New Paragraph(New Run("Fri")) With {.Background = Brushes.LightBlue, .TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 1, 1, 1)}))
+#End Region
+
+#Region "Populate the Table Rows from the Array"
+                Dim rc As Integer
+                For rc = 1 To ar - 1
+                    t.RowGroups(0).Rows.Add(New TableRow() With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI")})
+                    cr = t.RowGroups(0).Rows(rc)
+                    For cc = 1 To 5
+                        Dim vl As String = activevendorarray(rc, cc)
+                        If vl = "" Then
+                            cr.Cells.Add(New TableCell(New Paragraph(New Run("")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Light, .FontStyle = FontStyles.Italic, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 1, 1, 1)}))
+                        Else
+                            cr.Cells.Add(New TableCell(New Paragraph(New Run(vl)) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Normal, .BorderBrush = Brushes.Black, .BorderThickness = New Thickness(1, 1, 1, 1)}))
+                        End If
+                    Next
+                Next
+                With fd.Blocks
+                    .Add(vp)
+                    .Add(t)
+                End With
+#End Region
+                rg += 1
             End If
         Next
+#Region "Compose and Print"
+
+        Dim xps_writer As XpsDocumentWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue)
+        Dim idps As IDocumentPaginatorSource = CType(fd, IDocumentPaginatorSource)
+        Try
+            xps_writer.Write(idps.DocumentPaginator)
+        Catch ex As System.Runtime.CompilerServices.RuntimeWrappedException
+            Dim notifymsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                     18,, "Unable to print!",, "This error usually occurs if you have the PDF file you're trying to overwrite open.  Close the file and try again!")
+            notifymsg.ShowDialog()
+            notifymsg.Close()
+            PrintFailed = True
+        Catch ex As Exception
+            Dim notifymsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.FullText, AgnesMessageBox.MsgBoxType.OkOnly,
+                                     18,, "Operation failed!",, "Error: " & ex.Message)
+            notifymsg.ShowDialog()
+            notifymsg.Close()
+            PrintFailed = True
+        End Try
+#End Region
+
     End Sub
 
     Private Sub PrintTrucks()
@@ -551,6 +659,7 @@ Public Class VendorSchedule
         dayobj = wkSched.Children(0)
         Return dayobj.DateValue
     End Function
+
 #End Region
 
 #Region "Event Listeners"
