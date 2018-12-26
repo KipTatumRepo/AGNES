@@ -27,9 +27,9 @@
             <!--<TextBox x:Name="txtScore" HorizontalAlignment="Left" Height="23" Margin="392,165,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="76"/>-->
             <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="360,202,0,0" VerticalAlignment="Top" Width="75" IsEnabled="False" Background="{x:Null}" Height="29" TabIndex="6"/>
             <ToolBar HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="792" Background="OldLace">
-                <Image Height="25" VerticalAlignment="Top" Width="50" Source="/AGNES;component/Resources/Class.png" ToolTip="Add Training"/>
+                <Image x:Name="imgAddTraining" Height="25" VerticalAlignment="Top" Width="50" Source="/AGNES;component/Resources/Class.png" ToolTip="Add Training"/>
                 <Separator/>
-                <Image Height="25" VerticalAlignment="Top" Width="50" Source="/AGNES;component/Resources/Trainer.png" ToolTip="Add Trainer"/>
+                <Image x:Name="imgAddTrainer" Height="25" VerticalAlignment="Top" Width="50" Source="/AGNES;component/Resources/Trainer.png" ToolTip="Add Trainer"/>
             </ToolBar>
         </Grid>
         <DataGrid x:Name="dgTrainingHistory" HorizontalAlignment="Left" Height="163" Margin="10,246,0,0" VerticalAlignment="Top" Width="772" Background="OldLace" IsEnabled="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" CanUserResizeRows="False"/>

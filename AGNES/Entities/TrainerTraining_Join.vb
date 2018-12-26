@@ -10,7 +10,7 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class TrainerTrainingJoin
+Partial Public Class TrainerTraining_Join
     Public Property PID As Long
     Public Property TrainerId As Long
     Public Property TrainingId As Long

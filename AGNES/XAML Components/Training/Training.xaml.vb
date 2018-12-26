@@ -25,6 +25,18 @@ Public Class Training
 
 #Region "Private Methods"
 
+#Region "Toolbar"
+    Private Sub AddTraining(sender As Object, e As MouseButtonEventArgs) Handles imgAddTraining.MouseLeftButtonDown
+        Dim NewTrainingUI As New NewTraining
+        NewTrainingUI.ShowDialog()
+    End Sub
+
+    Private Sub AddTrainer(sender As Object, e As MouseButtonEventArgs) Handles imgAddTrainer.MouseLeftButtonDown
+
+    End Sub
+
+
+#End Region
     Private Sub CreateScoreBox()
         ScoreBox = New NumberBox(112, True, False, True, False, True, AgnesBaseInput.FontSz.Standard, 1, "")
         With ScoreBox
@@ -226,7 +238,7 @@ Public Class Training
     Private Sub PopulateTrainers(tid As Integer)
         cbxTrainer.Items.Clear()
         cbxTrainer.IsEnabled = False
-        Dim qti = From tti In TrainingData.TrainerTrainingJoins
+        Dim qti = From tti In TrainingData.TrainerTraining_Join
                   Select tti
                   Where tti.TrainingId = tid
 
