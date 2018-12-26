@@ -894,6 +894,7 @@
     <Resource Include="Resources\Commons.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\MSLogo.png" />
     <Resource Include="Resources\reportcard.png" />
     <Resource Include="Resources\medal.png" />
     <Resource Include="Resources\inspect.png" />
