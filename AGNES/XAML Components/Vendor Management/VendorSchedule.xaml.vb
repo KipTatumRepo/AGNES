@@ -647,7 +647,7 @@ Public Class VendorSchedule
 
     Private Sub PrintTrucks()
         fd = New FlowDocument With {.ColumnGap = 0, .ColumnWidth = pd.PrintableAreaWidth}
-
+        Dim activeday As ScheduleDay, activeloc As ScheduleLocation, activetruck As ScheduleTruckStation
 #Region "Build Header"
         Dim t As New Table() With {.CellSpacing = 0, .Background = New BrushConverter().ConvertFrom("#d83b01"), .Foreground = Brushes.White}
         t.Columns.Add(New TableColumn() With {.Width = New GridLength(200)})
@@ -678,6 +678,49 @@ Public Class VendorSchedule
 
         Dim wkp As New Paragraph(New Run("Week of " & GetWeekStart().ToLongDateString)) With
             {.FontSize = 16, .TextAlignment = TextAlignment.Left, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI"), .Foreground = New BrushConverter().ConvertFrom("#d83b01")}
+#End Region
+
+#Region "Collect schedule data"
+        'TODO: REFINE FOOD TRUCK SCHEDULE DATA GATHERING PROCEDURES
+        Dim st As New Table() With {.CellSpacing = 0, .Background = New BrushConverter().ConvertFrom("#d83b01"), .Foreground = Brushes.White}
+        st.Columns.Add(New TableColumn() With {.Width = New GridLength(100)})
+        st.Columns.Add(New TableColumn() With {.Width = New GridLength(130)})
+        st.Columns.Add(New TableColumn() With {.Width = New GridLength(130)})
+        st.Columns.Add(New TableColumn() With {.Width = New GridLength(130)})
+        st.Columns.Add(New TableColumn() With {.Width = New GridLength(130)})
+        st.Columns.Add(New TableColumn() With {.Width = New GridLength(130)})
+        st.RowGroups.Add(New TableRowGroup())
+
+        'Dim dc As Byte = 0
+        'For Each d In wkSched.Children
+        '    If TypeOf (d) Is ScheduleDay Then
+        '        activeday = d
+        '        For Each l In activeday.LocationStack.Children
+        '            If TypeOf (l) Is ScheduleLocation Then
+        '                activeloc = l
+        '                If activeloc.AllowsFoodTrucks = True Then
+        '                    cr = st.RowGroups(0).Rows(0)
+        '                    cr.Cells.Add(New TableCell(New Paragraph(New Run(activeloc.LocationName)) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Normal}))
+        '                    For Each ts In activeloc.StationStack.Children
+        '                        If TypeOf (ts) Is ScheduleTruckStation Then
+        '                            activetruck = ts
+
+        '                        End If
+        '                    Next
+        '                End If
+
+        '            End If
+        '        Next
+        '    End If
+        'Next
+
+
+#End Region
+
+#Region "Construct Schedule Table"
+
+#End Region
+#Region "Footers"
 
         Dim htp As New Paragraph(New Run("Food Truck Hours: 11:00 a.m. – 2:00 p.m.")) With
             {.FontSize = 12, .TextAlignment = TextAlignment.Left, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI"), .Foreground = New BrushConverter().ConvertFrom("#d83b01")}
@@ -701,6 +744,7 @@ Public Class VendorSchedule
         With fd.Blocks
             .Add(t)
             .Add(wkp)
+            .Add(New Paragraph(New Run("")))
             .Add(htp)
             .Add(New Paragraph(New Run("")))
             .Add(New Paragraph(New Run("")))
@@ -727,6 +771,7 @@ Public Class VendorSchedule
             PrintFailed = True
         End Try
 #End Region
+
     End Sub
 
     Private Function DiscardCheck() As Boolean
