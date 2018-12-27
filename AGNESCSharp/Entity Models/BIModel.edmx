@@ -1,0 +1,1467 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BI.BadgeR.Building_Date' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Building_Date">
+          <Key>
+            <PropertyRef Name="Building_DateID" />
+          </Key>
+          <Property Name="Building_DateID" Type="int" Nullable="false" />
+          <Property Name="BuildingID" Type="int" />
+          <Property Name="Building" Type="nvarchar" MaxLength="255" />
+          <Property Name="HomeID" Type="int" />
+          <Property Name="Home" Type="nvarchar" MaxLength="255" />
+          <Property Name="DateID" Type="int" />
+          <Property Name="FMonthID" Type="int" />
+          <Property Name="FYearID" Type="int" />
+          <Property Name="BadgeCount" Type="int" />
+          <Property Name="SwipeCount" Type="int" />
+          <Property Name="FirstCount" Type="int" />
+        </EntityType>
+        <EntityType Name="PCIDtoStationMap">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PCID" Type="bigint" Nullable="false" />
+          <Property Name="Station" Type="varchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BI.dbo.CafeList' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="CafeList">
+          <Key>
+            <PropertyRef Name="CafeID" />
+          </Key>
+          <Property Name="CafeID" Type="int" Nullable="false" />
+          <Property Name="CafeName" Type="nvarchar" MaxLength="50" />
+          <Property Name="CafeHours" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Address" Type="nvarchar" MaxLength="255" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="State" Type="nvarchar" MaxLength="2" />
+          <Property Name="StateName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ZipCode" Type="int" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Campus" Type="nvarchar" MaxLength="50" />
+          <Property Name="BuildingID" Type="int" />
+          <Property Name="PictureURL" Type="nvarchar" MaxLength="2000" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BI.dbo.COFFEE_CONCEPTS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="COFFEE_CONCEPTS">
+          <Key>
+            <PropertyRef Name="profit_center_id" />
+            <PropertyRef Name="profit_center_name" />
+          </Key>
+          <Property Name="profit_center_id" Type="int" Nullable="false" />
+          <Property Name="profit_center_name" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="coffee_concept" Type="nvarchar" MaxLength="80" />
+          <Property Name="coffee_concept2" Type="nvarchar" MaxLength="50" />
+          <Property Name="Concept2_Date" Type="date" />
+        </EntityType>
+        <EntityType Name="COFFEE_PROD_CAT">
+          <Key>
+            <PropertyRef Name="menu_item_id" />
+          </Key>
+          <Property Name="menu_item_name" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="menu_item_id" Type="int" Nullable="false" />
+          <Property Name="Category" Type="varchar" MaxLength="80" />
+        </EntityType>
+        <EntityType Name="COMMONS_LOCATIONS">
+          <Key>
+            <PropertyRef Name="profit_center_id" />
+          </Key>
+          <Property Name="profit_center_id" Type="int" Nullable="false" />
+          <Property Name="profit_center_name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Group" Type="nvarchar" MaxLength="50" />
+          <Property Name="Vendor" Type="nvarchar" MaxLength="50" />
+          <Property Name="Latitude" Type="decimal" Precision="10" Scale="7" />
+          <Property Name="Longitude" Type="decimal" Precision="10" Scale="7" />
+          <Property Name="SqFt_Utilized" Type="decimal" Precision="7" Scale="2" />
+          <Property Name="image_URL" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="DATES">
+          <Key>
+            <PropertyRef Name="Busines" />
+            <PropertyRef Name="Date_ID" />
+          </Key>
+          <Property Name="Busines" Type="int" Nullable="false" />
+          <Property Name="Date_ID" Type="datetime" Nullable="false" />
+          <Property Name="MS_FY" Type="smallint" Nullable="false" />
+          <Property Name="MS_Quarter" Type="tinyint" Nullable="false" />
+          <Property Name="MS_Period" Type="tinyint" Nullable="false" />
+          <Property Name="CG_FY" Type="int" Nullable="false" />
+          <Property Name="CG_Quarter" Type="tinyint" Nullable="false" />
+          <Property Name="CG_Period" Type="tinyint" Nullable="false" />
+          <Property Name="Week" Type="int" Nullable="false" />
+          <Property Name="Weekend_Holiday_Flag" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="IS_WEEKEND_HOLIDAY" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ESPRESSO_TERMINALS">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Term_ID" Type="bigint" Nullable="false" />
+          <Property Name="Profit_Center_ID" Type="bigint" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'BI.dbo.FLASH_ACTUALS' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="FLASH_ACTUALS">
+          <Property Name="MS_FY" Type="int" />
+          <Property Name="MS_Period" Type="int" />
+          <Property Name="Week" Type="int" />
+          <Property Name="Unit_Number" Type="int" />
+          <Property Name="Period_Operating_Days" Type="int" />
+          <Property Name="Week_Operating_Days" Type="int" />
+          <Property Name="Status" Type="varchar" MaxLength="50" />
+          <Property Name="Category" Type="varchar" MaxLength="50" />
+          <Property Name="Flash" Type="money" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BI.dbo.FLASHBOARD_VISUAL_CATEGORIES' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="FLASHBOARD_VISUAL_CATEGORIES">
+          <Key>
+            <PropertyRef Name="sort_order" />
+            <PropertyRef Name="category" />
+          </Key>
+          <Property Name="sort_order" Type="int" Nullable="false" />
+          <Property Name="category" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'BI.dbo.FOOD_WASTE_TRACK' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="FOOD_WASTE_TRACK">
+          <Property Name="MS_FY" Type="int" />
+          <Property Name="MS_Period" Type="int" />
+          <Property Name="Week" Type="int" />
+          <Property Name="Weekday" Type="varchar" MaxLength="9" />
+          <Property Name="Unit_Number" Type="int" />
+          <Property Name="station" Type="nvarchar" MaxLength="80" />
+          <Property Name="waste_type" Type="varchar" MaxLength="30" />
+          <Property Name="wt_value" Type="decimal" Precision="7" Scale="2" />
+        </EntityType>-->
+        <EntityType Name="LOCATIONS">
+          <Key>
+            <PropertyRef Name="profit_center_id" />
+            <PropertyRef Name="Unit_Number" />
+          </Key>
+          <Property Name="profit_center_id" Type="int" Nullable="false" />
+          <Property Name="profit_center_name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Unit" Type="nvarchar" MaxLength="50" />
+          <Property Name="Group" Type="nvarchar" MaxLength="50" />
+          <Property Name="Unit_Number" Type="int" Nullable="false" />
+          <Property Name="Latitude" Type="decimal" Precision="10" Scale="7" />
+          <Property Name="Longitude" Type="decimal" Precision="10" Scale="7" />
+          <Property Name="Address" Type="nvarchar" MaxLength="255" />
+          <Property Name="City" Type="varchar" MaxLength="50" />
+          <Property Name="State" Type="varchar" MaxLength="2" />
+          <Property Name="ZIP Code" Type="varchar" MaxLength="5" />
+          <Property Name="DM" Type="nvarchar" MaxLength="50" />
+          <Property Name="FlashType" Type="bigint" />
+          <Property Name="TotalSqFt" Type="bigint" />
+          <Property Name="BOHSqFt" Type="bigint" />
+          <Property Name="FOHSqFt" Type="bigint" />
+          <Property Name="EspressoSqFt" Type="bigint" />
+          <Property Name="MSNeighborhood" Type="text" />
+          <Property Name="ParticipationNeighborhood" Type="text" />
+        </EntityType>
+        <EntityType Name="MasterBuildingList">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BuildingName" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="MSCampus" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ParticipationCampus" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TotalSeats" Type="int" Nullable="false" />
+          <Property Name="SqFt" Type="bigint" Nullable="false" />
+          <Property Name="Lat" Type="decimal" Precision="12" Scale="6" />
+          <Property Name="Long" Type="decimal" Precision="12" Scale="6" />
+        </EntityType>
+        <EntityType Name="MENU_ITEM_GROUPS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="GROUP_NAME" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MENU_ITEM_GROUPS_MAP">
+          <Key>
+            <PropertyRef Name="MENU_ITEM_GROUPS_ID" />
+            <PropertyRef Name="menu_item_id" />
+          </Key>
+          <Property Name="MENU_ITEM_GROUPS_ID" Type="int" Nullable="false" />
+          <Property Name="menu_item_id" Type="int" Nullable="false" />
+          <Property Name="multiplier" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BI.dbo.MENU_ITEM_MAPPINGS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MENU_ITEM_MAPPINGS">
+          <Key>
+            <PropertyRef Name="internal_menu_item_name" />
+            <PropertyRef Name="menu_item_id" />
+            <PropertyRef Name="internal_menu_item_id" />
+          </Key>
+          <Property Name="internal_menu_item_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="menu_item_id" Type="int" Nullable="false" />
+          <Property Name="internal_menu_item_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MS_DINING_EMAILS">
+          <Key>
+            <PropertyRef Name="EMAIL_ID" />
+          </Key>
+          <Property Name="EMAIL_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EMAIL_DATE" Type="date" />
+          <Property Name="EMAIL_SUBJECT" Type="nvarchar(max)" />
+          <Property Name="EMAIL_BODY" Type="nvarchar(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BI.dbo.POS_ID_MAPPINGS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="POS_ID_MAPPINGS">
+          <Key>
+            <PropertyRef Name="station_name" />
+            <PropertyRef Name="is_rotation" />
+            <PropertyRef Name="prod_class_id" />
+            <PropertyRef Name="new_pos_id" />
+            <PropertyRef Name="menu_item_name" />
+          </Key>
+          <Property Name="station_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="is_rotation" Type="bit" Nullable="false" />
+          <Property Name="prod_class_id" Type="int" Nullable="false" />
+          <Property Name="new_pos_id" Type="int" Nullable="false" />
+          <Property Name="old_pos_id" Type="int" />
+          <Property Name="menu_item_name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BI.dbo.REVOLVING_STATION_DATES' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="REVOLVING_STATION_DATES">
+          <Key>
+            <PropertyRef Name="REVOLVING_STATION_ITEMS_ID" />
+            <PropertyRef Name="Date_ID" />
+          </Key>
+          <Property Name="REVOLVING_STATION_ITEMS_ID" Type="int" Nullable="false" />
+          <Property Name="Date_ID" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="REVOLVING_STATION_ITEMS">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="menu_item_id" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="concept_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="prod_class_id" Type="int" Nullable="false" />
+          <Property Name="menu_item_id" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BI.dbo.StationList' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="StationList">
+          <Key>
+            <PropertyRef Name="StationID" />
+            <PropertyRef Name="StationName" />
+          </Key>
+          <Property Name="StationID" Type="int" Nullable="false" />
+          <Property Name="StationName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="StationLogoURL" Type="nvarchar" MaxLength="1000" />
+          <Property Name="StationNutritionURL" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'BI.dbo.WEATHER_DIRECTION' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="WEATHER_DIRECTION">
+          <Property Name="Direction" Type="varchar" MaxLength="3" />
+          <Property Name="From" Type="int" />
+          <Property Name="To" Type="int" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'BI.dbo.WEATHER_IMAGES' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="WEATHER_IMAGES">
+          <Property Name="Event" Type="nvarchar" MaxLength="255" />
+          <Property Name="Image" Type="nvarchar" MaxLength="255" />
+          <Property Name="Weather" Type="text" />
+          <Property Name="Ranking" Type="nchar" MaxLength="10" />
+        </EntityType>-->
+        <EntityType Name="WEATHER_TRACK">
+          <Key>
+            <PropertyRef Name="Date" />
+          </Key>
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="MaxTemp" Type="int" />
+          <Property Name="MeanTemp" Type="int" />
+          <Property Name="MinTemp" Type="int" />
+          <Property Name="MaxDew" Type="int" />
+          <Property Name="MeanDew" Type="int" />
+          <Property Name="MinDew" Type="int" />
+          <Property Name="MaxHumid" Type="int" />
+          <Property Name="MeanHumid" Type="int" />
+          <Property Name="MinHumid" Type="int" />
+          <Property Name="MaxSeaLevel" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="MeanSeaLevel" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="MinSeaLevel" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="MaxVisibility" Type="int" />
+          <Property Name="MeanVisibility" Type="int" />
+          <Property Name="MinVisibility" Type="int" />
+          <Property Name="MaxWindSpeed" Type="int" />
+          <Property Name="MeanWindSpeed" Type="int" />
+          <Property Name="MaxGust" Type="int" />
+          <Property Name="Precip" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="CloudCover" Type="int" />
+          <Property Name="Events" Type="varchar" MaxLength="17" />
+          <Property Name="WindDirection" Type="int" />
+        </EntityType>
+        <EntityType Name="EmployeeList">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PersonnelArea" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="PSubArea" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="PersonnelSubArea" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="RegionName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="DistrictManager" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="CostCenterNumber" Type="bigint" Nullable="false" />
+          <Property Name="CostCenter" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="PersNumber" Type="bigint" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="MiddleName" Type="varchar" MaxLength="128" />
+          <Property Name="FirstName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="NickName" Type="varchar" MaxLength="128" />
+          <Property Name="EmployeeSubGroup" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="Job" Type="bigint" Nullable="false" />
+          <Property Name="Position" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="PSGroup" Type="int" />
+          <Property Name="Crcy" Type="varchar" MaxLength="128" />
+          <Property Name="DateOfHire" Type="date" Nullable="false" />
+          <Property Name="BirthDate" Type="date" />
+          <Property Name="RacialCat1" Type="varchar" MaxLength="128" />
+          <Property Name="RacialCat2" Type="varchar" MaxLength="128" />
+          <Property Name="RacialCat3" Type="varchar" MaxLength="128" />
+          <Property Name="Gender" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="256" />
+          <Property Name="SecondAddressLine" Type="varchar" MaxLength="128" />
+          <Property Name="City" Type="varchar" MaxLength="128" />
+          <Property Name="State" Type="varchar" MaxLength="32" />
+          <Property Name="Zip" Type="varchar" MaxLength="32" />
+          <Property Name="Telephone" Type="varchar" MaxLength="32" />
+          <Property Name="Email" Type="varchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="Buildings">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BldgName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="SqFt" Type="bigint" Nullable="false" />
+          <Property Name="Lat" Type="decimal" Precision="8" Scale="4" Nullable="false" />
+          <Property Name="Long" Type="decimal" Precision="8" Scale="4" Nullable="false" />
+          <Property Name="MSCampus" Type="varchar" MaxLength="128" />
+          <Property Name="MSNeighborhood" Type="varchar" MaxLength="128" />
+          <Property Name="ParticipationCampus" Type="varchar" MaxLength="128" />
+          <Property Name="ParticipationNeighborhood" Type="varchar" MaxLength="128" />
+          <Property Name="AllowFoodTrucks" Type="bit" />
+        </EntityType>
+        <EntityType Name="BusinessGroups">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BusinessGroup" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="GroupLeader" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="LOB" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cafes">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CostCenter" Type="bigint" Nullable="false" />
+          <Property Name="BldgId" Type="bigint" Nullable="false" />
+          <Property Name="ProfitCenterId" Type="bigint" Nullable="false" />
+          <Property Name="Manager" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="DistrictManager" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="HasHood" Type="bit" />
+          <Property Name="StationCount" Type="smallint" />
+          <Property Name="AnchorStationFoodType" Type="bigint" />
+          <Property Name="AnchorStationFoodSubType" Type="bigint" />
+          <Property Name="BrandStations" Type="smallint" Nullable="false" />
+          <Property Name="SqFt" Type="int" Nullable="false" />
+          <Property Name="FOHSqFt" Type="int" Nullable="false" />
+          <Property Name="BOHSqFt" Type="int" Nullable="false" />
+          <Property Name="EspressoSqFt" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CostCenters">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CostCenter" Type="bigint" Nullable="false" />
+          <Property Name="BusinessGroup" Type="bigint" Nullable="false" />
+          <Property Name="SubUnitOf" Type="bigint" />
+          <Property Name="UnitName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="FlashName" Type="varchar" MaxLength="128" />
+          <Property Name="FlashTemplate" Type="bigint" />
+          <Property Name="HRUnitName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="HRAuditable" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LinesOfBusiness">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LineOfBusiness" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="LobLeader" Type="varchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Markets">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CostCenter" Type="bigint" Nullable="false" />
+          <Property Name="BldgId" Type="bigint" Nullable="false" />
+          <Property Name="ProfitCenterId" Type="bigint" Nullable="false" />
+          <Property Name="SubUnitOfCafe" Type="bigint" />
+          <Property Name="Manager" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="DistrictManager" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="SqFt" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Population">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BldgName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="FY" Type="int" Nullable="false" />
+          <Property Name="MSP" Type="smallint" Nullable="false" />
+          <Property Name="Headcount" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PopulationAllocations">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CafeId" Type="bigint" Nullable="false" />
+          <Property Name="AllocatedBldg" Type="bigint" Nullable="false" />
+          <Property Name="Allocation" Type="decimal" Precision="3" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ApplicationSessions">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ApplicationName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="SessionStart" Type="datetime" Nullable="false" />
+          <Property Name="SessionEnd" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_REVOLVING_STATION_ITEMS_REVOLVING_STATION_ITEMS">
+          <End Role="REVOLVING_STATION_ITEMS" Type="Self.REVOLVING_STATION_ITEMS" Multiplicity="1" />
+          <End Role="REVOLVING_STATION_ITEMS1" Type="Self.REVOLVING_STATION_ITEMS" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="REVOLVING_STATION_ITEMS">
+              <PropertyRef Name="ID" />
+              <PropertyRef Name="menu_item_id" />
+            </Principal>
+            <Dependent Role="REVOLVING_STATION_ITEMS1">
+              <PropertyRef Name="ID" />
+              <PropertyRef Name="menu_item_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BIModelStoreContainer">
+          <EntitySet Name="PCIDtoStationMap" EntityType="Self.PCIDtoStationMap" Schema="culinary" store:Type="Tables" />
+          <EntitySet Name="COFFEE_PROD_CAT" EntityType="Self.COFFEE_PROD_CAT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="COMMONS_LOCATIONS" EntityType="Self.COMMONS_LOCATIONS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DATES" EntityType="Self.DATES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ESPRESSO_TERMINALS" EntityType="Self.ESPRESSO_TERMINALS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LOCATIONS" EntityType="Self.LOCATIONS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MasterBuildingList" EntityType="Self.MasterBuildingList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MENU_ITEM_GROUPS" EntityType="Self.MENU_ITEM_GROUPS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MENU_ITEM_GROUPS_MAP" EntityType="Self.MENU_ITEM_GROUPS_MAP" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MS_DINING_EMAILS" EntityType="Self.MS_DINING_EMAILS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="REVOLVING_STATION_ITEMS" EntityType="Self.REVOLVING_STATION_ITEMS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WEATHER_TRACK" EntityType="Self.WEATHER_TRACK" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeList" EntityType="Self.EmployeeList" Schema="HR" store:Type="Tables" />
+          <EntitySet Name="Buildings" EntityType="Self.Buildings" Schema="Operations" store:Type="Tables" />
+          <EntitySet Name="BusinessGroups" EntityType="Self.BusinessGroups" Schema="Operations" store:Type="Tables" />
+          <EntitySet Name="Cafes" EntityType="Self.Cafes" Schema="Operations" store:Type="Tables" />
+          <EntitySet Name="CostCenters" EntityType="Self.CostCenters" Schema="Operations" store:Type="Tables" />
+          <EntitySet Name="LinesOfBusiness" EntityType="Self.LinesOfBusiness" Schema="Operations" store:Type="Tables" />
+          <EntitySet Name="Markets" EntityType="Self.Markets" Schema="Operations" store:Type="Tables" />
+          <EntitySet Name="Population" EntityType="Self.Population" Schema="Operations" store:Type="Tables" />
+          <EntitySet Name="PopulationAllocations" EntityType="Self.PopulationAllocations" Schema="Operations" store:Type="Tables" />
+          <EntitySet Name="ApplicationSessions" EntityType="Self.ApplicationSessions" Schema="stats" store:Type="Tables" />
+          <EntitySet Name="Building_Date" EntityType="Self.Building_Date" store:Type="Tables" store:Schema="BadgeR">
+            <DefiningQuery>SELECT 
+    [Building_Date].[Building_DateID] AS [Building_DateID], 
+    [Building_Date].[BuildingID] AS [BuildingID], 
+    [Building_Date].[Building] AS [Building], 
+    [Building_Date].[HomeID] AS [HomeID], 
+    [Building_Date].[Home] AS [Home], 
+    [Building_Date].[DateID] AS [DateID], 
+    [Building_Date].[FMonthID] AS [FMonthID], 
+    [Building_Date].[FYearID] AS [FYearID], 
+    [Building_Date].[BadgeCount] AS [BadgeCount], 
+    [Building_Date].[SwipeCount] AS [SwipeCount], 
+    [Building_Date].[FirstCount] AS [FirstCount]
+    FROM [BadgeR].[Building_Date] AS [Building_Date]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="CafeList" EntityType="Self.CafeList" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [CafeList].[CafeID] AS [CafeID], 
+    [CafeList].[CafeName] AS [CafeName], 
+    [CafeList].[CafeHours] AS [CafeHours], 
+    [CafeList].[Address] AS [Address], 
+    [CafeList].[City] AS [City], 
+    [CafeList].[State] AS [State], 
+    [CafeList].[StateName] AS [StateName], 
+    [CafeList].[ZipCode] AS [ZipCode], 
+    [CafeList].[Phone] AS [Phone], 
+    [CafeList].[Campus] AS [Campus], 
+    [CafeList].[BuildingID] AS [BuildingID], 
+    [CafeList].[PictureURL] AS [PictureURL]
+    FROM [dbo].[CafeList] AS [CafeList]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="COFFEE_CONCEPTS" EntityType="Self.COFFEE_CONCEPTS" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [COFFEE_CONCEPTS].[profit_center_id] AS [profit_center_id], 
+    [COFFEE_CONCEPTS].[profit_center_name] AS [profit_center_name], 
+    [COFFEE_CONCEPTS].[coffee_concept] AS [coffee_concept], 
+    [COFFEE_CONCEPTS].[coffee_concept2] AS [coffee_concept2], 
+    [COFFEE_CONCEPTS].[Concept2_Date] AS [Concept2_Date]
+    FROM [dbo].[COFFEE_CONCEPTS] AS [COFFEE_CONCEPTS]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="FLASHBOARD_VISUAL_CATEGORIES" EntityType="Self.FLASHBOARD_VISUAL_CATEGORIES" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [FLASHBOARD_VISUAL_CATEGORIES].[sort_order] AS [sort_order], 
+    [FLASHBOARD_VISUAL_CATEGORIES].[category] AS [category]
+    FROM [dbo].[FLASHBOARD_VISUAL_CATEGORIES] AS [FLASHBOARD_VISUAL_CATEGORIES]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="MENU_ITEM_MAPPINGS" EntityType="Self.MENU_ITEM_MAPPINGS" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [MENU_ITEM_MAPPINGS].[internal_menu_item_name] AS [internal_menu_item_name], 
+    [MENU_ITEM_MAPPINGS].[menu_item_id] AS [menu_item_id], 
+    [MENU_ITEM_MAPPINGS].[internal_menu_item_id] AS [internal_menu_item_id]
+    FROM [dbo].[MENU_ITEM_MAPPINGS] AS [MENU_ITEM_MAPPINGS]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="POS_ID_MAPPINGS" EntityType="Self.POS_ID_MAPPINGS" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [POS_ID_MAPPINGS].[station_name] AS [station_name], 
+    [POS_ID_MAPPINGS].[is_rotation] AS [is_rotation], 
+    [POS_ID_MAPPINGS].[prod_class_id] AS [prod_class_id], 
+    [POS_ID_MAPPINGS].[new_pos_id] AS [new_pos_id], 
+    [POS_ID_MAPPINGS].[old_pos_id] AS [old_pos_id], 
+    [POS_ID_MAPPINGS].[menu_item_name] AS [menu_item_name]
+    FROM [dbo].[POS_ID_MAPPINGS] AS [POS_ID_MAPPINGS]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="REVOLVING_STATION_DATES" EntityType="Self.REVOLVING_STATION_DATES" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [REVOLVING_STATION_DATES].[REVOLVING_STATION_ITEMS_ID] AS [REVOLVING_STATION_ITEMS_ID], 
+    [REVOLVING_STATION_DATES].[Date_ID] AS [Date_ID]
+    FROM [dbo].[REVOLVING_STATION_DATES] AS [REVOLVING_STATION_DATES]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="StationList" EntityType="Self.StationList" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [StationList].[StationID] AS [StationID], 
+    [StationList].[StationName] AS [StationName], 
+    [StationList].[StationLogoURL] AS [StationLogoURL], 
+    [StationList].[StationNutritionURL] AS [StationNutritionURL]
+    FROM [dbo].[StationList] AS [StationList]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_REVOLVING_STATION_ITEMS_REVOLVING_STATION_ITEMS" Association="Self.FK_REVOLVING_STATION_ITEMS_REVOLVING_STATION_ITEMS">
+            <End Role="REVOLVING_STATION_ITEMS" EntitySet="REVOLVING_STATION_ITEMS" />
+            <End Role="REVOLVING_STATION_ITEMS1" EntitySet="REVOLVING_STATION_ITEMS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="PCIDtoStationMap">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PCID" Type="Int64" Nullable="false" />
+          <Property Name="Station" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="COFFEE_PROD_CAT">
+          <Key>
+            <PropertyRef Name="menu_item_id" />
+          </Key>
+          <Property Name="menu_item_name" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="menu_item_id" Type="Int32" Nullable="false" />
+          <Property Name="Category" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="COMMONS_LOCATIONS">
+          <Key>
+            <PropertyRef Name="profit_center_id" />
+          </Key>
+          <Property Name="profit_center_id" Type="Int32" Nullable="false" />
+          <Property Name="profit_center_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Group" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Vendor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Latitude" Type="Decimal" Precision="10" Scale="7" />
+          <Property Name="Longitude" Type="Decimal" Precision="10" Scale="7" />
+          <Property Name="SqFt_Utilized" Type="Decimal" Precision="7" Scale="2" />
+          <Property Name="image_URL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DATE">
+          <Key>
+            <PropertyRef Name="Busines" />
+            <PropertyRef Name="Date_ID" />
+          </Key>
+          <Property Name="Busines" Type="Int32" Nullable="false" />
+          <Property Name="Date_ID" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MS_FY" Type="Int16" Nullable="false" />
+          <Property Name="MS_Quarter" Type="Byte" Nullable="false" />
+          <Property Name="MS_Period" Type="Byte" Nullable="false" />
+          <Property Name="CG_FY" Type="Int32" Nullable="false" />
+          <Property Name="CG_Quarter" Type="Byte" Nullable="false" />
+          <Property Name="CG_Period" Type="Byte" Nullable="false" />
+          <Property Name="Week" Type="Int32" Nullable="false" />
+          <Property Name="Weekend_Holiday_Flag" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IS_WEEKEND_HOLIDAY" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ESPRESSO_TERMINALS">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Term_ID" Type="Int64" Nullable="false" />
+          <Property Name="Profit_Center_ID" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LOCATION">
+          <Key>
+            <PropertyRef Name="profit_center_id" />
+            <PropertyRef Name="Unit_Number" />
+          </Key>
+          <Property Name="profit_center_id" Type="Int32" Nullable="false" />
+          <Property Name="profit_center_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Unit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Group" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Unit_Number" Type="Int32" Nullable="false" />
+          <Property Name="Latitude" Type="Decimal" Precision="10" Scale="7" />
+          <Property Name="Longitude" Type="Decimal" Precision="10" Scale="7" />
+          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="ZIP_Code" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="DM" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FlashType" Type="Int64" />
+          <Property Name="TotalSqFt" Type="Int64" />
+          <Property Name="BOHSqFt" Type="Int64" />
+          <Property Name="FOHSqFt" Type="Int64" />
+          <Property Name="EspressoSqFt" Type="Int64" />
+          <Property Name="MSNeighborhood" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ParticipationNeighborhood" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="MasterBuildingList">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BuildingName" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MSCampus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ParticipationCampus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TotalSeats" Type="Int32" Nullable="false" />
+          <Property Name="SqFt" Type="Int64" Nullable="false" />
+          <Property Name="Lat" Type="Decimal" Precision="12" Scale="6" />
+          <Property Name="Long" Type="Decimal" Precision="12" Scale="6" />
+        </EntityType>
+        <EntityType Name="MENU_ITEM_GROUPS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="GROUP_NAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MENU_ITEM_GROUPS_MAP">
+          <Key>
+            <PropertyRef Name="MENU_ITEM_GROUPS_ID" />
+            <PropertyRef Name="menu_item_id" />
+          </Key>
+          <Property Name="MENU_ITEM_GROUPS_ID" Type="Int32" Nullable="false" />
+          <Property Name="menu_item_id" Type="Int32" Nullable="false" />
+          <Property Name="multiplier" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MS_DINING_EMAILS">
+          <Key>
+            <PropertyRef Name="EMAIL_ID" />
+          </Key>
+          <Property Name="EMAIL_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EMAIL_DATE" Type="DateTime" Precision="0" />
+          <Property Name="EMAIL_SUBJECT" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EMAIL_BODY" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="REVOLVING_STATION_ITEMS">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="menu_item_id" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="concept_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="prod_class_id" Type="Int32" Nullable="false" />
+          <Property Name="menu_item_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="REVOLVING_STATION_ITEMS1" Relationship="Self.FK_REVOLVING_STATION_ITEMS_REVOLVING_STATION_ITEMS" FromRole="REVOLVING_STATION_ITEMS" ToRole="REVOLVING_STATION_ITEMS1" />
+          <NavigationProperty Name="REVOLVING_STATION_ITEMS2" Relationship="Self.FK_REVOLVING_STATION_ITEMS_REVOLVING_STATION_ITEMS" FromRole="REVOLVING_STATION_ITEMS1" ToRole="REVOLVING_STATION_ITEMS" />
+        </EntityType>
+        <EntityType Name="WEATHER_TRACK">
+          <Key>
+            <PropertyRef Name="Date" />
+          </Key>
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MaxTemp" Type="Int32" />
+          <Property Name="MeanTemp" Type="Int32" />
+          <Property Name="MinTemp" Type="Int32" />
+          <Property Name="MaxDew" Type="Int32" />
+          <Property Name="MeanDew" Type="Int32" />
+          <Property Name="MinDew" Type="Int32" />
+          <Property Name="MaxHumid" Type="Int32" />
+          <Property Name="MeanHumid" Type="Int32" />
+          <Property Name="MinHumid" Type="Int32" />
+          <Property Name="MaxSeaLevel" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="MeanSeaLevel" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="MinSeaLevel" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="MaxVisibility" Type="Int32" />
+          <Property Name="MeanVisibility" Type="Int32" />
+          <Property Name="MinVisibility" Type="Int32" />
+          <Property Name="MaxWindSpeed" Type="Int32" />
+          <Property Name="MeanWindSpeed" Type="Int32" />
+          <Property Name="MaxGust" Type="Int32" />
+          <Property Name="Precip" Type="Decimal" Precision="4" Scale="2" />
+          <Property Name="CloudCover" Type="Int32" />
+          <Property Name="Events" Type="String" MaxLength="17" FixedLength="false" Unicode="false" />
+          <Property Name="WindDirection" Type="Int32" />
+        </EntityType>
+        <EntityType Name="EmployeeList">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PersonnelArea" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PSubArea" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PersonnelSubArea" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RegionName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DistrictManager" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CostCenterNumber" Type="Int64" Nullable="false" />
+          <Property Name="CostCenter" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PersNumber" Type="Int64" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MiddleName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="FirstName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NickName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeSubGroup" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Job" Type="Int64" Nullable="false" />
+          <Property Name="Position" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PSGroup" Type="Int32" />
+          <Property Name="Crcy" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="DateOfHire" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="BirthDate" Type="DateTime" Precision="0" />
+          <Property Name="RacialCat1" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="RacialCat2" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="RacialCat3" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="Gender" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="SecondAddressLine" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="Zip" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="Telephone" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Building">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BldgName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SqFt" Type="Int64" Nullable="false" />
+          <Property Name="Lat" Type="Decimal" Precision="8" Scale="4" Nullable="false" />
+          <Property Name="Long" Type="Decimal" Precision="8" Scale="4" Nullable="false" />
+          <Property Name="MSCampus" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="MSNeighborhood" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="ParticipationCampus" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="ParticipationNeighborhood" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="AllowFoodTrucks" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="BusinessGroup">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BusinessGroup1" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="GroupLeader" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LOB" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cafe">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CostCenter" Type="Int64" Nullable="false" />
+          <Property Name="BldgId" Type="Int64" Nullable="false" />
+          <Property Name="ProfitCenterId" Type="Int64" Nullable="false" />
+          <Property Name="Manager" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DistrictManager" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="HasHood" Type="Boolean" />
+          <Property Name="StationCount" Type="Int16" />
+          <Property Name="AnchorStationFoodType" Type="Int64" />
+          <Property Name="AnchorStationFoodSubType" Type="Int64" />
+          <Property Name="BrandStations" Type="Int16" Nullable="false" />
+          <Property Name="SqFt" Type="Int32" Nullable="false" />
+          <Property Name="FOHSqFt" Type="Int32" Nullable="false" />
+          <Property Name="BOHSqFt" Type="Int32" Nullable="false" />
+          <Property Name="EspressoSqFt" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CostCenter">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CostCenter1" Type="Int64" Nullable="false" />
+          <Property Name="BusinessGroup" Type="Int64" Nullable="false" />
+          <Property Name="SubUnitOf" Type="Int64" />
+          <Property Name="UnitName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FlashName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="FlashTemplate" Type="Int64" />
+          <Property Name="HRUnitName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="HRAuditable" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LinesOfBusiness">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LineOfBusiness" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LobLeader" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Market">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CostCenter" Type="Int64" Nullable="false" />
+          <Property Name="BldgId" Type="Int64" Nullable="false" />
+          <Property Name="ProfitCenterId" Type="Int64" Nullable="false" />
+          <Property Name="SubUnitOfCafe" Type="Int64" />
+          <Property Name="Manager" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DistrictManager" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SqFt" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Population">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BldgName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FY" Type="Int32" Nullable="false" />
+          <Property Name="MSP" Type="Int16" Nullable="false" />
+          <Property Name="Headcount" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PopulationAllocation">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CafeId" Type="Int64" Nullable="false" />
+          <Property Name="AllocatedBldg" Type="Int64" Nullable="false" />
+          <Property Name="Allocation" Type="Decimal" Precision="3" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ApplicationSession">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApplicationName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserId" Type="String" MaxLength="256" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SessionStart" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SessionEnd" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Building_Date">
+          <Key>
+            <PropertyRef Name="Building_DateID" />
+          </Key>
+          <Property Name="Building_DateID" Type="Int32" Nullable="false" />
+          <Property Name="BuildingID" Type="Int32" />
+          <Property Name="Building" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="HomeID" Type="Int32" />
+          <Property Name="Home" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DateID" Type="Int32" />
+          <Property Name="FMonthID" Type="Int32" />
+          <Property Name="FYearID" Type="Int32" />
+          <Property Name="BadgeCount" Type="Int32" />
+          <Property Name="SwipeCount" Type="Int32" />
+          <Property Name="FirstCount" Type="Int32" />
+        </EntityType>
+        <EntityType Name="CafeList">
+          <Key>
+            <PropertyRef Name="CafeID" />
+          </Key>
+          <Property Name="CafeID" Type="Int32" Nullable="false" />
+          <Property Name="CafeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CafeHours" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="StateName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ZipCode" Type="Int32" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Campus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BuildingID" Type="Int32" />
+          <Property Name="PictureURL" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="COFFEE_CONCEPTS">
+          <Key>
+            <PropertyRef Name="profit_center_id" />
+            <PropertyRef Name="profit_center_name" />
+          </Key>
+          <Property Name="profit_center_id" Type="Int32" Nullable="false" />
+          <Property Name="profit_center_name" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="coffee_concept" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="coffee_concept2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Concept2_Date" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="FLASHBOARD_VISUAL_CATEGORIES">
+          <Key>
+            <PropertyRef Name="sort_order" />
+            <PropertyRef Name="category" />
+          </Key>
+          <Property Name="sort_order" Type="Int32" Nullable="false" />
+          <Property Name="category" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MENU_ITEM_MAPPINGS">
+          <Key>
+            <PropertyRef Name="internal_menu_item_name" />
+            <PropertyRef Name="menu_item_id" />
+            <PropertyRef Name="internal_menu_item_id" />
+          </Key>
+          <Property Name="internal_menu_item_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="menu_item_id" Type="Int32" Nullable="false" />
+          <Property Name="internal_menu_item_id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="POS_ID_MAPPINGS">
+          <Key>
+            <PropertyRef Name="station_name" />
+            <PropertyRef Name="is_rotation" />
+            <PropertyRef Name="prod_class_id" />
+            <PropertyRef Name="new_pos_id" />
+            <PropertyRef Name="menu_item_name" />
+          </Key>
+          <Property Name="station_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="is_rotation" Type="Boolean" Nullable="false" />
+          <Property Name="prod_class_id" Type="Int32" Nullable="false" />
+          <Property Name="new_pos_id" Type="Int32" Nullable="false" />
+          <Property Name="old_pos_id" Type="Int32" />
+          <Property Name="menu_item_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="REVOLVING_STATION_DATES">
+          <Key>
+            <PropertyRef Name="REVOLVING_STATION_ITEMS_ID" />
+            <PropertyRef Name="Date_ID" />
+          </Key>
+          <Property Name="REVOLVING_STATION_ITEMS_ID" Type="Int32" Nullable="false" />
+          <Property Name="Date_ID" Type="DateTime" Nullable="false" Precision="0" />
+        </EntityType>
+        <EntityType Name="StationList">
+          <Key>
+            <PropertyRef Name="StationID" />
+            <PropertyRef Name="StationName" />
+          </Key>
+          <Property Name="StationID" Type="Int32" Nullable="false" />
+          <Property Name="StationName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StationLogoURL" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="StationNutritionURL" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_REVOLVING_STATION_ITEMS_REVOLVING_STATION_ITEMS">
+          <End Role="REVOLVING_STATION_ITEMS" Type="Self.REVOLVING_STATION_ITEMS" Multiplicity="1" />
+          <End Role="REVOLVING_STATION_ITEMS1" Type="Self.REVOLVING_STATION_ITEMS" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="REVOLVING_STATION_ITEMS">
+              <PropertyRef Name="ID" />
+              <PropertyRef Name="menu_item_id" />
+            </Principal>
+            <Dependent Role="REVOLVING_STATION_ITEMS1">
+              <PropertyRef Name="ID" />
+              <PropertyRef Name="menu_item_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BIEntity" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="PCIDtoStationMaps" EntityType="Self.PCIDtoStationMap" />
+          <EntitySet Name="COFFEE_PROD_CAT" EntityType="Self.COFFEE_PROD_CAT" />
+          <EntitySet Name="COMMONS_LOCATIONS" EntityType="Self.COMMONS_LOCATIONS" />
+          <EntitySet Name="DATES" EntityType="Self.DATE" />
+          <EntitySet Name="ESPRESSO_TERMINALS" EntityType="Self.ESPRESSO_TERMINALS" />
+          <EntitySet Name="LOCATIONS" EntityType="Self.LOCATION" />
+          <EntitySet Name="MasterBuildingLists" EntityType="Self.MasterBuildingList" />
+          <EntitySet Name="MENU_ITEM_GROUPS" EntityType="Self.MENU_ITEM_GROUPS" />
+          <EntitySet Name="MENU_ITEM_GROUPS_MAP" EntityType="Self.MENU_ITEM_GROUPS_MAP" />
+          <EntitySet Name="MS_DINING_EMAILS" EntityType="Self.MS_DINING_EMAILS" />
+          <EntitySet Name="REVOLVING_STATION_ITEMS" EntityType="Self.REVOLVING_STATION_ITEMS" />
+          <EntitySet Name="WEATHER_TRACK" EntityType="Self.WEATHER_TRACK" />
+          <EntitySet Name="EmployeeLists" EntityType="Self.EmployeeList" />
+          <EntitySet Name="Buildings" EntityType="Self.Building" />
+          <EntitySet Name="BusinessGroups" EntityType="Self.BusinessGroup" />
+          <EntitySet Name="Cafes" EntityType="Self.Cafe" />
+          <EntitySet Name="CostCenters" EntityType="Self.CostCenter" />
+          <EntitySet Name="LinesOfBusinesses" EntityType="Self.LinesOfBusiness" />
+          <EntitySet Name="Markets" EntityType="Self.Market" />
+          <EntitySet Name="Populations" EntityType="Self.Population" />
+          <EntitySet Name="PopulationAllocations" EntityType="Self.PopulationAllocation" />
+          <EntitySet Name="ApplicationSessions" EntityType="Self.ApplicationSession" />
+          <EntitySet Name="Building_Date" EntityType="Self.Building_Date" />
+          <EntitySet Name="CafeLists" EntityType="Self.CafeList" />
+          <EntitySet Name="COFFEE_CONCEPTS" EntityType="Self.COFFEE_CONCEPTS" />
+          <EntitySet Name="FLASHBOARD_VISUAL_CATEGORIES" EntityType="Self.FLASHBOARD_VISUAL_CATEGORIES" />
+          <EntitySet Name="MENU_ITEM_MAPPINGS" EntityType="Self.MENU_ITEM_MAPPINGS" />
+          <EntitySet Name="POS_ID_MAPPINGS" EntityType="Self.POS_ID_MAPPINGS" />
+          <EntitySet Name="REVOLVING_STATION_DATES" EntityType="Self.REVOLVING_STATION_DATES" />
+          <EntitySet Name="StationLists" EntityType="Self.StationList" />
+          <AssociationSet Name="FK_REVOLVING_STATION_ITEMS_REVOLVING_STATION_ITEMS" Association="Self.FK_REVOLVING_STATION_ITEMS_REVOLVING_STATION_ITEMS">
+            <End Role="REVOLVING_STATION_ITEMS" EntitySet="REVOLVING_STATION_ITEMS" />
+            <End Role="REVOLVING_STATION_ITEMS1" EntitySet="REVOLVING_STATION_ITEMS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BIModelStoreContainer" CdmEntityContainer="BIEntity">
+          <EntitySetMapping Name="PCIDtoStationMaps">
+            <EntityTypeMapping TypeName="BIModel.PCIDtoStationMap">
+              <MappingFragment StoreEntitySet="PCIDtoStationMap">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="PCID" ColumnName="PCID" />
+                <ScalarProperty Name="Station" ColumnName="Station" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="COFFEE_PROD_CAT">
+            <EntityTypeMapping TypeName="BIModel.COFFEE_PROD_CAT">
+              <MappingFragment StoreEntitySet="COFFEE_PROD_CAT">
+                <ScalarProperty Name="menu_item_name" ColumnName="menu_item_name" />
+                <ScalarProperty Name="menu_item_id" ColumnName="menu_item_id" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="COMMONS_LOCATIONS">
+            <EntityTypeMapping TypeName="BIModel.COMMONS_LOCATIONS">
+              <MappingFragment StoreEntitySet="COMMONS_LOCATIONS">
+                <ScalarProperty Name="profit_center_id" ColumnName="profit_center_id" />
+                <ScalarProperty Name="profit_center_name" ColumnName="profit_center_name" />
+                <ScalarProperty Name="Group" ColumnName="Group" />
+                <ScalarProperty Name="Vendor" ColumnName="Vendor" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="SqFt_Utilized" ColumnName="SqFt_Utilized" />
+                <ScalarProperty Name="image_URL" ColumnName="image_URL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DATES">
+            <EntityTypeMapping TypeName="BIModel.DATE">
+              <MappingFragment StoreEntitySet="DATES">
+                <ScalarProperty Name="Busines" ColumnName="Busines" />
+                <ScalarProperty Name="Date_ID" ColumnName="Date_ID" />
+                <ScalarProperty Name="MS_FY" ColumnName="MS_FY" />
+                <ScalarProperty Name="MS_Quarter" ColumnName="MS_Quarter" />
+                <ScalarProperty Name="MS_Period" ColumnName="MS_Period" />
+                <ScalarProperty Name="CG_FY" ColumnName="CG_FY" />
+                <ScalarProperty Name="CG_Quarter" ColumnName="CG_Quarter" />
+                <ScalarProperty Name="CG_Period" ColumnName="CG_Period" />
+                <ScalarProperty Name="Week" ColumnName="Week" />
+                <ScalarProperty Name="Weekend_Holiday_Flag" ColumnName="Weekend_Holiday_Flag" />
+                <ScalarProperty Name="IS_WEEKEND_HOLIDAY" ColumnName="IS_WEEKEND_HOLIDAY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ESPRESSO_TERMINALS">
+            <EntityTypeMapping TypeName="BIModel.ESPRESSO_TERMINALS">
+              <MappingFragment StoreEntitySet="ESPRESSO_TERMINALS">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="Term_ID" ColumnName="Term_ID" />
+                <ScalarProperty Name="Profit_Center_ID" ColumnName="Profit_Center_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LOCATIONS">
+            <EntityTypeMapping TypeName="BIModel.LOCATION">
+              <MappingFragment StoreEntitySet="LOCATIONS">
+                <ScalarProperty Name="profit_center_id" ColumnName="profit_center_id" />
+                <ScalarProperty Name="profit_center_name" ColumnName="profit_center_name" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="Group" ColumnName="Group" />
+                <ScalarProperty Name="Unit_Number" ColumnName="Unit_Number" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="ZIP_Code" ColumnName="ZIP Code" />
+                <ScalarProperty Name="DM" ColumnName="DM" />
+                <ScalarProperty Name="FlashType" ColumnName="FlashType" />
+                <ScalarProperty Name="TotalSqFt" ColumnName="TotalSqFt" />
+                <ScalarProperty Name="BOHSqFt" ColumnName="BOHSqFt" />
+                <ScalarProperty Name="FOHSqFt" ColumnName="FOHSqFt" />
+                <ScalarProperty Name="EspressoSqFt" ColumnName="EspressoSqFt" />
+                <ScalarProperty Name="MSNeighborhood" ColumnName="MSNeighborhood" />
+                <ScalarProperty Name="ParticipationNeighborhood" ColumnName="ParticipationNeighborhood" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MasterBuildingLists">
+            <EntityTypeMapping TypeName="BIModel.MasterBuildingList">
+              <MappingFragment StoreEntitySet="MasterBuildingList">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="BuildingName" ColumnName="BuildingName" />
+                <ScalarProperty Name="MSCampus" ColumnName="MSCampus" />
+                <ScalarProperty Name="ParticipationCampus" ColumnName="ParticipationCampus" />
+                <ScalarProperty Name="TotalSeats" ColumnName="TotalSeats" />
+                <ScalarProperty Name="SqFt" ColumnName="SqFt" />
+                <ScalarProperty Name="Lat" ColumnName="Lat" />
+                <ScalarProperty Name="Long" ColumnName="Long" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MENU_ITEM_GROUPS">
+            <EntityTypeMapping TypeName="BIModel.MENU_ITEM_GROUPS">
+              <MappingFragment StoreEntitySet="MENU_ITEM_GROUPS">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="GROUP_NAME" ColumnName="GROUP_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MENU_ITEM_GROUPS_MAP">
+            <EntityTypeMapping TypeName="BIModel.MENU_ITEM_GROUPS_MAP">
+              <MappingFragment StoreEntitySet="MENU_ITEM_GROUPS_MAP">
+                <ScalarProperty Name="MENU_ITEM_GROUPS_ID" ColumnName="MENU_ITEM_GROUPS_ID" />
+                <ScalarProperty Name="menu_item_id" ColumnName="menu_item_id" />
+                <ScalarProperty Name="multiplier" ColumnName="multiplier" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MS_DINING_EMAILS">
+            <EntityTypeMapping TypeName="BIModel.MS_DINING_EMAILS">
+              <MappingFragment StoreEntitySet="MS_DINING_EMAILS">
+                <ScalarProperty Name="EMAIL_ID" ColumnName="EMAIL_ID" />
+                <ScalarProperty Name="EMAIL_DATE" ColumnName="EMAIL_DATE" />
+                <ScalarProperty Name="EMAIL_SUBJECT" ColumnName="EMAIL_SUBJECT" />
+                <ScalarProperty Name="EMAIL_BODY" ColumnName="EMAIL_BODY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="REVOLVING_STATION_ITEMS">
+            <EntityTypeMapping TypeName="BIModel.REVOLVING_STATION_ITEMS">
+              <MappingFragment StoreEntitySet="REVOLVING_STATION_ITEMS">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="concept_name" ColumnName="concept_name" />
+                <ScalarProperty Name="prod_class_id" ColumnName="prod_class_id" />
+                <ScalarProperty Name="menu_item_id" ColumnName="menu_item_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WEATHER_TRACK">
+            <EntityTypeMapping TypeName="BIModel.WEATHER_TRACK">
+              <MappingFragment StoreEntitySet="WEATHER_TRACK">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="MaxTemp" ColumnName="MaxTemp" />
+                <ScalarProperty Name="MeanTemp" ColumnName="MeanTemp" />
+                <ScalarProperty Name="MinTemp" ColumnName="MinTemp" />
+                <ScalarProperty Name="MaxDew" ColumnName="MaxDew" />
+                <ScalarProperty Name="MeanDew" ColumnName="MeanDew" />
+                <ScalarProperty Name="MinDew" ColumnName="MinDew" />
+                <ScalarProperty Name="MaxHumid" ColumnName="MaxHumid" />
+                <ScalarProperty Name="MeanHumid" ColumnName="MeanHumid" />
+                <ScalarProperty Name="MinHumid" ColumnName="MinHumid" />
+                <ScalarProperty Name="MaxSeaLevel" ColumnName="MaxSeaLevel" />
+                <ScalarProperty Name="MeanSeaLevel" ColumnName="MeanSeaLevel" />
+                <ScalarProperty Name="MinSeaLevel" ColumnName="MinSeaLevel" />
+                <ScalarProperty Name="MaxVisibility" ColumnName="MaxVisibility" />
+                <ScalarProperty Name="MeanVisibility" ColumnName="MeanVisibility" />
+                <ScalarProperty Name="MinVisibility" ColumnName="MinVisibility" />
+                <ScalarProperty Name="MaxWindSpeed" ColumnName="MaxWindSpeed" />
+                <ScalarProperty Name="MeanWindSpeed" ColumnName="MeanWindSpeed" />
+                <ScalarProperty Name="MaxGust" ColumnName="MaxGust" />
+                <ScalarProperty Name="Precip" ColumnName="Precip" />
+                <ScalarProperty Name="CloudCover" ColumnName="CloudCover" />
+                <ScalarProperty Name="Events" ColumnName="Events" />
+                <ScalarProperty Name="WindDirection" ColumnName="WindDirection" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeLists">
+            <EntityTypeMapping TypeName="BIModel.EmployeeList">
+              <MappingFragment StoreEntitySet="EmployeeList">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="PersonnelArea" ColumnName="PersonnelArea" />
+                <ScalarProperty Name="PSubArea" ColumnName="PSubArea" />
+                <ScalarProperty Name="PersonnelSubArea" ColumnName="PersonnelSubArea" />
+                <ScalarProperty Name="RegionName" ColumnName="RegionName" />
+                <ScalarProperty Name="DistrictManager" ColumnName="DistrictManager" />
+                <ScalarProperty Name="CostCenterNumber" ColumnName="CostCenterNumber" />
+                <ScalarProperty Name="CostCenter" ColumnName="CostCenter" />
+                <ScalarProperty Name="PersNumber" ColumnName="PersNumber" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="NickName" ColumnName="NickName" />
+                <ScalarProperty Name="EmployeeSubGroup" ColumnName="EmployeeSubGroup" />
+                <ScalarProperty Name="Job" ColumnName="Job" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="PSGroup" ColumnName="PSGroup" />
+                <ScalarProperty Name="Crcy" ColumnName="Crcy" />
+                <ScalarProperty Name="DateOfHire" ColumnName="DateOfHire" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="RacialCat1" ColumnName="RacialCat1" />
+                <ScalarProperty Name="RacialCat2" ColumnName="RacialCat2" />
+                <ScalarProperty Name="RacialCat3" ColumnName="RacialCat3" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="SecondAddressLine" ColumnName="SecondAddressLine" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Buildings">
+            <EntityTypeMapping TypeName="BIModel.Building">
+              <MappingFragment StoreEntitySet="Buildings">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="BldgName" ColumnName="BldgName" />
+                <ScalarProperty Name="SqFt" ColumnName="SqFt" />
+                <ScalarProperty Name="Lat" ColumnName="Lat" />
+                <ScalarProperty Name="Long" ColumnName="Long" />
+                <ScalarProperty Name="MSCampus" ColumnName="MSCampus" />
+                <ScalarProperty Name="MSNeighborhood" ColumnName="MSNeighborhood" />
+                <ScalarProperty Name="ParticipationCampus" ColumnName="ParticipationCampus" />
+                <ScalarProperty Name="ParticipationNeighborhood" ColumnName="ParticipationNeighborhood" />
+                <ScalarProperty Name="AllowFoodTrucks" ColumnName="AllowFoodTrucks" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BusinessGroups">
+            <EntityTypeMapping TypeName="BIModel.BusinessGroup">
+              <MappingFragment StoreEntitySet="BusinessGroups">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="BusinessGroup1" ColumnName="BusinessGroup" />
+                <ScalarProperty Name="GroupLeader" ColumnName="GroupLeader" />
+                <ScalarProperty Name="LOB" ColumnName="LOB" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cafes">
+            <EntityTypeMapping TypeName="BIModel.Cafe">
+              <MappingFragment StoreEntitySet="Cafes">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="CostCenter" ColumnName="CostCenter" />
+                <ScalarProperty Name="BldgId" ColumnName="BldgId" />
+                <ScalarProperty Name="ProfitCenterId" ColumnName="ProfitCenterId" />
+                <ScalarProperty Name="Manager" ColumnName="Manager" />
+                <ScalarProperty Name="DistrictManager" ColumnName="DistrictManager" />
+                <ScalarProperty Name="HasHood" ColumnName="HasHood" />
+                <ScalarProperty Name="StationCount" ColumnName="StationCount" />
+                <ScalarProperty Name="AnchorStationFoodType" ColumnName="AnchorStationFoodType" />
+                <ScalarProperty Name="AnchorStationFoodSubType" ColumnName="AnchorStationFoodSubType" />
+                <ScalarProperty Name="BrandStations" ColumnName="BrandStations" />
+                <ScalarProperty Name="SqFt" ColumnName="SqFt" />
+                <ScalarProperty Name="FOHSqFt" ColumnName="FOHSqFt" />
+                <ScalarProperty Name="BOHSqFt" ColumnName="BOHSqFt" />
+                <ScalarProperty Name="EspressoSqFt" ColumnName="EspressoSqFt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CostCenters">
+            <EntityTypeMapping TypeName="BIModel.CostCenter">
+              <MappingFragment StoreEntitySet="CostCenters">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="CostCenter1" ColumnName="CostCenter" />
+                <ScalarProperty Name="BusinessGroup" ColumnName="BusinessGroup" />
+                <ScalarProperty Name="SubUnitOf" ColumnName="SubUnitOf" />
+                <ScalarProperty Name="UnitName" ColumnName="UnitName" />
+                <ScalarProperty Name="FlashName" ColumnName="FlashName" />
+                <ScalarProperty Name="FlashTemplate" ColumnName="FlashTemplate" />
+                <ScalarProperty Name="HRUnitName" ColumnName="HRUnitName" />
+                <ScalarProperty Name="HRAuditable" ColumnName="HRAuditable" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LinesOfBusinesses">
+            <EntityTypeMapping TypeName="BIModel.LinesOfBusiness">
+              <MappingFragment StoreEntitySet="LinesOfBusiness">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="LineOfBusiness" ColumnName="LineOfBusiness" />
+                <ScalarProperty Name="LobLeader" ColumnName="LobLeader" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Markets">
+            <EntityTypeMapping TypeName="BIModel.Market">
+              <MappingFragment StoreEntitySet="Markets">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="CostCenter" ColumnName="CostCenter" />
+                <ScalarProperty Name="BldgId" ColumnName="BldgId" />
+                <ScalarProperty Name="ProfitCenterId" ColumnName="ProfitCenterId" />
+                <ScalarProperty Name="SubUnitOfCafe" ColumnName="SubUnitOfCafe" />
+                <ScalarProperty Name="Manager" ColumnName="Manager" />
+                <ScalarProperty Name="DistrictManager" ColumnName="DistrictManager" />
+                <ScalarProperty Name="SqFt" ColumnName="SqFt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Populations">
+            <EntityTypeMapping TypeName="BIModel.Population">
+              <MappingFragment StoreEntitySet="Population">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="BldgName" ColumnName="BldgName" />
+                <ScalarProperty Name="FY" ColumnName="FY" />
+                <ScalarProperty Name="MSP" ColumnName="MSP" />
+                <ScalarProperty Name="Headcount" ColumnName="Headcount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PopulationAllocations">
+            <EntityTypeMapping TypeName="BIModel.PopulationAllocation">
+              <MappingFragment StoreEntitySet="PopulationAllocations">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="CafeId" ColumnName="CafeId" />
+                <ScalarProperty Name="AllocatedBldg" ColumnName="AllocatedBldg" />
+                <ScalarProperty Name="Allocation" ColumnName="Allocation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ApplicationSessions">
+            <EntityTypeMapping TypeName="BIModel.ApplicationSession">
+              <MappingFragment StoreEntitySet="ApplicationSessions">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="SessionStart" ColumnName="SessionStart" />
+                <ScalarProperty Name="SessionEnd" ColumnName="SessionEnd" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Building_Date">
+            <EntityTypeMapping TypeName="BIModel.Building_Date">
+              <MappingFragment StoreEntitySet="Building_Date">
+                <ScalarProperty Name="Building_DateID" ColumnName="Building_DateID" />
+                <ScalarProperty Name="BuildingID" ColumnName="BuildingID" />
+                <ScalarProperty Name="Building" ColumnName="Building" />
+                <ScalarProperty Name="HomeID" ColumnName="HomeID" />
+                <ScalarProperty Name="Home" ColumnName="Home" />
+                <ScalarProperty Name="DateID" ColumnName="DateID" />
+                <ScalarProperty Name="FMonthID" ColumnName="FMonthID" />
+                <ScalarProperty Name="FYearID" ColumnName="FYearID" />
+                <ScalarProperty Name="BadgeCount" ColumnName="BadgeCount" />
+                <ScalarProperty Name="SwipeCount" ColumnName="SwipeCount" />
+                <ScalarProperty Name="FirstCount" ColumnName="FirstCount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CafeLists">
+            <EntityTypeMapping TypeName="BIModel.CafeList">
+              <MappingFragment StoreEntitySet="CafeList">
+                <ScalarProperty Name="CafeID" ColumnName="CafeID" />
+                <ScalarProperty Name="CafeName" ColumnName="CafeName" />
+                <ScalarProperty Name="CafeHours" ColumnName="CafeHours" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="StateName" ColumnName="StateName" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Campus" ColumnName="Campus" />
+                <ScalarProperty Name="BuildingID" ColumnName="BuildingID" />
+                <ScalarProperty Name="PictureURL" ColumnName="PictureURL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="COFFEE_CONCEPTS">
+            <EntityTypeMapping TypeName="BIModel.COFFEE_CONCEPTS">
+              <MappingFragment StoreEntitySet="COFFEE_CONCEPTS">
+                <ScalarProperty Name="profit_center_id" ColumnName="profit_center_id" />
+                <ScalarProperty Name="profit_center_name" ColumnName="profit_center_name" />
+                <ScalarProperty Name="coffee_concept" ColumnName="coffee_concept" />
+                <ScalarProperty Name="coffee_concept2" ColumnName="coffee_concept2" />
+                <ScalarProperty Name="Concept2_Date" ColumnName="Concept2_Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FLASHBOARD_VISUAL_CATEGORIES">
+            <EntityTypeMapping TypeName="BIModel.FLASHBOARD_VISUAL_CATEGORIES">
+              <MappingFragment StoreEntitySet="FLASHBOARD_VISUAL_CATEGORIES">
+                <ScalarProperty Name="sort_order" ColumnName="sort_order" />
+                <ScalarProperty Name="category" ColumnName="category" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MENU_ITEM_MAPPINGS">
+            <EntityTypeMapping TypeName="BIModel.MENU_ITEM_MAPPINGS">
+              <MappingFragment StoreEntitySet="MENU_ITEM_MAPPINGS">
+                <ScalarProperty Name="internal_menu_item_name" ColumnName="internal_menu_item_name" />
+                <ScalarProperty Name="menu_item_id" ColumnName="menu_item_id" />
+                <ScalarProperty Name="internal_menu_item_id" ColumnName="internal_menu_item_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="POS_ID_MAPPINGS">
+            <EntityTypeMapping TypeName="BIModel.POS_ID_MAPPINGS">
+              <MappingFragment StoreEntitySet="POS_ID_MAPPINGS">
+                <ScalarProperty Name="station_name" ColumnName="station_name" />
+                <ScalarProperty Name="is_rotation" ColumnName="is_rotation" />
+                <ScalarProperty Name="prod_class_id" ColumnName="prod_class_id" />
+                <ScalarProperty Name="new_pos_id" ColumnName="new_pos_id" />
+                <ScalarProperty Name="old_pos_id" ColumnName="old_pos_id" />
+                <ScalarProperty Name="menu_item_name" ColumnName="menu_item_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="REVOLVING_STATION_DATES">
+            <EntityTypeMapping TypeName="BIModel.REVOLVING_STATION_DATES">
+              <MappingFragment StoreEntitySet="REVOLVING_STATION_DATES">
+                <ScalarProperty Name="REVOLVING_STATION_ITEMS_ID" ColumnName="REVOLVING_STATION_ITEMS_ID" />
+                <ScalarProperty Name="Date_ID" ColumnName="Date_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StationLists">
+            <EntityTypeMapping TypeName="BIModel.StationList">
+              <MappingFragment StoreEntitySet="StationList">
+                <ScalarProperty Name="StationID" ColumnName="StationID" />
+                <ScalarProperty Name="StationName" ColumnName="StationName" />
+                <ScalarProperty Name="StationLogoURL" ColumnName="StationLogoURL" />
+                <ScalarProperty Name="StationNutritionURL" ColumnName="StationNutritionURL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
