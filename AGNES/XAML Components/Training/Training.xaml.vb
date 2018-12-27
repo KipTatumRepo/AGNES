@@ -29,6 +29,7 @@ Public Class Training
     Private Sub AddTraining(sender As Object, e As MouseButtonEventArgs) Handles imgAddTraining.MouseLeftButtonDown
         Dim NewTrainingUI As New NewTraining
         NewTrainingUI.ShowDialog()
+        PopulateTrainingTypes()
     End Sub
 
     Private Sub AddTrainer(sender As Object, e As MouseButtonEventArgs) Handles imgAddTrainer.MouseLeftButtonDown
@@ -206,12 +207,6 @@ Public Class Training
             dgTrainingHistory.DataContext = source
             dgTrainingHistory.ItemsSource = source
         Next
-
-        'Dim col As DataGridColumn = dgTrainingHistory.Columns(1)
-
-        'col.Width = 20
-
-
     End Sub
 
     Private Sub TrainingSelected(sender As Object, e As SelectionChangedEventArgs) Handles cbxTraining.SelectionChanged

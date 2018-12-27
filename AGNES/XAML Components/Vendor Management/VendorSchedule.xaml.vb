@@ -243,6 +243,17 @@ Public Class VendorSchedule
             Case 3  ' Print Trucks
                 PrintTrucks()
         End Select
+    End Sub
+
+    Private Sub GetActiveList()
+
+        For Each d As ScheduleDay In wkSched.Children
+
+            Dim l As List(Of ScheduleLocation) = d.ActiveLocationList(stkVendors.Children.Item(1))
+            For Each li In l
+                MsgBox(li.LocationName)
+            Next
+        Next
 
     End Sub
 

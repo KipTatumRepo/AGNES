@@ -17,6 +17,9 @@
         <Image x:Name="imgCertYes" HorizontalAlignment="Left" Height="50" Margin="197,70,0,0" VerticalAlignment="Top" Width="50" Source="/AGNES;component/Resources/Yes.png" Visibility="Collapsed"/>
         <Image x:Name="imgCertNo" HorizontalAlignment="Left" Height="50" Margin="340,70,0,0" VerticalAlignment="Top" Width="50" Source="/AGNES;component/Resources/No.png" Visibility="Collapsed"/>
         <Image x:Name="imgIcon" HorizontalAlignment="Left" Height="100" Margin="583,10,0,0" VerticalAlignment="Top" Width="100" Source="/AGNES;component/Resources/baby.png" RenderTransformOrigin="12.952,-1.119"/>
-    
+        <Image x:Name="imgConfirmYes" HorizontalAlignment="Left" Height="50" Margin="197,156,0,0" VerticalAlignment="Top" Width="50" Source="/AGNES;component/Resources/Yes.png" Visibility="Collapsed"/>
+        <Image x:Name="imgConfirmNo" HorizontalAlignment="Left" Height="50" Margin="340,156,0,0" VerticalAlignment="Top" Width="50" Source="/AGNES;component/Resources/No.png" Visibility="Collapsed"/>
+        <TextBlock x:Name="tbConfirm" HorizontalAlignment="Left" Margin="10,48,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" RenderTransformOrigin="0.184,-0.27" Height="104" Width="572" Visibility="Collapsed" FontSize="16"/>
+
     </Grid>
 </Window>

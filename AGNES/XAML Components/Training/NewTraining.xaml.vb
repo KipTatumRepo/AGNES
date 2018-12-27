@@ -1,9 +1,16 @@
 ﻿Public Class NewTraining
+
 #Region "Properties"
     Private Changesmade As Boolean
     Private nbxTrainingHours As NumberBox
     Private pbxScore As PercentBox
+    Private TrainingName As String
+    Private Description As String
+    Private GroupList As New List(Of String)
+    Private Hours As Integer
+    Private Skore As Double
     Private Cert As Boolean
+    Private Score As Boolean
 #End Region
 
 #Region "Constructor"
@@ -79,6 +86,7 @@
     End Sub
 
     Private Sub GetScore()
+        pbxScore = New PercentBox(60, True, 10, 0, "100%", True, False)
         imgIcon.Source = New BitmapImage(New Uri("pack://application:,,,/Resources/reportcard.png"))
         nbxTrainingHours.Visibility = Visibility.Collapsed
         tbDirections.Text = "Is the training scored?"
@@ -90,6 +98,7 @@
     End Sub
 
     Private Sub ScoreYes()
+        Score = True
         tbDirections.Text = "What is the passing percentage?"
         imgScoreYes.Visibility = Visibility.Collapsed
         imgScoreNo.Visibility = Visibility.Collapsed
@@ -109,6 +118,8 @@
     End Sub
 
     Private Sub ScoreNo()
+        imgScoreYes.Visibility = Visibility.Collapsed
+        imgScoreNo.Visibility = Visibility.Collapsed
         GetCert()
     End Sub
 
@@ -134,10 +145,54 @@
     End Sub
 
     Private Sub Inspect()
-        tbDirections.Text = "Confirm?"
+        tbDirections.Text = "Please confirm the information to save it."
         imgCertYes.Visibility = Visibility.Collapsed
         imgCertNo.Visibility = Visibility.Collapsed
         imgIcon.Source = New BitmapImage(New Uri("pack://application:,,,/Resources/inspect.png"))
+        PopulateConfirmInfo()
+        tbConfirm.Visibility = Visibility.Visible
+        imgConfirmYes.Visibility = Visibility.Visible
+        AddHandler imgConfirmYes.MouseLeftButtonDown, AddressOf ConfirmYes
+        imgConfirmNo.Visibility = Visibility.Visible
+        AddHandler imgConfirmYes.MouseLeftButtonDown, AddressOf ConfirmNo
+    End Sub
+
+    Private Sub PopulateConfirmInfo()
+        Dim ConfirmString As String = "You wish to add the training " & txtTrainingName.Text & ", which takes " &
+        Hours & " hours.  "
+        If lbxBusinessGroups.SelectedItems.Count = 1 Then
+            If lbxBusinessGroups.SelectedItem = "All" Then
+                ConfirmString = ConfirmString & "It is available to everyone"
+            Else
+                ConfirmString = ConfirmString & "It is available to " & lbxBusinessGroups.SelectedItem
+            End If
+        Else
+            ConfirmString = ConfirmString & "It is available to multiple groups"
+        End If
+        If Score = True Then
+            ConfirmString = ConfirmString & ", and requires a score of " & FormatPercent(Skore, 1) & " to pass"
+            If Cert = True Then
+                ConfirmString = ConfirmString & " and receive certification.  "
+            Else
+                ConfirmString = ConfirmString & ".  "
+            End If
+        Else
+            ConfirmString = ConfirmString & ", and has no scoring"
+            If Cert = True Then
+                ConfirmString = ConfirmString & ", but does have certification.  "
+            Else
+                ConfirmString = ConfirmString & " or certification."
+            End If
+        End If
+        tbConfirm.Text = ConfirmString
+    End Sub
+
+    Private Sub ConfirmYes()
+        SaveTraining()
+    End Sub
+
+    Private Sub ConfirmNo()
+        Close()
     End Sub
 
     Private Sub PopulateBusinessGroups()
@@ -153,27 +208,92 @@
 
     End Sub
 
+    Private Sub SaveTraining()
+        Dim ntt As New TrainingType
+        With ntt
+            .TrainingName = TrainingName
+            .TrainingDescription = Description
+            .Hours = Hours
+            .Certification = Cert
+            .Scored = Score
+            .PassCertScore = Skore
+        End With
+        TrainingData.TrainingTypes.Add(ntt)
+        TrainingData.SaveChanges()
+
+        '// Retrieve newly saved PID
+        Dim qnt = (From e In TrainingData.TrainingTypes
+                   Where e.TrainingName = TrainingName
+                   Select e).ToList(0)
+        For Each i In GroupList
+            Dim ntg As New BusinessGroupTraining_Join
+
+            If i = "All" Then
+                ntg.BusinessGroupId = 0
+                ntg.TrainingId = qnt.PID
+                TrainingData.BusinessGroupTraining_Join.Add(ntg)
+                Exit For
+            Else
+                ntg.BusinessGroupId = GetBizGroup(i)
+                ntg.TrainingId = qnt.PID
+                TrainingData.BusinessGroupTraining_Join.Add(ntg)
+            End If
+        Next
+        TrainingData.SaveChanges()
+        Close()
+    End Sub
+
+    Private Function GetBizGroup(i) As Long
+        Dim bg As String = i.ToString
+        Dim qbg = (From g In SharedDataGroup.BusinessGroups
+                   Where g.BusinessGroup1 = bg
+                   Select g).ToList(0)
+        Return qbg.PID
+    End Function
+
     Private Function ValidateName(fieldval As String) As Boolean
+        If txtTrainingName.Text = "" Then Return False
+        TrainingName = txtTrainingName.Text
         Return True
     End Function
 
     Private Function ValidateDesc(fieldval As String) As Boolean
+        If txtDescription.Text = "Add description (255 characters)" Then txtDescription.Text = ""
+        Description = txtDescription.Text
         Return True
     End Function
 
     Private Function ValidateGroups() As Boolean
+        GroupList.Clear()
+        If lbxBusinessGroups.SelectedItems.Count = 0 Then Return False
+        For Each i In lbxBusinessGroups.SelectedItems
+            GroupList.Add(i)
+            If i = "All" Then Exit For
+        Next
         Return True
     End Function
 
     Private Function ValidateHours() As Boolean
+        Try
+            Hours = FormatNumber(nbxTrainingHours.BaseTextBox.Text, 1)
+        Catch ex As Exception
+            Return False
+        End Try
+        If Hours = 0 Then Return False
         Return True
     End Function
 
     Private Function ValidateScore() As Boolean
+        Try
+            Skore = FormatNumber(pbxScore.BaseTextBox.Text, 4)
+        Catch ex As Exception
+            Return False
+        End Try
+        If Skore = 0 Then Return False
+        If Skore > 1 Then Skore = Skore / 100
         Return True
     End Function
+
 #End Region
-
-
 
 End Class
