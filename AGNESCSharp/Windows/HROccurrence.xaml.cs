@@ -185,13 +185,18 @@ namespace AGNESCSharp
 
 
             //get Write up form ready
-            FileInfo myFile = new FileInfo(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
-            bool exists = myFile.Exists;
+            FileInfo myFileTerm = new FileInfo(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
+            FileInfo myFileProg = new FileInfo(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+            
+            //FileInfo myFile = new FileInfo(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
+            bool TermExists = myFileTerm.Exists;
+            bool ProgExists = myFileProg.Exists;
 
             if (AttType == "No Call No Show" && date != new DateTime(1001, 1, 1))
             {
                 BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show is " + firstName + "'s Second In Less Than a Year And Requires Termination.  Please Fill Out And Print This Form", MessageBoxButton.OK);
-                Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\TermLetter.docx");
+                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
+                //Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\TermLetter.docx");
                 this.Close();
                 return;
             }
@@ -199,8 +204,9 @@ namespace AGNESCSharp
             else if (AttType == "No Call No Show")
             {
                 BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show Requires An Automatic Written Progressive Counseling, Please Fill Out And Print This Form", MessageBoxButton.OK);
-                Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
-                Thread.Sleep(4000);
+                //Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
+                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                //Thread.Sleep(4000);
             }
 
             (DateTime earlyDate, double occurrencePoints) = CountOccurrences(fDate, empID);
@@ -221,9 +227,10 @@ namespace AGNESCSharp
                         case 5:
                             BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occurrencePoints + " Occurrence Points, Please Fill Out and Print This WRITTEN Warning Form" +
                                 "That I Will Open For You", MessageBoxButton.OK);
-                            if (exists == true)
+                            if (ProgExists == true)
                             {
-                                Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
+                                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                                //Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
                             }
                             else
                             {
@@ -234,9 +241,10 @@ namespace AGNESCSharp
                         case 6:
                             BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occurrencePoints + " Occurrence Points, Please Fill Out and Print This FINAL Warning Form" +
                                 "That I Will Open For You", MessageBoxButton.OK);
-                            if (exists == true)
+                            if (ProgExists == true)
                             {
-                                Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
+                                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                                //Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
                             }
                             else
                             {
@@ -247,7 +255,42 @@ namespace AGNESCSharp
                         case 7:
                             BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occurrencePoints + " Occurrence Points, Please Print This DISCHARGE Form" +
                                 "That I Will Open For You", MessageBoxButton.OK);
-                            Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\TermLetter.docx");
+                            if (TermExists == true)
+                            {
+                                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
+                            }
+                            else
+                            {
+                                MessageBox.Show("Oops there was a problem trying to open the Termination Form, Please contact Business Intelligence and let them know!");
+                            }
+                            
+                            //Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\TermLetter.docx");
+                            break;
+
+                        case 7.5:
+                            BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occurrencePoints + " Occurrence Points, Please Print This DISCHARGE Form" +
+                                "That I Will Open For You", MessageBoxButton.OK);
+                            if (TermExists == true)
+                            {
+                                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
+                            }
+                            else
+                            {
+                                MessageBox.Show("Oops there was a problem trying to open the Termination Form, Please contact Business Intelligence and let them know!");
+                            }
+                            break;
+
+                        case 8:
+                            BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occurrencePoints + " Occurrence Points, Please Print This DISCHARGE Form" +
+                                "That I Will Open For You", MessageBoxButton.OK);
+                            if (TermExists == true)
+                            {
+                                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
+                            }
+                            else
+                            {
+                                MessageBox.Show("Oops there was a problem trying to open the Termination Form, Please contact Business Intelligence and let them know!");
+                            }
                             break;
 
                         default:
@@ -262,9 +305,10 @@ namespace AGNESCSharp
                         case 1:
                             BIMessageBox.Show("Counseling Form Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occurrencePoints + " Occurrence Points, Please Please Fill Out" +
                                 " and Print This FINAL Warning Form That I will Open For You", MessageBoxButton.OK);
-                            if (exists == true)
+                            if (ProgExists == true)
                             {
-                                Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
+                                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                                //Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
                             }
                             else
                             {
@@ -275,7 +319,15 @@ namespace AGNESCSharp
                         case 2:
                             BIMessageBox.Show("Counseling Form Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occurrencePoints + " Occurrence Points, Please Print This DISCHARGE Form" +
                                 "That I Will Open For You", MessageBoxButton.OK);
-                            Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\TermLetter.docx");
+                            if (TermExists == true)
+                            {
+                                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
+                            }
+                            else
+                            {
+                                MessageBox.Show("Oops there was a problem trying to open the Termination Form, Please contact Business Intelligence and let them know!");
+                            }
+                            //Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\TermLetter.docx");
                             break;
                     }
                     break;

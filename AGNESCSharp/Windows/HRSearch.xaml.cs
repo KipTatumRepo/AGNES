@@ -679,15 +679,15 @@ namespace AGNESCSharp
 
                 if (CashCB.SelectedIndex == 0)
                 {
-                    type = 1;
+                    type = 0;
                 }
                 else if (CashCB.SelectedIndex == 1)
                 {
-                    type = 2;
+                    type = 1;
                 }
                 else
                 {
-                    type = 0;
+                    type = 2;
                 }
                 using (var db = new AGNESEntity())
                 {
@@ -704,6 +704,12 @@ namespace AGNESCSharp
                         {
                             db.SaveChanges();
                             MessageBox.Show("Cash Handling Record Has Been Updated.");
+                            if (type == 2)
+                            {
+                                BIMessageBox.Show("Counseling Form Dialog", firstName + "'s Variance Type Was Changed To Greater Than $3.00 but Less Than $20.00, This is an Automatic Progressive Counseling" +
+                                                    " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
+                                Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
+                            }
                         }
                         catch (Exception ex)
                         {

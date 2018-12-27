@@ -75,8 +75,8 @@ namespace AGNESCSharp
             string notes = DescriptionTb.Text;
             byte isChecked = 0;
 
-            FileInfo myFile = new FileInfo(@"\\compasspowerbi\compassbiapplications\occurrencetracker\LOANotification.pdf");
-            bool exists = myFile.Exists;
+            FileInfo myFile = new FileInfo(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\LOANotification.pdf");
+            bool LOAExists = myFile.Exists;
 
             if (beginDate > endDate || beginDate == endDate)
             {
@@ -152,9 +152,14 @@ namespace AGNESCSharp
             }
             MessageBox.Show("The Leave for " + firstName + " Has Been Added, Please Fill Out This Form And Submit To HR.");
 
-            if (exists == true)
+            if (LOAExists == true)
             {
-                Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\LOANotification.pdf");
+                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\LOANotification.pdf");
+                
+            }
+            else
+            {
+                MessageBox.Show("Oops there was a problem trying to open the Leave Of Abscence Form, Please contact Business Intelligence and let them know!");
             }
 
             PendingBox.IsChecked = false;
