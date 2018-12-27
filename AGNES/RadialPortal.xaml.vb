@@ -329,6 +329,9 @@ Public Class RadialPortal
                 ''//TEST
                 'EventJournal.Runmodule()
                 ''//TEST
+            Case "HR Manager"
+                Dim HRMgr As New AGNESCSharp.MainWindow
+                HRMgr.ShowDialog()
         End Select
         Show()
     End Sub

@@ -1064,5 +1064,11 @@
     <Folder Include="XAML Components\QA Suite\" />
     <Folder Include="XAML Components\Waste\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AGNESCSharp\AGNESCSharp.csproj">
+      <Project>{1ef93cd2-ab87-4a27-b908-e17737b7daba}</Project>
+      <Name>AGNESCSharp</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
