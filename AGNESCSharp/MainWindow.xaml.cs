@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AGNESCSharp.Entity_Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,6 +28,8 @@ namespace AGNESCSharp
         public MainWindow()
         {
             InitializeComponent();
+            HRMgr GoTo = new HRMgr();
+            GoTo.ShowDialog();
         }
     }
 }
