@@ -315,6 +315,7 @@
     <Compile Include="Forecast Objects\ForecastGroup.vb" />
     <Compile Include="Forecast Objects\UnitFcast.vb" />
     <Compile Include="Module Orchestrators\BirthdayModule.vb" />
+    <Compile Include="Module Orchestrators\CSharpModules.vb" />
     <Compile Include="Module Orchestrators\EventJournal.vb" />
     <Compile Include="Module Orchestrators\FlashStatusModule.vb" />
     <Compile Include="Module Orchestrators\ForecastModule.vb" />

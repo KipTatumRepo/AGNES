@@ -30,7 +30,7 @@ namespace AGNESCSharp
             InitializeComponent();
             HRMgr GoTo = new HRMgr();
             GoTo.ShowDialog();
-            
         }
+
     }
 }
