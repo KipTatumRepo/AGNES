@@ -59,35 +59,5 @@ namespace AGNESCSharp.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] LOANotification {
-            get {
-                object obj = ResourceManager.GetObject("LOANotification", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] ProgressiveCounselingForm {
-            get {
-                object obj = ResourceManager.GetObject("ProgressiveCounselingForm", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] TermLetter {
-            get {
-                object obj = ResourceManager.GetObject("TermLetter", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
     }
 }

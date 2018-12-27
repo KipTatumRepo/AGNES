@@ -21,7 +21,7 @@ namespace AGNESCSharp
     /// </summary>
     public partial class MainWindow : Window
     {
-
+       
         public static AGNESEntity agnesdb = new AGNESEntity();
         public static BIEntity bidb = new BIEntity();
 
@@ -30,6 +30,7 @@ namespace AGNESCSharp
             InitializeComponent();
             HRMgr GoTo = new HRMgr();
             GoTo.ShowDialog();
+            
         }
     }
 }

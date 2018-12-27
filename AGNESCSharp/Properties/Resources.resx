@@ -118,13 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="LOANotification" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\LOANotification.pdf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="ProgressiveCounselingForm" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ProgressiveCounselingForm.docx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="TermLetter" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TermLetter.docx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
+  
+  
+  
 </root>
