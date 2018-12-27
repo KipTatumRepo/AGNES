@@ -34,6 +34,7 @@ Public Class RadialPortal
         SessionLog(0)
         ConstructRadialMenu()
         PortalEasterEggs()
+
     End Sub
 
 #End Region
