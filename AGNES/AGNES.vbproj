@@ -176,6 +176,21 @@
     <Compile Include="Application Objects\MonthChooser.vb" />
     <Compile Include="Application Objects\PercentBox.vb" />
     <Compile Include="Application Objects\YearChooser.vb" />
+    <Compile Include="Entities\AGNESModel.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AGNESModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AGNESModel.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AGNESModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AGNESModel.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AGNESModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\ApplicationSession.vb">
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
     </Compile>
@@ -184,6 +199,21 @@
     </Compile>
     <Compile Include="Entities\Availability.vb">
       <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\BIModel.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BIModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\BIModel.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BIModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\BIModel.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BIModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Building.vb">
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
@@ -199,6 +229,9 @@
     </Compile>
     <Compile Include="Entities\CAMWithholding.vb">
       <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CashHandle.vb">
+      <DependentUpon>AGNESModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Contact.vb">
       <DependentUpon>VendorModel.tt</DependentUpon>
@@ -221,8 +254,14 @@
     <Compile Include="Entities\LinesOfBusiness.vb">
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\LOA.vb">
+      <DependentUpon>AGNESModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Market.vb">
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Occurrence.vb">
+      <DependentUpon>AGNESModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Population.vb">
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
@@ -371,7 +410,7 @@
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\EmployeeList.vb">
-      <DependentUpon>GeneralSharedData.tt</DependentUpon>
+      <DependentUpon>BIModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Events.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
@@ -785,8 +824,22 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>AgnesSharedDataModel.Designer.vb</LastGenOutput>
     </EntityDeploy>
+    <EntityDeploy Include="Entities\AGNESModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>AGNESModel.Designer.vb</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Entities\AGNESModel.edmx.diagram">
+      <DependentUpon>AGNESModel.edmx</DependentUpon>
+    </None>
     <None Include="Entities\AgnesSharedDataModel.edmx.diagram">
       <DependentUpon>AgnesSharedDataModel.edmx</DependentUpon>
+    </None>
+    <EntityDeploy Include="Entities\BIModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>BIModel.Designer.vb</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Entities\BIModel.edmx.diagram">
+      <DependentUpon>BIModel.edmx</DependentUpon>
     </None>
     <None Include="Entities\BudgetModel.edmx.diagram">
       <DependentUpon>BudgetModel.edmx</DependentUpon>
@@ -844,7 +897,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\AgnesIcon.ico" />
@@ -910,6 +965,16 @@
     <Resource Include="Resources\pacmandown.png" />
     <Resource Include="Resources\ghost.png" />
     <Resource Include="AgnesIcon2.ico" />
+    <Content Include="Entities\AGNESModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AGNESModel.edmx</DependentUpon>
+      <LastGenOutput>AGNESModel.Context.vb</LastGenOutput>
+    </Content>
+    <Content Include="Entities\AGNESModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AGNESModel.edmx</DependentUpon>
+      <LastGenOutput>AGNESModel.vb</LastGenOutput>
+    </Content>
     <Content Include="Entities\AgnesSharedDataModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>AgnesSharedDataModel.edmx</DependentUpon>
@@ -919,6 +984,16 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>AgnesSharedDataModel.edmx</DependentUpon>
       <LastGenOutput>AgnesSharedDataModel.vb</LastGenOutput>
+    </Content>
+    <Content Include="Entities\BIModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BIModel.edmx</DependentUpon>
+      <LastGenOutput>BIModel.Context.vb</LastGenOutput>
+    </Content>
+    <Content Include="Entities\BIModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BIModel.edmx</DependentUpon>
+      <LastGenOutput>BIModel.vb</LastGenOutput>
     </Content>
     <Content Include="Entities\BudgetModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
