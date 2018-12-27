@@ -34,7 +34,15 @@ Public Class ScheduleDay
 #End Region
 
 #Region "Public Methods"
+    Public Function ActiveLocationList() As List(Of ScheduleLocation)
+        Dim ph As String = ""
+        Return Nothing
+    End Function
 
+    Public Function ActiveLocationList(refvend As ScheduleVendor) As List(Of ScheduleLocation)
+        Dim ph As String = ""
+        Return Nothing
+    End Function
 #End Region
 
 #Region "Private Methods"
