@@ -15,7 +15,7 @@
         <ToolBar x:Name="tlbHRMgr" Grid.Row="0" HorizontalAlignment="Left" Height="41" VerticalAlignment="Top" Width="954" >
             <Button x:Name="SearchButton" Height="34" Width="49" VerticalAlignment="Top" Margin="0,0,0,2" ToolTip="Search" Click="SearchButton_Click" >
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Image Source="pack://AGNESCSharp/Resources/magglass.png" Stretch="Fill"/>
+                    <Image Source="/AGNESCSharp;component/Resources/magglass.png" Stretch="Fill"/>
                 </StackPanel>
             </Button>
             <Separator/>
@@ -23,19 +23,19 @@
             <Separator/>
             <ToggleButton x:Name="LeaveButton" Height="34" Width="49" VerticalAlignment="Top" Margin="0,0,0,2" ToolTip="Enter Leave" Checked="LeaveButton_Checked" Unchecked="LeaveButton_Checked">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
-                    <Image Source="pack://AGNESCSharp/Resources/BabyCarriage.png" Stretch="Fill" />
+                    <Image Source="/AGNESCSharp;component/Resources/BabyCarriage.png" Stretch="Fill" />
                 </StackPanel>
             </ToggleButton>
             <Separator/>
             <ToggleButton x:Name="OccButton" Height="34" Width="49" VerticalAlignment="Top" Margin="0,0,0,2" ToolTip="Enter Occurrence" Checked="OccButton_Checked" Unchecked="OccButton_Checked" >
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Image Source="pack://AGNESCSharp/Resources/Occurrence.png" Stretch="Fill" />
+                    <Image Source="/AGNESCSharp;component/Resources/Occurrence.png" Stretch="Fill" />
                 </StackPanel>
             </ToggleButton>
             <Separator/>
             <ToggleButton x:Name="CashHandleButton" Height="34" Width="49" VerticalAlignment="Top" Margin="0,0,0,2" ToolTip="Enter Cash Handling" Checked="CashHandleButton_Checked" Unchecked="CashHandleButton_Checked" >
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Image Source="pack://AGNESCSharp/Resources/dollarsignb.png" Stretch="Fill"/>
+                    <Image Source="/AGNESCSharp;component/Resources/dollarsignb.png" Stretch="Fill"/>
                 </StackPanel>
             </ToggleButton>
             <Separator/>
