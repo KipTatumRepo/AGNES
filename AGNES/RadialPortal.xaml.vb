@@ -114,8 +114,6 @@ Public Class RadialPortal
             '    .UserLevel = 4
             'End With
 
-            ' 10162
-
             'With My.Settings
             '    .UserName = "Lexi"
             '    .UserShortName = "Aguilar"
@@ -330,8 +328,7 @@ Public Class RadialPortal
                 'EventJournal.Runmodule()
                 ''//TEST
             Case "HR Manager"
-                Dim HRMgr As New AGNESCSharp.MainWindow
-                HRMgr.ShowDialog()
+                CSharpModules.RunHRMgrModule()
         End Select
         Show()
     End Sub
