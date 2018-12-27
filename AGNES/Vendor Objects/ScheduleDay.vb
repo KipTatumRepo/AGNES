@@ -35,14 +35,63 @@ Public Class ScheduleDay
 
 #Region "Public Methods"
     Public Function ActiveLocationList() As List(Of ScheduleLocation)
-        Dim ph As String = ""
-        Return Nothing
+        Dim ReturnList As New List(Of ScheduleLocation)
+        Dim ActiveLocation As ScheduleLocation
+        Dim activestation As ScheduleStation
+        For Each l In LocationStack.Children
+            If TypeOf (l) Is ScheduleLocation Then
+                ActiveLocation = l
+                For Each s In ActiveLocation.StationStack.Children
+                    If TypeOf (s) Is ScheduleStation Then
+                        activestation = s
+                        For Each v In activestation.VendorStack.Children
+                            If TypeOf (v) Is VendorInStation Then
+                                If ReturnList.Count > 0 Then
+                                    If ReturnList.Item(ReturnList.Count - 1) IsNot ActiveLocation Then ReturnList.Add(ActiveLocation)
+                                Else
+                                    ReturnList.Add(ActiveLocation)
+                                End If
+                                Exit For
+                            End If
+                        Next
+                    End If
+                Next
+            End If
+        Next
+        Return ReturnList
     End Function
 
     Public Function ActiveLocationList(refvend As ScheduleVendor) As List(Of ScheduleLocation)
-        Dim ph As String = ""
-        Return Nothing
+        Dim ReturnList As New List(Of ScheduleLocation)
+        Dim activelocation As ScheduleLocation
+        Dim activestation As ScheduleStation
+        Dim activevendor As VendorInStation
+        For Each l In LocationStack.Children
+            If TypeOf (l) Is ScheduleLocation Then
+                activelocation = l
+                For Each s In activelocation.StationStack.Children
+                    If TypeOf (s) Is ScheduleStation Then
+                        activestation = s
+                        For Each v In activestation.VendorStack.Children
+                            If TypeOf (v) Is VendorInStation Then
+                                activevendor = v
+                                If ReturnList.Count > 0 Then
+                                    If ReturnList.Item(ReturnList.Count - 1) IsNot activelocation Then
+                                        If activevendor.ReferencedVendor Is refvend Then ReturnList.Add(activelocation)
+                                    End If
+                                Else
+                                    If activevendor.ReferencedVendor Is refvend Then ReturnList.Add(activelocation)
+                                End If
+                                Exit For
+                            End If
+                        Next
+                    End If
+                Next
+            End If
+        Next
+        Return ReturnList
     End Function
+
 #End Region
 
 #Region "Private Methods"
