@@ -9,6 +9,8 @@ Public Class Training
     Public ScoreBoxText As TextBox
     Private HasCert As Boolean
     Private PassingScore As Double
+    Private NewAssociate As Boolean
+    Private newassociatecbi As ComboBoxItem
 
 #End Region
 
@@ -17,7 +19,6 @@ Public Class Training
         InitializeComponent()
         CreateScoreBox()
         PopulateAssociates()
-        PopulateTrainingTypes()
         ResetFields()
     End Sub
 
@@ -81,7 +82,9 @@ Public Class Training
     Private Sub AddTraining(sender As Object, e As MouseButtonEventArgs) Handles imgAddTraining.MouseLeftButtonDown
         Dim NewTrainingUI As New NewTraining
         NewTrainingUI.ShowDialog()
-        PopulateTrainingTypes()
+        If cbxAssociates.SelectedIndex = -1 Then Exit Sub
+        Dim eid As Long = EmployeeList(Long.Parse(cbxAssociates.SelectedItem.Tag)).CompassId
+        PopulateTrainingTypes(GetBusinessGroup(eid))
     End Sub
 
     Private Sub AddTrainer(sender As Object, e As MouseButtonEventArgs) Handles imgAddTrainer.MouseLeftButtonDown
@@ -124,10 +127,10 @@ Public Class Training
         cbxTrainer.IsEnabled = False
         ScoreBoxText.Text = ""
         cbxTraining.IsEnabled = False
-        dtpStartDt.DisplayDateStart = Now().AddDays(-60)
+        dtpStartDt.DisplayDateStart = Now().AddDays(-120)
         dtpStartDt.DisplayDateEnd = Now()
         dtpStartDt.IsEnabled = False
-        dtpEndDt.DisplayDateStart = Now().AddDays(-60)
+        dtpEndDt.DisplayDateStart = Now().AddDays(-120)
         dtpEndDt.DisplayDateEnd = Now()
         dtpStartDt.IsEnabled = False
         ScoreBox.IsEnabled = False
@@ -145,12 +148,12 @@ Public Class Training
         cbxTrainer.IsEnabled = False
         dtpStartDt.IsEnabled = False
         dtpEndDt.IsEnabled = False
+        NewAssociate = False
         Select Case search
             Case 0
                 Dim qan = From anl In SharedDataGroup.EmployeeLists
                           Select anl
 
-                Dim x As Integer = qan.Count
                 For Each anl In qan
                     Dim emp As New EmployeeObj With {.CompassId = anl.PersNumber, .CostCenter = anl.CostCenterNumber,
                     .FirstName = anl.FirstName, .LastName = anl.LastName}
@@ -159,6 +162,8 @@ Public Class Training
                     cbxAssociates.Items.Add(cbi)
                     AddHandler cbi.Selected, AddressOf AssociateSelected
                 Next
+                'TODO:  ADD TEMP ASSOCIATES TO LIST
+
             Case 1
                 Dim qan = From anl In SharedDataGroup.EmployeeLists
                           Where anl.LastName = param
@@ -207,20 +212,37 @@ Public Class Training
         End Select
 
         cbxAssociates.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+        newassociatecbi = New ComboBoxItem With {.Content = "New Associate (not in list)"}
+        AddHandler newassociatecbi.Selected, AddressOf NewAssociateSelected
+        cbxAssociates.Items.Insert(0, newassociatecbi)
+
     End Sub
 
-    Private Sub PopulateTrainingTypes()
+    Private Sub PopulateTrainingTypes(bgid)
         cbxTraining.Items.Clear()
         Dim qtt = From ttl In TrainingData.TrainingTypes
                   Select ttl
 
-        Dim x As Integer = qtt.Count
-        For Each ttl In qtt
-            Dim cbi As New ComboBoxItem With {.Content = ttl.TrainingName, .Tag = ttl.PID}
-            cbxTraining.Items.Add(cbi)
-        Next
+        If bgid <> 0 Then
+            For Each ttl In qtt
+                Dim qtg = From tg In TrainingData.BusinessGroupTraining_Join
+                          Where tg.TrainingId = ttl.PID
+                          Select tg
 
-        cbxTraining.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
+                For Each tg In qtg
+                    If tg.BusinessGroupId = bgid Or tg.BusinessGroupId = 0 Then
+                        Dim cbi As New ComboBoxItem With {.Content = ttl.TrainingName, .Tag = ttl.PID}
+                        cbxTraining.Items.Add(cbi)
+                    End If
+                Next
+            Next
+        Else
+            For Each ttl In qtt
+                Dim cbi As New ComboBoxItem With {.Content = ttl.TrainingName, .Tag = ttl.PID}
+                cbxTraining.Items.Add(cbi)
+            Next
+        End If
+        If cbxTraining.Items.Count > 0 Then cbxTraining.Items.SortDescriptions.Add(New SortDescription("Content", ListSortDirection.Ascending))
     End Sub
 
     Private Sub AssociateSearch(sender As Object, e As MouseButtonEventArgs) Handles imgSearch.MouseLeftButtonDown
@@ -233,14 +255,45 @@ Public Class Training
 
     Private Sub AssociateSelected(sender As ComboBoxItem, e As RoutedEventArgs)
         Dim selindex As Integer = cbxAssociates.Items.IndexOf(sender)
-        PopulateTrainingRecords(EmployeeList(Long.Parse(sender.Tag)).CompassId)
+        Dim eid As Long = EmployeeList(Long.Parse(sender.Tag)).CompassId
+        PopulateTrainingTypes(GetBusinessGroup(eid))
+        PopulateTrainingRecords(eid)
+        If cbxTraining.Items.Count = 0 Then Exit Sub
         cbxTraining.IsEnabled = True
         cbxTraining.SelectedIndex = -1
         cbxTrainer.SelectedIndex = -1
         cbxTrainer.IsEnabled = False
         dtpStartDt.IsEnabled = False
         dtpEndDt.IsEnabled = False
-        ScoreBox.IsEnabled = False
+        With ScoreBox
+            .IsEnabled = False
+            .Flare = False
+            .SystemChange = True
+            .BaseTextBox.Text = ""
+            .SystemChange = False
+        End With
+        btnSave.IsEnabled = False
+    End Sub
+
+    Private Sub NewAssociateSelected(sender As ComboBoxItem, e As RoutedEventArgs)
+        Dim ibx As String = InputBox("Enter name", "Add New Associate", "")
+        If ibx = "" Then Exit Sub
+        newassociatecbi.Content = ibx
+        NewAssociate = True
+        PopulateTrainingTypes(0)
+        cbxTraining.IsEnabled = True
+        cbxTraining.SelectedIndex = -1
+        cbxTrainer.SelectedIndex = -1
+        cbxTrainer.IsEnabled = False
+        dtpStartDt.IsEnabled = False
+        dtpEndDt.IsEnabled = False
+        With ScoreBox
+            .IsEnabled = False
+            .Flare = False
+            .SystemChange = True
+            .BaseTextBox.Text = ""
+            .SystemChange = False
+        End With
         btnSave.IsEnabled = False
     End Sub
 
@@ -263,11 +316,6 @@ Public Class Training
                 .Trainer = GetTrainer(atr.Trainer)
                 .Score = atr.Score
             End With
-
-            'TODO:  ADD ROUTINE AND DATA TO DETERMINE IF CERTIFICATION IS NEEDED AND, IF SO, WHAT SCORE QUALIFIES
-            'If HasCert(atr.Training) = True Then
-            '    tr.Certification = CertAchieved(atr.Training, atr.Score)
-            'End If
 
             source.Add(tr)
             dgTrainingHistory.DataContext = source
@@ -295,8 +343,21 @@ Public Class Training
             If PassingScore <> 0 Then
                 ScoreBox.IsEnabled = True
                 tbScore.Text = "Score (passing is " & FormatPercent(PassingScore, 1) & "):"
+                With ScoreBox
+                    .Flare = False
+                    .SystemChange = True
+                    .BaseTextBox.Text = ""
+                    .SystemChange = False
+                End With
             Else
                 tbScore.Text = "Score:"
+                With ScoreBox
+                    .IsEnabled = False
+                    .Flare = False
+                    .SystemChange = True
+                    .BaseTextBox.Text = ""
+                    .SystemChange = False
+                End With
             End If
         Next
 
@@ -337,65 +398,83 @@ Public Class Training
     Private Sub SaveRecord(sender As Object, e As RoutedEventArgs) Handles btnSave.Click
 
         '// Field validation
-        If ScoreBox.Flare = True Then Exit Sub
-        If ScoreBoxText.Text = "" Then
-            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.OkOnly, 12,,,, "Score required.", AgnesMessageBox.ImageType.Danger)
-            amsg.ShowDialog()
-            amsg.Close()
-            Exit Sub
-        End If
-
-        Dim ScoreVal As Double = FormatNumber(ScoreBoxText.Text, 3)
-        If ScoreVal > 1 Then ScoreVal = ScoreVal / 100
-        Dim CertVal As Boolean = False
-
-        '// Notify if score is below passing/cert not achieved
-        If HasCert = True Then CertVal = True
-        ScoreBox.Flare = False
-        If ScoreVal < PassingScore Then
-            ScoreBox.Flare = True
-            If HasCert = True Then
-                Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.YesNo, 12,,, "Score is below certification requirement.", "Do you still wish to save?", AgnesMessageBox.ImageType.Alert)
+        Dim CertVal As Boolean = HasCert
+        Dim ScoreVal As Double
+        If ScoreBoxText.IsEnabled = True Then
+            If ScoreBoxText.Text = "" Then
+                Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.OkOnly, 12,,,, "Score required.", AgnesMessageBox.ImageType.Danger)
                 amsg.ShowDialog()
-                If amsg.ReturnResult = "No" Then
-                    amsg.Close()
-                    Exit Sub
-                End If
-                CertVal = False
+                amsg.Close()
+                Exit Sub
             Else
-                Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.YesNo, 12,,, "Score is below passing.", "Do you still wish to save?", AgnesMessageBox.ImageType.Alert)
-                amsg.ShowDialog()
-                If amsg.ReturnResult = "No" Then
-                    amsg.Close()
-                    Exit Sub
+                ScoreVal = FormatNumber(ScoreBoxText.Text, 3)
+                If ScoreVal > 1 Then ScoreVal = ScoreVal / 100
+
+                '// Notify if score is below passing/cert not achieved
+                If ScoreVal < PassingScore Then
+                    If CertVal = True Then
+                        Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.YesNo, 12,,, "Score is below passing/certification requirement.", "Do you still wish to save?", AgnesMessageBox.ImageType.Alert)
+                        amsg.ShowDialog()
+                        If amsg.ReturnResult = "No" Then
+                            amsg.Close()
+                            Exit Sub
+                        End If
+                        CertVal = False
+                    Else
+                        Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.YesNo, 12,,, "Score is below passing.", "Do you still wish to save?", AgnesMessageBox.ImageType.Alert)
+                        amsg.ShowDialog()
+                        If amsg.ReturnResult = "No" Then
+                            amsg.Close()
+                            Exit Sub
+                        End If
+                    End If
                 End If
             End If
+
+        End If
+
+        If NewAssociate = False Then
+            Dim empid As Long = 0
+
+            For Each emp As EmployeeObj In EmployeeList
+                If emp.Fullname = cbxAssociates.Text Then
+                    empid = emp.CompassId
+                    Exit For
+                End If
+            Next
+
+            Dim newentry As New TrainingRecord
+            With newentry
+                .AssociateID = empid
+                .Certification = CertVal
+                .StartDate = dtpStartDt.DisplayDate
+                .EndDate = dtpEndDt.DisplayDate
+                .Score = ScoreVal
+                .Trainer = GetTrainerId(cbxTrainer.Text)
+                .Training = GetTrainingId(cbxTraining.Text)
+                .TrainingRecordedBy = My.Settings.UserID
+            End With
+            TrainingData.TrainingRecords.Add(newentry)
+            TrainingData.SaveChanges()
+            PopulateTrainingRecords(empid)
+        Else
+
+            Dim newentry As New TempRecord
+            With newentry
+                .AssociateName = newassociatecbi.Content
+                .Certification = CertVal
+                .StartDate = dtpStartDt.DisplayDate
+                .EndDate = dtpEndDt.DisplayDate
+                .Score = ScoreVal
+                .Trainer = GetTrainerId(cbxTrainer.Text)
+                .Training = GetTrainingId(cbxTraining.Text)
+                .TrainingRecordedBy = My.Settings.UserID
+            End With
+            TrainingData.TempRecords.Add(newentry)
+            TrainingData.SaveChanges()
         End If
 
 
-        Dim empid As Long = 0
-
-        For Each emp As EmployeeObj In EmployeeList
-            If emp.Fullname = cbxAssociates.Text Then
-                empid = emp.CompassId
-                Exit For
-            End If
-        Next
-
-        Dim newentry As New TrainingRecord
-        With newentry
-            .AssociateID = empid
-            .Certification = CertVal
-            .StartDate = dtpStartDt.DisplayDate
-            .EndDate = dtpEndDt.DisplayDate
-            .Score = ScoreVal
-            .Trainer = GetTrainerId(cbxTrainer.Text)
-            .Training = GetTrainingId(cbxTraining.Text)
-        End With
-
-        TrainingData.TrainingRecords.Add(newentry)
-        TrainingData.SaveChanges()
-        PopulateTrainingRecords(empid)
         ClearFields()
     End Sub
 
@@ -431,8 +510,22 @@ Public Class Training
         ScoreBox.IsEnabled = False
 
         dgTrainingHistory.ItemsSource = Nothing
+        NewAssociate = False
     End Sub
 
+    Private Function GetBusinessGroup(eid As Long) As Long
+        Dim cc As Long
+        Dim qec = (From ec In SharedDataGroup.EmployeeLists
+                   Where ec.PersNumber = eid
+                   Select ec).ToList(0)
+
+        cc = qec.CostCenterNumber
+        Dim ebg = (From bg In SharedDataGroup.CostCenters
+                   Where bg.CostCenter1 = cc
+                   Select bg).ToList(0)
+
+        Return ebg.BusinessGroup
+    End Function
 #End Region
 
 End Class

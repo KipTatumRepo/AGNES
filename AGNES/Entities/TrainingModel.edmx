@@ -13,6 +13,20 @@
           <Property Name="BusinessGroupId" Type="bigint" Nullable="false" />
           <Property Name="TrainingId" Type="bigint" Nullable="false" />
         </EntityType>
+        <EntityType Name="TempRecords">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AssociateName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="Training" Type="smallint" Nullable="false" />
+          <Property Name="Trainer" Type="bigint" Nullable="false" />
+          <Property Name="StartDate" Type="date" Nullable="false" />
+          <Property Name="EndDate" Type="date" Nullable="false" />
+          <Property Name="Score" Type="decimal" Precision="4" Scale="1" Nullable="false" />
+          <Property Name="Certification" Type="bit" Nullable="false" />
+          <Property Name="TrainingRecordedBy" Type="bigint" />
+        </EntityType>
         <EntityType Name="Trainers">
           <Key>
             <PropertyRef Name="PID" />
@@ -41,6 +55,7 @@
           <Property Name="EndDate" Type="date" Nullable="false" />
           <Property Name="Score" Type="decimal" Precision="4" Scale="1" Nullable="false" />
           <Property Name="Certification" Type="bit" Nullable="false" />
+          <Property Name="TrainingRecordedBy" Type="bigint" />
         </EntityType>
         <EntityType Name="TrainingTypes">
           <Key>
@@ -56,6 +71,7 @@
         </EntityType>
         <EntityContainer Name="TrainingModelStoreContainer">
           <EntitySet Name="BusinessGroupTraining_Join" EntityType="Self.BusinessGroupTraining_Join" Schema="Training" store:Type="Tables" />
+          <EntitySet Name="TempRecords" EntityType="Self.TempRecords" Schema="Training" store:Type="Tables" />
           <EntitySet Name="Trainers" EntityType="Self.Trainers" Schema="Training" store:Type="Tables" />
           <EntitySet Name="TrainerTraining_Join" EntityType="Self.TrainerTraining_Join" Schema="Training" store:Type="Tables" />
           <EntitySet Name="TrainingRecords" EntityType="Self.TrainingRecords" Schema="Training" store:Type="Tables" />
@@ -83,6 +99,7 @@
           <EntitySet Name="Trainers" EntityType="TrainingModel.Trainer" />
           <EntitySet Name="BusinessGroupTraining_Join" EntityType="TrainingModel.BusinessGroupTraining_Join" />
           <EntitySet Name="TrainerTraining_Join" EntityType="TrainingModel.TrainerTraining_Join" />
+          <EntitySet Name="TempRecords" EntityType="TrainingModel.TempRecord" />
         </EntityContainer>
         <EntityType Name="TrainingRecord">
           <Key>
@@ -96,6 +113,7 @@
           <Property Name="Score" Type="Decimal" Nullable="false" Precision="4" Scale="1" />
           <Property Name="Certification" Type="Boolean" Nullable="false" />
           <Property Name="Trainer" Type="Int64" Nullable="false" />
+          <Property Name="TrainingRecordedBy" Type="Int64" />
         </EntityType>
         <EntityType Name="Trainer">
           <Key>
@@ -121,6 +139,20 @@
           <Property Name="TrainerId" Type="Int64" Nullable="false" />
           <Property Name="TrainingId" Type="Int64" Nullable="false" />
         </EntityType>
+        <EntityType Name="TempRecord">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AssociateName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="Training" Type="Int16" Nullable="false" />
+          <Property Name="Trainer" Type="Int64" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Score" Type="Decimal" Nullable="false" Precision="4" Scale="1" />
+          <Property Name="Certification" Type="Boolean" Nullable="false" />
+          <Property Name="TrainingRecordedBy" Type="Int64" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -143,6 +175,7 @@
           <EntitySetMapping Name="TrainingRecords">
             <EntityTypeMapping TypeName="TrainingModel.TrainingRecord">
               <MappingFragment StoreEntitySet="TrainingRecords">
+                <ScalarProperty Name="TrainingRecordedBy" ColumnName="TrainingRecordedBy" />
                 <ScalarProperty Name="Trainer" ColumnName="Trainer" />
                 <ScalarProperty Name="Certification" ColumnName="Certification" />
                 <ScalarProperty Name="Score" ColumnName="Score" />
@@ -177,6 +210,21 @@
               <MappingFragment StoreEntitySet="TrainerTraining_Join">
                 <ScalarProperty Name="TrainingId" ColumnName="TrainingId" />
                 <ScalarProperty Name="TrainerId" ColumnName="TrainerId" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TempRecords">
+            <EntityTypeMapping TypeName="TrainingModel.TempRecord">
+              <MappingFragment StoreEntitySet="TempRecords">
+                <ScalarProperty Name="TrainingRecordedBy" ColumnName="TrainingRecordedBy" />
+                <ScalarProperty Name="Certification" ColumnName="Certification" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="Trainer" ColumnName="Trainer" />
+                <ScalarProperty Name="Training" ColumnName="Training" />
+                <ScalarProperty Name="AssociateName" ColumnName="AssociateName" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
               </MappingFragment>
             </EntityTypeMapping>

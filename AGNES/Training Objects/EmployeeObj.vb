@@ -5,7 +5,9 @@
     Public Property CompassId As Long
     Public ReadOnly Property Fullname As String
         Get
-            Return FirstName & " " & LastName
+            'Return FirstName & " " & LastName
+            Return LastName & ", " & FirstName
+
         End Get
     End Property
 

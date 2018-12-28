@@ -9,7 +9,7 @@ Public Class NumberBox
     Private _negonly As Boolean
     Public NumberOfDecimals As Byte
     Public Highlight As Boolean
-    Private SystemChange As Boolean
+    Public SystemChange As Boolean
 
     Private _pos As Boolean
     Public Property Positive As Boolean

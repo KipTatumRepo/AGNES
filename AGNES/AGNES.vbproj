@@ -281,6 +281,9 @@
     <Compile Include="Entities\SickOtRecord.vb">
       <DependentUpon>FlashActualsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\TempRecord.vb">
+      <DependentUpon>TrainingModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Trainer.vb">
       <DependentUpon>TrainingModel.tt</DependentUpon>
     </Compile>
