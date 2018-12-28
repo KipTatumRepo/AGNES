@@ -314,6 +314,7 @@
       <DependentUpon>BIModel.edmx</DependentUpon>
       <LastGenOutput>BIModel.cs</LastGenOutput>
     </Content>
+    <Resource Include="Resources\eraser.png" />
     <Resource Include="Resources\save.png" />
     <Resource Include="Resources\Occurrence.png" />
     <Resource Include="Resources\magglass.png" />
