@@ -80,6 +80,39 @@ Public Class Trainers
         lbxAssigned.Items.RemoveAt(lbxAssigned.SelectedIndex)
     End Sub
 
+    Private Sub SaveTrainers(sender As Object, e As MouseButtonEventArgs) Handles imgSave.MouseLeftButtonDown
+        '// Clear list of all trainers assigned to this training first
+        Dim tid As Long = TrainingModule.TrainMod.GetTrainingId(cbxTrainings.SelectedItem)
+
+        For Each t As TrainerTraining_Join In TrainingData.TrainerTraining_Join
+            If t.TrainingId = tid Then TrainingData.TrainerTraining_Join.Remove(t)
+        Next
+        TrainingData.SaveChanges()
+
+        For Each i In lbxAssigned.Items
+            Dim ntj As New TrainerTraining_Join
+            If i = "Support Teams" Then
+                ntj.TrainerId = 0
+            Else
+                ntj.TrainerId = GetEmpId(i)
+            End If
+            ntj.TrainingId = tid
+            TrainingData.TrainerTraining_Join.Add(ntj)
+        Next
+        TrainingData.SaveChanges()
+    End Sub
+
+    Private Function GetEmpId(i) As Long
+        Dim nameparts As String() = i.Split(New Char() {","c})
+        Dim lname As String = nameparts(0)
+        Dim fname As String = nameparts(1).TrimStart
+        Dim qei = (From ei In SharedDataGroup.EmployeeLists
+                   Where ei.LastName = lname And
+                           ei.FirstName = fname
+                   Select ei).ToList(0)
+
+        Return qei.PID
+    End Function
 #End Region
 
 End Class

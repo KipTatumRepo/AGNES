@@ -99,7 +99,20 @@ Public Class Training
         End With
         ScoreBoxText = ScoreBox.Children(1)
         ScoreBoxText.TabIndex = 5
+        AddHandler ScoreBox.LostFocus, AddressOf EvaluateScore
         grdEditor.Children.Add(ScoreBox)
+    End Sub
+
+    Private Sub EvaluateScore()
+        ScoreBox.Flare = False
+        Dim ScoreVal As Double = FormatNumber(ScoreBoxText.Text, 3)
+        If ScoreVal > 1 Then ScoreVal = ScoreVal / 100
+        If ScoreVal > 1 Then
+            ScoreVal = 1
+            ScoreBox.SetAmount = 100
+        End If
+        If ScoreVal < PassingScore Then ScoreBox.Flare = True
+
     End Sub
 
     Private Sub ResetFields()
@@ -279,6 +292,12 @@ Public Class Training
         For Each tdi In qtd
             HasCert = tdi.Certification
             PassingScore = tdi.PassCertScore
+            If PassingScore <> 0 Then
+                ScoreBox.IsEnabled = True
+                tbScore.Text = "Score (passing is " & FormatPercent(PassingScore, 1) & "):"
+            Else
+                tbScore.Text = "Score:"
+            End If
         Next
 
     End Sub
@@ -293,10 +312,10 @@ Public Class Training
         For Each tti In qti
             Dim qtn = From ttn In TrainingData.Trainers
                       Select ttn
-                      Where ttn.PID = tti.TrainerId
+                      Where ttn.EmpId = tti.TrainerId
 
             For Each ttn In qtn
-                Dim cbi As New ComboBoxItem With {.Content = ttn.TrainerName, .Tag = ttn.PID}
+                Dim cbi As New ComboBoxItem With {.Content = ttn.TrainerName, .Tag = ttn.EmpId}
                 cbxTrainer.Items.Add(cbi)
             Next
 
@@ -312,7 +331,6 @@ Public Class Training
         dtpStartDt.Text = Now()
         dtpEndDt.IsEnabled = True
         dtpEndDt.Text = Now()
-        ScoreBox.IsEnabled = True
         btnSave.IsEnabled = True
     End Sub
 
@@ -327,12 +345,15 @@ Public Class Training
             Exit Sub
         End If
 
-        Dim ScoreVal As Double = FormatNumber(ScoreBoxText.Text, 1)
+        Dim ScoreVal As Double = FormatNumber(ScoreBoxText.Text, 3)
+        If ScoreVal > 1 Then ScoreVal = ScoreVal / 100
         Dim CertVal As Boolean = False
 
         '// Notify if score is below passing/cert not achieved
         If HasCert = True Then CertVal = True
+        ScoreBox.Flare = False
         If ScoreVal < PassingScore Then
+            ScoreBox.Flare = True
             If HasCert = True Then
                 Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.YesNo, 12,,, "Score is below certification requirement.", "Do you still wish to save?", AgnesMessageBox.ImageType.Alert)
                 amsg.ShowDialog()
@@ -404,6 +425,7 @@ Public Class Training
             .IsEnabled = False
         End With
 
+        tbScore.Text = "Score:"
         ScoreBoxText.Text = ""
         ScoreBox.Flare = False
         ScoreBox.IsEnabled = False
