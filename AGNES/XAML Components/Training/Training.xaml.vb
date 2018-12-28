@@ -154,7 +154,6 @@ Public Class Training
                 Dim qan = From anl In SharedDataGroup.EmployeeLists
                           Select anl
 
-                Dim x As Integer = qan.Count
                 For Each anl In qan
                     Dim emp As New EmployeeObj With {.CompassId = anl.PersNumber, .CostCenter = anl.CostCenterNumber,
                     .FirstName = anl.FirstName, .LastName = anl.LastName}
@@ -163,6 +162,8 @@ Public Class Training
                     cbxAssociates.Items.Add(cbi)
                     AddHandler cbi.Selected, AddressOf AssociateSelected
                 Next
+                'TODO:  ADD TEMP ASSOCIATES TO LIST
+
             Case 1
                 Dim qan = From anl In SharedDataGroup.EmployeeLists
                           Where anl.LastName = param
