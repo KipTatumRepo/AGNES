@@ -154,7 +154,7 @@
         imgConfirmYes.Visibility = Visibility.Visible
         AddHandler imgConfirmYes.MouseLeftButtonDown, AddressOf ConfirmYes
         imgConfirmNo.Visibility = Visibility.Visible
-        AddHandler imgConfirmYes.MouseLeftButtonDown, AddressOf ConfirmNo
+        AddHandler imgConfirmNo.MouseLeftButtonDown, AddressOf ConfirmNo
     End Sub
 
     Private Sub PopulateConfirmInfo()
@@ -189,6 +189,7 @@
 
     Private Sub ConfirmYes()
         SaveTraining()
+        Close()
     End Sub
 
     Private Sub ConfirmNo()
@@ -209,38 +210,43 @@
     End Sub
 
     Private Sub SaveTraining()
-        Dim ntt As New TrainingType
-        With ntt
-            .TrainingName = TrainingName
-            .TrainingDescription = Description
-            .Hours = Hours
-            .Certification = Cert
-            .Scored = Score
-            .PassCertScore = Skore
-        End With
-        TrainingData.TrainingTypes.Add(ntt)
-        TrainingData.SaveChanges()
+        Try
+            Dim ntt As New TrainingType
+            With ntt
+                .TrainingName = TrainingName
+                .TrainingDescription = Description
+                .Hours = Hours
+                .Certification = Cert
+                .Scored = Score
+                .PassCertScore = Skore
+            End With
+            TrainingData.TrainingTypes.Add(ntt)
+            TrainingData.SaveChanges()
 
-        '// Retrieve newly saved PID
-        Dim qnt = (From e In TrainingData.TrainingTypes
-                   Where e.TrainingName = TrainingName
-                   Select e).ToList(0)
-        For Each i In GroupList
-            Dim ntg As New BusinessGroupTraining_Join
+            '// Retrieve newly saved PID
+            Dim qnt = (From e In TrainingData.TrainingTypes
+                       Where e.TrainingName = TrainingName
+                       Select e).ToList(0)
+            For Each i In GroupList
+                Dim ntg As New BusinessGroupTraining_Join
 
-            If i = "All" Then
-                ntg.BusinessGroupId = 0
-                ntg.TrainingId = qnt.PID
-                TrainingData.BusinessGroupTraining_Join.Add(ntg)
-                Exit For
-            Else
-                ntg.BusinessGroupId = GetBizGroup(i)
-                ntg.TrainingId = qnt.PID
-                TrainingData.BusinessGroupTraining_Join.Add(ntg)
-            End If
-        Next
-        TrainingData.SaveChanges()
-        Close()
+                If i = "All" Then
+                    ntg.BusinessGroupId = 0
+                    ntg.TrainingId = qnt.PID
+                    TrainingData.BusinessGroupTraining_Join.Add(ntg)
+                    Exit For
+                Else
+                    ntg.BusinessGroupId = GetBizGroup(i)
+                    ntg.TrainingId = qnt.PID
+                    TrainingData.BusinessGroupTraining_Join.Add(ntg)
+                End If
+            Next
+            TrainingData.SaveChanges()
+
+        Catch ex As Exception
+        Finally
+            Close()
+        End Try
     End Sub
 
     Private Function GetBizGroup(i) As Long

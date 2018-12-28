@@ -10,15 +10,15 @@
 Imports System
 Imports System.Collections.Generic
 
-Partial Public Class TrainingRecord
+Partial Public Class TempRecord
     Public Property PID As Long
-    Public Property AssociateID As Long
+    Public Property AssociateName As String
     Public Property Training As Short
+    Public Property Trainer As Long
     Public Property StartDate As Date
     Public Property EndDate As Date
     Public Property Score As Decimal
     Public Property Certification As Boolean
-    Public Property Trainer As Long
     Public Property TrainingRecordedBy As Nullable(Of Long)
 
 End Class

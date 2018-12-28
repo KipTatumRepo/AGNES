@@ -94,12 +94,34 @@ Public Class Trainers
             If i = "Support Teams" Then
                 ntj.TrainerId = 0
             Else
-                ntj.TrainerId = GetEmpId(i)
+                Dim eid As Long = GetEmpId(i)
+                AddToTrainerTable(i, eid)
+                ntj.TrainerId = eid
             End If
             ntj.TrainingId = tid
             TrainingData.TrainerTraining_Join.Add(ntj)
         Next
         TrainingData.SaveChanges()
+        Close()
+    End Sub
+
+    Private Sub AddToTrainerTable(nm, eid)
+        '// Add to Trainers table, if not already present
+        Try
+            Dim qtp = From tp In TrainingData.Trainers.AsEnumerable
+                      Where tp.EmpId = eid
+                      Select tp
+
+            If qtp.Count = 0 Then
+                Dim ntr As New Trainer
+                ntr.EmpId = eid
+                ntr.TrainerName = nm
+                TrainingData.Trainers.Add(ntr)
+                TrainingData.SaveChanges()
+            End If
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Private Function GetEmpId(i) As Long
