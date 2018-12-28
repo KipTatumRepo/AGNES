@@ -19,6 +19,7 @@
           </Key>
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TrainerName" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="EmpId" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="TrainerTraining_Join">
           <Key>
@@ -102,6 +103,7 @@
           </Key>
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TrainerName" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="EmpId" Type="Int64" Nullable="false" />
         </EntityType>
         <EntityType Name="BusinessGroupTraining_Join">
           <Key>
@@ -155,6 +157,7 @@
           <EntitySetMapping Name="Trainers">
             <EntityTypeMapping TypeName="TrainingModel.Trainer">
               <MappingFragment StoreEntitySet="Trainers">
+                <ScalarProperty Name="EmpId" ColumnName="EmpId" />
                 <ScalarProperty Name="TrainerName" ColumnName="TrainerName" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
               </MappingFragment>
