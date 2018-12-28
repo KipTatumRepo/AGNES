@@ -23,6 +23,58 @@ Public Class Training
 
 #End Region
 
+#Region "Public Methods"
+
+    Public Function GetTrainingId(tname As String) As Integer
+        Try
+            Dim qtt = (From ttl In TrainingData.TrainingTypes
+                       Select ttl
+                       Where ttl.TrainingName = tname).ToList(0)
+
+            Return qtt.PID
+        Catch
+        End Try
+        Return 0
+    End Function
+
+    Public Function GetTrainingType(tid As Long) As String
+
+        Try
+            Dim qtt = (From ttl In TrainingData.TrainingTypes
+                       Select ttl
+                       Where ttl.PID = tid).ToList(0)
+
+            Return qtt.TrainingName
+        Catch
+        End Try
+
+        Return ""
+    End Function
+
+    Public Function GetTrainer(tid As Long) As String
+        Try
+            Dim qtn = (From ttn In TrainingData.Trainers
+                       Select ttn
+                       Where ttn.PID = tid).ToList(0)
+            Return qtn.TrainerName
+        Catch
+        End Try
+        Return ""
+    End Function
+
+    Public Function GetTrainerId(tname As String) As Integer
+        Try
+            Dim qtn = (From ttn In TrainingData.Trainers
+                       Select ttn
+                       Where ttn.TrainerName = tname).ToList(0)
+            Return qtn.PID
+        Catch
+        End Try
+        Return 0
+    End Function
+
+#End Region
+
 #Region "Private Methods"
 
 #Region "Toolbar"
@@ -33,7 +85,8 @@ Public Class Training
     End Sub
 
     Private Sub AddTrainer(sender As Object, e As MouseButtonEventArgs) Handles imgAddTrainer.MouseLeftButtonDown
-
+        Dim NewTrainerUI As New Trainers
+        NewTrainerUI.ShowDialog()
     End Sub
 
 
@@ -324,50 +377,6 @@ Public Class Training
         PopulateTrainingRecords(empid)
         ClearFields()
     End Sub
-
-    Private Function GetTrainingType(tid As Long) As String
-        Dim qtt = From ttl In TrainingData.TrainingTypes
-                  Select ttl
-                  Where ttl.PID = tid
-
-        For Each ttl In qtt
-            Return ttl.TrainingName
-        Next
-        Return ""
-    End Function
-
-    Private Function GetTrainingId(tname As String) As Integer
-        Dim qtt = From ttl In TrainingData.TrainingTypes
-                  Select ttl
-                  Where ttl.TrainingName = tname
-
-        For Each ttl In qtt
-            Return ttl.PID
-        Next
-        Return 0
-    End Function
-
-    Private Function GetTrainer(tid As Long) As String
-        Dim qtn = From ttn In TrainingData.Trainers
-                  Select ttn
-                  Where ttn.PID = tid
-
-        For Each ttn In qtn
-            Return ttn.TrainerName
-        Next
-        Return ""
-    End Function
-
-    Private Function GetTrainerId(tname As String) As Integer
-        Dim qtn = From ttn In TrainingData.Trainers
-                  Select ttn
-                  Where ttn.TrainerName = tname
-
-        For Each ttn In qtn
-            Return ttn.PID
-        Next
-        Return 0
-    End Function
 
     Private Sub ClearFields()
         cbxAssociates.SelectedIndex = -1

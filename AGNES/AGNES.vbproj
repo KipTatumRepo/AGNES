@@ -665,6 +665,9 @@
     <Compile Include="XAML Components\Training\NewTraining.xaml.vb">
       <DependentUpon>NewTraining.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XAML Components\Training\Trainers.xaml.vb">
+      <DependentUpon>Trainers.xaml</DependentUpon>
+    </Compile>
     <Compile Include="XAML Components\Training\Training.xaml.vb">
       <DependentUpon>Training.xaml</DependentUpon>
     </Compile>
@@ -750,6 +753,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="XAML Components\Training\NewTraining.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XAML Components\Training\Trainers.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
