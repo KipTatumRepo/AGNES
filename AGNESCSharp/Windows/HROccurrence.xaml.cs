@@ -463,5 +463,17 @@ namespace AGNESCSharp
             //}
         }
         #endregion
+
+        private void Image_MouseEnter(object sender, MouseEventArgs e)
+        {
+            saveImage.Width = 66;
+            saveImage.Height = 58;
+        }
+
+        private void SaveImage_MouseLeave(object sender, MouseEventArgs e)
+        {
+            //saveImage.Width = 58;
+            //saveImage.Height = 50;
+        }
     }
 }

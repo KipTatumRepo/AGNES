@@ -62,14 +62,20 @@
         <ScrollViewer x:Name="DescriptionSV" HorizontalAlignment="Stretch" Margin="10,0,10,0" Grid.Row="3" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto" Visibility="Hidden">
             <TextBox x:Name="DescriptionTb" HorizontalAlignment="Stretch" Margin="0,0,0,2" Grid.Row="3" TextWrapping="Wrap" VerticalAlignment="Stretch" FontSize="20" />
         </ScrollViewer>
-        <Grid x:Name="ButtonGrid" Grid.Row="4" Visibility="Hidden">
+        <Grid x:Name="ButtonGrid" Grid.Row="4" Visibility="Visible">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Button x:Name="CancelButton" Content="Clear" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" Click="CancelButton_Click"/>
-            <Button x:Name="SaveButton" Content="Save Occurrence" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="101" Click="SaveButton_Click" />
+            <!--<Button x:Name="SaveButton" Content="Save Occurrence" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="101" Click="SaveButton_Click" />-->
+            <Button x:Name="SaveButton" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Click="SaveButton_Click" BorderThickness="0" BorderBrush="White" Padding="0" Foreground="White">
+                <StackPanel Margin="0,0,0,0" Orientation="Horizontal" Background="White">
+                    <Image x:Name="saveImage" Source="/AGNESCSharp;component/Resources/save.png" OpacityMask="White" MouseEnter="Image_MouseEnter" MouseLeave="SaveImage_MouseLeave" />
+                    <!-- Width="58"-->
+                </StackPanel>
+            </Button>
         </Grid>
         <!-- End Other Type of Occurrence Grid-->
     </Grid>
