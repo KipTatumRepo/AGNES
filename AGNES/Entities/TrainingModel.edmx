@@ -23,7 +23,7 @@
           <Property Name="Trainer" Type="bigint" Nullable="false" />
           <Property Name="StartDate" Type="date" Nullable="false" />
           <Property Name="EndDate" Type="date" Nullable="false" />
-          <Property Name="Score" Type="decimal" Precision="4" Scale="1" Nullable="false" />
+          <Property Name="Score" Type="decimal" Precision="6" Scale="2" Nullable="false" />
           <Property Name="Certification" Type="bit" Nullable="false" />
           <Property Name="TrainingRecordedBy" Type="bigint" />
         </EntityType>
@@ -53,7 +53,7 @@
           <Property Name="Trainer" Type="bigint" Nullable="false" />
           <Property Name="StartDate" Type="date" Nullable="false" />
           <Property Name="EndDate" Type="date" Nullable="false" />
-          <Property Name="Score" Type="decimal" Precision="4" Scale="1" Nullable="false" />
+          <Property Name="Score" Type="decimal" Precision="6" Scale="2" Nullable="false" />
           <Property Name="Certification" Type="bit" Nullable="false" />
           <Property Name="TrainingRecordedBy" Type="bigint" />
         </EntityType>
@@ -110,7 +110,7 @@
           <Property Name="Training" Type="Int16" Nullable="false" />
           <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Score" Type="Decimal" Nullable="false" Precision="4" Scale="1" />
+          <Property Name="Score" Type="Decimal" Nullable="false" Precision="6" Scale="2" />
           <Property Name="Certification" Type="Boolean" Nullable="false" />
           <Property Name="Trainer" Type="Int64" Nullable="false" />
           <Property Name="TrainingRecordedBy" Type="Int64" />
@@ -149,7 +149,7 @@
           <Property Name="Trainer" Type="Int64" Nullable="false" />
           <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Score" Type="Decimal" Nullable="false" Precision="4" Scale="1" />
+          <Property Name="Score" Type="Decimal" Nullable="false" Precision="6" Scale="2" />
           <Property Name="Certification" Type="Boolean" Nullable="false" />
           <Property Name="TrainingRecordedBy" Type="Int64" />
         </EntityType>

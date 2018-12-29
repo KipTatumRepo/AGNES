@@ -11,6 +11,7 @@ Public Class Training
     Private PassingScore As Double
     Private NewAssociate As Boolean
     Private newassociatecbi As ComboBoxItem
+    Private InitialWarning As Boolean = True
 
 #End Region
 
@@ -162,7 +163,33 @@ Public Class Training
                     cbxAssociates.Items.Add(cbi)
                     AddHandler cbi.Selected, AddressOf AssociateSelected
                 Next
-                'TODO:  ADD TEMP ASSOCIATES TO LIST
+
+                '// Add associates saved to the temporary table to the list
+                Dim qta = (From ta In TrainingData.TempRecords
+                           Select ta).ToList()
+
+                Dim nmlist As New List(Of String)
+                For Each ta In qta
+                    nmlist.Add(ta.AssociateName)
+                Next
+                nmlist = nmlist.Distinct.ToList()
+
+                Dim tempcount As Byte = 0
+                For Each nm In nmlist
+                    Dim emp As New EmployeeObj With {.CompassId = 99999, .CostCenter = 99999, .FirstName = nm, .LastName = "temp"}
+                    EmployeeList.Add(emp)
+                    Dim cbi As New ComboBoxItem With {.Content = "**" & nm, .Tag = EmployeeList.IndexOf(emp)}
+                    cbxAssociates.Items.Add(cbi)
+                    AddHandler cbi.Selected, AddressOf AssociateSelected
+                    tempcount += 1
+                Next
+
+                If tempcount > 0 And InitialWarning = True Then
+                    Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.OkOnly, 12,,, "Unassigned associates are present", "These are indicated with ** before the name", AgnesMessageBox.ImageType.Alert)
+                    amsg.ShowDialog()
+                    amsg.Close()
+                    InitialWarning = False
+                End If
 
             Case 1
                 Dim qan = From anl In SharedDataGroup.EmployeeLists
@@ -256,8 +283,17 @@ Public Class Training
     Private Sub AssociateSelected(sender As ComboBoxItem, e As RoutedEventArgs)
         Dim selindex As Integer = cbxAssociates.Items.IndexOf(sender)
         Dim eid As Long = EmployeeList(Long.Parse(sender.Tag)).CompassId
-        PopulateTrainingTypes(GetBusinessGroup(eid))
-        PopulateTrainingRecords(eid)
+
+        If eid = 99999 Then
+            NewAssociate = True
+            PopulateTrainingTypes(0)
+            PopulateTrainingRecords(eid, sender.Content)
+        Else
+            PopulateTrainingTypes(GetBusinessGroup(eid))
+            PopulateTrainingRecords(eid)
+        End If
+
+
         If cbxTraining.Items.Count = 0 Then Exit Sub
         cbxTraining.IsEnabled = True
         cbxTraining.SelectedIndex = -1
@@ -297,30 +333,50 @@ Public Class Training
         btnSave.IsEnabled = False
     End Sub
 
-    Private Sub PopulateTrainingRecords(eid As Long)
+    Private Sub PopulateTrainingRecords(eid As Long, Optional nm As String = "")
         dgTrainingHistory.ItemsSource = Nothing
         dgTrainingHistory.DataContext = Nothing
-
         source = New Trainings
 
-        Dim qtr = From atr In TrainingData.TrainingRecords
-                  Where atr.AssociateID = eid
-                  Select atr
+        If eid = 99999 Then
+            If Mid(nm, 1, 2) = "**" Then nm = Mid(nm, 3, Len(nm) - 2)
+            Dim qtr = From atr In TrainingData.TempRecords
+                      Where atr.AssociateName = nm
+                      Select atr
 
-        For Each atr In qtr
-            Dim tr As New TrainingRecordItem
-            With tr
-                .Training = GetTrainingType(atr.Training)
-                .Start = FormatDateTime(atr.StartDate, DateFormat.ShortDate)
-                .Complete = Format(atr.EndDate, "MM/dd/yy")
-                .Trainer = GetTrainer(atr.Trainer)
-                .Score = atr.Score
-            End With
+            For Each atr In qtr
+                Dim tr As New TrainingRecordItem
+                With tr
+                    .Training = GetTrainingType(atr.Training)
+                    .Start = FormatDateTime(atr.StartDate, DateFormat.ShortDate)
+                    .Complete = Format(atr.EndDate, "MM/dd/yy")
+                    .Trainer = GetTrainer(atr.Trainer)
+                    .Score = atr.Score
+                End With
 
-            source.Add(tr)
-            dgTrainingHistory.DataContext = source
-            dgTrainingHistory.ItemsSource = source
-        Next
+                source.Add(tr)
+            Next
+        Else
+            Dim qtr = From atr In TrainingData.TrainingRecords
+                      Where atr.AssociateID = eid
+                      Select atr
+
+            For Each atr In qtr
+                Dim tr As New TrainingRecordItem
+                With tr
+                    .Training = GetTrainingType(atr.Training)
+                    .Start = FormatDateTime(atr.StartDate, DateFormat.ShortDate)
+                    .Complete = Format(atr.EndDate, "MM/dd/yy")
+                    .Trainer = GetTrainer(atr.Trainer)
+                    .Score = atr.Score
+                End With
+
+                source.Add(tr)
+            Next
+        End If
+        dgTrainingHistory.DataContext = source
+        dgTrainingHistory.ItemsSource = source
+
     End Sub
 
     Private Sub TrainingSelected(sender As Object, e As SelectionChangedEventArgs) Handles cbxTraining.SelectionChanged
@@ -460,8 +516,15 @@ Public Class Training
         Else
 
             Dim newentry As New TempRecord
+            If cbxAssociates.SelectedIndex = 0 Then
+                newentry.AssociateName = newassociatecbi.Content
+            Else
+                Dim tmpnm As String = cbxAssociates.Text
+                If Mid(tmpnm, 1, 2) = "**" Then tmpnm = Mid(tmpnm, 3, Len(tmpnm) - 2)
+                newentry.AssociateName = tmpnm
+            End If
+
             With newentry
-                .AssociateName = newassociatecbi.Content
                 .Certification = CertVal
                 .StartDate = dtpStartDt.DisplayDate
                 .EndDate = dtpEndDt.DisplayDate
@@ -472,10 +535,10 @@ Public Class Training
             End With
             TrainingData.TempRecords.Add(newentry)
             TrainingData.SaveChanges()
+
         End If
-
-
         ClearFields()
+        PopulateAssociates()
     End Sub
 
     Private Sub ClearFields()
@@ -526,6 +589,7 @@ Public Class Training
 
         Return ebg.BusinessGroup
     End Function
+
 #End Region
 
 End Class
