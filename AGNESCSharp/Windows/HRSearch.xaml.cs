@@ -558,52 +558,46 @@ namespace AGNESCSharp
                             bool exists = myFile.Exists;
 
                             (DateTime earlyDate, double occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber);
-                            //TODO: add prog counselling forms where neccessary switch case same as HROccurrence
-                            switch (occPoints)
+
+                            if (occPoints < 4)
                             {
-                                case 4:
-                                    BIMessageBox.Show(firstName + " Has 4 Occurrence Points, 1 More Before " + earlyDate.ToShortDateString() + " Will Require A Written Progressive Counseling.");
-                                    break;
-
-                                case 4.5:
-                                    BIMessageBox.Show(firstName + " Has 4.5 Occurrence Points, .5 More Before " + earlyDate.ToShortDateString() + " Will Require A Written Progressive Counseling.");
-                                    break;
-
-                                case 5:
-                                    BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This WRITTEN Warning Form" +
+                                MessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points");
+                            }
+                            else if (occPoints >= 4 && occPoints < 5)
+                            {
+                                BIMessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points " + (5 - occPoints) + " More Before " + earlyDate.ToShortDateString() + " Will Require A Written Progressive Counseling.");
+                            }
+                            else if (occPoints >= 5 && occPoints < 6)
+                            {
+                                BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This WRITTEN Warning Form" +
                                         "That I Will Open For You", MessageBoxButton.OK);
-                                    if (exists == true)
-                                    {
-                                        Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
-                                    }
-                                    else
-                                    {
-                                        MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
-                                    }
-                                    break;
-
-                                case 6:
-                                    BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This FINAL Warning Form" +
+                                if (exists == true)
+                                {
+                                    Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
+                                }
+                            }
+                            else if (occPoints >= 6 && occPoints < 7)
+                            {
+                                BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This FINAL Warning Form" +
                                         "That I Will Open For You", MessageBoxButton.OK);
-                                    if (exists == true)
-                                    {
-                                        Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
-                                    }
-                                    else
-                                    {
-                                        MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
-                                    }
-                                    break;
-
-                                case 7:
-                                    BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Print This DISCHARGE Form" +
+                                if (exists == true)
+                                {
+                                    Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
+                                }
+                            }
+                            else
+                            {
+                                BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Print This DISCHARGE Form" +
                                         "That I Will Open For You", MessageBoxButton.OK);
-                                    Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\TermLetter.docx");
-                                    break;
-
-                                default:
-                                    MessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points");
-                                    break;
+                                Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\TermLetter.docx");
                             }
                         }
                         catch (Exception ex)
@@ -771,7 +765,6 @@ namespace AGNESCSharp
 
             return index;
         }
-
 
         //private long GetAssocNumber(string firstName, string lastName)
         //{
