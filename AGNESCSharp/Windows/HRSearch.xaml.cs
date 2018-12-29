@@ -490,6 +490,90 @@ namespace AGNESCSharp
 
             //Occurrence Violation Selected
             if (selectedSearchType == 0)
+            {
+                string selectOccurrence = CHOccNumber.Text;
+                byte type = 0;
+                string violationText;
+                SelectOccurrence = Convert.ToInt64(selectOccurrence);
+                using (var db = new AGNESEntity())
+                {
+                    var result = db.Occurrences.SingleOrDefault(f => f.PID == SelectOccurrence);
+                    if (result != null)
+                    {
+                        ComboBoxItem cbi = new ComboBoxItem();
+                        cbi = (ComboBoxItem)OccCB.SelectedItem;
+                        type = Convert.ToByte(cbi.Tag);
+                        violationText = cbi.Content.ToString();
+                        result.AttendanceViolation = violationText;
+                        result.Type = type;
+                        result.Date = OccDate.SelectedDate;
+                        result.Notes = OccNotes.Text;
+                        try
+                        {
+                            db.SaveChanges();
+                            MessageBox.Show("Occurrence Record Has Been Updated.");
+                            DateTime date = (DateTime)OccDate.SelectedDate;
+
+                            //get Write up form ready
+                            FileInfo myFile = new FileInfo(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                            bool exists = myFile.Exists;
+
+                            (DateTime earlyDate, double occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber);
+
+                            if (violationText == "No Call No Show")
+                            {
+                                BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show Requires An Automatic Written Progressive Counseling, Please Fill Out And Print This Form", MessageBoxButton.OK);
+                                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                            }
+
+                            if (occPoints < 4)
+                            {
+                                MessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points");
+                            }
+                            else if (occPoints >= 4 && occPoints < 5)
+                            {
+                                BIMessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points " + (5 - occPoints) + " More Before " + earlyDate.ToShortDateString() + " Will Require A Written Progressive Counseling.");
+                            }
+                            else if (occPoints >= 5 && occPoints < 6)
+                            {
+                                BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This WRITTEN Warning Form" +
+                                        "That I Will Open For You", MessageBoxButton.OK);
+                                if (exists == true)
+                                {
+                                    Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
+                                }
+                            }
+                            else if (occPoints >= 6 && occPoints < 7)
+                            {
+                                BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This FINAL Warning Form" +
+                                        "That I Will Open For You", MessageBoxButton.OK);
+                                if (exists == true)
+                                {
+                                    Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
+                                }
+                            }
+                            else
+                            {
+                                BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Print This DISCHARGE Form" +
+                                        "That I Will Open For You", MessageBoxButton.OK);
+                                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("There was a problem updating the OCCURRENCE record in the database please contact Business Intelligence " + ex);
+                        }
+                    }
+                }
+            }
 
             //Leave Of Absense Selected
             else if (selectedSearchType == 1)
