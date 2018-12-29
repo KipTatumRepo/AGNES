@@ -4,16 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace AGNESCSharp
 {
@@ -396,15 +389,7 @@ namespace AGNESCSharp
                 }
 
                 byte? type = filteredRow.Type;
-
-                //if (type == 1)
-                //{
-                //    OccHalf.IsChecked = true;
-                //}
-                //else
-                //{
-                //    OccFull.IsChecked = true;
-                //}
+                
                 OccNotes.Text = filteredRow.Notes;
             }
             UpdateButton.Visibility = Visibility.Visible;
@@ -472,7 +457,7 @@ namespace AGNESCSharp
         {
             UpdateButton.Visibility = Visibility.Visible;
             MultipleCashHandleDG.Visibility = Visibility.Collapsed;
-            //CashHandleDisplayGrid.Visibility = Visibility.Visible;
+            
             if (MultipleCashHandleDG.SelectedItem == null) return;
 
             object row = MultipleCashHandleDG.SelectedValue;
@@ -503,110 +488,10 @@ namespace AGNESCSharp
         {
             AGNESEntity agnesdb = new AGNESEntity();
 
+            //Occurrence Violation Selected
             if (selectedSearchType == 0)
-            {
-                string selectOccurrence = CHOccNumber.Text;
-                byte type = 0;
-                string violationText;
-                SelectOccurrence = Convert.ToInt64(selectOccurrence);
-                using (var db = new AGNESEntity())
-                {
-                    var result = db.Occurrences.SingleOrDefault(f => f.PID == SelectOccurrence);
-                    if (result != null)
-                    {
-                        ComboBoxItem cbi = new ComboBoxItem();
-                        cbi = (ComboBoxItem)OccCB.SelectedItem;
-                        type = Convert.ToByte(cbi.Tag);
-                        violationText = cbi.Content.ToString();
 
-                        //if (OccCB.SelectedIndex == 0 || OccCB.SelectedIndex == 1)
-                        //{
-                        //    type = 1;
-                        //}
-                        //else
-                        //{
-                        //    type = 2;
-                        //}
-
-                        //if (OccHalf.IsChecked == true)
-                        //{
-                        //    type = 1;
-                        //}
-
-                        //if (OccFull.IsChecked == true)
-                        //{
-                        //    type = 2;
-                        //}
-                        result.AttendanceViolation = violationText;
-                        result.Type = type;
-                        result.Date = OccDate.SelectedDate;
-                        result.Notes = OccNotes.Text;
-                        //if (result.AttendanceViolation != null)
-                        //{
-                        //    result.AttendanceViolation = (OccCB.SelectedItem as ComboBoxItem).Content.ToString();
-                        //}
-                        //else
-                        //    result.AttendanceViolation = null;
-                        try
-                        {
-                            db.SaveChanges();
-                            MessageBox.Show("Occurrence Record Has Been Updated.");
-                            DateTime date = (DateTime)OccDate.SelectedDate;
-
-                            //get Write up form ready
-                            FileInfo myFile = new FileInfo(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
-                            bool exists = myFile.Exists;
-
-                            (DateTime earlyDate, double occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber);
-
-                            if (occPoints < 4)
-                            {
-                                MessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points");
-                            }
-                            else if (occPoints >= 4 && occPoints < 5)
-                            {
-                                BIMessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points " + (5 - occPoints) + " More Before " + earlyDate.ToShortDateString() + " Will Require A Written Progressive Counseling.");
-                            }
-                            else if (occPoints >= 5 && occPoints < 6)
-                            {
-                                BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This WRITTEN Warning Form" +
-                                        "That I Will Open For You", MessageBoxButton.OK);
-                                if (exists == true)
-                                {
-                                    Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
-                                }
-                                else
-                                {
-                                    MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
-                                }
-                            }
-                            else if (occPoints >= 6 && occPoints < 7)
-                            {
-                                BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This FINAL Warning Form" +
-                                        "That I Will Open For You", MessageBoxButton.OK);
-                                if (exists == true)
-                                {
-                                    Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
-                                }
-                                else
-                                {
-                                    MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
-                                }
-                            }
-                            else
-                            {
-                                BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Print This DISCHARGE Form" +
-                                        "That I Will Open For You", MessageBoxButton.OK);
-                                Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\TermLetter.docx");
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show("There was a problem updating the OCCURRENCE record in the database please contact Business Intelligence " + ex);
-                        }
-                    }
-                }
-            }
+            //Leave Of Absense Selected
             else if (selectedSearchType == 1)
             {
                 string selectOccurrence = LeaveNumber.Text;
@@ -667,6 +552,8 @@ namespace AGNESCSharp
                     }
                 }
             }
+
+            //Cash Handle Occurrence Selected
             else
             {
                 byte type;
@@ -702,7 +589,7 @@ namespace AGNESCSharp
                             {
                                 BIMessageBox.Show("Counseling Form Dialog", firstName + "'s Variance Type Was Changed To Greater Than $3.00 but Less Than $20.00, This is an Automatic Progressive Counseling" +
                                                     " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
-                                Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
+                                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
                             }
                         }
                         catch (Exception ex)
@@ -721,9 +608,7 @@ namespace AGNESCSharp
             string AssocNumber = (MultipleNameDG.SelectedCells[0].Column.GetCellContent(row) as TextBlock).Text;
             assocNumber = Convert.ToInt64(AssocNumber);
             SearchDb(null, searchTable.Content.ToString(), assocNumber);
-            //return;
-            //return assocNumber;
-        }
+        } 
 
         private int SetIndex(string cbSelection)
         {
@@ -743,26 +628,7 @@ namespace AGNESCSharp
             cbList.Add("Unexcused Absence");
 
             index = cbList.FindIndex(x => x.StartsWith(cbSelection));
-
-
-
-            //if (cbSelection == "Late Unexcused")
-            //{
-            //    index = 0;
-            //}
-            //else if (cbSelection == "Leave Early Unexcused")
-            //{
-            //    index = 1;
-            //}
-            //else if (cbSelection == "No Call No Show")
-            //{
-            //    index = 2;
-            //}
-            //else
-            //{
-            //    index = 3;
-            //}
-
+            
             return index;
         }
 
@@ -827,7 +693,7 @@ namespace AGNESCSharp
             if (table == "Occurrence Search")
             {
                 var query = from occTable in agnesdb.Occurrences
-                            where assocNumber == occTable.PersNumber //firstName == occTable.FirstName && lastName == occTable.LastName
+                            where assocNumber == occTable.PersNumber 
                             orderby occTable.Date ascending
                             select occTable;
 
@@ -869,15 +735,7 @@ namespace AGNESCSharp
                             }
                             //get type value from db to select correct radio button
                             byte? type = row.Type;
-
-                            //if (type == 1)
-                            //{
-                            //    OccHalf.IsChecked = true;
-                            //}
-                            //else
-                            //{
-                            //    OccFull.IsChecked = true;
-                            //}
+                            
                             OccNotes.Text = row.Notes;
                         }
                         UpdateButton.Visibility = Visibility.Visible;
@@ -897,7 +755,7 @@ namespace AGNESCSharp
             else if (table == "LOA Search")
             {
                 var query = from LOATable in agnesdb.LOAs
-                            where assocNumber == LOATable.PersNumber //firstName == LOATable.FirstName && lastName == LOATable.LastName
+                            where assocNumber == LOATable.PersNumber 
                             orderby LOATable.DateStart ascending
                             select LOATable;
 
@@ -963,7 +821,7 @@ namespace AGNESCSharp
             else
             {
                 var query = from CashTable in agnesdb.CashHandles
-                            where assocNumber == CashTable.PersNumber //firstName == CashTable.FirstName && lastName == CashTable.LastName
+                            where assocNumber == CashTable.PersNumber 
                             orderby CashTable.Date ascending
                             select CashTable;
 
@@ -1003,7 +861,6 @@ namespace AGNESCSharp
             }
             #endregion
         }
-
         #endregion
     }
 }
