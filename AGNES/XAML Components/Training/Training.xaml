@@ -30,6 +30,9 @@
                 <Image x:Name="imgAddTraining" Height="25" VerticalAlignment="Top" Width="50" Source="/AGNES;component/Resources/Class.png" ToolTip="Add Training"/>
                 <Separator/>
                 <Image x:Name="imgAddTrainer" Height="25" VerticalAlignment="Top" Width="50" Source="/AGNES;component/Resources/Trainer.png" ToolTip="Add Trainer"/>
+                <Separator/>
+                <Image x:Name="imgAssocMap" Height="25" VerticalAlignment="Top" Width="50" Source="/AGNES;component/Resources/map-editing.png" ToolTip="Assign Unmapped Associates" Visibility="Collapsed"/>
+
             </ToolBar>
         </Grid>
         <DataGrid x:Name="dgTrainingHistory" HorizontalAlignment="Left" Height="163" Margin="10,246,0,0" VerticalAlignment="Top" Width="772" Background="OldLace" IsEnabled="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" CanUserResizeRows="False"/>

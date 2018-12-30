@@ -93,6 +93,12 @@ Public Class Training
         NewTrainerUI.ShowDialog()
     End Sub
 
+    Private Sub MapAssociates(sender As Object, e As MouseButtonEventArgs) Handles imgAssocMap.MouseLeftButtonDown
+        Dim NewMapUI As New AssociateMapping(0)
+        NewMapUI.ShowDialog()
+        NewMapUI.Close()
+        PopulateAssociates(0)
+    End Sub
 
 #End Region
     Private Sub CreateScoreBox()
@@ -143,6 +149,7 @@ Public Class Training
         ' Search 1 = By Last Name
         ' Search 2 = By Cost Center
         ' Search 3 = By Employee Number
+        imgAssocMap.Visibility = Visibility.Collapsed
         EmployeeList.Clear()
         cbxAssociates.Items.Clear()
         cbxTraining.IsEnabled = False
@@ -184,11 +191,14 @@ Public Class Training
                     tempcount += 1
                 Next
 
-                If tempcount > 0 And InitialWarning = True Then
-                    Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.OkOnly, 12,,, "Unassigned associates are present", "These are indicated with ** before the name", AgnesMessageBox.ImageType.Alert)
-                    amsg.ShowDialog()
-                    amsg.Close()
-                    InitialWarning = False
+                If tempcount > 0 Then
+                    imgAssocMap.Visibility = Visibility.Visible
+                    If InitialWarning = True Then
+                        Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.OkOnly, 12,,, "Unassigned associates are present", "These are indicated with ** before the name", AgnesMessageBox.ImageType.Alert)
+                        amsg.ShowDialog()
+                        amsg.Close()
+                        InitialWarning = False
+                    End If
                 End If
 
             Case 1
