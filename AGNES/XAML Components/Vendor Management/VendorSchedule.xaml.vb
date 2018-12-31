@@ -658,41 +658,11 @@ Public Class VendorSchedule
 
     Private Sub PrintTrucks()
         fd = New FlowDocument With {.ColumnGap = 0, .ColumnWidth = pd.PrintableAreaWidth}
-        Dim activeday As ScheduleDay, activeloc As ScheduleLocation, activetruck As ScheduleTruckStation
-#Region "Build Header"
-        Dim t As New Table() With {.CellSpacing = 0, .Background = New BrushConverter().ConvertFrom("#d83b01"), .Foreground = Brushes.White}
-        t.Columns.Add(New TableColumn() With {.Width = New GridLength(200)})
-        t.Columns.Add(New TableColumn() With {.Width = New GridLength(550)})
-        t.RowGroups.Add(New TableRowGroup())
+        Dim activeday As ScheduleDay, activeloc As ScheduleLocation, rowcolortoggle As Boolean, rowcolor As Brush
+        Dim HeaderLocationString As String = ""
+        Dim LocationBlocks As Byte
 
-        Dim cr As TableRow
-
-        For y As Byte = 1 To 4
-            t.RowGroups(0).Rows.Add(New TableRow() With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI")})
-        Next
-
-        cr = t.RowGroups(0).Rows(0)
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("     RE&F")) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 24, .FontWeight = FontWeights.Normal}))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("Food Truck Schedule")) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 28, .FontWeight = FontWeights.Light}))
-
-        cr = t.RowGroups(0).Rows(1)
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("")) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 18, .FontWeight = FontWeights.Normal}))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("Buildings 92, Studio X, 43, 32, + Millennium")) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 18, .FontWeight = FontWeights.Light}))
-
-        cr = t.RowGroups(0).Rows(2)
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("")) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 18, .FontWeight = FontWeights.Normal}))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("Dining")) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 18, .FontWeight = FontWeights.Normal}))
-
-        cr = t.RowGroups(0).Rows(3)
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("")) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 14, .FontWeight = FontWeights.Normal}))
-        cr.Cells.Add(New TableCell(New Paragraph(New Run("")) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 14, .FontWeight = FontWeights.Normal}))
-
-        Dim wkp As New Paragraph(New Run("Week of " & GetWeekStart().ToLongDateString)) With
-            {.FontSize = 16, .TextAlignment = TextAlignment.Left, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI"), .Foreground = New BrushConverter().ConvertFrom("#d83b01")}
-#End Region
-
-#Region "Collect schedule data"
-        'TODO: REFINE FOOD TRUCK SCHEDULE DATA GATHERING PROCEDURES
+#Region "Collect schedule data and construct table"
         Dim st As New Table() With {.CellSpacing = 0, .Background = New BrushConverter().ConvertFrom("#d83b01"), .Foreground = Brushes.White}
         st.Columns.Add(New TableColumn() With {.Width = New GridLength(100)})
         st.Columns.Add(New TableColumn() With {.Width = New GridLength(130)})
@@ -702,67 +672,124 @@ Public Class VendorSchedule
         st.Columns.Add(New TableColumn() With {.Width = New GridLength(130)})
         st.RowGroups.Add(New TableRowGroup())
 
-        'Dim dc As Byte = 0
-        'For Each d In wkSched.Children
-        '    If TypeOf (d) Is ScheduleDay Then
-        '        activeday = d
-        '        For Each l In activeday.LocationStack.Children
-        '            If TypeOf (l) Is ScheduleLocation Then
-        '                activeloc = l
-        '                If activeloc.AllowsFoodTrucks = True Then
-        '                    cr = st.RowGroups(0).Rows(0)
-        '                    cr.Cells.Add(New TableCell(New Paragraph(New Run(activeloc.LocationName)) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Normal}))
-        '                    For Each ts In activeloc.StationStack.Children
-        '                        If TypeOf (ts) Is ScheduleTruckStation Then
-        '                            activetruck = ts
+        activeday = wkSched.Children(0)
 
-        '                        End If
-        '                    Next
-        '                End If
 
-        '            End If
-        '        Next
-        '    End If
-        'Next
+        '// Add column headers
+        Dim crw As New TableRow With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI")}
+        st.RowGroups(0).Rows.Add(New TableRow() With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI"), .Background = New BrushConverter().ConvertFrom("#d83b01"), .Foreground = Brushes.White})
+        crw = st.RowGroups(0).Rows(0)
+        crw.Cells.Add(New TableCell(New Paragraph(New Run("Building")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold}))
+        crw.Cells.Add(New TableCell(New Paragraph(New Run("Monday" & Chr(13) & activeday.DateValue.Month & "/" & activeday.DateValue.Day)) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold}))
+        crw.Cells.Add(New TableCell(New Paragraph(New Run("Tuesday" & Chr(13) & activeday.DateValue.AddDays(1).Month & "/" & activeday.DateValue.AddDays(1).Day)) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold}))
+        crw.Cells.Add(New TableCell(New Paragraph(New Run("Wednesday" & Chr(13) & activeday.DateValue.AddDays(2).Month & "/" & activeday.DateValue.AddDays(2).Day)) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold}))
+        crw.Cells.Add(New TableCell(New Paragraph(New Run("Thursday" & Chr(13) & activeday.DateValue.AddDays(3).Month & "/" & activeday.DateValue.AddDays(3).Day)) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold}))
+        crw.Cells.Add(New TableCell(New Paragraph(New Run("Friday" & Chr(13) & activeday.DateValue.AddDays(4).Month & "/" & activeday.DateValue.AddDays(4).Day)) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold}))
 
+        Dim ActiveRow As Byte = 0
+        For Each l In activeday.LocationStack.Children
+            If TypeOf (l) Is ScheduleLocation Then
+                activeloc = l
+                If activeloc.AllowsFoodTrucks = True Then
+                    Dim tpj As New TruckSchedulePrintMatrix(wkSched, activeloc.LocationName)
+                    tpj.GetData()
+                    If tpj.TotalCount > 0 Then
+                        LocationBlocks += 1
+                        If tpj.MaxTruckCount > 1 Then LocationBlocks += ((tpj.MaxTruckCount - 1) / 3)
+                        If HeaderLocationString = "" Then
+                            HeaderLocationString = "Buildings " & tpj.HdrLocName
+                        Else
+                            HeaderLocationString = HeaderLocationString & ", " & tpj.HdrLocName
+                        End If
+
+                        If rowcolortoggle = True Then
+                            rowcolor = New BrushConverter().ConvertFrom("#fed4c4")
+                        Else
+                            rowcolor = New BrushConverter().ConvertFrom("#fea98a")
+                        End If
+                        st.RowGroups(0).Rows.Add(New TableRow() With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI"), .Background = New BrushConverter().ConvertFrom("#d83b01"), .Foreground = Brushes.White})
+                        ActiveRow += 1
+                        crw = st.RowGroups(0).Rows(ActiveRow)
+                        crw.Cells.Add(New TableCell(New Paragraph(New Run(Chr(13) & "  " & tpj.LocName & Chr(13))) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.DemiBold, .BorderBrush = Brushes.White, .BorderThickness = New Thickness(0, 1, 1, 0)}))
+                        crw.Cells.Add(New TableCell(New Paragraph(New Run(Chr(13) & "  " & tpj.Mon & Chr(13))) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Normal, .BorderBrush = Brushes.White, .BorderThickness = New Thickness(0, 1, 1, 0), .Background = rowcolor, .Foreground = Brushes.Black}))
+                        crw.Cells.Add(New TableCell(New Paragraph(New Run(Chr(13) & "  " & tpj.Tue & Chr(13))) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Normal, .BorderBrush = Brushes.White, .BorderThickness = New Thickness(0, 1, 1, 0), .Background = rowcolor, .Foreground = Brushes.Black}))
+                        crw.Cells.Add(New TableCell(New Paragraph(New Run(Chr(13) & "  " & tpj.Wed & Chr(13))) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Normal, .BorderBrush = Brushes.White, .BorderThickness = New Thickness(0, 1, 1, 0), .Background = rowcolor, .Foreground = Brushes.Black}))
+                        crw.Cells.Add(New TableCell(New Paragraph(New Run(Chr(13) & "  " & tpj.Thu & Chr(13))) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Normal, .BorderBrush = Brushes.White, .BorderThickness = New Thickness(0, 1, 1, 0), .Background = rowcolor, .Foreground = Brushes.Black}))
+                        crw.Cells.Add(New TableCell(New Paragraph(New Run(Chr(13) & "  " & tpj.Fri & Chr(13))) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Normal, .BorderBrush = Brushes.White, .BorderThickness = New Thickness(0, 1, 0, 0), .Background = rowcolor, .Foreground = Brushes.Black}))
+                        rowcolortoggle = Not rowcolortoggle
+                    End If
+
+                End If
+
+            End If
+        Next
 
 #End Region
 
-#Region "Construct Schedule Table"
+#Region "Build Document Header"
+        Dim HeaderTable As New Table() With {.CellSpacing = 0, .Background = New BrushConverter().ConvertFrom("#d83b01"), .Foreground = Brushes.White}
+        HeaderTable.Columns.Add(New TableColumn() With {.Width = New GridLength(200)})
+        HeaderTable.Columns.Add(New TableColumn() With {.Width = New GridLength(550)})
+        HeaderTable.RowGroups.Add(New TableRowGroup())
 
+        Dim cr As TableRow
+
+        For y As Byte = 1 To 4
+            HeaderTable.RowGroups(0).Rows.Add(New TableRow() With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI")})
+        Next
+
+        cr = HeaderTable.RowGroups(0).Rows(0)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("     RE&F")) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 24, .FontWeight = FontWeights.Normal}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Food Truck Schedule")) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 28, .FontWeight = FontWeights.Light}))
+
+        cr = HeaderTable.RowGroups(0).Rows(1)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("")) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 18, .FontWeight = FontWeights.Normal}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run(HeaderLocationString)) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 18, .FontWeight = FontWeights.Light}))
+
+        cr = HeaderTable.RowGroups(0).Rows(2)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("")) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 18, .FontWeight = FontWeights.Normal}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("Dining")) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 18, .FontWeight = FontWeights.Normal}))
+
+        cr = HeaderTable.RowGroups(0).Rows(3)
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("")) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 14, .FontWeight = FontWeights.Normal}))
+        cr.Cells.Add(New TableCell(New Paragraph(New Run("")) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 14, .FontWeight = FontWeights.Normal}))
+
+        Dim WeekParagraph As New Paragraph(New Run("Week of " & GetWeekStart().ToLongDateString)) With
+            {.FontSize = 16, .TextAlignment = TextAlignment.Left, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI"), .Foreground = New BrushConverter().ConvertFrom("#d83b01")}
 #End Region
-#Region "Footers"
 
-        Dim htp As New Paragraph(New Run("Food Truck Hours: 11:00 a.m. – 2:00 p.m.")) With
+#Region "Build Document Footer"
+
+        Dim HoursParagraph As New Paragraph(New Run("Food Truck Hours: 11:00 a.m. – 2:00 p.m.")) With
             {.FontSize = 12, .TextAlignment = TextAlignment.Left, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI"), .Foreground = New BrushConverter().ConvertFrom("#d83b01")}
 
         Dim buic As New BlockUIContainer()
         buic.Child = New Image With {.Opacity = 60, .Height = 42, .Width = 115, .Source = New BitmapImage(New Uri("pack://application:,,,/Resources/MSLogo.png"))}
-        Dim ft As New Table() With {.CellSpacing = 0, .Foreground = Brushes.DarkGray}
-        ft.RowGroups.Add(New TableRowGroup())
-        t.Columns.Add(New TableColumn() With {.Width = New GridLength(50)})
-        t.Columns.Add(New TableColumn() With {.Width = New GridLength(700)})
+        Dim FooterTable As New Table() With {.CellSpacing = 0, .Foreground = Brushes.DarkGray}
+        FooterTable.RowGroups.Add(New TableRowGroup())
+        FooterTable.Columns.Add(New TableColumn() With {.Width = New GridLength(600)})
+        FooterTable.Columns.Add(New TableColumn() With {.Width = New GridLength(150)})
         Dim fcr As TableRow
-        ft.RowGroups(0).Rows.Add(New TableRow() With {.FontSize = 8, .FontWeight = FontWeights.Light, .FontFamily = New FontFamily("Segoe UI")})
-        fcr = ft.RowGroups(0).Rows(0)
+        FooterTable.RowGroups(0).Rows.Add(New TableRow() With {.FontSize = 8, .FontWeight = FontWeights.Light, .FontFamily = New FontFamily("Segoe UI")})
+        fcr = FooterTable.RowGroups(0).Rows(0)
         fcr.Cells.Add(New TableCell(New Paragraph(New Run("Real Estate & Facilities" & Chr(13) & "Building Intelligent Solutions")) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Light}))
-        fcr.Cells.Add(New TableCell(buic))
+        fcr.Cells.Add(New TableCell(buic) With {.TextAlignment = TextAlignment.Right})
 
 
 #End Region
 
 #Region "Compose and Print"
         With fd.Blocks
-            .Add(t)
-            .Add(wkp)
-            .Add(New Paragraph(New Run("")))
-            .Add(htp)
-            .Add(New Paragraph(New Run("")))
-            .Add(New Paragraph(New Run("")))
-            .Add(New Paragraph(New Run("")))
-            .Add(New Paragraph(New Run("")))
-            .Add(ft)
+            .Add(HeaderTable)
+            .Add(WeekParagraph)
+            .Add(st)
+            .Add(HoursParagraph)
         End With
+        Dim blckcount As Byte = 18 - Math.Round(LocationBlocks, 0)
+        For x As Byte = 1 To blckcount
+            fd.Blocks.Add(New Paragraph(New Run("")))
+        Next
+        fd.Blocks.Add(FooterTable)
 
         Dim xps_writer As XpsDocumentWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue)
         Dim idps As IDocumentPaginatorSource = CType(fd, IDocumentPaginatorSource)

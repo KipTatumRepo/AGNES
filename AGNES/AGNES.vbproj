@@ -332,6 +332,7 @@
     <Compile Include="Vendor Objects\ScheduleVendor.vb" />
     <Compile Include="Vendor Objects\ScheduleWeek.vb" />
     <Compile Include="Vendor Objects\ScheduleStation.vb" />
+    <Compile Include="Vendor Objects\TruckSchedulePrintMatrix.vb" />
     <Compile Include="Vendor Objects\VendorInStation.vb" />
     <Compile Include="XAML Components\EasterEggs\Birthday.xaml.vb">
       <DependentUpon>Birthday.xaml</DependentUpon>
