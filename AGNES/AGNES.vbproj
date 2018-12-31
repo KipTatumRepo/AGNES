@@ -337,6 +337,9 @@
     <Compile Include="XAML Components\EasterEggs\Birthday.xaml.vb">
       <DependentUpon>Birthday.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XAML Components\EasterEggs\ChaosCafeSplash.xaml.vb">
+      <DependentUpon>ChaosCafeSplash.xaml</DependentUpon>
+    </Compile>
     <Compile Include="XAML Components\EasterEggs\PacMan.xaml.vb">
       <DependentUpon>PacMan.xaml</DependentUpon>
     </Compile>
@@ -695,6 +698,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="XAML Components\EasterEggs\ChaosCafeSplash.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="XAML Components\EasterEggs\PacMan.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -968,6 +975,10 @@
     <Resource Include="Resources\Commons.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\14 Jumpshot.mp3" />
+    <Resource Include="Resources\Chef3.png" />
+    <Resource Include="Resources\Chef2.png" />
+    <Resource Include="Resources\Chef1.png" />
     <Resource Include="Resources\map-editing.png" />
     <Resource Include="Resources\MSLogo.png" />
     <Resource Include="Resources\reportcard.png" />

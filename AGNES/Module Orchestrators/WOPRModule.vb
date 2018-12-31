@@ -6,6 +6,10 @@
         ActiveWOPR.ShowDialog()
         If GameChoice <> "" Then
             Select Case GameChoice
+                Case "Chaos Cafe"
+                    Dim Chaos As New ChaosCafeSplash
+                    Chaos.ShowDialog()
+                    Chaos.Close()
                 Case "Manager Mayhem"
                 Case "Kustomer Kaos"
                 Case "Corner!"
