@@ -658,7 +658,7 @@ Public Class VendorSchedule
 
     Private Sub PrintTrucks()
         fd = New FlowDocument With {.ColumnGap = 0, .ColumnWidth = pd.PrintableAreaWidth}
-        Dim activeday As ScheduleDay, activeloc As ScheduleLocation, activetruck As ScheduleTruckStation
+        Dim activeday As ScheduleDay, activeloc As ScheduleLocation
 #Region "Build Header"
         Dim t As New Table() With {.CellSpacing = 0, .Background = New BrushConverter().ConvertFrom("#d83b01"), .Foreground = Brushes.White}
         t.Columns.Add(New TableColumn() With {.Width = New GridLength(200)})
@@ -692,7 +692,6 @@ Public Class VendorSchedule
 #End Region
 
 #Region "Collect schedule data"
-        'TODO: REFINE FOOD TRUCK SCHEDULE DATA GATHERING PROCEDURES
         Dim st As New Table() With {.CellSpacing = 0, .Background = New BrushConverter().ConvertFrom("#d83b01"), .Foreground = Brushes.White}
         st.Columns.Add(New TableColumn() With {.Width = New GridLength(100)})
         st.Columns.Add(New TableColumn() With {.Width = New GridLength(130)})
@@ -702,26 +701,37 @@ Public Class VendorSchedule
         st.Columns.Add(New TableColumn() With {.Width = New GridLength(130)})
         st.RowGroups.Add(New TableRowGroup())
 
-        'Dim dc As Byte = 0
-        'For Each d In wkSched.Children
-        '    If TypeOf (d) Is ScheduleDay Then
-        '        activeday = d
-        '        For Each l In activeday.LocationStack.Children
-        '            If TypeOf (l) Is ScheduleLocation Then
-        '                activeloc = l
-        '                If activeloc.AllowsFoodTrucks = True Then
-        '                    cr = st.RowGroups(0).Rows(0)
-        '                    cr.Cells.Add(New TableCell(New Paragraph(New Run(activeloc.LocationName)) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Normal}))
-        '                    For Each ts In activeloc.StationStack.Children
-        '                        If TypeOf (ts) Is ScheduleTruckStation Then
-        '                            activetruck = ts
+        activeday = wkSched.Children(0)
 
-        '                        End If
-        '                    Next
-        '                End If
 
-        '            End If
-        '        Next
+        '// Add column headers
+        Dim crw As New TableRow With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI")}
+        st.RowGroups(0).Rows.Add(New TableRow() With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI"), .Background = New BrushConverter().ConvertFrom("#d83b01"), .Foreground = Brushes.White})
+        crw = st.RowGroups(0).Rows(0)
+        crw.Cells.Add(New TableCell(New Paragraph(New Run("Building")) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold}))
+        crw.Cells.Add(New TableCell(New Paragraph(New Run("Monday" & Chr(13) & activeday.DateValue.ToShortDateString)) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold}))
+        crw.Cells.Add(New TableCell(New Paragraph(New Run("Tuesday" & Chr(13) & activeday.DateValue.AddDays(1).ToShortDateString)) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold}))
+        crw.Cells.Add(New TableCell(New Paragraph(New Run("Wednesday" & Chr(13) & activeday.DateValue.AddDays(2).ToShortDateString)) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold}))
+        crw.Cells.Add(New TableCell(New Paragraph(New Run("Thursday" & Chr(13) & activeday.DateValue.AddDays(3).ToShortDateString)) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold}))
+        crw.Cells.Add(New TableCell(New Paragraph(New Run("Friday" & Chr(13) & activeday.DateValue.AddDays(4).ToShortDateString)) With {.TextAlignment = TextAlignment.Center, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Bold}))
+
+
+        'For Each l In activeday.LocationStack.Children
+        '    If TypeOf (l) Is ScheduleLocation Then
+        '        activeloc = l
+        '        If activeloc.AllowsFoodTrucks = True Then
+        '            Dim tpj As New TruckSchedulePrintMatrix(wkSched, activeloc.LocationName)
+        '            tpj.GetData()
+        '            'cr = st.RowGroups(0).Rows(0)
+        '            'cr.Cells.Add(New TableCell(New Paragraph(New Run(activeloc.LocationName)) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Normal}))
+        '            'cr.Cells.Add(New TableCell(New Paragraph(New Run(tpj.Mon)) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Normal}))
+        '            'cr.Cells.Add(New TableCell(New Paragraph(New Run(tpj.Tue)) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Normal}))
+        '            'cr.Cells.Add(New TableCell(New Paragraph(New Run(tpj.Wed)) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Normal}))
+        '            'cr.Cells.Add(New TableCell(New Paragraph(New Run(tpj.Thu)) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Normal}))
+        '            'cr.Cells.Add(New TableCell(New Paragraph(New Run(tpj.Fri)) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Normal}))
+
+        '        End If
+
         '    End If
         'Next
 
@@ -755,8 +765,7 @@ Public Class VendorSchedule
         With fd.Blocks
             .Add(t)
             .Add(wkp)
-            .Add(New Paragraph(New Run("")))
-            .Add(htp)
+            .Add(st)
             .Add(New Paragraph(New Run("")))
             .Add(New Paragraph(New Run("")))
             .Add(New Paragraph(New Run("")))
