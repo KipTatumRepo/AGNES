@@ -164,20 +164,6 @@ namespace AGNESCSharp
             
             bool TermExists = myFileTerm.Exists;
             bool ProgExists = myFileProg.Exists;
-
-            if (AttType == "No Call No Show" && date != new DateTime(1001, 1, 1))
-            {
-                BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show is " + firstName + "'s Second In Less Than a Year And Requires Termination.  Please Fill Out And Print This Form", MessageBoxButton.OK);
-                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
-                this.Close();
-                return;
-            }
-
-            else if (AttType == "No Call No Show")
-            {
-                BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show Requires An Automatic Written Progressive Counseling, Please Fill Out And Print This Form", MessageBoxButton.OK);
-                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
-            }
             
             //right now earliest date is -1 year from incident date
             (DateTime earlyDate, double occPoints) = CountOccurrences(fDate, empID);
@@ -187,13 +173,26 @@ namespace AGNESCSharp
                 //Associate NOT in Probationary Period
                 case 0:
 
+                    if (AttType == "No Call No Show" && date != new DateTime(1001, 1, 1))
+                    {
+                        BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show is " + firstName + "'s Second In Less Than a Year And Requires Termination.  Please Fill Out And Print This Form", MessageBoxButton.OK);
+                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
+                        this.Close();
+                        return;
+                    }
+                    else if (AttType == "No Call No Show")
+                    {
+                        BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show Requires An Automatic FINAL Written Progressive Counseling, Please Fill Out And Print This Form", MessageBoxButton.OK);
+                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                    }
+
                     if (occPoints < 4)
                     {
                         MessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points");
                     }
                     else if (occPoints >= 4 && occPoints < 5)
                     {
-                        BIMessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points " + (5 - occPoints) + " More Before " + earlyDate.ToShortDateString() + " Will Require A Written Progressive Counseling.");
+                        BIMessageBox.Show("Warning Dialog", firstName + " Has " + occPoints + " Occurrence Points " + (5 - occPoints) + " More Before " + earlyDate.ToShortDateString() + " Will Require A Written Progressive Counseling.", MessageBoxButton.OK);
                     }
                     else if (occPoints >= 5 && occPoints < 6)
                     {
@@ -223,7 +222,7 @@ namespace AGNESCSharp
                     }
                     else
                     {
-                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Print This DISCHARGE Form" +
+                        BIMessageBox.Show("Termination Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This DISCHARGE Form" +
                                 "That I Will Open For You", MessageBoxButton.OK);
                         Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\TermLetter.docx");
                     }
@@ -231,10 +230,21 @@ namespace AGNESCSharp
 
                 //Associate IS In Probationary Period
                 case 1:
+
+                    if (AttType == "No Call No Show")
+                    {
+                        BIMessageBox.Show("No Call No Show Dialog", firstName + "Is In The Associates 90 Probationary Period, This No Call No Show Requires Automatic Termination " +
+                            "Please Fill Out And Print This DISCHARG Form", MessageBoxButton.OK);
+                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
+                        this.Close();
+                        return; 
+                        
+                    }
+
                     if (occPoints < 1)
                     {
-                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points.  " + (1 - occPoints) + " More Points Before " +
-                            hireDate.AddDays(90).ToShortDateString() + " Will Require A Written Progressive Counseling");
+                        BIMessageBox.Show("Warning Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points.  " + (1 - occPoints) + " More Points Before " +
+                            hireDate.AddDays(90).ToShortDateString() + " Will Require A Written Progressive Counseling", MessageBoxButton.OK);
                     }
 
                     else if (occPoints >= 1 && occPoints < 2)
@@ -252,7 +262,7 @@ namespace AGNESCSharp
                     }
                     else
                     {
-                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points, Please Print This DISCHARGE Form" +
+                        BIMessageBox.Show("Termination Form Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points, Please Print This DISCHARGE Form" +
                                 "That I Will Open For You", MessageBoxButton.OK);
                         if (TermExists == true)
                         {
@@ -290,6 +300,7 @@ namespace AGNESCSharp
             double occurrencePoints = 0;
             AGNESEntity agnesdb = new AGNESEntity();
             DateTime cutOffDate = date.AddYears(-1);
+            //DateTime hireDate;
 
             var query = from employeeTable in agnesdb.Occurrences
                         where employeeTable.PersNumber == empID && employeeTable.Date >= cutOffDate
@@ -298,6 +309,7 @@ namespace AGNESCSharp
 
             var eTQueryResult = query.ToList();
             var eTEarly = eTQueryResult[0];
+            
             DateTime occEarly = (DateTime)eTEarly.Date;
             DateTime EarlyDate = occEarly.AddYears(1);
 

@@ -29,8 +29,6 @@
                 <ComboBoxItem>Associate Number</ComboBoxItem>
                 <ComboBoxItem>Associate Name</ComboBoxItem>
             </ComboBox>
-
-
         </Grid>
         <!-- End Gather Search Info-->
 
@@ -264,5 +262,6 @@
         </Grid>
         <!-- End Cash Handle View-->
         <Button x:Name="UpdateButton" Content="Update" HorizontalAlignment="Center" Grid.Row="4" VerticalAlignment="Center" Width="75" Click="UpdateButton_Click" Visibility="Hidden" Height="20" />
+        
     </Grid>
 </Window>
