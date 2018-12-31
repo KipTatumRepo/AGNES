@@ -4,17 +4,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
 
 namespace AGNESCSharp
 {
@@ -29,20 +22,18 @@ namespace AGNESCSharp
         string AttType;
         long empID;
         byte type;
-        //byte NCNS;
-        int empInProbationPeriod = 0;
+        int empInProbation;
         int selectedIndex;
         int layoutFlag;
         private string empCostCenter;
         DateTime hireDate;
         DateTime today = DateTime.Now;
-        //DateTime? SelectedDate;
         DateTime? selectedDate;
         Dictionary<string, int> cbDictionary = new Dictionary<string, int>();
         #endregion
 
         #region Main
-        public HROccurrence(string emp, int empNum)
+        public HROccurrence(string emp, int empNum, int empInProbationPeriod)
         {
             InitializeComponent();
             cbDictionary.Add("Consecutive Unexcused Absence", 0);
@@ -69,6 +60,7 @@ namespace AGNESCSharp
             lastName = name[0].Trim();
             firstName = name[1].Trim();
             empID = empNum;
+            empInProbation = empInProbationPeriod;
 
             TopTextBox.Text = "Occurrence Details for " + firstName + " " + lastName;
 
@@ -80,13 +72,9 @@ namespace AGNESCSharp
             foreach (var result in query)
             {
                 empCostCenter = result.CostCenter;
+                hireDate = result.DateOfHire;
             }
-
-            if (hireDate.AddDays(90) >= today)
-            {
-                empInProbationPeriod = 1;
-            }
-
+            
             AOccurrenceDP.DisplayDateStart = DateTime.Now.AddYears(-1);
             AOccurrenceDP.DisplayDateEnd = DateTime.Now;
             //OOccurrenceDP.DisplayDateStart = DateTime.Now.AddYears(-1);
@@ -124,11 +112,7 @@ namespace AGNESCSharp
                     return;
                 }
             }
-            //else
-            //{
-            //    selectedDate = OOccurrenceDP.SelectedDate; 
-            //}
-
+            
             if (selectedDate == null)
             {
                 MessageBox.Show("Please Select a Valid Date");
@@ -149,25 +133,17 @@ namespace AGNESCSharp
                                     table.Date
                                 }).FirstOrDefault();
 
-
+            //Need to Check is Associate has a previous No Call No Show in the previous year
             if (NoCallFromDB == null)
             {
                 date = new DateTime(1001, 1, 1);
-
             }
             else
             {
                 date = NoCallFromDB.Date;
             }
-
-            //type = 1;
-
+            
             string notes = DescriptionTb.Text;
-
-            //if (AFullButton.IsChecked == true || OFullButton.IsChecked == true)
-            //{
-            //    type = 2;
-            //}
 
             oc.PersNumber = empID;
             oc.CostCenter = empCostCenter;
@@ -177,167 +153,129 @@ namespace AGNESCSharp
             oc.Date = selectedDate;
             oc.Notes = notes;
             oc.AttendanceViolation = AttType;
-            //oc.NoCallNoShow = NCNS;
 
             MainWindow.agnesdb.Occurrences.Add(oc);
             MainWindow.agnesdb.SaveChanges();
             MessageBox.Show("The Occurrence for " + firstName + " has been added");
 
-
             //get Write up form ready
             FileInfo myFileTerm = new FileInfo(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
             FileInfo myFileProg = new FileInfo(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
             
-            //FileInfo myFile = new FileInfo(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
             bool TermExists = myFileTerm.Exists;
             bool ProgExists = myFileProg.Exists;
+            
+            //right now earliest date is -1 year from incident date
+            (DateTime earlyDate, double occPoints) = CountOccurrences(fDate, empID);
 
-            if (AttType == "No Call No Show" && date != new DateTime(1001, 1, 1))
+            switch (empInProbation)
             {
-                BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show is " + firstName + "'s Second In Less Than a Year And Requires Termination.  Please Fill Out And Print This Form", MessageBoxButton.OK);
-                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
-                //Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\TermLetter.docx");
-                this.Close();
-                return;
-            }
-
-            else if (AttType == "No Call No Show")
-            {
-                BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show Requires An Automatic Written Progressive Counseling, Please Fill Out And Print This Form", MessageBoxButton.OK);
-                //Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
-                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
-                //Thread.Sleep(4000);
-            }
-
-            (DateTime earlyDate, double occurrencePoints) = CountOccurrences(fDate, empID);
-
-            switch (empInProbationPeriod)
-            {
+                //Associate NOT in Probationary Period
                 case 0:
-                    switch (occurrencePoints)
+
+                    if (AttType == "No Call No Show" && date != new DateTime(1001, 1, 1))
                     {
-                        case 4:
-                            BIMessageBox.Show(firstName + " Has 4 Occurrence Points, 1 More Before " + earlyDate.ToShortDateString() + " Will Require A Written Progressive Counseling.");
-                            break;
+                        BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show is " + firstName + "'s Second In Less Than a Year And Requires Termination.  Please Fill Out And Print This Form", MessageBoxButton.OK);
+                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
+                        this.Close();
+                        return;
+                    }
+                    else if (AttType == "No Call No Show")
+                    {
+                        BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show Requires An Automatic FINAL Written Progressive Counseling, Please Fill Out And Print This Form", MessageBoxButton.OK);
+                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                    }
 
-                        case 4.5:
-                            BIMessageBox.Show(firstName + " Has 4.5 Occurrence Points, .5 More Before " + earlyDate.ToShortDateString() + " Will Require A Written Progressive Counseling.");
-                            break;
-
-                        case 5:
-                            BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occurrencePoints + " Occurrence Points, Please Fill Out and Print This WRITTEN Warning Form" +
+                    if (occPoints < 4)
+                    {
+                        MessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points");
+                    }
+                    else if (occPoints >= 4 && occPoints < 5)
+                    {
+                        BIMessageBox.Show("Warning Dialog", firstName + " Has " + occPoints + " Occurrence Points " + (5 - occPoints) + " More Before " + earlyDate.ToShortDateString() + " Will Require A Written Progressive Counseling.", MessageBoxButton.OK);
+                    }
+                    else if (occPoints >= 5 && occPoints < 6)
+                    {
+                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This WRITTEN Warning Form" +
                                 "That I Will Open For You", MessageBoxButton.OK);
-                            if (ProgExists == true)
-                            {
-                                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
-                                //Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
-                            }
-                            else
-                            {
-                                MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
-                            }
-                            break;
-
-                        case 6:
-                            BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occurrencePoints + " Occurrence Points, Please Fill Out and Print This FINAL Warning Form" +
+                        if (ProgExists == true)
+                        {
+                            Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
+                        }
+                    }
+                    else if (occPoints >= 6 && occPoints < 7)
+                    {
+                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This FINAL Warning Form" +
                                 "That I Will Open For You", MessageBoxButton.OK);
-                            if (ProgExists == true)
-                            {
-                                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
-                                //Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
-                            }
-                            else
-                            {
-                                MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
-                            }
-                            break;
-
-                        case 7:
-                            BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occurrencePoints + " Occurrence Points, Please Print This DISCHARGE Form" +
+                        if (ProgExists == true)
+                        {
+                            Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
+                        }
+                    }
+                    else
+                    {
+                        BIMessageBox.Show("Termination Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This DISCHARGE Form" +
                                 "That I Will Open For You", MessageBoxButton.OK);
-                            if (TermExists == true)
-                            {
-                                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
-                            }
-                            else
-                            {
-                                MessageBox.Show("Oops there was a problem trying to open the Termination Form, Please contact Business Intelligence and let them know!");
-                            }
-                            
-                            //Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\TermLetter.docx");
-                            break;
-
-                        case 7.5:
-                            BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occurrencePoints + " Occurrence Points, Please Print This DISCHARGE Form" +
-                                "That I Will Open For You", MessageBoxButton.OK);
-                            if (TermExists == true)
-                            {
-                                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
-                            }
-                            else
-                            {
-                                MessageBox.Show("Oops there was a problem trying to open the Termination Form, Please contact Business Intelligence and let them know!");
-                            }
-                            break;
-
-                        case 8:
-                            BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occurrencePoints + " Occurrence Points, Please Print This DISCHARGE Form" +
-                                "That I Will Open For You", MessageBoxButton.OK);
-                            if (TermExists == true)
-                            {
-                                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
-                            }
-                            else
-                            {
-                                MessageBox.Show("Oops there was a problem trying to open the Termination Form, Please contact Business Intelligence and let them know!");
-                            }
-                            break;
-
-                        default:
-                            MessageBox.Show(firstName + " Has " + occurrencePoints + " Occurrence Points");
-                            break;
+                        Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\TermLetter.docx");
                     }
                     break;
 
+                //Associate IS In Probationary Period
                 case 1:
-                    switch (occurrencePoints)
-                    {
-                        case 1:
-                            BIMessageBox.Show("Counseling Form Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occurrencePoints + " Occurrence Points, Please Please Fill Out" +
-                                " and Print This FINAL Warning Form That I will Open For You", MessageBoxButton.OK);
-                            if (ProgExists == true)
-                            {
-                                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
-                                //Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
-                            }
-                            else
-                            {
-                                MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
-                            }
-                            break;
 
-                        case 2:
-                            BIMessageBox.Show("Counseling Form Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occurrencePoints + " Occurrence Points, Please Print This DISCHARGE Form" +
+                    if (AttType == "No Call No Show")
+                    {
+                        BIMessageBox.Show("No Call No Show Dialog", firstName + "Is In The Associates 90 Probationary Period, This No Call No Show Requires Automatic Termination " +
+                            "Please Fill Out And Print This DISCHARG Form", MessageBoxButton.OK);
+                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
+                        this.Close();
+                        return; 
+                        
+                    }
+
+                    if (occPoints < 1)
+                    {
+                        BIMessageBox.Show("Warning Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points.  " + (1 - occPoints) + " More Points Before " +
+                            hireDate.AddDays(90).ToShortDateString() + " Will Require A Written Progressive Counseling", MessageBoxButton.OK);
+                    }
+
+                    else if (occPoints >= 1 && occPoints < 2)
+                    {
+                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points, Please Please Fill Out" +
+                                " and Print This FINAL Warning Form That I will Open For You", MessageBoxButton.OK);
+                        if (ProgExists == true)
+                        {
+                            Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
+                        }
+                    }
+                    else
+                    {
+                        BIMessageBox.Show("Termination Form Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points, Please Print This DISCHARGE Form" +
                                 "That I Will Open For You", MessageBoxButton.OK);
-                            if (TermExists == true)
-                            {
-                                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
-                            }
-                            else
-                            {
-                                MessageBox.Show("Oops there was a problem trying to open the Termination Form, Please contact Business Intelligence and let them know!");
-                            }
-                            //Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\TermLetter.docx");
-                            break;
+                        if (TermExists == true)
+                        {
+                            Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Oops there was a problem trying to open the Termination Form, Please contact Business Intelligence and let them know!");
+                        }
                     }
                     break;
             }
             DescriptionTb.Clear();
-            //OFullButton.IsChecked = false;
-            //OHalfButton.IsChecked = true;
-            //OOccurrenceDP.SelectedDate = null;
-            //AFullButton.IsChecked = false;
-            //AHalfButton.IsChecked = true;
             AOccurrenceDP.SelectedDate = null;
             AttendanceType.SelectedItem = null;
         }
@@ -351,11 +289,6 @@ namespace AGNESCSharp
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             DescriptionTb.Clear();
-            //OFullButton.IsChecked = false;
-            //OHalfButton.IsChecked = true;
-            //OOccurrenceDP.SelectedDate = null;
-            //AFullButton.IsChecked = false;
-            //AHalfButton.IsChecked = true;
             AOccurrenceDP.SelectedDate = null;
             AttendanceType.SelectedItem = null;
         }
@@ -364,70 +297,26 @@ namespace AGNESCSharp
         //The earliest valid occurrence is 1 year prior to selected write up date
         public static (DateTime EarlyDate, double occurencePoints) CountOccurrences(DateTime date, long empID)
         {
-            //int count = 0;
             double occurrencePoints = 0;
             AGNESEntity agnesdb = new AGNESEntity();
-
             DateTime cutOffDate = date.AddYears(-1);
-            //DateTime CHEarly;
+            //DateTime hireDate;
 
             var query = from employeeTable in agnesdb.Occurrences
                         where employeeTable.PersNumber == empID && employeeTable.Date >= cutOffDate
                         orderby employeeTable.Date ascending
                         select employeeTable;
 
-            //var CHQuery = from CHTable in agnesdb.CashHandles
-            //              where CHTable.PersNumber == empID & CHTable.Date >= cutOffDate
-            //              orderby CHTable.Date ascending
-            //              select CHTable;
-
             var eTQueryResult = query.ToList();
-            //var cHQueryResult = CHQuery.ToList();
-
             var eTEarly = eTQueryResult[0];
-            //if (cHQueryResult.Count < 1)
-            //{
-            //    var cHEarlies = DateTime.Now;
-            //    var cHEarly = cHEarlies;
-            //    CHEarly = (DateTime)cHEarly.Date;
-            //}
-            //else
-            //{
-            //    var cHEarlies = cHQueryResult[0];
-            //    var cHEarly = cHEarlies;
-            //    CHEarly = (DateTime)cHEarly.Date;
-            //}
-
-
+            
             DateTime occEarly = (DateTime)eTEarly.Date;
             DateTime EarlyDate = occEarly.AddYears(1);
-
-            //DateTime occEarlyAddYear 
-            //DateTime cHEarlyAddYear = CHEarly.AddYears(1);
-
-
-
-            //if (occEarly < CHEarly)
-            //{
-
-            //}
-            //else
-            //{
-            //    EarlyDate = cHEarlyAddYear;
-            //}
-
-
 
             foreach (var row in query)
             {
                 occurrencePoints += Convert.ToInt32(row.Type);
-                //count++;
             }
-
-            //foreach (var row in CHQuery)
-            //{
-            //    occurrencePoints += Convert.ToInt32(row.Type);
-            //}
 
             occurrencePoints = occurrencePoints / 2;
 
@@ -449,20 +338,7 @@ namespace AGNESCSharp
                 //selectedDate = (DateTime)SelectedDate;
                 layoutFlag = 0;
             }
-            //else
-            //{
-            //    OccurrenceSelection.Visibility = Visibility.Collapsed;
-            //    //OtherGrid.Visibility = Visibility.Visible;
-            //    DescriptionTbLable.Visibility = Visibility.Visible;
-            //    DescriptionSV.Visibility = Visibility.Visible;
-            //    ButtonGrid.Visibility = Visibility.Visible;
-            //    //SelectedDate = OOccurrenceDP.SelectedDate;
-            //    //selectedDate = OOccurrenceDP.SelectedDate;
-            //    //selectedDate = (DateTime)SelectedDate;
-            //    layoutFlag = 1;
-            //}
         }
-        #endregion
 
         private void Image_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -487,5 +363,45 @@ namespace AGNESCSharp
             eraseImage.Width = 58;
             eraseImage.Height = 50;
         }
+        #endregion
     }
 }
+
+#region Future Stuff??
+//This code is for searching CashHandle Table to help calculate number of occurrence points
+
+//DateTime CHEarly;
+//var CHQuery = from CHTable in agnesdb.CashHandles
+//              where CHTable.PersNumber == empID & CHTable.Date >= cutOffDate
+//              orderby CHTable.Date ascending
+//              select CHTable;
+//var cHQueryResult = CHQuery.ToList();
+//if (cHQueryResult.Count < 1)
+//{
+//    var cHEarlies = DateTime.Now;
+//    var cHEarly = cHEarlies;
+//    CHEarly = (DateTime)cHEarly.Date;
+//}
+//else
+//{
+//    var cHEarlies = cHQueryResult[0];
+//    var cHEarly = cHEarlies;
+//    CHEarly = (DateTime)cHEarly.Date;
+//}
+//DateTime occEarlyAddYear 
+//DateTime cHEarlyAddYear = CHEarly.AddYears(1);
+
+//if (occEarly < CHEarly)
+//{
+
+//}
+//else
+//{
+//    EarlyDate = cHEarlyAddYear;
+//}
+//foreach (var row in CHQuery)
+//{
+//    occurrencePoints += Convert.ToInt32(row.Type);
+//}
+
+#endregion

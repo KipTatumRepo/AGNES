@@ -25,9 +25,11 @@ namespace AGNESCSharp
         private List<string> CostCenters = new List<string>();
         private Dictionary<long, string> Employees = new Dictionary<long, string>();
         DateTime today = DateTime.Now;
+        DateTime hireDate;
         // private HRActionCanvas AC;
         private ListBoxItem lbi;
         private long empId;
+        public static int empInProbationPeriod = 0;
         private string costCenterSel;
         #endregion
 
@@ -377,6 +379,7 @@ namespace AGNESCSharp
                 button.BorderThickness = new Thickness(2, 2, 2, 2);
                 LeaveButton.IsChecked = false;
                 CashHandleButton.IsChecked = false;
+
                 if (lbxAssociates.SelectedIndex == -1)
                 {
                     lbxAssociates.Items.Clear();
@@ -428,7 +431,24 @@ namespace AGNESCSharp
                     lbi = lbxAssociates.SelectedItem as ListBoxItem;
                     string name = lbi.Content.ToString();
                     int empId = Convert.ToInt32(lbi.Tag.ToString());
-                    Window newPage = new HROccurrence(name, empId);
+
+                    var query = from employeeTable in MainWindow.bidb.EmployeeLists
+                                where employeeTable.PersNumber == empId
+                                select employeeTable;
+
+                    var results = query.ToList();
+
+                    foreach (var result in query)
+                    {
+                        hireDate = result.DateOfHire;
+                    }
+
+                    if (hireDate.AddDays(90) >= today)
+                    {
+                        empInProbationPeriod = 1;
+                    }
+
+                    Window newPage = new HROccurrence(name, empId, empInProbationPeriod);
                     LeaveButton.IsChecked = false;
                     OccButton.IsChecked = false;
                     CashHandleButton.IsChecked = false;
@@ -512,7 +532,23 @@ namespace AGNESCSharp
                     lbi = lbxAssociates.SelectedItem as ListBoxItem;
                     string name = lbi.Content.ToString();
                     int empId = Convert.ToInt32(lbi.Tag.ToString());
-                    Window newWindow = new HRCashHandle(name, empId);
+
+                    var query = from employeeTable in MainWindow.bidb.EmployeeLists
+                                where employeeTable.PersNumber == empId
+                                select employeeTable;
+
+                    var results = query.ToList();
+
+                    foreach (var result in query)
+                    {
+                        hireDate = result.DateOfHire;
+                    }
+
+                    if (hireDate.AddDays(90) >= today)
+                    {
+                        empInProbationPeriod = 1;
+                    }
+                    Window newWindow = new HRCashHandle(name, empId, empInProbationPeriod);
                     LeaveButton.IsChecked = false;
                     OccButton.IsChecked = false;
                     CashHandleButton.IsChecked = false;

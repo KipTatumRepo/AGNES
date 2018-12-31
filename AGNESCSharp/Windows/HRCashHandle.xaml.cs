@@ -1,19 +1,10 @@
 ﻿using AGNESCSharp.Entity_Models;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace AGNESCSharp
 {
@@ -24,6 +15,7 @@ namespace AGNESCSharp
     {
         #region Variables
         string nameToInsert;
+        int empInProbation;
         private string empCostCenter;
         string firstName;
         string lastName;
@@ -34,7 +26,7 @@ namespace AGNESCSharp
         #endregion
 
         #region Main
-        public HRCashHandle(string emp, int empNum)
+        public HRCashHandle(string emp, int empNum, int empInProbationPeriod)
         {
             InitializeComponent();
             nameToInsert = emp;
@@ -42,6 +34,8 @@ namespace AGNESCSharp
             lastName = name[0].Trim();
             firstName = name[1].Trim();
             empID = empNum;
+            empInProbation = empInProbationPeriod;
+
             TopTextBox.Text = "Please Enter The Details For " + firstName + " " + lastName + "'S" + " Cash Handling Violation";
 
             var query = from employeeTable in MainWindow.bidb.EmployeeLists
@@ -63,6 +57,7 @@ namespace AGNESCSharp
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             CashHandle ch = new CashHandle();
+            DateTime cutOffDate;
             ch.PersNumber = empID;
             ch.CostCenter = empCostCenter;
             ch.LastName = lastName;
@@ -88,42 +83,55 @@ namespace AGNESCSharp
             MessageBox.Show("The Cash Handling Occurrence for " + firstName + " has been added");
 
             selectedDate = Convert.ToDateTime(CHOccurrenceDP.SelectedDate);
+            cutOffDate = selectedDate.AddYears(-1);
 
-            (int count, double occurrencePoints) = CountOccurrences(selectedDate, empID);
+            //right now I am calculating the earliest valid date as -1 year from incident date, this may change
+            (DateTime earlyDate, double occurrencePoints) = CountOccurrences(selectedDate, empID);
 
             FileInfo myFile = new FileInfo(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
             bool exists = myFile.Exists;
 
-            if (occurrencePoints == 2)
+            switch (empInProbation)
             {
-                BIMessageBox.Show("Warning", firstName + " Has 2 Occurrence Points For Cash Handling Violations, the Next Full Violation Will Result in a Progressive" +
-                    " Written Counseling", MessageBoxButton.OK);
-            }
+                //Associate past 1st 90 days
+                case 0:
 
-            if (occurrencePoints >= 3 || type == 2)
-            {
-                if (occurrencePoints >= 3)
-                {
-                    BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occurrencePoints + " Occurrence Points, Please Fill Out and Print This WRITTEN Warning Form" +
-                                        "That I Will Open For You", MessageBoxButton.OK);
-                    if (exists == true)
+                    //Warning Letting User Know Associate is N Number of Points Away From a Written Prog Counseling
+                    if (occurrencePoints >= 2 && occurrencePoints < 3)
                     {
-                        //Microsoft.Office.Interop.Word.Application ap = new Microsoft.Office.Interop.Word.Application();
-                        //webClient.OpenWrite("https://microsoft.sharepoint-df.com/teams/CGHR/Shared%20Documents/Employee%20Relations/Performance%20Management/Associate%20Counseling%20Report%20Template%20-%20ENG.docx");
-                        //Process.Start("https://microsoft.sharepoint-df.com/teams/CGHR/Shared%20Documents/Employee%20Relations/Performance%20Management/Associate%20Counseling%20Report%20Template%20-%20ENG.docx");
-                        Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
+                        BIMessageBox.Show("Warning", firstName + " Has " + occurrencePoints +" Occurrence Points For Cash Handling Violations, "  + (3-occurrencePoints) +
+                            " More Points Before " + earlyDate.ToShortDateString() +  " Will Result in a Progressive Written Counseling", MessageBoxButton.OK); 
                     }
-                    else
+
+                    if (occurrencePoints >= 3 || type == 2)
                     {
-                        MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
+                        if (occurrencePoints >= 3)
+                        {
+                            BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occurrencePoints + " Cash Handling Occurrence Points, Please Fill Out" 
+                                + " and Print This WRITTEN Warning Form That I Will Open For You", MessageBoxButton.OK); 
+                                                
+                            if (exists == true)
+                            {
+                                Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
+                            }
+                            else
+                            {
+                                MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
+                            }
+                        }
+                        else
+                        {
+                            BIMessageBox.Show("Counseling Form Dialog", firstName + " Has a Variance Greater Than $3.00 but Less Than $20.00 This is an Automatic Progressive Counseling" +
+                                " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
+                            Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
+                        }
                     }
-                }
-                else
-                {
-                    BIMessageBox.Show("Counseling Form Dialog", firstName + " Has a Variance Greater Than $3.00 but Less Than $20.00 This is an Automatic Progressive Counseling" +
-                        " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
-                    Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
-                }
+                    break;
+
+                //Associate is IN 90 Probationary Period
+                case 1:
+
+                    break;
             }
 
             CashCB.SelectedItem = null;
@@ -138,10 +146,9 @@ namespace AGNESCSharp
             DescriptionTb.Clear();
         }
 
-        //This function returns a Tuple that counts how many occurrences and how many occurence points an associate has
-        private (int count, double occurencePoints) CountOccurrences(DateTime date, long empID)
+        //This function returns a Tuple that finds the earliest valid date (-1 year from given date) and how many occurence points an associate has
+        private (DateTime EarlyDate, double occurencePoints) CountOccurrences(DateTime date, long empID)
         {
-            int count = 0;
             double occurrencePoints = 0;
             AGNESEntity agnesdb = new AGNESEntity();
 
@@ -149,19 +156,24 @@ namespace AGNESCSharp
 
             var query = from employeeTable in agnesdb.CashHandles
                         where employeeTable.PersNumber == empID && employeeTable.Date >= cutOffDate
+                        orderby employeeTable.Date ascending
                         select employeeTable;
 
             var result = query.ToList();
 
+            var eTEarly = result[0];
+
+            DateTime CHEarly = (DateTime)eTEarly.Date;
+            DateTime EarlyDate = CHEarly.AddYears(1);
+
             foreach (var row in query)
             {
                 occurrencePoints += Convert.ToInt32(row.Type);
-                count++;
             }
 
             occurrencePoints = occurrencePoints / 2;
 
-            return (count, occurrencePoints);
+            return (EarlyDate, occurrencePoints);
         }
 
         private void CashCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
