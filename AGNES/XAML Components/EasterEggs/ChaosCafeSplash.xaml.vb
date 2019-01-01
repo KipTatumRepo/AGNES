@@ -1,10 +1,18 @@
 ﻿Imports System.Windows.Threading
+Imports System.Windows.Media
+
 Imports System.Timers
+Imports System.Media
+
 Public Class ChaosCafeSplash
 
 #Region "Properties"
     Private ScreenWidth As Double
     Private ScreenHeight As Double
+
+    Dim MusicPlayer As SoundPlayer
+
+    Dim mplayer As MediaPlayer
 
     Private StartFlashTimer As DispatcherTimer
     Private StartFlashTimerInterval As TimeSpan = New TimeSpan(0, 0, 0, 0, 500)
@@ -26,7 +34,7 @@ Public Class ChaosCafeSplash
         ScreenWidth = System.Windows.SystemParameters.PrimaryScreenWidth
         ScreenHeight = System.Windows.SystemParameters.PrimaryScreenHeight
         chefx = -100
-        chefy = (ScreenHeight / 2) - 50
+        chefy = (ScreenHeight / 2) - 75
         imgChef.Margin = New Thickness(chefx, chefy, 0, 0)
         chefceiling = ScreenHeight / 4
         cheffloor = ScreenHeight - chefceiling
@@ -41,6 +49,31 @@ Public Class ChaosCafeSplash
 
 #Region "Private Methods"
     Private Sub AwaitStart()
+        '// Start Fire
+        Dim image As New BitmapImage()
+        image.BeginInit()
+        image.UriSource = New Uri("pack://application:,,,/Resources/fire2.gif")
+        image.EndInit()
+        imgfire.Height = ScreenHeight / 3
+        ImageBehavior.SetAnimatedSource(imgfire, image)
+
+        '// Get Top Ten
+        Dim t As String = "BLF" & vbTab & "10,000" & Chr(13)
+        t = t & "DKT" & vbTab & "9,000" & Chr(13)
+        t = t & "WCW" & vbTab & "8,000" & Chr(13)
+        t = t & "EJG" & vbTab & "7,000" & Chr(13)
+        t = t & "ABC" & vbTab & "6,000" & Chr(13)
+        t = t & "DEF" & vbTab & "5,000" & Chr(13)
+        t = t & "GHI" & vbTab & "4,000" & Chr(13)
+        t = t & "JKL" & vbTab & "3,000" & Chr(13)
+        t = t & "MNO" & vbTab & "2,000" & Chr(13)
+        t = t & "PQR" & vbTab & "1,000"
+
+        tbTopTen.Text = t
+
+        'Mplayer = New MediaPlayer
+        'Mplayer.Open(
+        'Mplayer.Play()
         StartFlashTimer = New DispatcherTimer()
         StartFlashTimer.Interval = StartFlashTimerInterval
         AddHandler StartFlashTimer.Tick, AddressOf FlashStart
@@ -63,9 +96,10 @@ Public Class ChaosCafeSplash
             Case Key.Escape
                 ChefTimer = Nothing
                 StartFlashTimer = Nothing
+                mplayer.Stop()
+                mplayer = Nothing
                 Close()
             Case Key.Space
-
         End Select
 
     End Sub
@@ -94,7 +128,7 @@ Public Class ChaosCafeSplash
         Select Case randnum
             Case YChanceC To YChanceF
                 chefy += Ydir
-                If chefy > cheffloor Then chefy = cheffloor
+                If chefy + 75 > cheffloor Then chefy = cheffloor
             Case YChanceF To 100
                 chefy += -Ydir
                 If chefy < chefceiling Then chefy = chefceiling
@@ -125,9 +159,26 @@ Public Class ChaosCafeSplash
             If chefx < -100 Then chefx = ScreenWidth
             imgChef.Margin = New Thickness(chefx, chefy, 0, 0)
         End If
-        tbXcoord.Text = chefx
         ChefFeets += 1
         If ChefFeets > 2 Then ChefFeets = 0
+    End Sub
+
+    Private Sub SplashLoaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
+        '// Kickin' tunes
+        'MusicPlayer = New SoundPlayer(My.Resources.CCMain)
+        'MusicPlayer.PlayLooping()
+        'MusicPlayer.Play()
+
+        mplayer = New MediaPlayer
+        AddHandler mplayer.MediaEnded, AddressOf LoopTunes
+        mplayer.Open(New Uri("Resources/Sound Assets/jump.mp3", UriKind.Relative))
+        mplayer.Play()
+
+    End Sub
+
+    Private Sub LoopTunes(sender As Object, e As EventArgs)
+        mplayer.Position = TimeSpan.Zero
+        mplayer.Play()
     End Sub
 
 
