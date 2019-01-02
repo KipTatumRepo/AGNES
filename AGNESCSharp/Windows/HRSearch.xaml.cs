@@ -16,6 +16,7 @@ namespace AGNESCSharp
     public partial class HRSearch : Window
     {
         #region Variables
+        byte? violationAmount;
         int selectedSearch;
         int selectedSearchType;
         long SelectOccurrence;
@@ -164,6 +165,7 @@ namespace AGNESCSharp
             AttLabel.Visibility = Visibility.Collapsed;
             OccCB.Visibility = Visibility.Collapsed;
             string attendanceViolation;
+           
             if (MultipleOccurrencDG.SelectedItem == null) return;
 
             object row = MultipleOccurrencDG.SelectedValue;
@@ -186,6 +188,7 @@ namespace AGNESCSharp
                 OccName.Text = filteredRow.FirstName + " " + filteredRow.LastName;
                 OccDate.SelectedDate = filteredRow.Date;
                 CHOccNumber.Text = filteredRow.PID.ToString();
+                violationAmount = filteredRow.Type;
 
                 if (filteredRow.AttendanceViolation != null)
                 {
@@ -293,6 +296,7 @@ namespace AGNESCSharp
                 CashCB.SelectedIndex = Convert.ToInt32(filteredRow.Type);
                 CHOccurrenceDP.SelectedDate = filteredRow.Date;
                 CHNote.Text = filteredRow.Notes;
+                violationAmount = filteredRow.Type;
             }
             UpdateButton.Visibility = Visibility.Visible;
         }
@@ -308,11 +312,15 @@ namespace AGNESCSharp
                 byte type = 0;
                 string violationText;
                 SelectOccurrence = Convert.ToInt64(selectOccurrence);
+
+                
+
                 using (var db = new AGNESEntity())
                 {
                     var result = db.Occurrences.SingleOrDefault(f => f.PID == SelectOccurrence);
                     if (result != null)
                     {
+                        byte? oldType = result.Type;
                         ComboBoxItem cbi = new ComboBoxItem();
                         cbi = (ComboBoxItem)OccCB.SelectedItem;
                         type = Convert.ToByte(cbi.Tag);
@@ -321,104 +329,128 @@ namespace AGNESCSharp
                         result.Type = type;
                         result.Date = OccDate.SelectedDate;
                         result.Notes = OccNotes.Text;
-                        try
+
+                        DateTime date = (DateTime)OccDate.SelectedDate;
+                        (DateTime earlyDate, double? occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber);
+
+                        if (type < violationAmount)
                         {
+                            decimal compareOccPoints = (decimal)occPoints;
+                            decimal compareType = (decimal)type;
+                            var messageBoxResult = BIMessageBox.Show("Occurrence Point Reduction Dialog", "The Selected Violation Will Result In A Reduction Of Occurrence Points From " + occPoints +
+                               " To " + (compareOccPoints - ((oldType / 2) - (compareType / 2))) + " For " + firstName + " , Do You Wish To Continue?", MessageBoxButton.YesNo);
+
+
+                            if (messageBoxResult != MessageBoxResult.Yes) return;
                             db.SaveChanges();
                             MessageBox.Show("Occurrence Record Has Been Updated.");
-                            DateTime date = (DateTime)OccDate.SelectedDate;
+                            (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber);
+                            //TODO: GO BACK TO THIS
+                            //Report(firstName, violationText, occPoints, empInProbation, earlyDate);
 
-                            //get Write up form ready
-                            FileInfo myFile = new FileInfo(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
-                            bool exists = myFile.Exists;
-
-                            (DateTime earlyDate, double occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber);
-
-                            switch (empInProbation)
-                            {
-                                case 0:
-
-                                    if (violationText == "No Call No Show")
-                                    {
-                                        BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show Requires An Automatic Written Progressive Counseling, Please Fill Out And Print This Form", MessageBoxButton.OK);
-                                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
-                                    }
-
-                                    if (occPoints < 4)
-                                    {
-                                        MessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points");
-                                    }
-                                    else if (occPoints >= 4 && occPoints < 5)
-                                    {
-                                        BIMessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points " + (5 - occPoints) + " More Before " + earlyDate.ToShortDateString() + " Will Require A Written Progressive Counseling.");
-                                    }
-                                    else if (occPoints >= 5 && occPoints < 6)
-                                    {
-                                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This WRITTEN Warning Form" +
-                                                "That I Will Open For You", MessageBoxButton.OK);
-                                        if (exists == true)
-                                        {
-                                            Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
-                                        }
-                                        else
-                                        {
-                                            MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
-                                        }
-                                    }
-                                    else if (occPoints >= 6 && occPoints < 7)
-                                    {
-                                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This FINAL Warning Form" +
-                                                "That I Will Open For You", MessageBoxButton.OK);
-                                        if (exists == true)
-                                        {
-                                            Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
-                                        }
-                                        else
-                                        {
-                                            MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Print This DISCHARGE Form" +
-                                                "That I Will Open For You", MessageBoxButton.OK);
-                                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
-                                    }
-                                    break;
-
-                                case 1:
-                                    if (violationText == "No Call No Show")
-                                    {
-                                        BIMessageBox.Show("Termination Form Dialog", "This Update to No Call No Show For The Associate In Their Probationary Period Requires Termination" +
-                                            " Please Fill Out and Print This Form", MessageBoxButton.OK);
-                                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
-                                        this.Close();
-                                        return;
-                                    }
-
-                                    if (occPoints < 1)
-                                    {
-                                        BIMessageBox.Show("Warning Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points.  " + (1 - occPoints) +
-                                            " Will Require A Written Progressive Counseling", MessageBoxButton.OK);
-                                    }
-
-                                    else if (occPoints >= 1 && occPoints < 2)
-                                    {
-                                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points, Please Please Fill Out" +
-                                                " and Print This FINAL Warning Form That I will Open For You", MessageBoxButton.OK);
-                                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
-                                    }
-                                    else
-                                    {
-                                        BIMessageBox.Show("Termination Form Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points, Please Print This DISCHARGE Form" +
-                                                "That I Will Open For You", MessageBoxButton.OK);
-                                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
-                                    }
-                                    break;
-                            };
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            MessageBox.Show("There was a problem updating the OCCURRENCE record in the database please contact Business Intelligence " + ex);
+
+                            try
+                            {
+                                db.SaveChanges();
+                                MessageBox.Show("Occurrence Record Has Been Updated.");
+                                (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber);
+                                //TODO: GO BACK TO THIS
+                                //Report(firstName, violationText, occPoints, empInProbation, earlyDate);
+
+                                //get Write up form ready
+                                FileInfo myFile = new FileInfo(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                                bool exists = myFile.Exists;
+
+                                switch (empInProbation)
+                                {
+                                    case 0:
+
+                                        if (violationText == "No Call No Show")
+                                        {
+                                            BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show Requires An Automatic Written Progressive Counseling, Please Fill Out And Print This Form", MessageBoxButton.OK);
+                                            Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                                        }
+
+                                        if (occPoints < 4)
+                                        {
+                                            MessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points");
+                                        }
+                                        else if (occPoints >= 4 && occPoints < 5)
+                                        {
+                                            BIMessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points " + (5 - occPoints) + " More Before " + earlyDate.ToShortDateString() + " Will Require A Written Progressive Counseling.");
+                                        }
+                                        else if (occPoints >= 5 && occPoints < 6)
+                                        {
+                                            BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This WRITTEN Warning Form" +
+                                                    "That I Will Open For You", MessageBoxButton.OK);
+                                            if (exists == true)
+                                            {
+                                                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                                            }
+                                            else
+                                            {
+                                                MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
+                                            }
+                                        }
+                                        else if (occPoints >= 6 && occPoints < 7)
+                                        {
+                                            BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This FINAL Warning Form" +
+                                                    "That I Will Open For You", MessageBoxButton.OK);
+                                            if (exists == true)
+                                            {
+                                                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                                            }
+                                            else
+                                            {
+                                                MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Print This DISCHARGE Form" +
+                                                    "That I Will Open For You", MessageBoxButton.OK);
+                                            Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
+                                        }
+                                        break;
+
+                                    case 1:
+                                        if (violationText == "No Call No Show")
+                                        {
+                                            BIMessageBox.Show("Termination Form Dialog", "This Update to No Call No Show For The Associate In Their Probationary Period Requires Termination" +
+                                                " Please Fill Out and Print This Form", MessageBoxButton.OK);
+                                            Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
+                                            this.Close();
+                                            return;
+                                        }
+
+                                        if (occPoints < 1)
+                                        {
+                                            BIMessageBox.Show("Warning Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points.  " + (1 - occPoints) +
+                                                " Will Require A Written Progressive Counseling", MessageBoxButton.OK);
+                                        }
+
+                                        else if (occPoints >= 1 && occPoints < 2)
+                                        {
+                                            BIMessageBox.Show("Counseling Form Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points, Please Please Fill Out" +
+                                                    " and Print This FINAL Warning Form That I will Open For You", MessageBoxButton.OK);
+                                            Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                                        }
+                                        else
+                                        {
+                                            BIMessageBox.Show("Termination Form Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points, Please Print This DISCHARGE Form" +
+                                                    "That I Will Open For You", MessageBoxButton.OK);
+                                            Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
+                                        }
+                                        break;
+                                };
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("There was a problem updating the OCCURRENCE record in the database please contact Business Intelligence " + ex);
+                            }
                         }
                     }
                 }
@@ -650,6 +682,7 @@ namespace AGNESCSharp
                             OccName.Text = row.FirstName + " " + row.LastName;
                             OccDate.SelectedDate = row.Date;
                             CHOccNumber.Text = row.PID.ToString();
+                            violationAmount = row.Type;
                             
                             if (row.AttendanceViolation != null)
                             {
@@ -779,6 +812,7 @@ namespace AGNESCSharp
                             CashCB.SelectedIndex = Convert.ToInt32(row.Type);
                             CHOccurrenceDP.SelectedDate = row.Date;
                             CHNote.Text = row.Notes;
+                            violationAmount = row.Type;
                         }
                         UpdateButton.Visibility = Visibility.Visible;
                     }
@@ -791,6 +825,95 @@ namespace AGNESCSharp
                 }
             }
             #endregion
+        }
+
+        private void Report(string firstName, string violationText, double? occPoints, int empInProbation, DateTime earlyDate)
+        {
+            //get Write up form ready
+            FileInfo myFile = new FileInfo(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+            bool exists = myFile.Exists;
+            switch (empInProbation)
+            {
+                case 0:
+
+                    if (violationText == "No Call No Show")
+                    {
+                        BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show Requires An Automatic Written Progressive Counseling, Please Fill Out And Print This Form", MessageBoxButton.OK);
+                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                    }
+
+                    if (occPoints < 4)
+                    {
+                        MessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points");
+                    }
+                    else if (occPoints >= 4 && occPoints < 5)
+                    {
+                        BIMessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points " + (5 - occPoints) + " More Before " + earlyDate.ToShortDateString() + " Will Require A Written Progressive Counseling.");
+                    }
+                    else if (occPoints >= 5 && occPoints < 6)
+                    {
+                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This WRITTEN Warning Form" +
+                                "That I Will Open For You", MessageBoxButton.OK);
+                        if (exists == true)
+                        {
+                            Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
+                        }
+                    }
+                    else if (occPoints >= 6 && occPoints < 7)
+                    {
+                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This FINAL Warning Form" +
+                                "That I Will Open For You", MessageBoxButton.OK);
+                        if (exists == true)
+                        {
+                            Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
+                        }
+                    }
+                    else
+                    {
+                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Print This DISCHARGE Form" +
+                                "That I Will Open For You", MessageBoxButton.OK);
+                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
+                    }
+                    break;
+
+                case 1:
+                    if (violationText == "No Call No Show")
+                    {
+                        BIMessageBox.Show("Termination Form Dialog", "This Update to No Call No Show For The Associate In Their Probationary Period Requires Termination" +
+                            " Please Fill Out and Print This Form", MessageBoxButton.OK);
+                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
+                        this.Close();
+                        return;
+                    }
+
+                    if (occPoints < 1)
+                    {
+                        BIMessageBox.Show("Warning Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points.  " + (1 - occPoints) +
+                            " Will Require A Written Progressive Counseling", MessageBoxButton.OK);
+                    }
+
+                    else if (occPoints >= 1 && occPoints < 2)
+                    {
+                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points, Please Please Fill Out" +
+                                " and Print This FINAL Warning Form That I will Open For You", MessageBoxButton.OK);
+                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                    }
+                    else
+                    {
+                        BIMessageBox.Show("Termination Form Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points, Please Print This DISCHARGE Form" +
+                                "That I Will Open For You", MessageBoxButton.OK);
+                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
+                    }
+                    break;
+            };
         }
 
         //private long GetAssocNumber(string firstName, string lastName)

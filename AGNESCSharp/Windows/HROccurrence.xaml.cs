@@ -166,7 +166,7 @@ namespace AGNESCSharp
             bool ProgExists = myFileProg.Exists;
             
             //right now earliest date is -1 year from incident date
-            (DateTime earlyDate, double occPoints) = CountOccurrences(fDate, empID);
+            (DateTime earlyDate, double? occPoints) = CountOccurrences(fDate, empID);
 
             switch (empInProbation)
             {
@@ -295,9 +295,10 @@ namespace AGNESCSharp
 
         //This function returns a Tuple that gets the earliest valid occurrence and how many occurence points an associate has
         //The earliest valid occurrence is 1 year prior to selected write up date
-        public static (DateTime EarlyDate, double occurencePoints) CountOccurrences(DateTime date, long empID)
+        public static (DateTime EarlyDate, double? occurencePoints) CountOccurrences(DateTime date, long empID)
         {
-            double occurrencePoints = 0;
+            double? occurrencePoints = 0;
+            
             AGNESEntity agnesdb = new AGNESEntity();
             DateTime cutOffDate = date.AddYears(-1);
             //DateTime hireDate;
