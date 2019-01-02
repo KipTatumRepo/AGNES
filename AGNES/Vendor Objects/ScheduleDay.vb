@@ -110,7 +110,7 @@ Public Class ScheduleDay
     End Sub
 
     Private Sub LoadAndAddLocations()
-        Dim TrucksToo As Boolean
+        Dim TrucksToo As Boolean, StationCount As Byte
         ' Load truck only locations first
         Dim qtl = From tl As Building In SharedDataGroup.Buildings
                   Where tl.AllowFoodTrucks = True
@@ -143,7 +143,7 @@ Public Class ScheduleDay
             For Each tl In qtl
                 If ss.BldgId = tl.PID Then TrucksToo = True
             Next
-            AddRegularLocation(GetCafeName(ss.CostCenter), 1, TrucksToo, ss.AnchorStationFoodType, ss.AnchorStationFoodSubType, ss.HasHood)
+            AddRegularLocation(GetCafeName(ss.CostCenter), 1, TrucksToo, ss.AnchorStationFoodType, ss.AnchorStationFoodSubType, ss.HasHood, StationCount)
         Next
 
 
@@ -158,7 +158,7 @@ Public Class ScheduleDay
             For Each tl In qtl
                 If ss.BldgId = tl.PID Then TrucksToo = True
             Next
-            AddRegularLocation(GetCafeName(ss.CostCenter), 2, TrucksToo, ss.AnchorStationFoodType, ss.AnchorStationFoodSubType, ss.HasHood)
+            AddRegularLocation(GetCafeName(ss.CostCenter), 2, TrucksToo, ss.AnchorStationFoodType, ss.AnchorStationFoodSubType, ss.HasHood, StationCount)
         Next
 
         ' Load greater than two stations finally
@@ -172,12 +172,12 @@ Public Class ScheduleDay
             For Each tl In qtl
                 If ss.BldgId = tl.PID Then TrucksToo = True
             Next
-            AddRegularLocation(GetCafeName(ss.CostCenter), ss.BrandStations, TrucksToo, ss.AnchorStationFoodType, ss.AnchorStationFoodSubType, ss.HasHood)
+            AddRegularLocation(GetCafeName(ss.CostCenter), ss.BrandStations, TrucksToo, ss.AnchorStationFoodType, ss.AnchorStationFoodSubType, ss.HasHood, StationCount)
         Next
 
     End Sub
 
-    Private Sub AddRegularLocation(bldgnm, statcount, truckok, asft, asfst, hh)
+    Private Sub AddRegularLocation(bldgnm, statcount, truckok, asft, asfst, hh, sc)
         Dim newloc As New ScheduleLocation(bldgnm, statcount, Me, Highlight)
         With newloc
             .AllowsFoodTrucks = truckok
