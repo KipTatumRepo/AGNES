@@ -598,8 +598,8 @@ Public Class VendorSchedule
                                                         End If
                                                         ar += 1
                                                         itemcount += 1
-                                                        End If
                                                     End If
+                                                End If
                                             Next
                                         End If
                                     Next
