@@ -454,7 +454,18 @@ Public Class VendorSchedule
                         For Each stat As Object In activeloc.StationStack.Children
                             If TypeOf (stat) Is ScheduleStation Then
                                 activestat = stat
-                                BrandsByCafeArray(RowCount, 0) = activeloc.LocationName
+                                'Dim altname As String = GetAlternateStationName(activeloc.LocationName, statcount, 1)
+                                If Len(activestat.StationName) > 8 Then
+                                    If Right(activestat.StationName, 1) = "1" Then
+                                        BrandsByCafeArray(RowCount, 0) = activeloc.LocationName
+                                    Else
+                                        BrandsByCafeArray(RowCount, 0) = activeloc.LocationName & "-" & Right(activestat.StationName, 1)
+                                    End If
+
+                                Else
+                                    BrandsByCafeArray(RowCount, 0) = activeloc.LocationName & "-" & activestat.StationName
+                                End If
+
                                 For Each vis As Object In activestat.VendorStack.Children
                                     If TypeOf (vis) Is VendorInStation Then
                                         activevend = vis
@@ -540,16 +551,19 @@ Public Class VendorSchedule
 
     Private Sub PrintCafesbyBrand()
 
+        fd = New FlowDocument With {.ColumnGap = 0, .ColumnWidth = pd.PrintableAreaWidth}
+
 #Region "Build Header"
         Dim p As New Paragraph(New Run("Brand Rotation by Cafe for the week of " & GetWeekStart().ToShortDateString)) With
             {.FontSize = 14, .TextAlignment = TextAlignment.Center, .FontWeight = FontWeights.Bold, .FontFamily = New FontFamily("Segoe UI")}
 
 #End Region
 
+#Region "Collect Data Array"
+
         Dim activevndr As ScheduleVendor, activeday As ScheduleDay, activeloc As ScheduleLocation, activestation As ScheduleStation,
             activeVIS As VendorInStation, vp As Paragraph, itemcount As Integer
         Dim dc As Byte, ar As Byte, rg As Byte
-        fd = New FlowDocument With {.ColumnGap = 0, .ColumnWidth = pd.PrintableAreaWidth}
         fd.Blocks.Add(p)
         For Each v In stkVendors.Children
             Dim activevendorarray(12, 5) As String
@@ -573,11 +587,19 @@ Public Class VendorSchedule
                                                 If TypeOf (vis) Is VendorInStation Then
                                                     activeVIS = vis
                                                     If activeVIS.ReferencedVendor Is v Then
-                                                        activevendorarray(ar, dc) = activeloc.LocationName
+                                                        If Len(activestation.StationName) > 8 Then
+                                                            If Right(activestation.StationName, 1) = "1" Then
+                                                                activevendorarray(ar, dc) = activeloc.LocationName
+                                                            Else
+                                                                activevendorarray(ar, dc) = activeloc.LocationName & "-" & Right(activestation.StationName, 1)
+                                                            End If
+                                                        Else
+                                                            activevendorarray(ar, dc) = activeloc.LocationName & "-" & activestation.StationName
+                                                        End If
                                                         ar += 1
                                                         itemcount += 1
+                                                        End If
                                                     End If
-                                                End If
                                             Next
                                         End If
                                     Next
@@ -597,6 +619,7 @@ Public Class VendorSchedule
                     t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(130)})
                     t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(130)})
                     t.RowGroups.Add(New TableRowGroup())
+
 
 #Region "Build Column Rows and Headers into new rowgroup"
                     vp = New Paragraph(New Run(activevndr.VendorItem.Name)) With
@@ -637,9 +660,9 @@ Public Class VendorSchedule
                 End If
             End If
         Next
+#End Region
 
 #Region "Compose and Print"
-
         Dim xps_writer As XpsDocumentWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue)
         Dim idps As IDocumentPaginatorSource = CType(fd, IDocumentPaginatorSource)
         Try
