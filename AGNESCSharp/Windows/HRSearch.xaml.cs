@@ -360,8 +360,7 @@ namespace AGNESCSharp
                                 //TODO: GO BACK TO THIS
                                 Report(firstName, violationText, occPoints, empInProbation, earlyDate);
 
-
-
+                                #region DELETE ME AFTER TESTING COMPLETE
                                 //get Write up form ready
                                 //FileInfo myFile = new FileInfo(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
                                 //bool exists = myFile.Exists;
@@ -448,6 +447,7 @@ namespace AGNESCSharp
                                 //        }
                                 //        break;
                                 //};
+                                #endregion
                             }
                             catch (Exception ex)
                             {
