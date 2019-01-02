@@ -14,6 +14,7 @@ Public Class VendorSchedule
     Public wkSched As ScheduleWeek
     Public ActiveVendor As ScheduleVendor
     Public VendorFilterOn As Boolean
+    Public MaxTruckRowCount As Byte
     Private _savestatus As Byte
     Private CurrYear As Integer
     Private CurrMonth As Byte
@@ -661,6 +662,7 @@ Public Class VendorSchedule
         Dim activeday As ScheduleDay, activeloc As ScheduleLocation, rowcolortoggle As Boolean, rowcolor As Brush
         Dim HeaderLocationString As String = ""
         Dim LocationBlocks As Byte
+        Dim LocSpacing As String
 
 #Region "Collect schedule data and construct table"
         Dim st As New Table() With {.CellSpacing = 0, .Background = New BrushConverter().ConvertFrom("#d83b01"), .Foreground = Brushes.White}
@@ -689,13 +691,14 @@ Public Class VendorSchedule
         Dim ActiveRow As Byte = 0
         For Each l In activeday.LocationStack.Children
             If TypeOf (l) Is ScheduleLocation Then
+                MaxTruckRowCount = 0
                 activeloc = l
                 If activeloc.AllowsFoodTrucks = True Then
                     Dim tpj As New TruckSchedulePrintMatrix(wkSched, activeloc.LocationName)
                     tpj.GetData()
                     If tpj.TotalCount > 0 Then
-                        LocationBlocks += 1
-                        If tpj.MaxTruckCount > 1 Then LocationBlocks += ((tpj.MaxTruckCount - 1) / 3)
+
+                        'If tpj.MaxTruckCount > 1 Then LocationBlocks += ((tpj.MaxTruckCount - 1) / 3)
                         If HeaderLocationString = "" Then
                             HeaderLocationString = "Buildings " & tpj.HdrLocName
                         Else
@@ -710,17 +713,23 @@ Public Class VendorSchedule
                         st.RowGroups(0).Rows.Add(New TableRow() With {.FontSize = 8, .FontWeight = FontWeights.Normal, .FontFamily = New FontFamily("Segoe UI"), .Background = New BrushConverter().ConvertFrom("#d83b01"), .Foreground = Brushes.White})
                         ActiveRow += 1
                         crw = st.RowGroups(0).Rows(ActiveRow)
-                        crw.Cells.Add(New TableCell(New Paragraph(New Run(Chr(13) & "  " & tpj.LocName & Chr(13))) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.DemiBold, .BorderBrush = Brushes.White, .BorderThickness = New Thickness(0, 1, 1, 0)}))
-                        crw.Cells.Add(New TableCell(New Paragraph(New Run(Chr(13) & "  " & tpj.Mon & Chr(13))) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Normal, .BorderBrush = Brushes.White, .BorderThickness = New Thickness(0, 1, 1, 0), .Background = rowcolor, .Foreground = Brushes.Black}))
-                        crw.Cells.Add(New TableCell(New Paragraph(New Run(Chr(13) & "  " & tpj.Tue & Chr(13))) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Normal, .BorderBrush = Brushes.White, .BorderThickness = New Thickness(0, 1, 1, 0), .Background = rowcolor, .Foreground = Brushes.Black}))
-                        crw.Cells.Add(New TableCell(New Paragraph(New Run(Chr(13) & "  " & tpj.Wed & Chr(13))) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Normal, .BorderBrush = Brushes.White, .BorderThickness = New Thickness(0, 1, 1, 0), .Background = rowcolor, .Foreground = Brushes.Black}))
-                        crw.Cells.Add(New TableCell(New Paragraph(New Run(Chr(13) & "  " & tpj.Thu & Chr(13))) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Normal, .BorderBrush = Brushes.White, .BorderThickness = New Thickness(0, 1, 1, 0), .Background = rowcolor, .Foreground = Brushes.Black}))
-                        crw.Cells.Add(New TableCell(New Paragraph(New Run(Chr(13) & "  " & tpj.Fri & Chr(13))) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Normal, .BorderBrush = Brushes.White, .BorderThickness = New Thickness(0, 1, 0, 0), .Background = rowcolor, .Foreground = Brushes.Black}))
+
+                        LocSpacing = GetSpacing(tpj, 0)
+                        crw.Cells.Add(New TableCell(New Paragraph(New Run(Chr(13) & tpj.LocName & LocSpacing)) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.DemiBold, .BorderBrush = Brushes.White, .BorderThickness = New Thickness(0, 1, 1, 0)}))
+                        LocSpacing = GetSpacing(tpj, 1)
+                        crw.Cells.Add(New TableCell(New Paragraph(New Run(Chr(13) & tpj.Mon & LocSpacing)) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Normal, .BorderBrush = Brushes.White, .BorderThickness = New Thickness(0, 1, 1, 0), .Background = rowcolor, .Foreground = Brushes.Black}))
+                        LocSpacing = GetSpacing(tpj, 2)
+                        crw.Cells.Add(New TableCell(New Paragraph(New Run(Chr(13) & tpj.Tue & LocSpacing)) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Normal, .BorderBrush = Brushes.White, .BorderThickness = New Thickness(0, 1, 1, 0), .Background = rowcolor, .Foreground = Brushes.Black}))
+                        LocSpacing = GetSpacing(tpj, 3)
+                        crw.Cells.Add(New TableCell(New Paragraph(New Run(Chr(13) & tpj.Wed & LocSpacing)) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Normal, .BorderBrush = Brushes.White, .BorderThickness = New Thickness(0, 1, 1, 0), .Background = rowcolor, .Foreground = Brushes.Black}))
+                        LocSpacing = GetSpacing(tpj, 4)
+                        crw.Cells.Add(New TableCell(New Paragraph(New Run(Chr(13) & tpj.Thu & LocSpacing)) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Normal, .BorderBrush = Brushes.White, .BorderThickness = New Thickness(0, 1, 1, 0), .Background = rowcolor, .Foreground = Brushes.Black}))
+                        LocSpacing = GetSpacing(tpj, 5)
+                        crw.Cells.Add(New TableCell(New Paragraph(New Run(Chr(13) & tpj.Fri & LocSpacing)) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 12, .FontWeight = FontWeights.Normal, .BorderBrush = Brushes.White, .BorderThickness = New Thickness(0, 1, 0, 0), .Background = rowcolor, .Foreground = Brushes.Black}))
                         rowcolortoggle = Not rowcolortoggle
+                        LocationBlocks += tpj.MaxRowCount
                     End If
-
                 End If
-
             End If
         Next
 
@@ -811,6 +820,50 @@ Public Class VendorSchedule
 #End Region
 
     End Sub
+
+    Private Function GetSpacing(tpj As TruckSchedulePrintMatrix, i As Byte) As String
+        If MaxTruckRowCount = 1 Then Return Chr(13)
+        Dim retstring As String = "", target As Byte
+        Select Case i
+            Case 0  ' Location
+                target = MaxTruckRowCount
+            Case 1  ' Monday
+                If tpj.MonCount = 0 Then
+                    target = MaxTruckRowCount
+                Else
+                    target = 1 + (MaxTruckRowCount - tpj.MonCount)
+                End If
+
+            Case 2  ' Tuesday
+                If tpj.TueCount = 0 Then
+                    target = MaxTruckRowCount
+                Else
+                    target = 1 + (MaxTruckRowCount - tpj.TueCount)
+                End If
+            Case 3  ' Wednesday
+                If tpj.WedCount = 0 Then
+                    target = MaxTruckRowCount
+                Else
+                    target = 1 + (MaxTruckRowCount - tpj.WedCount)
+                End If
+            Case 4  ' Thursday
+                If tpj.ThuCount = 0 Then
+                    target = MaxTruckRowCount
+                Else
+                    target = 1 + (MaxTruckRowCount - tpj.ThuCount)
+                End If
+            Case 5  ' Friday
+                If tpj.FriCount = 0 Then
+                    target = MaxTruckRowCount
+                Else
+                    target = 1 + (MaxTruckRowCount - tpj.FriCount)
+                End If
+        End Select
+        For x As Byte = 1 To target
+            retstring = retstring & Chr(13)
+        Next
+        Return retstring
+    End Function
 
     Private Function DiscardCheck() As Boolean
         Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.YesNo, 12, False,, "Discard unsaved data?",, AgnesMessageBox.ImageType.Danger)

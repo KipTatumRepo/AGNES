@@ -16,6 +16,7 @@ Public Class Flash
     Dim LaborGroup As FlashGroup
     Dim OpexGroup As FlashGroup
     Dim FeesGroup As FlashGroup
+    Dim RoomFeeGroup As FlashGroup
     Dim SubsidyGroup As FlashGroup
     Dim TotalGroup As FlashGroup
     Dim Units As UnitChooser
@@ -432,7 +433,7 @@ Public Class Flash
 #Region "Eventions"
             Case 8
                 Title = "Eventions Weekly Financial Flash"
-                Height = 460
+                Height = 510
                 AvailableUnits = New UnitGroup With {.Summoner = 0, .UnitGroupName = "Eventions"}
 
                 '// Add Unit and/or Subunits
@@ -459,10 +460,14 @@ Public Class Flash
                 '// Add flash-specific flashgroups (categories)
                 SalesGroup = New FlashGroup(MSP, Wk, Units, "Total Sales", False, 0, True, False, True, False, False) With {.SpreadByWeeks = True}
                 CogsGroup = New FlashGroup(MSP, Wk, Units, "COGS", False, 47, False, False, True, False, False) With {.SpreadByWeeks = True, .SalesFlashGroup = SalesGroup}
-                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", False, 94, False, False, True, False, False) With {.SpreadByWeeks = True, .SalesFlashGroup = SalesGroup}
-                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", False, 141, True, False, True, False, False) With {.SpreadByWeeks = True, .SalesFlashGroup = SalesGroup}
-                FeesGroup = New FlashGroup(MSP, Wk, Units, "Fees", False, 188, False, False, True, False, False) With {.SpreadByWeeks = True, .SalesFlashGroup = SalesGroup}
-                SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", False, 235, True, True, True, False, False, New List(Of FlashGroup) From {SalesGroup, CogsGroup, LaborGroup, OpexGroup, FeesGroup}) With {.SalesFlashGroup = SalesGroup}
+                LaborGroup = New FlashGroup(MSP, Wk, Units, "Labor", False, 94, True, False, True, False, False) With {.SpreadByWeeks = True, .SalesFlashGroup = SalesGroup}
+                OpexGroup = New FlashGroup(MSP, Wk, Units, "OPEX", False, 141, False, False, True, False, False) With {.SpreadByWeeks = True, .SalesFlashGroup = SalesGroup}
+                FeesGroup = New FlashGroup(MSP, Wk, Units, "Fees", False, 188, True, False, True, False, False) With {.SpreadByWeeks = True, .SalesFlashGroup = SalesGroup}
+
+                'TEST: ADDING ROOM FEES TO EVENTIONS
+                RoomFeeGroup = New FlashGroup(MSP, Wk, Units, "Room Fees", False, 235, False, False, True, False, False) With {.SpreadByWeeks = True, .SalesFlashGroup = SalesGroup}
+
+                SubsidyGroup = New FlashGroup(MSP, Wk, Units, "Subsidy", False, 282, True, True, True, False, False, New List(Of FlashGroup) From {SalesGroup, CogsGroup, LaborGroup, OpexGroup, FeesGroup, RoomFeeGroup}) With {.SalesFlashGroup = SalesGroup}
 
 
                 With grdFlashGroups.Children
@@ -471,6 +476,7 @@ Public Class Flash
                     .Add(LaborGroup)
                     .Add(OpexGroup)
                     .Add(FeesGroup)
+                    .Add(RoomFeeGroup)
                     .Add(SubsidyGroup)
                 End With
                 InitialFocus = SalesGroup

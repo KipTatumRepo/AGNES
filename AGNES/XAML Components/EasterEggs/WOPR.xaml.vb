@@ -75,14 +75,16 @@ Public Class WOPR
                 ChessOwn()
             Case Key.N
                 MsgTimer = Nothing
-                DisplayGameList()
+                WOPRModule.GameChoice = "Chaos Cafe"
+                Close()
+                'DisplayGameList()
         End Select
     End Sub
 
     Private Sub ChessOwn()
         Complete = False
         ActiveTextBlock.Width = Width
-        TextToDisplay = "I honestly don't think that you would be much of a match for me.  Would you like to see other games? (Y/N)"
+        TextToDisplay = "I honestly don't think that you would be much of a match for me.  How about something more your speed? (Y/N)"
         TextIndex = 0
         MsgTimer = New DispatcherTimer()
         MsgTimer.Interval = TimerInterval
@@ -99,7 +101,9 @@ Public Class WOPR
             Case Key.Y
                 MsgTimer = Nothing
                 RemoveHandler Me.KeyDown, AddressOf MoreGamesPress
-                DisplayGameList()
+                ' DisplayGameList()
+                WOPRModule.GameChoice = "Chaos Cafe"
+                Close()
             Case Key.N
                 MsgTimer = Nothing
                 Close()
@@ -158,7 +162,7 @@ Public Class WOPR
         MsgTimer.Stop()
         Select Case e.Key
             Case Key.D1, Key.NumPad1
-                WOPRModule.GameChoice = "Manger Mayhem"
+                WOPRModule.GameChoice = "Manager Mayhem"
                 Close()
             Case Key.D2, Key.NumPad2
                 WOPRModule.GameChoice = "Kustomer Kaos"

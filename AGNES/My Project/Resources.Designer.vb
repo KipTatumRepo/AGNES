@@ -293,6 +293,26 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property fire() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("fire", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property fire2() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("fire2", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property Flash() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Flash", resourceCulture)
@@ -416,6 +436,36 @@ Namespace My.Resources
         Friend ReadOnly Property Journal() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Journal", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property LeftChef1() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("LeftChef1", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property LeftChef2() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("LeftChef2", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property LeftChef3() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("LeftChef3", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -666,6 +716,36 @@ Namespace My.Resources
         Friend ReadOnly Property reportcard() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("reportcard", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property RightChef1() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("RightChef1", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property RightChef2() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("RightChef2", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property RightChef3() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("RightChef3", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
