@@ -179,6 +179,7 @@
     <Compile Include="Application Objects\MonthChooser.vb" />
     <Compile Include="Application Objects\PercentBox.vb" />
     <Compile Include="Application Objects\YearChooser.vb" />
+    <Compile Include="EE Objects\Chef.vb" />
     <Compile Include="Entities\AGNESModel.Context.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -347,6 +348,9 @@
     </Compile>
     <Compile Include="XAML Components\EasterEggs\ChaosCafeSplash.xaml.vb">
       <DependentUpon>ChaosCafeSplash.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="XAML Components\EasterEggs\ChaosOne.xaml.vb">
+      <DependentUpon>ChaosOne.xaml</DependentUpon>
     </Compile>
     <Compile Include="XAML Components\EasterEggs\PacMan.xaml.vb">
       <DependentUpon>PacMan.xaml</DependentUpon>
@@ -705,6 +709,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="XAML Components\EasterEggs\ChaosOne.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="XAML Components\EasterEggs\PacMan.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -979,10 +987,13 @@
     <Resource Include="Resources\Commons.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\LeftChef1.png" />
+    <Resource Include="Resources\LeftChef2.png" />
+    <Resource Include="Resources\LeftChef3.png" />
+    <Resource Include="Resources\RightChef1.png" />
+    <Resource Include="Resources\RightChef2.png" />
+    <Resource Include="Resources\RightChef3.png" />
     <Content Include="Resources\Sound Assets\jump.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\CCMain.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Resource Include="Resources\fire2.gif" />

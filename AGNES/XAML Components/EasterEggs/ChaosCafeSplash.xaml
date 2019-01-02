@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:AGNES"
         mc:Ignorable="d"
         Title="ChaosCafeSplash" Height="450" Width="800" Background="Black" WindowStyle="None" WindowStartupLocation="CenterScreen" WindowState="Maximized">
-    <Grid>
+    <Grid x:Name="grdSplash">
+        <TextBlock x:Name="tbTopTen" HorizontalAlignment="Center" TextWrapping="Wrap" Text="ABC  999,999" VerticalAlignment="center" FontFamily="MV Boli" FontSize="36" Foreground="#FF3E970B"/>
+
         <Image x:Name="imgfire" Height="200" VerticalAlignment="Bottom" Source="/AGNES;component/Resources/fire2.gif" Stretch="Fill"/>
 
         <TextBlock Text= "Cafe Chaos" HorizontalAlignment="Center" VerticalAlignment="Top" Height="111" TextAlignment="Center" FontSize="96" FontFamily="Ravie" Margin="128,0">
@@ -19,8 +21,6 @@
             </TextBlock.Foreground>
         </TextBlock>
         <TextBlock x:Name="tbStart" Margin="0,0,0,100" TextWrapping="Wrap" Text="Press the Spacebar to Begin" FontSize="48" FontFamily="MV Boli" TextAlignment="Center" Foreground="#FF3E970B" Height="77" VerticalAlignment="Bottom"/>
-        <TextBlock x:Name="tbTopTen" HorizontalAlignment="Center" TextWrapping="Wrap" Text="ABC  999,999" VerticalAlignment="center" FontFamily="MV Boli" FontSize="36" Foreground="#FF3E970B"/>
-        <Image x:Name="imgChef" HorizontalAlignment="Left" Height="150" Margin="-100,195,0,0" VerticalAlignment="Top" Width="100" Source="/AGNES;component/Resources/Chef1.png"/>
 
     </Grid>
 </Window>
