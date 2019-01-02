@@ -12,7 +12,6 @@ Imports System.Collections.Generic
 
 Partial Public Class TrainingType
     Public Property PID As Long
-    Public Property LOB As String
     Public Property TrainingName As String
     Public Property TrainingDescription As String
     Public Property Hours As Decimal

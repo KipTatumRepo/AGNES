@@ -13,5 +13,6 @@ Imports System.Collections.Generic
 Partial Public Class Trainer
     Public Property PID As Long
     Public Property TrainerName As String
+    Public Property EmpId As Long
 
 End Class

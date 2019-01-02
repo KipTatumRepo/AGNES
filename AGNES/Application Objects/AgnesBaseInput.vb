@@ -1,7 +1,7 @@
 ﻿Public Class AgnesBaseInput
     Inherits Grid
 #Region "Properties"
-
+    Public BaseTextBox As TextBox
     Public Enum ShowFlare
         Show
         Hide
@@ -46,13 +46,13 @@
         Dim myrct As New Rectangle With {.Name = "ErrorRectangle", .Fill = Brushes.Red, .Opacity = 0.33, .StrokeThickness = 1,
             .Effect = errorflare, .Visibility = Visibility.Hidden}
 
-        Dim mytxt As New TextBox With {.Name = "TextBox", .BorderBrush = Brushes.LightGray, .Text = s, .TextAlignment = ta,
+        BaseTextBox = New TextBox With {.Name = "TextBox", .BorderBrush = Brushes.LightGray, .Text = s, .TextAlignment = ta,
             .TextWrapping = tw, .HorizontalAlignment = h, .VerticalAlignment = v}
 
         Select Case FontSize
             Case FontSz.Small
                 Height = 24
-                With mytxt
+                With BaseTextBox
                     .Height = 16
                     .Width = FieldWidth - 8
                     .Margin = New Thickness(4, 4, 0, 0)
@@ -60,7 +60,7 @@
                 End With
             Case FontSz.Smaller
                 Height = 26
-                With mytxt
+                With BaseTextBox
                     .Height = 18
                     .Width = FieldWidth - 8
                     .Margin = New Thickness(4, 4, 0, 0)
@@ -68,7 +68,7 @@
                 End With
             Case FontSz.Standard
                 Height = 28
-                With mytxt
+                With BaseTextBox
                     .Height = 20
                     .Width = FieldWidth - 8
                     .Margin = New Thickness(4, 4, 0, 0)
@@ -76,7 +76,7 @@
                 End With
             Case FontSz.Medium
                 Height = 34
-                With mytxt
+                With BaseTextBox
                     .Height = 26
                     .Width = FieldWidth - 8
                     .Margin = New Thickness(4, 4, 0, 0)
@@ -84,7 +84,7 @@
                 End With
             Case FontSz.Large
                 Height = 36
-                With mytxt
+                With BaseTextBox
                     .Height = 28
                     .Width = FieldWidth - 8
                     .Margin = New Thickness(4, 4, 0, 0)
@@ -92,7 +92,7 @@
                 End With
             Case FontSz.VeryLarge
                 Height = 44
-                With mytxt
+                With BaseTextBox
                     .Height = 36
                     .Width = FieldWidth - 8
                     .Margin = New Thickness(4, 4, 0, 0)
@@ -102,8 +102,16 @@
 
         With Children
             .Add(myrct)
-            .Add(mytxt)
+            .Add(BaseTextBox)
         End With
+    End Sub
+
+#End Region
+
+#Region "Public Methods"
+    Public Sub UserFocus()
+        BaseTextBox.Focus()
+        BaseTextBox.SelectAll()
     End Sub
 
 #End Region

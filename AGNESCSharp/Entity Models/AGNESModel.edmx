@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="AGNESModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CashHandle">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PersNumber" Type="bigint" />
+          <Property Name="CostCenter" Type="varchar" MaxLength="128" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" />
+          <Property Name="FirstName" Type="varchar" MaxLength="128" />
+          <Property Name="Type" Type="tinyint" />
+          <Property Name="Date" Type="date" />
+          <Property Name="Notes" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="LOA">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PersNumber" Type="bigint" />
+          <Property Name="CostCenter" Type="varchar" MaxLength="128" />
+          <Property Name="LastName" Type="varchar" MaxLength="128" />
+          <Property Name="FirstName" Type="varchar" MaxLength="128" />
+          <Property Name="Type" Type="varchar" MaxLength="50" />
+          <Property Name="DateStart" Type="date" />
+          <Property Name="DateEnd" Type="date" />
+          <Property Name="Notes" Type="varchar(max)" />
+          <Property Name="Pending" Type="tinyint" />
+          <Property Name="Approved" Type="tinyint" />
+          <Property Name="Closed" Type="tinyint" />
+          <Property Name="Parental" Type="tinyint" />
+          <Property Name="Intermittent" Type="tinyint" />
+          <Property Name="Continuous" Type="tinyint" />
+        </EntityType>
+        <EntityType Name="Occurrences">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PersNumber" Type="bigint" />
+          <Property Name="CostCenter" Type="varchar" MaxLength="128" />
+          <Property Name="LastName" Type="varchar" MaxLength="128" />
+          <Property Name="FirstName" Type="varchar" MaxLength="128" />
+          <Property Name="Type" Type="tinyint" />
+          <Property Name="Date" Type="date" />
+          <Property Name="Notes" Type="varchar(max)" />
+          <Property Name="AttendanceViolation" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityContainer Name="AGNESModelStoreContainer">
+          <EntitySet Name="CashHandle" EntityType="Self.CashHandle" Schema="HR" store:Type="Tables" />
+          <EntitySet Name="LOA" EntityType="Self.LOA" Schema="HR" store:Type="Tables" />
+          <EntitySet Name="Occurrences" EntityType="Self.Occurrences" Schema="HR" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AGNESModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CashHandle">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PersNumber" Type="Int64" />
+          <Property Name="CostCenter" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FirstName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="Byte" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="LOA">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PersNumber" Type="Int64" />
+          <Property Name="CostCenter" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="FirstName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DateStart" Type="DateTime" Precision="0" />
+          <Property Name="DateEnd" Type="DateTime" Precision="0" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Pending" Type="Byte" />
+          <Property Name="Approved" Type="Byte" />
+          <Property Name="Closed" Type="Byte" />
+          <Property Name="Parental" Type="Byte" />
+          <Property Name="Intermittent" Type="Byte" />
+          <Property Name="Continuous" Type="Byte" />
+        </EntityType>
+        <EntityType Name="Occurrence">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PersNumber" Type="Int64" />
+          <Property Name="CostCenter" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="FirstName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="Byte" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="AttendanceViolation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityContainer Name="AGNESEntity" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CashHandles" EntityType="Self.CashHandle" />
+          <EntitySet Name="LOAs" EntityType="Self.LOA" />
+          <EntitySet Name="Occurrences" EntityType="Self.Occurrence" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AGNESModelStoreContainer" CdmEntityContainer="AGNESEntity">
+          <EntitySetMapping Name="CashHandles">
+            <EntityTypeMapping TypeName="AGNESModel.CashHandle">
+              <MappingFragment StoreEntitySet="CashHandle">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="PersNumber" ColumnName="PersNumber" />
+                <ScalarProperty Name="CostCenter" ColumnName="CostCenter" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LOAs">
+            <EntityTypeMapping TypeName="AGNESModel.LOA">
+              <MappingFragment StoreEntitySet="LOA">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="PersNumber" ColumnName="PersNumber" />
+                <ScalarProperty Name="CostCenter" ColumnName="CostCenter" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="DateStart" ColumnName="DateStart" />
+                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Pending" ColumnName="Pending" />
+                <ScalarProperty Name="Approved" ColumnName="Approved" />
+                <ScalarProperty Name="Closed" ColumnName="Closed" />
+                <ScalarProperty Name="Parental" ColumnName="Parental" />
+                <ScalarProperty Name="Intermittent" ColumnName="Intermittent" />
+                <ScalarProperty Name="Continuous" ColumnName="Continuous" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Occurrences">
+            <EntityTypeMapping TypeName="AGNESModel.Occurrence">
+              <MappingFragment StoreEntitySet="Occurrences">
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="PersNumber" ColumnName="PersNumber" />
+                <ScalarProperty Name="CostCenter" ColumnName="CostCenter" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="AttendanceViolation" ColumnName="AttendanceViolation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

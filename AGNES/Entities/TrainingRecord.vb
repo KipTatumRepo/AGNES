@@ -19,5 +19,6 @@ Partial Public Class TrainingRecord
     Public Property Score As Decimal
     Public Property Certification As Boolean
     Public Property Trainer As Long
+    Public Property TrainingRecordedBy As Nullable(Of Long)
 
 End Class

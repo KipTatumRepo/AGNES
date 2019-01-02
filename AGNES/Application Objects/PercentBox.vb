@@ -78,6 +78,9 @@ Public Class PercentBox
     End Sub
 #End Region
 
+#Region "Public Methods"
+#End Region
+
 #Region "Private Methods"
     Private Sub ValidateText(sender As Object, e As EventArgs)
         Dim t As TextBox = sender
@@ -152,4 +155,5 @@ Public Class PercentBox
     End Sub
 
 #End Region
+
 End Class

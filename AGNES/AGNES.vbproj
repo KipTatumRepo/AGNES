@@ -76,7 +76,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
@@ -165,6 +165,9 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System.Net.Http" />
     <Reference Include="WindowsFormsIntegration" />
+    <Reference Include="WpfAnimatedGif, Version=1.4.17.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WpfAnimatedGif.1.4.17\lib\net\WpfAnimatedGif.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="Application.xaml">
@@ -176,6 +179,22 @@
     <Compile Include="Application Objects\MonthChooser.vb" />
     <Compile Include="Application Objects\PercentBox.vb" />
     <Compile Include="Application Objects\YearChooser.vb" />
+    <Compile Include="EE Objects\Chef.vb" />
+    <Compile Include="Entities\AGNESModel.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AGNESModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AGNESModel.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AGNESModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AGNESModel.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AGNESModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\ApplicationSession.vb">
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
     </Compile>
@@ -185,17 +204,38 @@
     <Compile Include="Entities\Availability.vb">
       <DependentUpon>VendorModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\BIModel.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BIModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\BIModel.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BIModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\BIModel.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Building.vb">
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\BusinessGroup.vb">
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\BusinessGroupTraining_Join.vb">
+      <DependentUpon>TrainingModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Cafe.vb">
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\CAMWithholding.vb">
       <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CashHandle.vb">
+      <DependentUpon>AGNESModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Contact.vb">
       <DependentUpon>VendorModel.tt</DependentUpon>
@@ -218,8 +258,14 @@
     <Compile Include="Entities\LinesOfBusiness.vb">
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\LOA.vb">
+      <DependentUpon>AGNESModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Market.vb">
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Occurrence.vb">
+      <DependentUpon>AGNESModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Population.vb">
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
@@ -239,10 +285,13 @@
     <Compile Include="Entities\SickOtRecord.vb">
       <DependentUpon>FlashActualsModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\TempRecord.vb">
+      <DependentUpon>TrainingModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Trainer.vb">
       <DependentUpon>TrainingModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\TrainerTrainingJoin.vb">
+    <Compile Include="Entities\TrainerTraining_Join.vb">
       <DependentUpon>TrainingModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\TrainingRecord.vb">
@@ -273,11 +322,17 @@
     <Compile Include="Forecast Objects\ForecastGroup.vb" />
     <Compile Include="Forecast Objects\UnitFcast.vb" />
     <Compile Include="Module Orchestrators\BirthdayModule.vb" />
+    <Compile Include="Module Orchestrators\CSharpModules.vb" />
     <Compile Include="Module Orchestrators\EventJournal.vb" />
     <Compile Include="Module Orchestrators\FlashStatusModule.vb" />
     <Compile Include="Module Orchestrators\ForecastModule.vb" />
     <Compile Include="Module Orchestrators\VendorModule.vb" />
     <Compile Include="Module Orchestrators\WOPRModule.vb" />
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Training Objects\EmployeeObj.vb" />
     <Compile Include="Training Objects\TrainingGridSource.vb" />
     <Compile Include="Vendor Objects\ScheduleDay.vb" />
@@ -286,9 +341,16 @@
     <Compile Include="Vendor Objects\ScheduleVendor.vb" />
     <Compile Include="Vendor Objects\ScheduleWeek.vb" />
     <Compile Include="Vendor Objects\ScheduleStation.vb" />
+    <Compile Include="Vendor Objects\TruckSchedulePrintMatrix.vb" />
     <Compile Include="Vendor Objects\VendorInStation.vb" />
     <Compile Include="XAML Components\EasterEggs\Birthday.xaml.vb">
       <DependentUpon>Birthday.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="XAML Components\EasterEggs\ChaosCafeSplash.xaml.vb">
+      <DependentUpon>ChaosCafeSplash.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="XAML Components\EasterEggs\ChaosOne.xaml.vb">
+      <DependentUpon>ChaosOne.xaml</DependentUpon>
     </Compile>
     <Compile Include="XAML Components\EasterEggs\PacMan.xaml.vb">
       <DependentUpon>PacMan.xaml</DependentUpon>
@@ -368,7 +430,7 @@
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\EmployeeList.vb">
-      <DependentUpon>GeneralSharedData.tt</DependentUpon>
+      <DependentUpon>BIModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Events.vb">
       <DependentUpon>BusinessGroupCRM.tt</DependentUpon>
@@ -548,10 +610,8 @@
     <Compile Include="Module Orchestrators\BaseModule.vb" />
     <Compile Include="Module Orchestrators\FlashModule.vb" />
     <Compile Include="Module Orchestrators\TrainingModule.vb" />
-    <Compile Include="My Project\Resources.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
+    <Compile Include="XAML Components\Shared\AssociateMapping.xaml.vb">
+      <DependentUpon>AssociateMapping.xaml</DependentUpon>
     </Compile>
     <Compile Include="XAML Components\Training\AssocSearch.xaml.vb">
       <DependentUpon>AssocSearch.xaml</DependentUpon>
@@ -619,6 +679,12 @@
     <Compile Include="XAML Components\HR Audit\HRAudit.xaml.vb">
       <DependentUpon>HRAudit.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XAML Components\Training\NewTraining.xaml.vb">
+      <DependentUpon>NewTraining.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="XAML Components\Training\Trainers.xaml.vb">
+      <DependentUpon>Trainers.xaml</DependentUpon>
+    </Compile>
     <Compile Include="XAML Components\Training\Training.xaml.vb">
       <DependentUpon>Training.xaml</DependentUpon>
     </Compile>
@@ -636,6 +702,14 @@
     </Compile>
     <Compile Include="WCR Objects\WCRObject.vb" />
     <Page Include="XAML Components\EasterEggs\Birthday.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XAML Components\EasterEggs\ChaosCafeSplash.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XAML Components\EasterEggs\ChaosOne.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -671,6 +745,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="XAML Components\Shared\AssociateMapping.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="XAML Components\Training\AssocSearch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -700,6 +778,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="XAML Components\HR Audit\HRAudit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XAML Components\Training\NewTraining.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XAML Components\Training\Trainers.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -742,6 +828,7 @@
     <Import Include="System.Windows.Media" />
     <Import Include="System.Windows.Media.Imaging" />
     <Import Include="System.Windows.Navigation" />
+    <Import Include="WpfAnimatedGif" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="My Project\AssemblyInfo.vb">
@@ -775,8 +862,22 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>AgnesSharedDataModel.Designer.vb</LastGenOutput>
     </EntityDeploy>
+    <EntityDeploy Include="Entities\AGNESModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>AGNESModel.Designer.vb</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Entities\AGNESModel.edmx.diagram">
+      <DependentUpon>AGNESModel.edmx</DependentUpon>
+    </None>
     <None Include="Entities\AgnesSharedDataModel.edmx.diagram">
       <DependentUpon>AgnesSharedDataModel.edmx</DependentUpon>
+    </None>
+    <EntityDeploy Include="Entities\BIModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>BIModel.Designer.vb</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Entities\BIModel.edmx.diagram">
+      <DependentUpon>BIModel.edmx</DependentUpon>
     </None>
     <None Include="Entities\BudgetModel.edmx.diagram">
       <DependentUpon>BudgetModel.edmx</DependentUpon>
@@ -834,7 +935,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\AgnesIcon.ico" />
@@ -884,12 +987,47 @@
     <Resource Include="Resources\Commons.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\LeftChef1.png" />
+    <Resource Include="Resources\LeftChef2.png" />
+    <Resource Include="Resources\LeftChef3.png" />
+    <Resource Include="Resources\RightChef1.png" />
+    <Resource Include="Resources\RightChef2.png" />
+    <Resource Include="Resources\RightChef3.png" />
+    <Content Include="Resources\Sound Assets\jump.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Resources\fire2.gif" />
+    <Resource Include="Resources\fire.gif" />
+    <Resource Include="Resources\Chef3.png" />
+    <Resource Include="Resources\Chef2.png" />
+    <Resource Include="Resources\Chef1.png" />
+    <Resource Include="Resources\map-editing.png" />
+    <Resource Include="Resources\MSLogo.png" />
+    <Resource Include="Resources\reportcard.png" />
+    <Resource Include="Resources\medal.png" />
+    <Resource Include="Resources\inspect.png" />
+    <Resource Include="Resources\crowd.png" />
+    <Resource Include="Resources\clock.png" />
+    <Resource Include="Resources\Book.png" />
+    <Resource Include="Resources\baby.png" />
+    <Resource Include="Resources\Yes.png" />
+    <Resource Include="Resources\No.png" />
     <Resource Include="Resources\pacmanup.png" />
     <Resource Include="Resources\pacmanright.png" />
     <Resource Include="Resources\pacmanleft.png" />
     <Resource Include="Resources\pacmandown.png" />
     <Resource Include="Resources\ghost.png" />
     <Resource Include="AgnesIcon2.ico" />
+    <Content Include="Entities\AGNESModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AGNESModel.edmx</DependentUpon>
+      <LastGenOutput>AGNESModel.Context.vb</LastGenOutput>
+    </Content>
+    <Content Include="Entities\AGNESModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AGNESModel.edmx</DependentUpon>
+      <LastGenOutput>AGNESModel.vb</LastGenOutput>
+    </Content>
     <Content Include="Entities\AgnesSharedDataModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>AgnesSharedDataModel.edmx</DependentUpon>
@@ -899,6 +1037,16 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>AgnesSharedDataModel.edmx</DependentUpon>
       <LastGenOutput>AgnesSharedDataModel.vb</LastGenOutput>
+    </Content>
+    <Content Include="Entities\BIModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BIModel.edmx</DependentUpon>
+      <LastGenOutput>BIModel.Context.vb</LastGenOutput>
+    </Content>
+    <Content Include="Entities\BIModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BIModel.edmx</DependentUpon>
+      <LastGenOutput>BIModel.vb</LastGenOutput>
     </Content>
     <Content Include="Entities\BudgetModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -1043,6 +1191,12 @@
     <Folder Include="XAML Components\Menu Engineering\" />
     <Folder Include="XAML Components\QA Suite\" />
     <Folder Include="XAML Components\Waste\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AGNESCSharp\AGNESCSharp.csproj">
+      <Project>{1ef93cd2-ab87-4a27-b908-e17737b7daba}</Project>
+      <Name>AGNESCSharp</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

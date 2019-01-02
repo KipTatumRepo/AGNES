@@ -12,3 +12,4 @@ End Class
 Public Class Trainings
     Inherits ObservableCollection(Of TrainingRecordItem)
 End Class
+

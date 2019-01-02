@@ -1,0 +1,329 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1EF93CD2-AB87-4A27-B908-E17737B7DABA}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>AGNESCSharp</RootNamespace>
+    <AssemblyName>AGNESCSharp</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Entity Models\ApplicationSession.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\HRCashHandle.xaml.cs">
+      <DependentUpon>HRCashHandle.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\HRLeave.xaml.cs">
+      <DependentUpon>HRLeave.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\HROccurrence.xaml.cs">
+      <DependentUpon>HROccurrence.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\HRSearch.xaml.cs">
+      <DependentUpon>HRSearch.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\BIMessageBox.xaml.cs">
+      <DependentUpon>BIMessageBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\BIModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\Building.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\Building_Date.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\BusinessGroup.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\Cafe.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\CafeList.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HelperClasses\CHIntToStringConverter.cs" />
+    <Compile Include="Entity Models\COFFEE_CONCEPTS.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\COFFEE_PROD_CAT.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\COMMONS_LOCATIONS.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\CostCenter.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\DATE.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\EmployeeList.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\ESPRESSO_TERMINALS.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\FLASHBOARD_VISUAL_CATEGORIES.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\HRMgr.xaml.cs">
+      <DependentUpon>HRMgr.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="HelperClasses\IntToStringConverter.cs" />
+    <Compile Include="Entity Models\LinesOfBusiness.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\LOCATION.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\Market.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\MasterBuildingList.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\MENU_ITEM_GROUPS.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\MENU_ITEM_GROUPS_MAP.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\MENU_ITEM_MAPPINGS.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\MS_DINING_EMAILS.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\PCIDtoStationMap.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\Population.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\PopulationAllocation.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\POS_ID_MAPPINGS.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\REVOLVING_STATION_DATES.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\REVOLVING_STATION_ITEMS.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\StationList.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HelperClasses\UnselectableListBox.cs" />
+    <Compile Include="Entity Models\WEATHER_TRACK.cs">
+      <DependentUpon>BIModel.tt</DependentUpon>
+    </Compile>
+    <Page Include="Windows\HRCashHandle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\HRLeave.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\HROccurrence.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\HRSearch.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\BIMessageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\HRMgr.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="Entity Models\AGNESModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AGNESModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\AGNESModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AGNESModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\AGNESModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AGNESModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Entity Models\BIModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BIModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\BIModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BIModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\CashHandle.cs">
+      <DependentUpon>AGNESModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity Models\LOA.cs">
+      <DependentUpon>AGNESModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Entity Models\Occurrence.cs">
+      <DependentUpon>AGNESModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EntityDeploy Include="Entity Models\AGNESModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>AGNESModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Entity Models\AGNESModel.edmx.diagram">
+      <DependentUpon>AGNESModel.edmx</DependentUpon>
+    </None>
+    <EntityDeploy Include="Entity Models\BIModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>BIModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Entity Models\BIModel.edmx.diagram">
+      <DependentUpon>BIModel.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Entity Models\AGNESModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AGNESModel.Context.cs</LastGenOutput>
+      <DependentUpon>AGNESModel.edmx</DependentUpon>
+    </Content>
+    <Content Include="Entity Models\AGNESModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AGNESModel.edmx</DependentUpon>
+      <LastGenOutput>AGNESModel.cs</LastGenOutput>
+    </Content>
+    <Content Include="Entity Models\BIModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BIModel.edmx</DependentUpon>
+      <LastGenOutput>BIModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Entity Models\BIModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BIModel.edmx</DependentUpon>
+      <LastGenOutput>BIModel.cs</LastGenOutput>
+    </Content>
+    <Resource Include="Resources\eraser.png" />
+    <Resource Include="Resources\save.png" />
+    <Resource Include="Resources\Occurrence.png" />
+    <Resource Include="Resources\magglass.png" />
+    <Resource Include="Resources\dollarsignb.png" />
+    <Resource Include="Resources\BabyCarriage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

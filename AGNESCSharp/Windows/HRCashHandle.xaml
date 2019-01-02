@@ -1,0 +1,50 @@
+﻿<Window x:Class="AGNESCSharp.HRCashHandle"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AGNESCSharp"
+        mc:Ignorable="d"
+         Title="Cash Handling Entry" Height="600" Width="965" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="62*"/>
+            <RowDefinition Height="38*"/>
+            <RowDefinition Height="38*"/>
+            <RowDefinition Height="263*"/>
+            <RowDefinition Height="45*"/>
+        </Grid.RowDefinitions>
+        <TextBox x:Name="TopTextBox" HorizontalAlignment="Stretch"  Margin="10,0,10,0" TextAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Stretch" FontSize="20" IsReadOnly="True"/>
+        <Grid x:Name="CashHandlingGrid" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label x:Name="CashLabel" Content="Amount of Variance" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="20"/>
+            <ComboBox x:Name="CashCB" VerticalAlignment="Center" HorizontalAlignment="Right" Width="250" Margin="0,0,20,0" FontSize="14" Height="40" VerticalContentAlignment="Center" SelectionChanged="CashCB_SelectionChanged">
+                <ComboBoxItem>Variance Reported None Found</ComboBoxItem>
+                <ComboBoxItem>Equal to $3.00</ComboBoxItem>
+                <ComboBoxItem>&gt;$3.00 but &lt;$20.00</ComboBoxItem>
+            </ComboBox>
+            <Label x:Name="CHDPLabel" Content="Date of Occurrence" Grid.Column="1"  Margin="30,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20" />
+            <DatePicker x:Name="CHOccurrenceDP" Grid.Column="1" Grid.Row="1" Margin="0,0,30,0" HorizontalAlignment="Right" VerticalAlignment="Center" Height="40" Width="200" VerticalContentAlignment="Center" FontSize="20"/>
+        </Grid>
+        <Grid Grid.Row="1"  Visibility="Collapsed" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <RadioButton x:Name="HalfButton" Content="Half Occurrence" Grid.Column="0" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" IsChecked="True"/>
+            <Label x:Name="DPLabel" Content="Date of Occurrence" Grid.Column="1" Margin="30,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <DatePicker x:Name="OccurrenceDP" Grid.Column="1" Margin="0,0,30,0" HorizontalAlignment="Right" VerticalAlignment="Center" />
+            <RadioButton x:Name="FullButton" Content="Full Occurrence" Grid.Column="2" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+        </Grid>
+        <Label x:Name="DescriptionTbLable" Content="The Details of What Happened?" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+        <ScrollViewer HorizontalAlignment="Stretch" Margin="10,0,10,0" Grid.Row="3" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto">
+            <TextBox x:Name="DescriptionTb" HorizontalAlignment="Stretch" Margin="0,0,0,2" Grid.Row="3" TextWrapping="Wrap" VerticalAlignment="Stretch" FontSize="20" />
+        </ScrollViewer>
+        <Button x:Name="CancelButton" Content="Cancel" HorizontalAlignment="Left" Margin="10,0,0,5" Grid.Row="4" VerticalAlignment="Center" Width="75" Click="CancelButton_Click"/>
+        <Button x:Name="SaveButton" Content="Save Occurrence" HorizontalAlignment="Right" Margin="0,0,10,5" Grid.Row="4" VerticalAlignment="Center" Width="101" Height="23" Click="SaveButton_Click"/>
+    </Grid>
+</Window>

@@ -34,6 +34,7 @@ Public Class RadialPortal
         SessionLog(0)
         ConstructRadialMenu()
         PortalEasterEggs()
+
     End Sub
 
 #End Region
@@ -112,8 +113,6 @@ Public Class RadialPortal
             '    .UserID = 10095
             '    .UserLevel = 4
             'End With
-
-            ' 10162
 
             'With My.Settings
             '    .UserName = "Lexi"
@@ -324,10 +323,12 @@ Public Class RadialPortal
             Case "Vendor Manager"
                 VendorModule.Runmodule()
             Case "Event Journal"
-                'If My.Computer.Keyboard.CtrlKeyDown Then WOPRModule.RunModule()
                 ''//TEST
+                'If My.Computer.Keyboard.CtrlKeyDown Then WOPRModule.RunModule()
                 'EventJournal.Runmodule()
                 ''//TEST
+            Case "HR Manager"
+                CSharpModules.RunHRMgrModule()
         End Select
         Show()
     End Sub
