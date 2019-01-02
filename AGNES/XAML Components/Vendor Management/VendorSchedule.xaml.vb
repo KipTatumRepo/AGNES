@@ -17,6 +17,7 @@ Public Class VendorSchedule
     Public MaxTruckRowCount As Byte
     Private _savestatus As Byte
     Private CurrYear As Integer
+    Private MaxYear As Integer
     Private CurrMonth As Byte
     Private CurrWeek As Byte
     Private PrintFailed As Boolean
@@ -47,17 +48,20 @@ Public Class VendorSchedule
         InitializeComponent()
         SaveStatus = 1
         Height = System.Windows.SystemParameters.PrimaryScreenHeight
-        '// Add period and week slicers
+        '// Add year, period, and week slicers
         CurrYear = Now().Year
+        MaxYear = CurrYear
         CurrMonth = Now().Month
         CurrWeek = GetCurrentCalendarWeek(FormatDateTime(Now(), DateFormat.ShortDate))
-        Wk = New WeekChooser(1, GetMaxCalendarWeeks(CurrMonth), CurrWeek)
+        Wk = New WeekChooser(1, GetMaxCalendarWeeks(CurrMonth, CurrYear), CurrWeek)
         Wk.DisableSelectAllWeeks = True
         Wk.DisableHideWeeks = True
         AddHandler Wk.PropertyChanged, AddressOf WeekChanged
         CAL = New MonthChooser(Wk, 1, 12, CurrMonth)
         CAL.DisableSelectAll = False
-        YR = New YearChooser(CAL, CurrYear, CurrYear + 1, CurrYear)
+        If CurrMonth = 12 Then MaxYear += 1
+        YR = New YearChooser(CAL, CurrYear - 1, MaxYear, CurrYear)
+        CAL.RelatedYearObject = YR
         Dim sep As New Separator
         With tlbVendors.Items
             .Add(YR)
@@ -70,7 +74,7 @@ Public Class VendorSchedule
         wkSched = New ScheduleWeek
         wkSched.Update(YR.CurrentYear, CAL.CurrentMonth, Wk.CurrentWeek)
         grdWeek.Children.Add(wkSched)
-        PopulateVendors(0) '//   Any consideration of day-to-day vendor availability as to whether to show them?
+        PopulateVendors(0)
         UpdateStatusBar("Loading")
     End Sub
 
@@ -794,7 +798,7 @@ Public Class VendorSchedule
             .Add(st)
             .Add(HoursParagraph)
         End With
-        Dim blckcount As Byte = 18 - Math.Round(LocationBlocks, 0)
+        Dim blckcount As Byte = 18 - LocationBlocks
         For x As Byte = 1 To blckcount
             fd.Blocks.Add(New Paragraph(New Run("")))
         Next
