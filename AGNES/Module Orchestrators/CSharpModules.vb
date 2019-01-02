@@ -6,7 +6,7 @@
         Else
             UserAccess = My.Settings.UserID
         End If
-        Dim HRMgr As New AGNESCSharp.MainWindow
+        Dim HRMgr As New AGNESCSharp.MainWindow(UserAccess)
         HRMgr.Close()
     End Sub
 
