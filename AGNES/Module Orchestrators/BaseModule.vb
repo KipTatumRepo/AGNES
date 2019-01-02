@@ -124,9 +124,9 @@ Module BaseModule
         Return 5
     End Function
 
-    Public Function GetMaxCalendarWeeks(m As Byte) As Byte
+    Public Function GetMaxCalendarWeeks(m As Byte, y As Integer) As Byte
         Dim IncrementDate As Date, MondayCount As Byte = 0
-        Dim DateString As String = m & "/1/" & Now().Year
+        Dim DateString As String = m & "/1/" & y
         IncrementDate = FormatDateTime(DateString, DateFormat.ShortDate)
         Do Until IncrementDate.Month <> m
             If IncrementDate.DayOfWeek = DayOfWeek.Monday Then MondayCount += 1
