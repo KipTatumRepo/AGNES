@@ -8,6 +8,8 @@
         <EntityTypeShape EntityType="AGNESModel.CashHandle" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AGNESModel.LOA" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AGNESModel.Occurrence" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AGNESModel.ModulesUsers_Join" Width="1.5" PointX="0.75" PointY="5.75" />
+        <EntityTypeShape EntityType="AGNESModel.UnitsUsers_Join" Width="1.5" PointX="3.375" PointY="5.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

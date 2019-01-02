@@ -27,7 +27,7 @@ namespace AGNESCSharp
         public MainWindow(long userAccess)
         {
             InitializeComponent();
-            HRMgr GoTo = new HRMgr();
+            HRMgr GoTo = new HRMgr(userAccess);
             GoTo.ShowDialog();
         }
     }

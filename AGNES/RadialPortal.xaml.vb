@@ -170,6 +170,15 @@ Public Class RadialPortal
             '    .UserLevel = 4
             'End With
 
+            With My.Settings
+                .UserName = "Julie Ogawa"
+                .UserShortName = "Julie"
+                .UserID = 10135
+                .UserLevel = 4
+            End With
+
+
+
 #End Region
 
         End If
