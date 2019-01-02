@@ -234,7 +234,7 @@ namespace AGNESCSharp
                     if (AttType == "No Call No Show")
                     {
                         BIMessageBox.Show("No Call No Show Dialog", firstName + "Is In The Associates 90 Probationary Period, This No Call No Show Requires Automatic Termination " +
-                            "Please Fill Out And Print This DISCHARG Form", MessageBoxButton.OK);
+                            "Please Fill Out And Print This DISCHARGE Form", MessageBoxButton.OK);
                         Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
                         this.Close();
                         return; 

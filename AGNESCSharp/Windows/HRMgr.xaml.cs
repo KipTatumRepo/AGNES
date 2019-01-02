@@ -35,7 +35,7 @@ namespace AGNESCSharp
 
         #region Constructor/Main
 
-        public HRMgr()
+        public HRMgr(long userAccess)
         {
             InitializeComponent();
             LoadCostCenters();
