@@ -313,8 +313,6 @@ namespace AGNESCSharp
                 string violationText;
                 SelectOccurrence = Convert.ToInt64(selectOccurrence);
 
-                
-
                 using (var db = new AGNESEntity())
                 {
                     var result = db.Occurrences.SingleOrDefault(f => f.PID == SelectOccurrence);
@@ -338,8 +336,7 @@ namespace AGNESCSharp
                             decimal compareOccPoints = (decimal)occPoints;
                             decimal compareType = (decimal)type;
                             var messageBoxResult = BIMessageBox.Show("Occurrence Point Reduction Dialog", "The Selected Violation Will Result In A Reduction Of Occurrence Points From " + occPoints +
-                               " To " + (compareOccPoints - ((oldType / 2) - (compareType / 2))) + " For " + firstName + " , Do You Wish To Continue?", MessageBoxButton.YesNo);
-
+                               " To " + (compareOccPoints - ((oldType / 2) - (compareType / 2))) + " For " + firstName + ", and May Require Removal of A Written Counseling Do You Wish To Continue?", MessageBoxButton.YesNo);
 
                             if (messageBoxResult != MessageBoxResult.Yes) return;
                             db.SaveChanges();
@@ -347,11 +344,9 @@ namespace AGNESCSharp
                             (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber);
                             //TODO: GO BACK TO THIS
                             Report(firstName, violationText, occPoints, empInProbation, earlyDate);
-
                         }
                         else
                         {
-
                             try
                             {
                                 db.SaveChanges();
@@ -537,6 +532,7 @@ namespace AGNESCSharp
                 {
                     type = 2;
                 }
+
                 using (var db = new AGNESEntity())
                 {
                     string selectOccurrence = CashHandleNumber.Text;
@@ -545,25 +541,47 @@ namespace AGNESCSharp
                     var result = db.CashHandles.SingleOrDefault(f => f.PID == SelectOccurrence);
                     if (result != null)
                     {
+                        byte? oldType = result.Type;
                         result.Type = type;
                         result.Date = CHOccurrenceDP.SelectedDate;
                         result.Notes = CHNote.Text;
-                        try
+                        string violationNotes = CHNote.Text;
+
+                        DateTime date = (DateTime)CHOccurrenceDP.SelectedDate;
+                        (DateTime earlyDate, double? occPoints) = HROccurrence.CashHandleCountOccurrences(date, (long)assocNumber);
+
+                        if (type < violationAmount)
                         {
+                            decimal compareOccPoints = (decimal)occPoints;
+                            decimal compareType = (decimal)type;
+                            var messageBoxResult = BIMessageBox.Show("Occurrence Point Reduction Dialog", "The Selected Violation Will Result In A Reduction Of Occurrence Points From " + occPoints +
+                               " To " + (compareOccPoints - ((oldType / 2) - (compareType / 2))) + " For " + firstName + ", and May Require Removal of A Written Counseling Do You Wish To Continue?", MessageBoxButton.YesNo);
+
+                            if (messageBoxResult != MessageBoxResult.Yes) return;
                             db.SaveChanges();
-                            MessageBox.Show("Cash Handling Record Has Been Updated.");
-                            if (type == 2)
+                            MessageBox.Show("Occurrence Record Has Been Updated.");
+                            (earlyDate, occPoints) = HROccurrence.CashHandleCountOccurrences(date, (long)assocNumber);
+                            //TODO: GO BACK TO THIS
+                            Report(firstName, violationNotes, occPoints, empInProbation, earlyDate);
+                        }
+                        else
+                        {
+                            try
                             {
-                                BIMessageBox.Show("Counseling Form Dialog", firstName + "'s Variance Type Was Changed To Greater Than $3.00 but Less Than $20.00, This is an Automatic Progressive Counseling" +
-                                                    " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
-                                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                                db.SaveChanges();
+                                MessageBox.Show("Cash Handling Record Has Been Updated.");
+                                if (type == 2)
+                                {
+                                    BIMessageBox.Show("Counseling Form Dialog", firstName + "'s Variance Type Was Changed To Greater Than $3.00 but Less Than $20.00, This is an Automatic Progressive Counseling" +
+                                                        " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
+                                    Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("There was a problem updating the CASH HANDLING record in the database please contact Business Intelligence " + ex);
                             }
                         }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show("There was a problem updating the CASH HANDLING record in the database please contact Business Intelligence " + ex);
-                        }
-
                     }
                 }
             }

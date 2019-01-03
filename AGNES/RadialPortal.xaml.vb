@@ -170,12 +170,12 @@ Public Class RadialPortal
             '    .UserLevel = 4
             'End With
 
-            With My.Settings
-                .UserName = "Brian Unruh"
-                .UserShortName = "Brian"
-                .UserID = 10124
-                .UserLevel = 4
-            End With
+            'With My.Settings
+            '    .UserName = "Brian Unruh"
+            '    .UserShortName = "Brian"
+            '    .UserID = 10124
+            '    .UserLevel = 4
+            'End With
 
             'With My.Settings
             '    .UserName = "Julie Ogawa"

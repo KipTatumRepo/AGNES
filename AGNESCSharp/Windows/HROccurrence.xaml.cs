@@ -301,18 +301,50 @@ namespace AGNESCSharp
             
             AGNESEntity agnesdb = new AGNESEntity();
             DateTime cutOffDate = date.AddYears(-1);
+            DateTime occEarly;
+            DateTime EarlyDate;
             //DateTime hireDate;
-
+            
             var query = from employeeTable in agnesdb.Occurrences
                         where employeeTable.PersNumber == empID && employeeTable.Date >= cutOffDate
                         orderby employeeTable.Date ascending
                         select employeeTable;
-
             var eTQueryResult = query.ToList();
             var eTEarly = eTQueryResult[0];
-            
-            DateTime occEarly = (DateTime)eTEarly.Date;
-            DateTime EarlyDate = occEarly.AddYears(1);
+
+            occEarly = (DateTime)eTEarly.Date;
+            EarlyDate = occEarly.AddYears(1);
+
+            foreach (var row in query)
+            {
+                occurrencePoints += Convert.ToInt32(row.Type);
+            }
+
+            occurrencePoints = occurrencePoints / 2;
+
+            return (EarlyDate, occurrencePoints);
+           
+        }
+
+        public static (DateTime EarlyDate, double? occurencePoints) CashHandleCountOccurrences(DateTime date, long empID)
+        {
+            double? occurrencePoints = 0;
+
+            AGNESEntity agnesdb = new AGNESEntity();
+            DateTime cutOffDate = date.AddYears(-1);
+            DateTime occEarly;
+            DateTime EarlyDate;
+            //DateTime hireDate;
+
+            var query = from employeeTable in agnesdb.CashHandles
+                        where employeeTable.PersNumber == empID && employeeTable.Date >= cutOffDate
+                        orderby employeeTable.Date ascending
+                        select employeeTable;
+            var eTQueryResult = query.ToList();
+            var eTEarly = eTQueryResult[0];
+
+            occEarly = (DateTime)eTEarly.Date;
+            EarlyDate = occEarly.AddYears(1);
 
             foreach (var row in query)
             {
@@ -341,29 +373,7 @@ namespace AGNESCSharp
             }
         }
 
-        private void Image_MouseEnter(object sender, MouseEventArgs e)
-        {
-            saveImage.Width = 66;
-            saveImage.Height = 58;
-        }
-
-        private void SaveImage_MouseLeave(object sender, MouseEventArgs e)
-        {
-            saveImage.Width = 58;
-            saveImage.Height = 50;
-        }
-
-        private void EraseImage_MouseEnter(object sender, MouseEventArgs e)
-        {
-            eraseImage.Width = 66;
-            eraseImage.Height = 58;
-        }
-
-        private void EraseImage_MouseLeave(object sender, MouseEventArgs e)
-        {
-            eraseImage.Width = 58;
-            eraseImage.Height = 50;
-        }
+        
         #endregion
     }
 }
@@ -403,6 +413,32 @@ namespace AGNESCSharp
 //foreach (var row in CHQuery)
 //{
 //    occurrencePoints += Convert.ToInt32(row.Type);
+//}
+
+//Image button Related
+
+//private void Image_MouseEnter(object sender, MouseEventArgs e)
+//{
+//    saveImage.Width = 66;
+//    saveImage.Height = 58;
+//}
+
+//private void SaveImage_MouseLeave(object sender, MouseEventArgs e)
+//{
+//    saveImage.Width = 58;
+//    saveImage.Height = 50;
+//}
+
+//private void EraseImage_MouseEnter(object sender, MouseEventArgs e)
+//{
+//    eraseImage.Width = 66;
+//    eraseImage.Height = 58;
+//}
+
+//private void EraseImage_MouseLeave(object sender, MouseEventArgs e)
+//{
+//    eraseImage.Width = 58;
+//    eraseImage.Height = 50;
 //}
 
 #endregion
