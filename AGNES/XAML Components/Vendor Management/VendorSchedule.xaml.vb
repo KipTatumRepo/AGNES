@@ -219,7 +219,7 @@ Public Class VendorSchedule
             SaveStatus = 2
         Catch ex As Exception
             Dim amsg = New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText,
-                                AgnesMessageBox.MsgBoxType.OkOnly, 18,, "Unable to save",, "AGNES encountered " & ex.Message & ".  Please review and try again.  If the error continues, contact the BI team.")
+                                AgnesMessageBox.MsgBoxType.OkOnly, 12,, "Unable to save",, "AGNES encountered " & ex.Message & ".  Please review and try again.  If the error continues, contact the BI team.")
             amsg.ShowDialog()
             amsg.Close()
         Finally
@@ -237,14 +237,44 @@ Public Class VendorSchedule
         Catch
             Exit Sub
         End Try
+        Dim LPos As Integer = (System.Windows.SystemParameters.FullPrimaryScreenWidth / 2) - 200
         Select Case CurrentVendorView
             Case 0  ' Print all three
+                Dim pjm As New PrintJobInfo
+                With pjm.tbPrint1
+                    .Visibility = Visibility.Visible
+                    .Text = "Brand by Cafe Schedule"
+                End With
+                With pjm.tbPrint2
+                    .Visibility = Visibility.Visible
+                    .Text = "Cafes by Brand Schedule"
+                End With
+                With pjm.tbPrint2
+                    .Visibility = Visibility.Visible
+                    .Text = "Food Truck Schedule"
+                End With
+                pjm.Show()
                 PrintBrandsbyCafe()
+                pjm.imgCheck1.Visibility = Visibility.Visible
                 PrintCafesbyBrand()
+                pjm.imgCheck1.Visibility = Visibility.Visible
                 PrintTrucks()
+                pjm.Close()
             Case 2  ' Print Brands
+                Dim pjm As New PrintJobInfo
+                With pjm.tbPrint1
+                    .Visibility = Visibility.Visible
+                    .Text = "Brand by Cafe Schedule"
+                End With
+                With pjm.tbPrint2
+                    .Visibility = Visibility.Visible
+                    .Text = "Cafes by Brand Schedule"
+                End With
+                pjm.Show()
                 PrintBrandsbyCafe()
+                pjm.imgCheck1.Visibility = Visibility.Visible
                 PrintCafesbyBrand()
+                pjm.Close()
             Case 3  ' Print Trucks
                 PrintTrucks()
         End Select
@@ -598,8 +628,8 @@ Public Class VendorSchedule
                                                         End If
                                                         ar += 1
                                                         itemcount += 1
-                                                        End If
                                                     End If
+                                                End If
                                             Next
                                         End If
                                     Next

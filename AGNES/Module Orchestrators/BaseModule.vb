@@ -403,6 +403,22 @@ Module BaseModule
         Return ""
     End Function
 
+    Public Function GetVendorNameId(vn As String) As Long
+        Dim qve = (From ve In VendorData.VendorInfo
+                   Where ve.Name = vn
+                   Select ve).ToList(0)
+        If qve IsNot Nothing Then Return qve.PID
+        Return 0
+    End Function
+
+    Public Function GetVendorNameId(vid As Long) As String
+        Dim qve = (From ve In VendorData.VendorInfo
+                   Where ve.PID = vid
+                   Select ve).ToList(0)
+        If qve IsNot Nothing Then Return qve.Name
+        Return ""
+    End Function
+
 #End Region
 
 End Module

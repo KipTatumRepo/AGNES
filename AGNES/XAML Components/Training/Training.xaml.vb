@@ -97,7 +97,9 @@ Public Class Training
         Dim NewMapUI As New AssociateMapping(0)
         NewMapUI.ShowDialog()
         NewMapUI.Close()
+        ClearFields()
         PopulateAssociates(0)
+        ResetFields()
     End Sub
 
 #End Region
@@ -166,7 +168,7 @@ Public Class Training
                     Dim emp As New EmployeeObj With {.CompassId = anl.PersNumber, .CostCenter = anl.CostCenterNumber,
                     .FirstName = anl.FirstName, .LastName = anl.LastName}
                     EmployeeList.Add(emp)
-                    Dim cbi As New ComboBoxItem With {.Content = emp.Fullname, .Tag = EmployeeList.IndexOf(emp)}
+                    Dim cbi As New ComboBoxItem With {.Content = emp.Fullname, .ToolTip = "Cost Center: " & emp.CostCenter, .Tag = EmployeeList.IndexOf(emp)}
                     cbxAssociates.Items.Add(cbi)
                     AddHandler cbi.Selected, AddressOf AssociateSelected
                 Next
@@ -185,7 +187,7 @@ Public Class Training
                 For Each nm In nmlist
                     Dim emp As New EmployeeObj With {.CompassId = 99999, .CostCenter = 99999, .FirstName = nm, .LastName = "temp"}
                     EmployeeList.Add(emp)
-                    Dim cbi As New ComboBoxItem With {.Content = "**" & nm, .Tag = EmployeeList.IndexOf(emp)}
+                    Dim cbi As New ComboBoxItem With {.Content = "**" & nm, .ToolTip = "Cost Center: " & emp.CostCenter, .Tag = EmployeeList.IndexOf(emp)}
                     cbxAssociates.Items.Add(cbi)
                     AddHandler cbi.Selected, AddressOf AssociateSelected
                     tempcount += 1
@@ -211,7 +213,7 @@ Public Class Training
                     Dim emp As New EmployeeObj With {.CompassId = anl.PersNumber, .CostCenter = anl.CostCenterNumber,
                     .FirstName = anl.FirstName, .LastName = anl.LastName}
                     EmployeeList.Add(emp)
-                    Dim cbi As New ComboBoxItem With {.Content = emp.Fullname, .Tag = EmployeeList.IndexOf(emp)}
+                    Dim cbi As New ComboBoxItem With {.Content = emp.Fullname, .ToolTip = "Cost Center: " & emp.CostCenter, .Tag = EmployeeList.IndexOf(emp)}
                     cbxAssociates.Items.Add(cbi)
                     AddHandler cbi.Selected, AddressOf AssociateSelected
                 Next
@@ -226,7 +228,7 @@ Public Class Training
                     Dim emp As New EmployeeObj With {.CompassId = anl.PersNumber, .CostCenter = anl.CostCenterNumber,
                     .FirstName = anl.FirstName, .LastName = anl.LastName}
                     EmployeeList.Add(emp)
-                    Dim cbi As New ComboBoxItem With {.Content = emp.Fullname, .Tag = EmployeeList.IndexOf(emp)}
+                    Dim cbi As New ComboBoxItem With {.Content = emp.Fullname, .ToolTip = "Cost Center: " & emp.CostCenter, .Tag = EmployeeList.IndexOf(emp)}
                     cbxAssociates.Items.Add(cbi)
                     AddHandler cbi.Selected, AddressOf AssociateSelected
                 Next
@@ -241,7 +243,7 @@ Public Class Training
                     Dim emp As New EmployeeObj With {.CompassId = anl.PersNumber, .CostCenter = anl.CostCenterNumber,
                     .FirstName = anl.FirstName, .LastName = anl.LastName}
                     EmployeeList.Add(emp)
-                    Dim cbi As New ComboBoxItem With {.Content = emp.Fullname, .Tag = EmployeeList.IndexOf(emp)}
+                    Dim cbi As New ComboBoxItem With {.Content = emp.Fullname, .ToolTip = "Cost Center: " & emp.CostCenter, .Tag = EmployeeList.IndexOf(emp)}
                     cbxAssociates.Items.Add(cbi)
                     AddHandler cbi.Selected, AddressOf AssociateSelected
                 Next

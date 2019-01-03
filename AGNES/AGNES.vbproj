@@ -277,6 +277,9 @@
     <Compile Include="Entities\ProfitCenter.vb">
       <DependentUpon>VendorModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Receipt.vb">
+      <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\ReceivedCAMCheck.vb">
       <DependentUpon>VendorModel.tt</DependentUpon>
     </Compile>
@@ -614,6 +617,9 @@
     <Compile Include="XAML Components\Shared\AssociateMapping.xaml.vb">
       <DependentUpon>AssociateMapping.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XAML Components\Shared\PrintJobInfo.xaml.vb">
+      <DependentUpon>PrintJobInfo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="XAML Components\Training\AssocSearch.xaml.vb">
       <DependentUpon>AssocSearch.xaml</DependentUpon>
     </Compile>
@@ -747,6 +753,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="XAML Components\Shared\AssociateMapping.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XAML Components\Shared\PrintJobInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
