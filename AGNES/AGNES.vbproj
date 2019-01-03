@@ -277,6 +277,9 @@
     <Compile Include="Entities\ProfitCenter.vb">
       <DependentUpon>VendorModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Receipt.vb">
+      <DependentUpon>VendorModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\ReceivedCAMCheck.vb">
       <DependentUpon>VendorModel.tt</DependentUpon>
     </Compile>

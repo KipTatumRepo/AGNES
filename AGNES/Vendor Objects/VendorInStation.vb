@@ -34,19 +34,54 @@
 #Region "Public Methods"
 
     Private Sub QuickReceiptEntry()
-        Dim QRE As New SingleUserInput(False)
+
         Dim vnd As String = ReferencedVendor.VendorItem.Name
         Dim dte As Date = ReferencedLoc.CurrentWeekDay.DateValue
-        With QRE
+        Dim qve = From ve In VendorData.Receipts
+                  Where ve.ReceiptDate = dte And
+                      ve.VendorId = ReferencedVendor.VendorItem.PID And
+                      ve.Location = ReferencedLoc.LocationName
+                  Select ve
+
+        If qve.Count > 0 Then
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.OkOnly, 10,,, "Quick Entry Prohibited", "An entry already exists.  Use the full receipt editor to modify entries.", AgnesMessageBox.ImageType.Alert)
+            amsg.ShowDialog()
+            amsg.Close()
+            amsg = Nothing
+            Exit Sub
+        End If
+        Dim QSE As New SingleUserInput(False)
+        With QSE
             .InputType = 1
             .lblInputDirection.Text = "Enter the sales for " & vnd & " on " & dte
             .txtUserInput.Focus()
             .ShowDialog()
         End With
+        QSE.Hide()
 
-        'CRITICAL: ADD SAVE ROUTINE TO QUICK ENTRY
+        Dim QRE As New SingleUserInput(False)
+        With QRE
+            .InputType = 1
+            .lblInputDirection.Text = "Enter the transactions for " & vnd & " on " & dte
+            .txtUserInput.Focus()
+            .ShowDialog()
+        End With
 
+        Dim newvendorreceipt As New Receipt
+        With newvendorreceipt
+            .ReceiptDate = dte
+            .VendorId = ReferencedVendor.VendorItem.PID
+            .VendorType = ReferencedVendor.VendorItem.VendorType
+            .Location = ReferencedLoc.LocationName
+            .Sales = FormatNumber(QSE.txtUserInput.Text, 2)
+            .Transactions = FormatNumber(QRE.txtUserInput.Text, 0)
+            .RecordSaveDate = Now()
+            .RecordSavedBy = My.Settings.UserID
+        End With
+        VendorData.Receipts.Add(newvendorreceipt)
+        VendorData.SaveChanges()
         QRE.Close()
+        QSE.Close()
     End Sub
     Private Sub RemoveItemFromStation()
         ReferencedStation.DeleteItem(Me)

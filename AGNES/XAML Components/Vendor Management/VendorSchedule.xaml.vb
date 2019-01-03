@@ -219,7 +219,7 @@ Public Class VendorSchedule
             SaveStatus = 2
         Catch ex As Exception
             Dim amsg = New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText,
-                                AgnesMessageBox.MsgBoxType.OkOnly, 18,, "Unable to save",, "AGNES encountered " & ex.Message & ".  Please review and try again.  If the error continues, contact the BI team.")
+                                AgnesMessageBox.MsgBoxType.OkOnly, 12,, "Unable to save",, "AGNES encountered " & ex.Message & ".  Please review and try again.  If the error continues, contact the BI team.")
             amsg.ShowDialog()
             amsg.Close()
         Finally

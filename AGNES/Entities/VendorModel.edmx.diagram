@@ -5,16 +5,17 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="7676e45e7af942ed93155831c4b291e3" Name="Diagram1">
-        <EntityTypeShape EntityType="VendorModel.Availability" Width="1.5" PointX="3.75" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendorModel.CAMWithholding" Width="1.5" PointX="10.25" PointY="2" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendorModel.Contact" Width="1.5" PointX="5.375" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendorModel.FoodSubType" Width="1.5" PointX="10.25" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendorModel.FoodType" Width="1.5" PointX="8.625" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendorModel.KPIWithholding" Width="1.5" PointX="10.25" PointY="3.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendorModel.ProfitCenter" Width="1.5" PointX="8.625" PointY="2" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendorModel.ReceivedCAMCheck" Width="1.5" PointX="2.125" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="VendorModel.Availability" Width="1.5" PointX="5.375" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="VendorModel.CAMWithholding" Width="1.5" PointX="7" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="VendorModel.Contact" Width="1.5" PointX="7" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="VendorModel.FoodSubType" Width="1.5" PointX="5.375" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="VendorModel.FoodType" Width="1.5" PointX="3.75" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="VendorModel.KPIWithholding" Width="1.5" PointX="8.625" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="VendorModel.ProfitCenter" Width="1.5" PointX="2.125" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="VendorModel.ReceivedCAMCheck" Width="1.5" PointX="3.75" PointY="0.5" IsExpanded="true" />
         <EntityTypeShape EntityType="VendorModel.VendorInfo" Width="1.5" PointX="0.5" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="VendorModel.Schedule" Width="1.5" PointX="7" PointY="0.5" />
+        <EntityTypeShape EntityType="VendorModel.Schedule" Width="1.5" PointX="8.625" PointY="0.5" />
+        <EntityTypeShape EntityType="VendorModel.Receipt" Width="1.5" PointX="2.125" PointY="0.5" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
