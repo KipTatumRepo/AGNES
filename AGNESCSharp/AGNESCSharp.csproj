@@ -97,6 +97,9 @@
     <Compile Include="Entity Models\ApplicationSession.cs">
       <DependentUpon>BIModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entity Models\UnitsUsers_Join.cs">
+      <DependentUpon>AGNESModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Windows\HRCashHandle.xaml.cs">
       <DependentUpon>HRCashHandle.xaml</DependentUpon>
     </Compile>

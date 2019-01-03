@@ -25,5 +25,6 @@ Partial Public Class AGNESEntity
     Public Overridable Property CashHandles() As DbSet(Of CashHandle)
     Public Overridable Property LOAs() As DbSet(Of LOA)
     Public Overridable Property Occurrences() As DbSet(Of Occurrence)
+    Public Overridable Property UnitsUsers_Join() As DbSet(Of UnitsUsers_Join)
 
 End Class

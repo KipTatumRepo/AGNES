@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AGNESCSharp.Entity_Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,24 +23,26 @@ namespace AGNESCSharp
     {
         #region Properties
         public static string empCostCenter;
+        public static int empInProbationPeriod = 0;
         private List<string> CostCenters = new List<string>();
         private Dictionary<long, string> Employees = new Dictionary<long, string>();
-        DateTime today = DateTime.Now;
-        DateTime hireDate;
-        // private HRActionCanvas AC;
+        private DateTime today = DateTime.Now;
+        private DateTime hireDate;
         private ListBoxItem lbi;
         private long empId;
-        public static int empInProbationPeriod = 0;
         private string costCenterSel;
         #endregion
 
         #region Constructor/Main
 
-        public HRMgr()
+        public HRMgr(long userAccess)
         {
             InitializeComponent();
-            LoadCostCenters();
+            
+            LoadCostCenters(userAccess);
+
             cbxCostCenters.SelectedIndex = 0;
+           
         }
 
         #endregion
@@ -49,21 +52,90 @@ namespace AGNESCSharp
         #endregion
 
         #region Private Methods
-        private void LoadCostCenters()
+        private void LoadCostCenters(long userAccess)
         {
-            var qal = from al in MainWindow.bidb.EmployeeLists select al;
-
-            foreach (var al in qal)
+            if (userAccess == 0)
             {
-                CostCenters.Add(al.CostCenter);
+                var qal = from al in MainWindow.bidb.EmployeeLists
+                          select al;
+
+                foreach (var al in qal)
+                {
+                    CostCenters.Add(al.CostCenter);
+                }
+
+                ComboBoxItem cball = new ComboBoxItem()
+                { Content = "All" };
+                cbxCostCenters.Items.Add(cball);
+                
+            }
+            else
+            {
+
+                var getUnit = from unitTable in MainWindow.agnesdb.UnitsUsers_Joins
+                              where userAccess == unitTable.UserId
+                              select unitTable.UnitNumber;
+
+                List<long> units = getUnit.ToList();
+                List<string> costCenters = new List<string>();
+
+                if (units.Contains(11682))
+                {
+                    var qal = from al in MainWindow.bidb.EmployeeLists
+                              select al;
+
+                    foreach (var al in qal)
+                    {
+                        CostCenters.Add(al.CostCenter);
+                    }
+
+                    ComboBoxItem cball = new ComboBoxItem()
+                    { Content = "All" };
+                    cbxCostCenters.Items.Add(cball);
+                }
+                else
+                {
+                    foreach (long unit in units)
+                    {
+                        var getCostCenter = from costCenterTable in MainWindow.bidb.EmployeeLists
+                                            where unit == costCenterTable.CostCenterNumber
+                                            select costCenterTable.CostCenter;
+
+                        foreach (string costCenter in getCostCenter.ToList())
+                        {
+                            CostCenters.Add(costCenter);
+                        }
+                    }
+
+                    //var getCostCenter = from costCenterTable in MainWindow.bidb.EmployeeLists
+                    //                     where getUnit == costCenterTable.CostCenterNumber
+                    //                     select costCenterTable.CostCenter;
+
+                    //List<string> costCenters = getCostCenter.ToList();
+
+                    //foreach (string item in costCenters)
+                    //{
+                    //    CostCenters.Add(item);
+                    //}
+                    //CostCenters.Add(getCostCenter);
+                }
+
+                
+
+                //var getCostCenter = (from costCenterTable in MainWindow.bidb.CostCenters
+                //                    where getUnit == costCenterTable.CostCenter1
+                //                    select costCenterTable.UnitName).SingleOrDefault();
+
+                //CostCenters.Add(getCostCenter);
+                //foreach (var unit in getUnit)
+                //{
+
+                //    CostCenters.Add(unit.UnitNumber.ToString());
+                //}
             }
 
             CostCenters.Sort();
-
-            ComboBoxItem cball = new ComboBoxItem()
-            { Content = "All" };
-            cbxCostCenters.Items.Add(cball);
-
+            
             foreach (string ccn in CostCenters.Distinct())
             {
                 ComboBoxItem cbi = new ComboBoxItem();
