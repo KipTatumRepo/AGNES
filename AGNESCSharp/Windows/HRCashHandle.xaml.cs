@@ -96,36 +96,41 @@ namespace AGNESCSharp
                 //Associate past 1st 90 days
                 case 0:
 
+                    if (type == 2)
+                    {
+                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Has a Variance Greater Than $3.00 but Less Than $20.00 This is an Automatic Progressive Counseling" +
+                            " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
+                        Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
+                    }
+
+                    if (occurrencePoints < 2)
+                    {
+                        MessageBox.Show(firstName + " Has " + occurrencePoints + " Occurrence Points");
+                    }
+
                     //Warning Letting User Know Associate is N Number of Points Away From a Written Prog Counseling
-                    if (occurrencePoints >= 2 && occurrencePoints < 3)
+                    else if (occurrencePoints >= 2 && occurrencePoints < 3)
                     {
                         BIMessageBox.Show("Warning", firstName + " Has " + occurrencePoints +" Occurrence Points For Cash Handling Violations, "  + (3-occurrencePoints) +
                             " More Points Before " + earlyDate.ToShortDateString() +  " Will Result in a Progressive Written Counseling", MessageBoxButton.OK); 
                     }
 
-                    if (occurrencePoints >= 3 || type == 2)
+                    else if(occurrencePoints >= 3)
                     {
-                        if (occurrencePoints >= 3)
-                        {
-                            BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occurrencePoints + " Cash Handling Occurrence Points, Please Fill Out" 
-                                + " and Print This WRITTEN Warning Form That I Will Open For You", MessageBoxButton.OK); 
+                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occurrencePoints + " Cash Handling Occurrence Points, Please Fill Out" 
+                            + " and Print This WRITTEN Warning Form That I Will Open For You", MessageBoxButton.OK); 
                                                 
-                            if (exists == true)
-                            {
-                                Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
-                            }
-                            else
-                            {
-                                MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
-                            }
+                        if (exists == true)
+                        {
+                            Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
                         }
                         else
                         {
-                            BIMessageBox.Show("Counseling Form Dialog", firstName + " Has a Variance Greater Than $3.00 but Less Than $20.00 This is an Automatic Progressive Counseling" +
-                                " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
-                            Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
+                            MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
                         }
+                      
                     }
+                    
                     break;
 
                 //Associate is IN 90 Probationary Period

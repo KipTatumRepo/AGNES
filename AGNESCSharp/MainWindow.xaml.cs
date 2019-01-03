@@ -24,10 +24,10 @@ namespace AGNESCSharp
         public static AGNESEntity agnesdb = new AGNESEntity();
         public static BIEntity bidb = new BIEntity();
 
-        public MainWindow()
+        public MainWindow(long userAccess)
         {
             InitializeComponent();
-            HRMgr GoTo = new HRMgr();
+            HRMgr GoTo = new HRMgr(userAccess);
             GoTo.ShowDialog();
         }
     }

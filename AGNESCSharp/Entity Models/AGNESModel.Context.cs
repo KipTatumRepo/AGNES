@@ -28,5 +28,6 @@ namespace AGNESCSharp.Entity_Models
         public virtual DbSet<CashHandle> CashHandles { get; set; }
         public virtual DbSet<LOA> LOAs { get; set; }
         public virtual DbSet<Occurrence> Occurrences { get; set; }
+        public virtual DbSet<UnitsUsers_Join> UnitsUsers_Joins { get; set; }
     }
 }

@@ -17,6 +17,7 @@ Public Class VendorSchedule
     Public MaxTruckRowCount As Byte
     Private _savestatus As Byte
     Private CurrYear As Integer
+    Private MaxYear As Integer
     Private CurrMonth As Byte
     Private CurrWeek As Byte
     Private PrintFailed As Boolean
@@ -47,17 +48,20 @@ Public Class VendorSchedule
         InitializeComponent()
         SaveStatus = 1
         Height = System.Windows.SystemParameters.PrimaryScreenHeight
-        '// Add period and week slicers
+        '// Add year, period, and week slicers
         CurrYear = Now().Year
+        MaxYear = CurrYear
         CurrMonth = Now().Month
         CurrWeek = GetCurrentCalendarWeek(FormatDateTime(Now(), DateFormat.ShortDate))
-        Wk = New WeekChooser(1, GetMaxCalendarWeeks(CurrMonth), CurrWeek)
+        Wk = New WeekChooser(1, GetMaxCalendarWeeks(CurrMonth, CurrYear), CurrWeek)
         Wk.DisableSelectAllWeeks = True
         Wk.DisableHideWeeks = True
         AddHandler Wk.PropertyChanged, AddressOf WeekChanged
         CAL = New MonthChooser(Wk, 1, 12, CurrMonth)
         CAL.DisableSelectAll = False
-        YR = New YearChooser(CAL, CurrYear, CurrYear + 1, CurrYear)
+        If CurrMonth = 12 Then MaxYear += 1
+        YR = New YearChooser(CAL, CurrYear - 1, MaxYear, CurrYear)
+        CAL.RelatedYearObject = YR
         Dim sep As New Separator
         With tlbVendors.Items
             .Add(YR)
@@ -70,7 +74,7 @@ Public Class VendorSchedule
         wkSched = New ScheduleWeek
         wkSched.Update(YR.CurrentYear, CAL.CurrentMonth, Wk.CurrentWeek)
         grdWeek.Children.Add(wkSched)
-        PopulateVendors(0) '//   Any consideration of day-to-day vendor availability as to whether to show them?
+        PopulateVendors(0)
         UpdateStatusBar("Loading")
     End Sub
 
@@ -215,7 +219,7 @@ Public Class VendorSchedule
             SaveStatus = 2
         Catch ex As Exception
             Dim amsg = New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.FullText,
-                                AgnesMessageBox.MsgBoxType.OkOnly, 18,, "Unable to save",, "AGNES encountered " & ex.Message & ".  Please review and try again.  If the error continues, contact the BI team.")
+                                AgnesMessageBox.MsgBoxType.OkOnly, 12,, "Unable to save",, "AGNES encountered " & ex.Message & ".  Please review and try again.  If the error continues, contact the BI team.")
             amsg.ShowDialog()
             amsg.Close()
         Finally
@@ -233,14 +237,44 @@ Public Class VendorSchedule
         Catch
             Exit Sub
         End Try
+        Dim LPos As Integer = (System.Windows.SystemParameters.FullPrimaryScreenWidth / 2) - 200
         Select Case CurrentVendorView
             Case 0  ' Print all three
+                Dim pjm As New PrintJobInfo
+                With pjm.tbPrint1
+                    .Visibility = Visibility.Visible
+                    .Text = "Brand by Cafe Schedule"
+                End With
+                With pjm.tbPrint2
+                    .Visibility = Visibility.Visible
+                    .Text = "Cafes by Brand Schedule"
+                End With
+                With pjm.tbPrint2
+                    .Visibility = Visibility.Visible
+                    .Text = "Food Truck Schedule"
+                End With
+                pjm.Show()
                 PrintBrandsbyCafe()
+                pjm.imgCheck1.Visibility = Visibility.Visible
                 PrintCafesbyBrand()
+                pjm.imgCheck1.Visibility = Visibility.Visible
                 PrintTrucks()
+                pjm.Close()
             Case 2  ' Print Brands
+                Dim pjm As New PrintJobInfo
+                With pjm.tbPrint1
+                    .Visibility = Visibility.Visible
+                    .Text = "Brand by Cafe Schedule"
+                End With
+                With pjm.tbPrint2
+                    .Visibility = Visibility.Visible
+                    .Text = "Cafes by Brand Schedule"
+                End With
+                pjm.Show()
                 PrintBrandsbyCafe()
+                pjm.imgCheck1.Visibility = Visibility.Visible
                 PrintCafesbyBrand()
+                pjm.Close()
             Case 3  ' Print Trucks
                 PrintTrucks()
         End Select
@@ -450,7 +484,18 @@ Public Class VendorSchedule
                         For Each stat As Object In activeloc.StationStack.Children
                             If TypeOf (stat) Is ScheduleStation Then
                                 activestat = stat
-                                BrandsByCafeArray(RowCount, 0) = activeloc.LocationName
+                                'Dim altname As String = GetAlternateStationName(activeloc.LocationName, statcount, 1)
+                                If Len(activestat.StationName) > 8 Then
+                                    If Right(activestat.StationName, 1) = "1" Then
+                                        BrandsByCafeArray(RowCount, 0) = activeloc.LocationName
+                                    Else
+                                        BrandsByCafeArray(RowCount, 0) = activeloc.LocationName & "-" & Right(activestat.StationName, 1)
+                                    End If
+
+                                Else
+                                    BrandsByCafeArray(RowCount, 0) = activeloc.LocationName & "-" & activestat.StationName
+                                End If
+
                                 For Each vis As Object In activestat.VendorStack.Children
                                     If TypeOf (vis) Is VendorInStation Then
                                         activevend = vis
@@ -536,16 +581,19 @@ Public Class VendorSchedule
 
     Private Sub PrintCafesbyBrand()
 
+        fd = New FlowDocument With {.ColumnGap = 0, .ColumnWidth = pd.PrintableAreaWidth}
+
 #Region "Build Header"
         Dim p As New Paragraph(New Run("Brand Rotation by Cafe for the week of " & GetWeekStart().ToShortDateString)) With
             {.FontSize = 14, .TextAlignment = TextAlignment.Center, .FontWeight = FontWeights.Bold, .FontFamily = New FontFamily("Segoe UI")}
 
 #End Region
 
+#Region "Collect Data Array"
+
         Dim activevndr As ScheduleVendor, activeday As ScheduleDay, activeloc As ScheduleLocation, activestation As ScheduleStation,
             activeVIS As VendorInStation, vp As Paragraph, itemcount As Integer
         Dim dc As Byte, ar As Byte, rg As Byte
-        fd = New FlowDocument With {.ColumnGap = 0, .ColumnWidth = pd.PrintableAreaWidth}
         fd.Blocks.Add(p)
         For Each v In stkVendors.Children
             Dim activevendorarray(12, 5) As String
@@ -569,7 +617,15 @@ Public Class VendorSchedule
                                                 If TypeOf (vis) Is VendorInStation Then
                                                     activeVIS = vis
                                                     If activeVIS.ReferencedVendor Is v Then
-                                                        activevendorarray(ar, dc) = activeloc.LocationName
+                                                        If Len(activestation.StationName) > 8 Then
+                                                            If Right(activestation.StationName, 1) = "1" Then
+                                                                activevendorarray(ar, dc) = activeloc.LocationName
+                                                            Else
+                                                                activevendorarray(ar, dc) = activeloc.LocationName & "-" & Right(activestation.StationName, 1)
+                                                            End If
+                                                        Else
+                                                            activevendorarray(ar, dc) = activeloc.LocationName & "-" & activestation.StationName
+                                                        End If
                                                         ar += 1
                                                         itemcount += 1
                                                     End If
@@ -593,6 +649,7 @@ Public Class VendorSchedule
                     t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(130)})
                     t.Columns.Add(New TableColumn() With {.Background = Brushes.White, .Width = New GridLength(130)})
                     t.RowGroups.Add(New TableRowGroup())
+
 
 #Region "Build Column Rows and Headers into new rowgroup"
                     vp = New Paragraph(New Run(activevndr.VendorItem.Name)) With
@@ -633,9 +690,9 @@ Public Class VendorSchedule
                 End If
             End If
         Next
+#End Region
 
 #Region "Compose and Print"
-
         Dim xps_writer As XpsDocumentWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue)
         Dim idps As IDocumentPaginatorSource = CType(fd, IDocumentPaginatorSource)
         Try
@@ -794,7 +851,7 @@ Public Class VendorSchedule
             .Add(st)
             .Add(HoursParagraph)
         End With
-        Dim blckcount As Byte = 18 - Math.Round(LocationBlocks, 0)
+        Dim blckcount As Byte = 18 - LocationBlocks
         For x As Byte = 1 To blckcount
             fd.Blocks.Add(New Paragraph(New Run("")))
         Next

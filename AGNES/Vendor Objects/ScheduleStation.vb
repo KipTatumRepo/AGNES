@@ -31,7 +31,7 @@
         CurrentLocation = cloc
         AllowDrop = True
         StationNumber = sn
-        StationName = "Station " & StationNumber
+        StationName = GetAlternateStationName(cloc.LocationName, StationNumber)
         VendorStack = New StackPanel
         Height = 16
         Background = bc.ConvertFrom("#FFFBF1C6")
@@ -385,6 +385,8 @@
 
         Return True
     End Function
+
+
 
 #End Region
 

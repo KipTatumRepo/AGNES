@@ -6,6 +6,13 @@
     Public Property DoubleVal As Double
     Public Property NumVal As Long
     Public Property InputType As Byte
+
+    Public Enum InputDesired
+        Textual
+        Numeric
+        Money
+    End Enum
+
 #End Region
 
 #Region "Constructor"
@@ -22,6 +29,7 @@
 
     Private Sub txtUserInput_PreviewKeyUp(sender As Object, e As KeyEventArgs) Handles txtUserInput.PreviewKeyUp
         If e.Key = Key.Enter Then
+            tbErrors.Text = ""
             ExitAndSave()
         End If
     End Sub
@@ -36,21 +44,28 @@
                     CurrencyVal = FormatNumber(txtUserInput.Text, 2)
                     Hide()
                 Catch ex As Exception
-                    'TODO:  ADD ERROR ROUTINE TO SINGLE INPUT UI
+                    tbErrors.Text = "A dollar value is required!"
+                    txtUserInput.Focus()
+                    txtUserInput.SelectAll()
+
                 End Try
             Case 2  '// Whole number
                 Try
                     NumVal = FormatNumber(txtUserInput.Text, 0)
                     Hide()
                 Catch ex As Exception
-                    '// Add error routine
+                    tbErrors.Text = "A whole number is required!"
+                    txtUserInput.Focus()
+                    txtUserInput.SelectAll()
                 End Try
             Case 3  '// Decimal, non-currency, number
                 Try
                     DoubleVal = Double.Parse(txtUserInput.Text)
                     Hide()
                 Catch ex As Exception
-                    '// Add error routine
+                    tbErrors.Text = "A decimal number is required!"
+                    txtUserInput.Focus()
+                    txtUserInput.SelectAll()
                 End Try
 
         End Select

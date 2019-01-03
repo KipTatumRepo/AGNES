@@ -10,6 +10,7 @@
         <TextBlock x:Name="lblInputDirection" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="272" TextAlignment="Center" Height="40"/>
         <TextBox x:Name="txtUserInput" HorizontalAlignment="Left" Height="23" Margin="10,55,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="272" UndoLimit="32" MaxLines="1" MaxLength="64" IsUndoEnabled="True" TabIndex="0"/>
         <Button x:Name="btnOkay" Content="OK" HorizontalAlignment="Left" Margin="108,87,0,0" VerticalAlignment="Top" Width="76" TabIndex="1"/>
+        <TextBlock x:Name="tbErrors" HorizontalAlignment="Left" Margin="10,109,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="272" TextAlignment="Center" Height="13" FontSize="9"/>
 
     </Grid>
     <Window.Effect>

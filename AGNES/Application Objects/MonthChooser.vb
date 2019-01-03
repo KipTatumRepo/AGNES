@@ -7,11 +7,13 @@ Public Class MonthChooser
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
     Public SystemChange As Boolean
     Private _currentmonth As Byte
+    Private Year As YearChooser
     Private Week As WeekChooser
     Public Property MinMonth As Byte
     Public Property MaxMonth As Byte
     Public Property DisableSelectAll As Boolean
-    Public Property RelatedWeekObject As Object
+    Public Property RelatedWeekObject As WeekChooser
+    Public Property RelatedYearObject As YearChooser
     Public Property SelectedCount As Byte
     Public Property HeldMonth As Byte
     Public Property CurrentMonth As Byte
@@ -85,6 +87,7 @@ Public Class MonthChooser
             End If
         Next
     End Sub
+
 #End Region
 
 #Region "Private Methods"
@@ -128,11 +131,18 @@ Public Class MonthChooser
             If CurrentMonth <> 0 And DisableSelectAll = False Then Reset()
         End If
         If CurrentMonth <> Now().Month Then
-            Week.MaxWeek = GetMaxCalendarWeeks(CurrentMonth)
+            Week.MaxWeek = GetMaxCalendarWeeks(CurrentMonth, RelatedYearObject.CurrentYear)
             Week.CurrentWeek = 1
         Else
-            Week.MaxWeek = GetCurrentCalendarWeek(FormatDateTime(Now(), DateFormat.ShortDate))
-            Week.CurrentWeek = GetCurrentCalendarWeek(FormatDateTime(Now(), DateFormat.ShortDate))
+            If RelatedYearObject.CurrentYear <> Now().Year Then
+                Dim tmpdate As Date = CurrentMonth & "/1/" & RelatedYearObject.CurrentYear
+                Week.MaxWeek = GetCurrentCalendarWeek(tmpdate)
+                Week.CurrentWeek = GetCurrentCalendarWeek(tmpdate)
+            Else
+                Week.MaxWeek = GetCurrentCalendarWeek(FormatDateTime(Now(), DateFormat.ShortDate))
+                Week.CurrentWeek = GetCurrentCalendarWeek(FormatDateTime(Now(), DateFormat.ShortDate))
+            End If
+
         End If
         Week.EnableWeeks()
     End Sub

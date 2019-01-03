@@ -4,7 +4,17 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="AGNESModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="AGNESModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="UnitsUsers_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UnitNumber" Type="bigint" Nullable="false" />
+          <Property Name="UserId" Type="bigint" Nullable="false" />
+          <Property Name="Delegate" Type="bit" />
+          <Property Name="DelegateAddedBy" Type="bigint" />
+        </EntityType>
         <EntityType Name="CashHandle">
           <Key>
             <PropertyRef Name="PID" />
@@ -53,12 +63,12 @@
           <Property Name="AttendanceViolation" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityContainer Name="AGNESModelStoreContainer">
+          <EntitySet Name="UnitsUsers_Join" EntityType="Self.UnitsUsers_Join" Schema="agnes" store:Type="Tables" />
           <EntitySet Name="CashHandle" EntityType="Self.CashHandle" Schema="HR" store:Type="Tables" />
           <EntitySet Name="LOA" EntityType="Self.LOA" Schema="HR" store:Type="Tables" />
           <EntitySet Name="Occurrences" EntityType="Self.Occurrences" Schema="HR" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AGNESModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -113,7 +123,18 @@
           <EntitySet Name="CashHandles" EntityType="Self.CashHandle" />
           <EntitySet Name="LOAs" EntityType="Self.LOA" />
           <EntitySet Name="Occurrences" EntityType="Self.Occurrence" />
+          <EntitySet Name="UnitsUsers_Join" EntityType="AGNESModel.UnitsUsers_Join" />
         </EntityContainer>
+        <EntityType Name="UnitsUsers_Join">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UnitNumber" Type="Int64" Nullable="false" />
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="Delegate" Type="Boolean" />
+          <Property Name="DelegateAddedBy" Type="Int64" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -167,6 +188,17 @@
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
                 <ScalarProperty Name="AttendanceViolation" ColumnName="AttendanceViolation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UnitsUsers_Join">
+            <EntityTypeMapping TypeName="AGNESModel.UnitsUsers_Join">
+              <MappingFragment StoreEntitySet="UnitsUsers_Join">
+                <ScalarProperty Name="DelegateAddedBy" ColumnName="DelegateAddedBy" />
+                <ScalarProperty Name="Delegate" ColumnName="Delegate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UnitNumber" ColumnName="UnitNumber" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -65,7 +65,7 @@
 #Region "Private Methods"
     Private Function GetDayInfo(ind) As String
         DayTruckCount = 0
-        Dim ReturnString As String = "No Trucks"
+        Dim ReturnString As String = "  No Trucks"
         Dim BuilderString As String = ""
         Dim workingday As ScheduleDay = WkSchedRef.Children(ind)
 
@@ -76,7 +76,7 @@
                     For Each s In workingloc.StationStack.Children
                         If TypeOf (s) Is ScheduleTruckStation Then
                             Dim workingstat As ScheduleTruckStation = s
-                            Dim truckname As String = workingstat.TruckName
+                            Dim truckname As String = "  " & workingstat.TruckName
                             truckname = truckname.Replace(" (Truck)", "")
                             If BuilderString = "" Then
                                 BuilderString = truckname
@@ -105,19 +105,19 @@
         'CRITICAL: ADD COLUMN TO LOCATIONS TABLE WITH TRANSLATIONS (OR TRUCK LOCATION EDITOR SOURCE, AS IT DEVELOPS)
         Select Case ln
             Case "32(Trucks Only)"
-                LocName = "Bldg 32"
+                LocName = "  Bldg 32"
                 HdrLocName = "32"
             Case "92(Trucks Only)"
-                LocName = "Bldg 92"
+                LocName = "  Bldg 92"
                 HdrLocName = "92"
             Case "STUDIO X(Trucks Only)"
-                LocName = "Studio X"
+                LocName = "  Studio X"
                 HdrLocName = "Studio X"
             Case "Café 43"
-                LocName = "Bldg 43"
+                LocName = "  Bldg 43"
                 HdrLocName = "43"
             Case Else
-                LocName = ln
+                LocName = "  " & ln
                 HdrLocName = ln
         End Select
     End Sub

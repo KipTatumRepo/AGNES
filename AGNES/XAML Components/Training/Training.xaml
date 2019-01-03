@@ -35,6 +35,6 @@
 
             </ToolBar>
         </Grid>
-        <DataGrid x:Name="dgTrainingHistory" HorizontalAlignment="Left" Height="163" Margin="10,246,0,0" VerticalAlignment="Top" Width="772" Background="OldLace" IsEnabled="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" CanUserResizeRows="False"/>
+        <DataGrid x:Name="dgTrainingHistory" HorizontalAlignment="Left" Height="163" Margin="10,246,0,0" VerticalAlignment="Top" Width="772" Background="OldLace" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" CanUserResizeRows="False" IsReadOnly="True" Focusable="False" SelectionUnit="Cell"/>
     </Grid>
 </Window>

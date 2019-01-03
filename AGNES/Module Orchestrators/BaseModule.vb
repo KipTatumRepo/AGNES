@@ -124,9 +124,9 @@ Module BaseModule
         Return 5
     End Function
 
-    Public Function GetMaxCalendarWeeks(m As Byte) As Byte
+    Public Function GetMaxCalendarWeeks(m As Byte, y As Integer) As Byte
         Dim IncrementDate As Date, MondayCount As Byte = 0
-        Dim DateString As String = m & "/1/" & Now().Year
+        Dim DateString As String = m & "/1/" & y
         IncrementDate = FormatDateTime(DateString, DateFormat.ShortDate)
         Do Until IncrementDate.Month <> m
             If IncrementDate.DayOfWeek = DayOfWeek.Monday Then MondayCount += 1
@@ -400,6 +400,22 @@ Module BaseModule
         For Each t In qft
             Return t.Subtype
         Next
+        Return ""
+    End Function
+
+    Public Function GetVendorNameId(vn As String) As Long
+        Dim qve = (From ve In VendorData.VendorInfo
+                   Where ve.Name = vn
+                   Select ve).ToList(0)
+        If qve IsNot Nothing Then Return qve.PID
+        Return 0
+    End Function
+
+    Public Function GetVendorNameId(vid As Long) As String
+        Dim qve = (From ve In VendorData.VendorInfo
+                   Where ve.PID = vid
+                   Select ve).ToList(0)
+        If qve IsNot Nothing Then Return qve.Name
         Return ""
     End Function
 

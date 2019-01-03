@@ -467,7 +467,11 @@ Public Class Forecast
 #Region "Eventions"
             Case 8  ' Eventions Forecast/Budget
                 Title = "Eventions Weekly Financial Forecast - Unit " & FU
-                Height = 510
+                Height = 460
+
+                'TEST: ROOM FEES
+                'Height = 510
+
                 AvailableUnits = New UnitGroup With {.Summoner = 1, .UnitGroupName = "Catering"}
 
                 '// Add Unit and/or Subunits
@@ -506,12 +510,17 @@ Public Class Forecast
                                              Subtotal:=False, CreditOnly:=False, DebitOnly:=False) With {.SalesFcastGroup = SalesGroup}
 
                 'TEST: ADDING ROOM FEES TO FORECAST
-                RoomFeeGroup = New ForecastGroup(PC:=MSP, UC:=Units, GroupName:="Room Fees", ShowPercentages:=False, Top:=235, Highlight:=False,
-                                             Subtotal:=False, CreditOnly:=False, DebitOnly:=False) With {.SalesFcastGroup = SalesGroup}
+                'RoomFeeGroup = New ForecastGroup(PC:=MSP, UC:=Units, GroupName:="Room Fees", ShowPercentages:=False, Top:=235, Highlight:=False,
+                '                             Subtotal:=False, CreditOnly:=False, DebitOnly:=False) With {.SalesFcastGroup = SalesGroup}
 
-                SubsidyGroup = New ForecastGroup(PC:=MSP, UC:=Units, GroupName:="Subsidy", ShowPercentages:=False, Top:=282, Highlight:=True,
+                'SubsidyGroup = New ForecastGroup(PC:=MSP, UC:=Units, GroupName:="Subsidy", ShowPercentages:=False, Top:=282, Highlight:=True,
+                '                             Subtotal:=True, CreditOnly:=False, DebitOnly:=False, SubtotalGroupList:=New List(Of ForecastGroup) From
+                '                             {SalesGroup, CogsGroup, LaborGroup, OpexGroup, FeesGroup, RoomFeeGroup}) With {.SalesFcastGroup = SalesGroup}
+
+                SubsidyGroup = New ForecastGroup(PC:=MSP, UC:=Units, GroupName:="Subsidy", ShowPercentages:=False, Top:=235, Highlight:=True,
                                              Subtotal:=True, CreditOnly:=False, DebitOnly:=False, SubtotalGroupList:=New List(Of ForecastGroup) From
-                                             {SalesGroup, CogsGroup, LaborGroup, OpexGroup, FeesGroup, RoomFeeGroup}) With {.SalesFcastGroup = SalesGroup}
+                                             {SalesGroup, CogsGroup, LaborGroup, OpexGroup, FeesGroup}) With {.SalesFcastGroup = SalesGroup}
+
 
                 With grdFcastGroups.Children
                     .Add(SalesGroup)
@@ -519,7 +528,7 @@ Public Class Forecast
                     .Add(LaborGroup)
                     .Add(OpexGroup)
                     .Add(FeesGroup)
-                    .Add(RoomFeeGroup)
+                    '.Add(RoomFeeGroup)
                     .Add(SubsidyGroup)
                 End With
                 InitialFocus = SalesGroup
