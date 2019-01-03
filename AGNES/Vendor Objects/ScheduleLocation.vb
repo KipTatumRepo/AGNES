@@ -58,7 +58,7 @@ Public Class ScheduleLocation
     Public Sub DropTruckIntoLocation(ByVal TruckName As String, ByRef RV As ScheduleVendor)
         Dim tb As New ScheduleTruckStation(TruckName, CurrentWeekDay, Me)
         StationStack.Children.Add(tb)
-        Dim nv As New VendorInStation With {.TextAlignment = TextAlignment.Center, .Text = TruckName,
+        Dim nv As New VendorInStation(1) With {.TextAlignment = TextAlignment.Center, .Text = TruckName,
             .ReferencedVendor = RV, .ReferencedLoc = Me, .FontSize = 12, .ReferencedTruckStation = tb}
         nv.Background = Brushes.WhiteSmoke
         tb.TruckStack.Children.Add(nv)

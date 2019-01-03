@@ -33,7 +33,6 @@
         BorderThickness = New Thickness(1, 1, 1, 1)
         Background = Brushes.WhiteSmoke
         Margin = New Thickness(1, 1, 1, 0)
-        'StationNumber = sn
         TruckName = tnm
         TruckStack = New StackPanel
         Child = TruckStack

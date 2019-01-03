@@ -614,6 +614,9 @@
     <Compile Include="XAML Components\Shared\AssociateMapping.xaml.vb">
       <DependentUpon>AssociateMapping.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XAML Components\Shared\PrintJobInfo.xaml.vb">
+      <DependentUpon>PrintJobInfo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="XAML Components\Training\AssocSearch.xaml.vb">
       <DependentUpon>AssocSearch.xaml</DependentUpon>
     </Compile>
@@ -747,6 +750,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="XAML Components\Shared\AssociateMapping.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XAML Components\Shared\PrintJobInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

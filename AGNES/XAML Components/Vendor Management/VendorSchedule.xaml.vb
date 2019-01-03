@@ -237,14 +237,44 @@ Public Class VendorSchedule
         Catch
             Exit Sub
         End Try
+        Dim LPos As Integer = (System.Windows.SystemParameters.FullPrimaryScreenWidth / 2) - 200
         Select Case CurrentVendorView
             Case 0  ' Print all three
+                Dim pjm As New PrintJobInfo
+                With pjm.tbPrint1
+                    .Visibility = Visibility.Visible
+                    .Text = "Brand by Cafe Schedule"
+                End With
+                With pjm.tbPrint2
+                    .Visibility = Visibility.Visible
+                    .Text = "Cafes by Brand Schedule"
+                End With
+                With pjm.tbPrint2
+                    .Visibility = Visibility.Visible
+                    .Text = "Food Truck Schedule"
+                End With
+                pjm.Show()
                 PrintBrandsbyCafe()
+                pjm.imgCheck1.Visibility = Visibility.Visible
                 PrintCafesbyBrand()
+                pjm.imgCheck1.Visibility = Visibility.Visible
                 PrintTrucks()
+                pjm.Close()
             Case 2  ' Print Brands
+                Dim pjm As New PrintJobInfo
+                With pjm.tbPrint1
+                    .Visibility = Visibility.Visible
+                    .Text = "Brand by Cafe Schedule"
+                End With
+                With pjm.tbPrint2
+                    .Visibility = Visibility.Visible
+                    .Text = "Cafes by Brand Schedule"
+                End With
+                pjm.Show()
                 PrintBrandsbyCafe()
+                pjm.imgCheck1.Visibility = Visibility.Visible
                 PrintCafesbyBrand()
+                pjm.Close()
             Case 3  ' Print Trucks
                 PrintTrucks()
         End Select
