@@ -329,20 +329,21 @@ namespace AGNESCSharp
                         result.Notes = OccNotes.Text;
 
                         DateTime date = (DateTime)OccDate.SelectedDate;
-                        (DateTime earlyDate, double? occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber);
+                        (DateTime earlyDate, double? occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber, selectedSearchType);
 
                         if (type < violationAmount)
                         {
                             decimal compareOccPoints = (decimal)occPoints;
                             decimal compareType = (decimal)type;
+                            decimal quotientOldType = (decimal)oldType / 2;
+                            decimal quotientCompareType = (decimal)compareType / 2;
                             var messageBoxResult = BIMessageBox.Show("Occurrence Point Reduction Dialog", "The Selected Violation Will Result In A Reduction Of Occurrence Points From " + occPoints +
-                               " To " + (compareOccPoints - ((oldType / 2) - (compareType / 2))) + " For " + firstName + ", and May Require Removal of A Written Counseling Do You Wish To Continue?", MessageBoxButton.YesNo);
+                               " To " + (compareOccPoints - (quotientOldType - quotientCompareType)) + " For " + firstName + " and May Require Removal of A Written Counseling, Do You Wish To Continue?", MessageBoxButton.YesNo);
 
                             if (messageBoxResult != MessageBoxResult.Yes) return;
                             db.SaveChanges();
                             MessageBox.Show("Occurrence Record Has Been Updated.");
-                            (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber);
-                            //TODO: GO BACK TO THIS
+                            (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber, selectedSearchType);
                             Report(firstName, violationText, occPoints, empInProbation, earlyDate);
                         }
                         else
@@ -351,8 +352,7 @@ namespace AGNESCSharp
                             {
                                 db.SaveChanges();
                                 MessageBox.Show("Occurrence Record Has Been Updated.");
-                                (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber);
-                                //TODO: GO BACK TO THIS
+                                (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber, selectedSearchType);
                                 Report(firstName, violationText, occPoints, empInProbation, earlyDate);
 
                                 #region DELETE ME AFTER TESTING COMPLETE
@@ -548,19 +548,21 @@ namespace AGNESCSharp
                         string violationNotes = CHNote.Text;
 
                         DateTime date = (DateTime)CHOccurrenceDP.SelectedDate;
-                        (DateTime earlyDate, double? occPoints) = HROccurrence.CashHandleCountOccurrences(date, (long)assocNumber);
+                        (DateTime earlyDate, double? occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber, selectedSearchType);
 
                         if (type < violationAmount)
                         {
                             decimal compareOccPoints = (decimal)occPoints;
                             decimal compareType = (decimal)type;
+                            decimal quotientOldType = (decimal)oldType / 2;
+                            decimal quotientCompareType = (decimal)compareType / 2;
                             var messageBoxResult = BIMessageBox.Show("Occurrence Point Reduction Dialog", "The Selected Violation Will Result In A Reduction Of Occurrence Points From " + occPoints +
-                               " To " + (compareOccPoints - ((oldType / 2) - (compareType / 2))) + " For " + firstName + ", and May Require Removal of A Written Counseling Do You Wish To Continue?", MessageBoxButton.YesNo);
+                               " To " + (compareOccPoints - (quotientOldType - quotientCompareType)) + " For " + firstName + " and May Require Removal of A Written Counseling, Do You Wish To Continue?", MessageBoxButton.YesNo);
 
                             if (messageBoxResult != MessageBoxResult.Yes) return;
                             db.SaveChanges();
                             MessageBox.Show("Occurrence Record Has Been Updated.");
-                            (earlyDate, occPoints) = HROccurrence.CashHandleCountOccurrences(date, (long)assocNumber);
+                            (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber, selectedSearchType);
                             //TODO: GO BACK TO THIS
                             Report(firstName, violationNotes, occPoints, empInProbation, earlyDate);
                         }
