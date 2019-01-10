@@ -695,6 +695,9 @@
     <Compile Include="XAML Components\Training\Training.xaml.vb">
       <DependentUpon>Training.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XAML Components\Vendor Management\VendorEditor.xaml.vb">
+      <DependentUpon>VendorEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="XAML Components\Vendor Management\VendorSchedule.xaml.vb">
       <DependentUpon>VendorSchedule.xaml</DependentUpon>
     </Compile>
@@ -801,6 +804,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="XAML Components\Training\Training.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XAML Components\Vendor Management\VendorEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1004,6 +1011,10 @@
     <Resource Include="Resources\RightChef1.png" />
     <Resource Include="Resources\RightChef2.png" />
     <Resource Include="Resources\RightChef3.png" />
+    <Resource Include="Resources\Minus.png" />
+    <Resource Include="Resources\Plus.png" />
+    <Resource Include="Resources\edit.png" />
+    <Resource Include="Resources\receipt.png" />
     <Content Include="Resources\Sound Assets\jump.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

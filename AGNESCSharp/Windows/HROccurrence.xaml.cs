@@ -166,7 +166,7 @@ namespace AGNESCSharp
             bool ProgExists = myFileProg.Exists;
             
             //right now earliest date is -1 year from incident date
-            (DateTime earlyDate, double? occPoints) = CountOccurrences(fDate, empID);
+            (DateTime earlyDate, double? occPoints) = CountOccurrences(fDate, empID, 0);
 
             switch (empInProbation)
             {
@@ -295,66 +295,86 @@ namespace AGNESCSharp
 
         //This function returns a Tuple that gets the earliest valid occurrence and how many occurence points an associate has
         //The earliest valid occurrence is 1 year prior to selected write up date
-        public static (DateTime EarlyDate, double? occurencePoints) CountOccurrences(DateTime date, long empID)
+        public static (DateTime EarlyDate, double? occurencePoints) CountOccurrences(DateTime date, long empID, int selectedSearchType)
         {
             double? occurrencePoints = 0;
-            
             AGNESEntity agnesdb = new AGNESEntity();
             DateTime cutOffDate = date.AddYears(-1);
             DateTime occEarly;
             DateTime EarlyDate;
-            //DateTime hireDate;
-            
-            var query = from employeeTable in agnesdb.Occurrences
-                        where employeeTable.PersNumber == empID && employeeTable.Date >= cutOffDate
-                        orderby employeeTable.Date ascending
-                        select employeeTable;
-            var eTQueryResult = query.ToList();
-            var eTEarly = eTQueryResult[0];
 
-            occEarly = (DateTime)eTEarly.Date;
-            EarlyDate = occEarly.AddYears(1);
-
-            foreach (var row in query)
+            if (selectedSearchType == 0)
             {
-                occurrencePoints += Convert.ToInt32(row.Type);
-            }
+                var query = from employeeTable in agnesdb.Occurrences
+                            where employeeTable.PersNumber == empID && employeeTable.Date >= cutOffDate
+                            orderby employeeTable.Date ascending
+                            select employeeTable;
+                var eTQueryResult = query.ToList();
+                var eTEarly = eTQueryResult[0];
+                occEarly = (DateTime)eTEarly.Date;
+                EarlyDate = occEarly.AddYears(1);
 
-            occurrencePoints = occurrencePoints / 2;
+                foreach (var row in query)
+                {
+                    occurrencePoints += Convert.ToInt32(row.Type);
+                }
+
+                occurrencePoints = occurrencePoints / 2;
+
+                return (EarlyDate, occurrencePoints);
+            }
+            else
+            { 
+                var query = from employeeTable in agnesdb.CashHandles
+                            where employeeTable.PersNumber == empID && employeeTable.Date >= cutOffDate
+                            orderby employeeTable.Date ascending
+                            select employeeTable;
+                var eTQueryResult = query.ToList();
+                var eTEarly = eTQueryResult[0];
+                occEarly = (DateTime)eTEarly.Date;
+                EarlyDate = occEarly.AddYears(1);
+
+                foreach (var row in query)
+                {
+                    occurrencePoints += Convert.ToInt32(row.Type);
+                }
+
+                occurrencePoints = occurrencePoints / 2;
 
             return (EarlyDate, occurrencePoints);
-           
-        }
-
-        public static (DateTime EarlyDate, double? occurencePoints) CashHandleCountOccurrences(DateTime date, long empID)
-        {
-            double? occurrencePoints = 0;
-
-            AGNESEntity agnesdb = new AGNESEntity();
-            DateTime cutOffDate = date.AddYears(-1);
-            DateTime occEarly;
-            DateTime EarlyDate;
-            //DateTime hireDate;
-
-            var query = from employeeTable in agnesdb.CashHandles
-                        where employeeTable.PersNumber == empID && employeeTable.Date >= cutOffDate
-                        orderby employeeTable.Date ascending
-                        select employeeTable;
-            var eTQueryResult = query.ToList();
-            var eTEarly = eTQueryResult[0];
-
-            occEarly = (DateTime)eTEarly.Date;
-            EarlyDate = occEarly.AddYears(1);
-
-            foreach (var row in query)
-            {
-                occurrencePoints += Convert.ToInt32(row.Type);
             }
 
-            occurrencePoints = occurrencePoints / 2;
-
-            return (EarlyDate, occurrencePoints);
         }
+
+        //public static (DateTime EarlyDate, double? occurencePoints) CashHandleCountOccurrences(DateTime date, long empID)
+        //{
+        //    double? occurrencePoints = 0;
+
+        //    AGNESEntity agnesdb = new AGNESEntity();
+        //    DateTime cutOffDate = date.AddYears(-1);
+        //    DateTime occEarly;
+        //    DateTime EarlyDate;
+        //    //DateTime hireDate;
+
+        //    var query = from employeeTable in agnesdb.CashHandles
+        //                where employeeTable.PersNumber == empID && employeeTable.Date >= cutOffDate
+        //                orderby employeeTable.Date ascending
+        //                select employeeTable;
+        //    var eTQueryResult = query.ToList();
+        //    var eTEarly = eTQueryResult[0];
+
+        //    occEarly = (DateTime)eTEarly.Date;
+        //    EarlyDate = occEarly.AddYears(1);
+
+        //    foreach (var row in query)
+        //    {
+        //        occurrencePoints += Convert.ToInt32(row.Type);
+        //    }
+
+        //    occurrencePoints = occurrencePoints / 2;
+
+        //    return (EarlyDate, occurrencePoints);
+        //}
 
         //Take in occurrence type and show appropriate page elements
         private void ShowElements(int cbIndex)
@@ -372,8 +392,6 @@ namespace AGNESCSharp
                 layoutFlag = 0;
             }
         }
-
-        
         #endregion
     }
 }

@@ -316,6 +316,14 @@ Public Class VendorSchedule
         CollapseBrands()
     End Sub
 
+    Private Sub VendorEditor(sender As Object, e As MouseButtonEventArgs) Handles imgEdit.MouseLeftButtonDown
+        Dim ve As New VendorEditor
+        ve.ShowDialog()
+    End Sub
+
+    Private Sub EnterReceipts(sender As Object, e As MouseButtonEventArgs) Handles imgReceipts.MouseLeftButtonDown
+        'TODO: Create receipt entry form
+    End Sub
 #End Region
 
     Private Sub LoadSchedule(LoadType As Integer)
@@ -965,6 +973,7 @@ Public Class VendorSchedule
         LoadSchedule(0)
         SaveStatus = 1
     End Sub
+
 
 #End Region
 
