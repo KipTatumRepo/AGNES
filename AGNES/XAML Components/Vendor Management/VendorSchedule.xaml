@@ -23,6 +23,9 @@
             <ToggleButton x:Name="tglTrucks" Height="50" Width="50" >
                 <Image x:Name="imgTrucks" Height="41" Width="45" Source="/AGNES;component/Resources/FoodTruck.png" ToolTip="Show Food Trucks" Margin="0,0,0,0" />
             </ToggleButton>
+            <Separator />
+            <Image x:Name="imgEdit" Height="41" VerticalAlignment="Top" Width="50" Source="/AGNES;component/Resources/edit.png" ToolTip="Edit Vendors" Margin="0,5,0,0" />
+            <Image x:Name="imgReceipts" Height="41" VerticalAlignment="Top" Width="50" Source="/AGNES;component/Resources/receipt.png" ToolTip="Enter Receipts" Margin="0,5,0,0" />
 
             <Separator />
         </ToolBar>

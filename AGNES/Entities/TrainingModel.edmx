@@ -62,12 +62,14 @@
             <PropertyRef Name="PID" />
           </Key>
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TrainingGroup" Type="varchar" MaxLength="32" />
           <Property Name="TrainingName" Type="varchar" MaxLength="64" Nullable="false" />
           <Property Name="TrainingDescription" Type="varchar" MaxLength="512" />
           <Property Name="Hours" Type="decimal" Precision="6" Scale="2" Nullable="false" />
           <Property Name="Certification" Type="bit" Nullable="false" />
           <Property Name="Scored" Type="bit" Nullable="false" />
           <Property Name="PassCertScore" Type="decimal" Precision="4" Scale="1" Nullable="false" />
+          <Property Name="Status" Type="bit" />
         </EntityType>
         <EntityContainer Name="TrainingModelStoreContainer">
           <EntitySet Name="BusinessGroupTraining_Join" EntityType="Self.BusinessGroupTraining_Join" Schema="Training" store:Type="Tables" />
@@ -92,6 +94,8 @@
           <Property Name="Certification" Type="Boolean" Nullable="false" />
           <Property Name="Scored" Type="Boolean" Nullable="false" />
           <Property Name="PassCertScore" Type="Decimal" Nullable="false" Precision="4" Scale="1" />
+          <Property Name="TrainingGroup" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Boolean" />
         </EntityType>
         <EntityContainer Name="TrainingEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="TrainingTypes" EntityType="Self.TrainingType" />
@@ -162,6 +166,8 @@
           <EntitySetMapping Name="TrainingTypes">
             <EntityTypeMapping TypeName="TrainingModel.TrainingType">
               <MappingFragment StoreEntitySet="TrainingTypes">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="TrainingGroup" ColumnName="TrainingGroup" />
                 <ScalarProperty Name="PassCertScore" ColumnName="PassCertScore" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
                 <ScalarProperty Name="TrainingName" ColumnName="TrainingName" />

@@ -18,5 +18,7 @@ Partial Public Class TrainingType
     Public Property Certification As Boolean
     Public Property Scored As Boolean
     Public Property PassCertScore As Decimal
+    Public Property TrainingGroup As String
+    Public Property Status As Nullable(Of Boolean)
 
 End Class
