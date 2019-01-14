@@ -55,26 +55,32 @@ Public Class VendorEditor
 
         '// Add numbox for supplier code
         numSupplierCode = New NumberBox(125, True, False, True, False, True, AgnesBaseInput.FontSz.Standard,,, True) With {.Margin = New Thickness(227, 26, 0, 0)}
+        AddHandler numSupplierCode.BaseTextBox.TextChanged, AddressOf FlagChanges
         grdSupplierInfo.Children.Add(numSupplierCode)
 
         '// Add numbox for maximum number of daily cafes
         numDailyCafes = New NumberBox(90, True, False, True, False, True, AgnesBaseInput.FontSz.Standard) With {.Margin = New Thickness(346, 31, 0, 0)}
+        AddHandler numDailyCafes.BaseTextBox.TextChanged, AddressOf FlagChanges
         grdBrandDetail.Children.Add(numDailyCafes)
 
         '// Add CAM amount currency box
         curCam = New CurrencyBox(82, True, AgnesBaseInput.FontSz.Standard,, True, False) With {.Margin = New Thickness(361, 31, 0, 0), .Visibility = Visibility.Collapsed}
+        AddHandler curCam.BaseTextBox.TextChanged, AddressOf FlagChanges
         grdCamKpi.Children.Add(curCam)
 
         '// Add KPI amount currency box
         curKpi = New CurrencyBox(82, True, AgnesBaseInput.FontSz.Standard,, True, False) With {.Margin = New Thickness(361, 77, 0, 0), .Visibility = Visibility.Collapsed}
+        AddHandler curKpi.BaseTextBox.TextChanged, AddressOf FlagChanges
         grdCamKpi.Children.Add(curKpi)
 
         '// Add CAM amount percentage box
         percCam = New PercentBox(82, True, AgnesBaseInput.FontSz.Standard, 1, True, False) With {.Margin = New Thickness(361, 31, 0, 0), .Visibility = Visibility.Collapsed}
+        AddHandler percCam.BaseTextBox.TextChanged, AddressOf FlagChanges
         grdCamKpi.Children.Add(percCam)
 
         '// Add KPI amount percentage box
         percKpi = New PercentBox(82, True, AgnesBaseInput.FontSz.Standard, 1, True, False) With {.Margin = New Thickness(361, 77, 0, 0), .Visibility = Visibility.Collapsed}
+        AddHandler percKpi.BaseTextBox.TextChanged, AddressOf FlagChanges
         grdCamKpi.Children.Add(percKpi)
 
     End Sub
@@ -353,7 +359,10 @@ Public Class VendorEditor
         cbxVendorType.IsEnabled = False
     End Sub
 
-    Private Sub FlagChanges() Handles cbxStatus.SelectionChanged, dtpContract.SelectedDateChanged, dtpInsurance.SelectedDateChanged
+    Private Sub FlagChanges() Handles cbxStatus.SelectionChanged, dtpContract.SelectedDateChanged, dtpInsurance.SelectedDateChanged,
+            cbxCamType.SelectionChanged, dtpCamStart.SelectedDateChanged, cbxKpiType.SelectionChanged, dtpKpiStart.SelectedDateChanged,
+            txtInvoiceName.TextChanged, cbxFoodType.SelectionChanged, cbxFoodSubType.SelectionChanged, cbxCommonsProductClass.SelectionChanged,
+            chkHood.Unchecked, chkHood.Checked
         If SystemLoad = False Then ChangesMade = True
     End Sub
 
