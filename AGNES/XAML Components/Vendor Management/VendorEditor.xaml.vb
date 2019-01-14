@@ -1,4 +1,6 @@
-﻿Public Class VendorEditor
+﻿Imports System.ComponentModel
+
+Public Class VendorEditor
 
 #Region "Properties"
 
@@ -19,6 +21,8 @@
         InitializeComponent()
         AddInitialCustomFields()
         PopulateVendors()
+        PopulateProductClasses()
+        PopulateFoodTypes()
         CollapseForm(0)
         Height = 100
     End Sub
@@ -36,7 +40,7 @@
         grdSupplierInfo.Children.Add(numSupplierCode)
 
         '// Add numbox for maximum number of daily cafes
-        numDailyCafes = New NumberBox(90, True, False, True, False, True, AgnesBaseInput.FontSz.Standard) With {.Margin = New Thickness(258, 27, 0, 0)}
+        numDailyCafes = New NumberBox(90, True, False, True, False, True, AgnesBaseInput.FontSz.Standard) With {.Margin = New Thickness(346, 31, 0, 0)}
         grdBrandDetail.Children.Add(numDailyCafes)
 
         '// Add CAM amount currency box
@@ -80,6 +84,34 @@
         Next
     End Sub
 
+    Private Sub PopulateProductClasses()
+        Dim qpc = (From pc In ITData.Product_Class_Master
+                   Select pc.prod_class_name).ToArray()
+        Array.Sort(qpc)
+        For Each pc In qpc
+            cbxCommonsProductClass.Items.Add(pc)
+        Next
+    End Sub
+
+    Private Sub PopulateFoodTypes()
+        cbxFoodType.Items.Clear()
+        cbxFoodSubType.Items.Clear()
+        Dim qft = From ft In VendorData.FoodTypes
+                  Select ft
+
+        For Each ft In qft
+            cbxFoodType.Items.Add(ft.Type)
+        Next
+
+        Dim qfs = From fs In VendorData.FoodSubTypes
+                  Select fs
+
+        For Each fs In qfs
+            cbxFoodSubType.Items.Add(fs.Subtype)
+        Next
+
+    End Sub
+
     Private Sub VendorSelected(sender As Object, e As SelectionChangedEventArgs) Handles cbxVendorName.SelectionChanged
         ActiveVendor = Nothing
         Select Case cbxVendorName.SelectedIndex
@@ -87,6 +119,7 @@
                 CollapseForm(0)
             Case 0  ' New vendor entry
                 ActiveVendor = Nothing
+                'CRITICAL: ADD NOTIFICATION HANDLER FOR STORE ID
             Case Else ' Existing vendor selected
                 Dim vndnm As String = cbxVendorName.SelectedValue
                 vndnm = Mid(vndnm, 1, vndnm.IndexOf("[") - 1)
@@ -103,6 +136,7 @@
                 dtpInsurance.SelectedDate = ActiveVendor.InsuranceExpiration
 
                 DisplayForm()
+                LockImmutables()
 
         End Select
     End Sub
@@ -236,33 +270,46 @@
                 If ActiveVendor Is Nothing Then Exit Sub
                 txtInvoiceName.Text = ActiveVendor.Invoice
                 numSupplierCode.SetAmount = ActiveVendor.Supplier
-                cbxStoreId.SelectedIndex = ActiveVendor.StoreId
-                'CRITICAL:  DEAL WITH POPULATING AND CORRECTLY SELECTING STOREID FROM LOCAL_IT_CFG DB
             Case False  ' Collapsed/hidden
                 txtInvoiceName.Text = ""
                 numSupplierCode.SetAmount = 0
-                cbxStoreId.SelectedIndex = -1
-                cbxStoreId.Text = ""
         End Select
     End Sub
 
     Private Sub PopulateNonRetailDetails(sender As Object, e As DependencyPropertyChangedEventArgs) Handles gbxNonRetail.IsVisibleChanged
-        'CRITICAL:  DEAL WITH POPULATING AND CORRECTLY SELECTING FOOD TYPE AND SUBTYPE
         Select Case e.NewValue
             Case True   ' Visible
                 If ActiveVendor Is Nothing Then Exit Sub
+                cbxFoodType.Text = GetFoodType(ActiveVendor.FoodType)
+                cbxFoodSubType.Text = GetFoodSubType(ActiveVendor.FoodSubType)
             Case False  ' Collapse/hidden
+                cbxFoodType.SelectedIndex = -1
+                cbxFoodType.Text = ""
+                cbxFoodSubType.SelectedIndex = -1
+                cbxFoodSubType.Text = ""
         End Select
 
     End Sub
 
     Private Sub PopulateBrandDetails(sender As Object, e As DependencyPropertyChangedEventArgs) Handles grdBrandDetail.IsVisibleChanged
-        'CRITICAL:  DEAL WITH POPULATING AND CORRECTLY SELECTING PROD_CLASS_ID FROM LOCAL_IT_CFG DB
         Select Case e.NewValue
             Case True   ' Visible
                 If ActiveVendor Is Nothing Then Exit Sub
+                cbxCommonsProductClass.Text = GetProductClassName(ActiveVendor.ProductClassId)
+                chkHood.IsChecked = ActiveVendor.RequiresHood
+                numDailyCafes.SetAmount = ActiveVendor.MaximumDailyCafes
             Case False  ' Collapse/hidden
+                cbxCommonsProductClass.SelectedIndex = -1
+                cbxCommonsProductClass.Text = ""
+                chkHood.IsChecked = False
+                numDailyCafes.SetAmount = 0
         End Select
+    End Sub
+
+    Private Sub LockImmutables()
+        cbxCommonsProductClass.IsEnabled = False
+        numSupplierCode.IsEnabled = False
+        cbxVendorType.IsEnabled = False
     End Sub
 
 #End Region

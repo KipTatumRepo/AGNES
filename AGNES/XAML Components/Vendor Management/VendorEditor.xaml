@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGNES"
         mc:Ignorable="d"
-        Title="Vendor Editor" Height="555" Width="480" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" ResizeMode="NoResize">
+        Title="Vendor Editor" Height="530" Width="480" WindowStartupLocation="CenterScreen" ShowInTaskbar="False" ResizeMode="NoResize">
     <Grid>
         <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Vendor" VerticalAlignment="Top" Width="239"/>
         <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="254,10,0,0" TextWrapping="Wrap" Text="Vendor Type" VerticalAlignment="Top" Width="116"/>
@@ -51,13 +51,11 @@
                 </Grid>
             </GroupBox>
 
-            <GroupBox x:Name="gbxCommonsFood" Height="110">
+            <GroupBox x:Name="gbxCommonsFood" Height="80">
                 <Grid x:Name="grdSupplierInfo" >
                     <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Invoice Name" VerticalAlignment="Top" Width="170"/>
                     <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="227,10,0,0" TextWrapping="Wrap" Text="Supplier Code" VerticalAlignment="Top" Width="125"/>
-                    <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="164,54,0,0" TextWrapping="Wrap" Text="Store Id" VerticalAlignment="Top" Width="125"/>
                     <TextBox x:Name="txtInvoiceName" HorizontalAlignment="Left" Height="23" Margin="10,29,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="170" FontSize="10"/>
-                    <ComboBox x:Name="cbxStoreId" HorizontalAlignment="Left" Margin="164,75,0,0" VerticalAlignment="Top" Width="125" FontSize="10"/>
                 </Grid>
             </GroupBox>
 
@@ -74,11 +72,11 @@
 
             <GroupBox x:Name="gbxBrands" Height="65">
                 <Grid x:Name="grdBrandDetail">
-                    <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="InfoG Product Class" VerticalAlignment="Top" Width="140"/>
-                    <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="155,10,0,0" TextWrapping="Wrap" Text="Hood Required?" VerticalAlignment="Top" Width="103"/>
-                    <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="258,10,0,0" TextWrapping="Wrap" Text="Max Daily?" VerticalAlignment="Top" Width="94"/>
-                    <ComboBox x:Name="cbxCommonsProductClass" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" Width="140" FontSize="10"/>
-                    <CheckBox x:Name="chkHood" HorizontalAlignment="Left" Margin="196,31,0,0" VerticalAlignment="Top"/>
+                    <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="InfoG Product Class" VerticalAlignment="Top" Width="223"/>
+                    <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="238,13,0,0" TextWrapping="Wrap" Text="Hood Required?" VerticalAlignment="Top" Width="103"/>
+                    <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="346,13,0,0" TextWrapping="Wrap" Text="Max Daily?" VerticalAlignment="Top" Width="94"/>
+                    <ComboBox x:Name="cbxCommonsProductClass" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" Width="223" FontSize="10"/>
+                    <CheckBox x:Name="chkHood" HorizontalAlignment="Left" Margin="284,34,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </GroupBox>
 
