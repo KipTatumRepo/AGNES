@@ -10,9 +10,27 @@ Public Class VendorEditor
     Public curCam As CurrencyBox
     Public percCam As PercentBox
     Public percKpi As PercentBox
-    Public ChangesMade As Boolean
+    Private _changesmade As Boolean
+    Public Property ChangesMade As Boolean
+        Get
+            Return _changesmade
+        End Get
+        Set(value As Boolean)
+            _changesmade = value
+            If value = True Then
+                imgSave.IsEnabled = True
+                imgSave.Opacity = 1
+            Else
+                imgSave.IsEnabled = False
+                imgSave.Opacity = 0.5
+            End If
+        End Set
+    End Property
 
+    Private SystemLoad As Boolean
+    Private ChangeOverride As Boolean
     Private ActiveVendor As VendorInfo
+    Private VendorIndex As Byte
 
 #End Region
 
@@ -113,14 +131,35 @@ Public Class VendorEditor
     End Sub
 
     Private Sub VendorSelected(sender As Object, e As SelectionChangedEventArgs) Handles cbxVendorName.SelectionChanged
-        ActiveVendor = Nothing
+        If ChangeOverride = True Then
+            ChangeOverride = False
+            Exit Sub
+        End If
         Select Case cbxVendorName.SelectedIndex
+
             Case -1 ' Deselected - clear and disable everything
                 CollapseForm(0)
             Case 0  ' New vendor entry
                 ActiveVendor = Nothing
                 'CRITICAL: ADD NOTIFICATION HANDLER FOR STORE ID
             Case Else ' Existing vendor selected
+                If ActiveVendor IsNot Nothing Then
+                    If ChangesMade = True Then
+                        Dim amsg = New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.YesNo, 12,,, "Discard changes?", "You have unsaved changes.  Continue and discard?", AgnesMessageBox.ImageType.Alert)
+                        amsg.ShowDialog()
+                        If amsg.ReturnResult = "No" Then
+                            ChangeOverride = True
+                            cbxVendorName.SelectedIndex = VendorIndex
+                            ChangeOverride = False
+                            amsg.Close()
+                            Exit Sub
+                        Else
+                            amsg.Close()
+                        End If
+                    End If
+                End If
+
+                SystemLoad = True
                 Dim vndnm As String = cbxVendorName.SelectedValue
                 vndnm = Mid(vndnm, 1, vndnm.IndexOf("[") - 1)
 
@@ -137,7 +176,9 @@ Public Class VendorEditor
 
                 DisplayForm()
                 LockImmutables()
-
+                SystemLoad = False
+                ChangesMade = False
+                VendorIndex = cbxVendorName.SelectedIndex
         End Select
     End Sub
 
@@ -310,6 +351,10 @@ Public Class VendorEditor
         cbxCommonsProductClass.IsEnabled = False
         numSupplierCode.IsEnabled = False
         cbxVendorType.IsEnabled = False
+    End Sub
+
+    Private Sub FlagChanges() Handles cbxStatus.SelectionChanged, dtpContract.SelectedDateChanged, dtpInsurance.SelectedDateChanged
+        If SystemLoad = False Then ChangesMade = True
     End Sub
 
 #End Region
