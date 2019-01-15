@@ -46,6 +46,7 @@ Public Class VendorEditor
         CollapseForm(0)
         Height = 100
     End Sub
+
 #End Region
 
 #Region "Public Methods"
@@ -89,6 +90,7 @@ Public Class VendorEditor
     End Sub
 
     Private Sub PopulateVendors()
+        cbxVendorName.Items.Clear()
         Dim qav = From av In VendorData.VendorInfo
                   Where av.Active = True
                   Order By av.Name
@@ -460,7 +462,7 @@ Public Class VendorEditor
                     percKpi.SetAmount = 0
             End Select
         Else
-            'CRITICAL: ADD ROUTINE FOR NEW CAM TYPE FOR EXISTING VENDOR
+            'CRITICAL: ADD ROUTINE FOR NEW KPI TYPE FOR EXISTING VENDOR
         End If
     End Sub
 
@@ -509,21 +511,6 @@ Public Class VendorEditor
             End If
         End If
     End Sub
-
-    Private Function VerifyDiscardChanges() As Boolean
-        Dim amsg = New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.YesNo, 12,,, "Discard changes?", "You have unsaved changes.  Continue and discard?", AgnesMessageBox.ImageType.Alert)
-        amsg.ShowDialog()
-        If amsg.ReturnResult = "No" Then
-            ChangeOverride = True
-            cbxVendorName.SelectedIndex = VendorIndex
-            ChangeOverride = False
-            amsg.Close()
-            Return False
-        Else
-            amsg.Close()
-        End If
-        Return True
-    End Function
 
     Private Sub AddNewFoodType(sender As Object, e As MouseButtonEventArgs) Handles imgAddFoodType.MouseLeftButtonDown
         '// Get new food type name
@@ -586,6 +573,181 @@ Public Class VendorEditor
         PopulateFoodSubTypes()
         cbxFoodSubType.Text = FoodName
     End Sub
+
+    Private Sub SaveButtonClicked(sender As Object, e As MouseButtonEventArgs) Handles imgSave.MouseLeftButtonDown
+        If NewVendor = True Then
+            SaveNewVendor()
+        Else
+            UpdateVendor()
+        End If
+    End Sub
+
+    Private Sub SaveNewVendor()
+        ValidateEntry()
+        Dim nv As New VendorInfo
+        With nv
+            .Name = cbxVendorName.Text
+            .VendorType = cbxVendorType.SelectedIndex
+            .Active = True
+            .InsuranceExpiration = dtpInsurance.SelectedDate
+            .ContractExpiration = dtpContract.SelectedDate
+        End With
+
+        Select Case cbxVendorType.SelectedIndex
+            Case 0  ' Commons Food
+                With nv
+                    .CAMType = cbxCamType.SelectedIndex + 1
+                    .CAMStart = dtpCamStart.SelectedDate
+                    .CAMAmount = curCam.SetAmount
+                    .CAMAmount = percCam.SetAmount
+                    .KPIType = cbxKpiType.SelectedIndex + 1
+                    .KPIStart = dtpKpiStart.SelectedDate
+                    .KPIAmount = curKpi.SetAmount
+                    .KPIAmount = percKpi.SetAmount
+                    .FoodType = GetFoodTypeId(cbxFoodType.Text)
+                    .FoodSubType = GetFoodSubTypeId(cbxFoodSubType.Text)
+                    .Invoice = txtInvoiceName.Text
+                    .Supplier = numSupplierCode.SetAmount
+                    .ProductClassId = GetProductClassId(cbxCommonsProductClass.Text)
+                End With
+
+            Case 1  ' Commons Retail
+                With nv
+                    .CAMType = cbxCamType.SelectedIndex + 1
+                    .CAMStart = dtpCamStart.SelectedDate
+                    .CAMAmount = curCam.SetAmount
+                    .CAMAmount = percCam.SetAmount
+
+                    .KPIType = cbxKpiType.SelectedIndex + 1
+                    .KPIStart = dtpKpiStart.SelectedDate
+                    .KPIAmount = curKpi.SetAmount
+                    .KPIAmount = percKpi.SetAmount
+                End With
+
+            Case 2  ' Local Brand
+                With nv
+                    .RequiresHood = chkHood.IsChecked
+                    .MaximumDailyCafes = numDailyCafes.SetAmount
+                    .FoodType = GetFoodTypeId(cbxFoodType.Text)
+                    .FoodSubType = GetFoodSubTypeId(cbxFoodSubType.Text)
+                End With
+
+            Case 3  ' Food Truck
+                With nv
+                    .FoodType = GetFoodTypeId(cbxFoodType.Text)
+                    .FoodSubType = GetFoodSubTypeId(cbxFoodSubType.Text)
+                End With
+
+        End Select
+
+        VendorData.VendorInfo.Add(nv)
+
+        Try
+            VendorData.VendorInfo.Add(nv)
+            VendorData.SaveChanges()
+        Catch ex As Exception
+            MsgBox("Error: " & ex.Message)
+        End Try
+
+        NewVendor = False
+        PopulateVendors()
+        ChangesMade = False
+        VendorSched.PopulateVendors(0)
+        Close()
+    End Sub
+
+    Private Sub UpdateVendor()
+        ValidateEntry()
+        With ActiveVendor
+            .Active = (1 - cbxStatus.SelectedIndex)
+            .InsuranceExpiration = dtpInsurance.SelectedDate
+            .ContractExpiration = dtpContract.SelectedDate
+        End With
+
+        Select Case cbxVendorType.SelectedIndex
+            Case 0  ' Commons Food
+                With ActiveVendor
+
+                    'CRITICAL: ADD ROUTINE FOR NEW CAM TYPE FOR EXISTING VENDOR
+
+                    .CAMType = cbxCamType.SelectedIndex + 1
+                    .CAMStart = dtpCamStart.SelectedDate
+                    .CAMAmount = curCam.SetAmount
+                    .CAMAmount = percCam.SetAmount
+
+                    'CRITICAL: ADD ROUTINE FOR NEW KPI TYPE FOR EXISTING VENDOR
+
+
+                    .KPIType = cbxKpiType.SelectedIndex + 1
+                    .KPIStart = dtpKpiStart.SelectedDate
+                    .KPIAmount = curKpi.SetAmount
+                    .KPIAmount = percKpi.SetAmount
+                    .FoodType = GetFoodTypeId(cbxFoodType.Text)
+                    .FoodSubType = GetFoodSubTypeId(cbxFoodSubType.Text)
+                    .Invoice = txtInvoiceName.Text
+                End With
+
+            Case 1  ' Commons Retail
+                With ActiveVendor
+                    .CAMType = cbxCamType.SelectedIndex + 1
+                    .CAMStart = dtpCamStart.SelectedDate
+                    .CAMAmount = curCam.SetAmount
+                    .CAMAmount = percCam.SetAmount
+
+                    .KPIType = cbxKpiType.SelectedIndex + 1
+                    .KPIStart = dtpKpiStart.SelectedDate
+                    .KPIAmount = curKpi.SetAmount
+                    .KPIAmount = percKpi.SetAmount
+                End With
+
+            Case 2  ' Local Brand
+                With ActiveVendor
+                    .RequiresHood = chkHood.IsChecked
+                    .MaximumDailyCafes = numDailyCafes.SetAmount
+                    .FoodType = GetFoodTypeId(cbxFoodType.Text)
+                    .FoodSubType = GetFoodSubTypeId(cbxFoodSubType.Text)
+                End With
+
+            Case 3  ' Food Truck
+                With ActiveVendor
+                    .FoodType = GetFoodTypeId(cbxFoodType.Text)
+                    .FoodSubType = GetFoodSubTypeId(cbxFoodSubType.Text)
+                End With
+
+        End Select
+
+        Try
+            VendorData.SaveChanges()
+        Catch ex As Exception
+            MsgBox("Error: " & ex.Message)
+        End Try
+
+        PopulateVendors()
+        ChangesMade = False
+        VendorSched.PopulateVendors(0)
+        Close()
+    End Sub
+
+    Private Sub ValidateEntry()
+        Dim ph As String = ""
+
+    End Sub
+
+    Private Function VerifyDiscardChanges() As Boolean
+        Dim amsg = New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.YesNo, 12,,, "Discard changes?", "You have unsaved changes.  Continue and discard?", AgnesMessageBox.ImageType.Alert)
+        amsg.ShowDialog()
+        If amsg.ReturnResult = "No" Then
+            ChangeOverride = True
+            cbxVendorName.SelectedIndex = VendorIndex
+            ChangeOverride = False
+            amsg.Close()
+            Return False
+        Else
+            amsg.Close()
+        End If
+        Return True
+    End Function
+
 
 #End Region
 

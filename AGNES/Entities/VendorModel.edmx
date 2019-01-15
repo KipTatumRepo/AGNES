@@ -109,8 +109,8 @@
           </Key>
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="128" Nullable="false" />
-          <Property Name="Invoice" Type="varchar" MaxLength="128" Nullable="false" />
-          <Property Name="Supplier" Type="bigint" Nullable="false" />
+          <Property Name="Invoice" Type="varchar" MaxLength="128" />
+          <Property Name="Supplier" Type="bigint" />
           <Property Name="ProductClassId" Type="int" />
           <Property Name="StoreId" Type="bigint" />
           <Property Name="VendorType" Type="smallint" Nullable="false" />
@@ -123,7 +123,7 @@
           <Property Name="KPIType" Type="smallint" />
           <Property Name="KPIStart" Type="date" />
           <Property Name="KPIAmount" Type="decimal" Precision="8" Scale="4" />
-          <Property Name="RequiresHood" Type="bit" Nullable="false" />
+          <Property Name="RequiresHood" Type="bit" />
           <Property Name="InsuranceExpiration" Type="date" />
           <Property Name="ContractExpiration" Type="date" />
           <Property Name="MaximumDailyCafes" Type="smallint" />
@@ -224,8 +224,8 @@
           </Key>
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Invoice" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Supplier" Type="Int64" Nullable="false" />
+          <Property Name="Invoice" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="Supplier" Type="Int64" />
           <Property Name="ProductClassId" Type="Int32" />
           <Property Name="StoreId" Type="Int64" />
           <Property Name="VendorType" Type="Int16" Nullable="false" />
@@ -238,7 +238,7 @@
           <Property Name="KPIType" Type="Int16" />
           <Property Name="KPIStart" Type="DateTime" Precision="0" />
           <Property Name="KPIAmount" Type="Decimal" Precision="8" Scale="4" />
-          <Property Name="RequiresHood" Type="Boolean" Nullable="false" />
+          <Property Name="RequiresHood" Type="Boolean" />
           <Property Name="InsuranceExpiration" Type="DateTime" Precision="0" />
           <Property Name="ContractExpiration" Type="DateTime" Precision="0" />
           <Property Name="MaximumDailyCafes" Type="Int16" />

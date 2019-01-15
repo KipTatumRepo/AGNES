@@ -394,6 +394,17 @@ Module BaseModule
         Return ""
     End Function
 
+    Public Function GetFoodTypeId(fn As String) As Long
+        Dim qft = From t In VendorData.FoodTypes
+                  Where t.Type = fn
+                  Select t
+
+        For Each t In qft
+            Return t.PID
+        Next
+        Return 0
+    End Function
+
     Public Function GetFoodSubType(ft As Long) As String
         Dim qft = From t In VendorData.FoodSubTypes
                   Where t.PID = ft
@@ -403,6 +414,17 @@ Module BaseModule
             Return t.Subtype
         Next
         Return ""
+    End Function
+
+    Public Function GetFoodSubTypeId(fn As String) As Long
+        Dim qft = From t In VendorData.FoodSubTypes
+                  Where t.Subtype = fn
+                  Select t
+
+        For Each t In qft
+            Return t.PID
+        Next
+        Return 0
     End Function
 
     Public Function GetVendorNameId(vn As String) As Long
