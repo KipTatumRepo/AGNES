@@ -31,6 +31,7 @@ Public Class VendorEditor
     Private ChangeOverride As Boolean
     Private ActiveVendor As VendorInfo
     Private VendorIndex As Byte
+    Private NewVendor As Boolean
 
 #End Region
 
@@ -141,12 +142,15 @@ Public Class VendorEditor
             ChangeOverride = False
             Exit Sub
         End If
+        NewVendor = False
         Select Case cbxVendorName.SelectedIndex
 
             Case -1 ' Deselected - clear and disable everything
                 CollapseForm(0)
             Case 0  ' New vendor entry
                 ActiveVendor = Nothing
+                NewVendor = True
+                AddNewVendor()
                 'CRITICAL: ADD NOTIFICATION HANDLER FOR STORE ID
             Case Else ' Existing vendor selected
                 If ActiveVendor IsNot Nothing Then
@@ -366,6 +370,16 @@ Public Class VendorEditor
         If SystemLoad = False Then ChangesMade = True
     End Sub
 
+    Private Sub AddNewVendor()
+        'Get Name
+        'Open up type
+        ' Once type is selected, open up the rest
+
+        'Open up status and set to Active
+        'Open up contract and insurance fields
+        ' Open appropriate next sections
+
+    End Sub
 #End Region
 
 End Class
