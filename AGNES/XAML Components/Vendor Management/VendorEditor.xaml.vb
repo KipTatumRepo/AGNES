@@ -142,12 +142,14 @@ Public Class VendorEditor
             ChangeOverride = False
             Exit Sub
         End If
-        NewVendor = False
+
         Select Case cbxVendorName.SelectedIndex
 
             Case -1 ' Deselected - clear and disable everything
                 CollapseForm(0)
             Case 0  ' New vendor entry
+                If NewVendor = True Then Exit Sub
+                If ActiveVendor IsNot Nothing Then CollapseForm(0)
                 ActiveVendor = Nothing
                 NewVendor = True
                 AddNewVendor()
@@ -155,17 +157,7 @@ Public Class VendorEditor
             Case Else ' Existing vendor selected
                 If ActiveVendor IsNot Nothing Then
                     If ChangesMade = True Then
-                        Dim amsg = New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.YesNo, 12,,, "Discard changes?", "You have unsaved changes.  Continue and discard?", AgnesMessageBox.ImageType.Alert)
-                        amsg.ShowDialog()
-                        If amsg.ReturnResult = "No" Then
-                            ChangeOverride = True
-                            cbxVendorName.SelectedIndex = VendorIndex
-                            ChangeOverride = False
-                            amsg.Close()
-                            Exit Sub
-                        Else
-                            amsg.Close()
-                        End If
+                        If VerifyDiscardChanges() = False Then Exit Sub
                     End If
                 End If
 
@@ -212,8 +204,13 @@ Public Class VendorEditor
     End Sub
 
     Private Sub DisplayForm()
-
-        Select Case ActiveVendor.VendorType
+        Dim VendType As Byte
+        If NewVendor = False Then
+            VendType = ActiveVendor.VendorType
+        Else
+            VendType = cbxVendorType.SelectedIndex
+        End If
+        Select Case VendType
             Case 0  ' Commons Food
                 Height = 490
                 gbxCommonsGeneral.Visibility = Visibility.Visible
@@ -248,6 +245,7 @@ Public Class VendorEditor
 
                     Case 1  ' Percentage
                         lblCamStart.Visibility = Visibility.Visible
+                        dtpCamStart.Visibility = Visibility.Visible
                         dtpCamStart.SelectedDate = ActiveVendor.CAMStart
                         dtpCamStart.DisplayDate = ActiveVendor.CAMStart
 
@@ -256,6 +254,7 @@ Public Class VendorEditor
                         percCam.SetAmount = ActiveVendor.CAMAmount
                     Case 2  ' Flat amount
                         lblCamStart.Visibility = Visibility.Visible
+                        dtpCamStart.Visibility = Visibility.Visible
                         dtpCamStart.SelectedDate = ActiveVendor.CAMStart
                         dtpCamStart.DisplayDate = ActiveVendor.CAMStart
 
@@ -270,6 +269,7 @@ Public Class VendorEditor
 
                     Case 1  ' Percentage
                         lblKpiStart.Visibility = Visibility.Visible
+                        dtpKpiStart.Visibility = Visibility.Visible
                         dtpKpiStart.SelectedDate = ActiveVendor.KPIStart
                         dtpKpiStart.DisplayDate = ActiveVendor.KPIStart
 
@@ -278,6 +278,7 @@ Public Class VendorEditor
                         percKpi.SetAmount = ActiveVendor.KPIAmount
                     Case 2  ' Flat amount
                         lblKpiStart.Visibility = Visibility.Visible
+                        dtpKpiStart.Visibility = Visibility.Visible
                         dtpKpiStart.SelectedDate = ActiveVendor.KPIStart
                         dtpKpiStart.DisplayDate = ActiveVendor.KPIStart
 
@@ -294,10 +295,12 @@ Public Class VendorEditor
                 cbxKpiType.Text = ""
 
                 lblCamStart.Visibility = Visibility.Collapsed
+                dtpCamStart.Visibility = Visibility.Collapsed
                 dtpCamStart.SelectedDate = Nothing
                 dtpCamStart.DisplayDate = Now()
 
                 lblKpiStart.Visibility = Visibility.Collapsed
+                dtpKpiStart.Visibility = Visibility.Collapsed
                 dtpKpiStart.SelectedDate = Nothing
                 dtpKpiStart.DisplayDate = Now()
 
@@ -364,22 +367,157 @@ Public Class VendorEditor
     End Sub
 
     Private Sub FlagChanges() Handles cbxStatus.SelectionChanged, dtpContract.SelectedDateChanged, dtpInsurance.SelectedDateChanged,
-            cbxCamType.SelectionChanged, dtpCamStart.SelectedDateChanged, cbxKpiType.SelectionChanged, dtpKpiStart.SelectedDateChanged,
+            dtpCamStart.SelectedDateChanged, dtpKpiStart.SelectedDateChanged,
             txtInvoiceName.TextChanged, cbxFoodType.SelectionChanged, cbxFoodSubType.SelectionChanged, cbxCommonsProductClass.SelectionChanged,
             chkHood.Unchecked, chkHood.Checked
         If SystemLoad = False Then ChangesMade = True
+
+    End Sub
+
+    Private Sub CamSelected(sender As Object, e As SelectionChangedEventArgs) Handles cbxCamType.SelectionChanged
+        If SystemLoad = False Then ChangesMade = True
+        If NewVendor = True Then
+            Select Case cbxCamType.SelectedIndex
+                Case 1  ' Percentage
+                    lblCamStart.Visibility = Visibility.Visible
+                    dtpCamStart.Visibility = Visibility.Visible
+                    dtpCamStart.SelectedDate = Nothing
+                    dtpCamStart.DisplayDate = Now()
+                    lblCamAmt.Visibility = Visibility.Visible
+                    percCam.Visibility = Visibility.Visible
+                    percCam.SetAmount = 0
+                    curCam.Visibility = Visibility.Collapsed
+                    curCam.SetAmount = 0
+                Case 2  ' Flat
+                    lblCamStart.Visibility = Visibility.Visible
+                    dtpCamStart.Visibility = Visibility.Visible
+                    dtpCamStart.SelectedDate = Nothing
+                    dtpCamStart.DisplayDate = Now()
+                    lblCamAmt.Visibility = Visibility.Visible
+                    curCam.Visibility = Visibility.Visible
+                    curCam.SetAmount = 0
+                    percCam.Visibility = Visibility.Collapsed
+                    percCam.SetAmount = 0
+                Case Else
+                    lblCamStart.Visibility = Visibility.Collapsed
+                    dtpCamStart.Visibility = Visibility.Collapsed
+                    dtpCamStart.SelectedDate = Nothing
+                    dtpCamStart.DisplayDate = Now()
+
+                    lblCamAmt.Visibility = Visibility.Collapsed
+                    curCam.Visibility = Visibility.Collapsed
+                    curCam.SetAmount = 0
+                    percCam.Visibility = Visibility.Collapsed
+                    percCam.SetAmount = 0
+            End Select
+        Else
+            'CRITICAL: ADD ROUTINE FOR NEW CAM TYPE FOR EXISTING VENDOR
+        End If
+
+    End Sub
+
+    Private Sub KPISelected(sender As Object, e As SelectionChangedEventArgs) Handles cbxKpiType.SelectionChanged
+        If SystemLoad = False Then ChangesMade = True
+        If NewVendor = True Then
+            Select Case cbxKpiType.SelectedIndex
+                Case 1  ' Percentage
+                    lblKpiStart.Visibility = Visibility.Visible
+                    dtpKpiStart.Visibility = Visibility.Visible
+                    dtpKpiStart.SelectedDate = Nothing
+                    dtpKpiStart.DisplayDate = Now()
+                    lblKpiAmt.Visibility = Visibility.Visible
+                    percKpi.Visibility = Visibility.Visible
+                    percKpi.SetAmount = 0
+                    curKpi.Visibility = Visibility.Collapsed
+                    curKpi.SetAmount = 0
+                Case 2  ' Flat
+                    lblKpiStart.Visibility = Visibility.Visible
+                    dtpKpiStart.Visibility = Visibility.Visible
+                    dtpKpiStart.SelectedDate = Nothing
+                    dtpKpiStart.DisplayDate = Now()
+                    lblKpiAmt.Visibility = Visibility.Visible
+                    curKpi.Visibility = Visibility.Visible
+                    curKpi.SetAmount = 0
+                    percKpi.Visibility = Visibility.Collapsed
+                    percKpi.SetAmount = 0
+                Case Else
+                    lblKpiStart.Visibility = Visibility.Collapsed
+                    dtpKpiStart.Visibility = Visibility.Collapsed
+                    dtpKpiStart.SelectedDate = Nothing
+                    dtpKpiStart.DisplayDate = Now()
+
+                    lblKpiAmt.Visibility = Visibility.Collapsed
+                    curKpi.Visibility = Visibility.Collapsed
+                    curKpi.SetAmount = 0
+                    percKpi.Visibility = Visibility.Collapsed
+                    percKpi.SetAmount = 0
+            End Select
+        Else
+            'CRITICAL: ADD ROUTINE FOR NEW CAM TYPE FOR EXISTING VENDOR
+        End If
     End Sub
 
     Private Sub AddNewVendor()
-        'Get Name
-        'Open up type
-        ' Once type is selected, open up the rest
+        cbxVendorType.SelectedIndex = -1
+        cbxStatus.SelectedIndex = -1
+        dtpInsurance.SelectedDate = Nothing
+        dtpInsurance.DisplayDate = Now()
+        dtpContract.SelectedDate = Nothing
+        dtpContract.DisplayDate = Now()
 
-        'Open up status and set to Active
-        'Open up contract and insurance fields
-        ' Open appropriate next sections
+        '// Get new vendor name
+        Dim newname As New SingleUserInput(EnterOnly:=True) With {.InputType = 0}
+        newname.ShowDialog()
+        If newname.StringVal = "" Then Exit Sub
+
+        NewVendor = True
+        ChangesMade = True
+        Dim NewVendorName As String = newname.StringVal
+        newname.Close()
+
+        '// Add new vendor to combobox temporarily and suppress Add New Vendor option
+        'CRITICAL: ADD OPTION BACK IN ONCE NEW ADD IS COMPLETE
+        cbxVendorName.Items.Insert(0, NewVendorName)
+        cbxVendorName.SelectedIndex = 0
+        cbxVendorName.Items.RemoveAt(1)
+
+        '// Open up the vendor type combobox
+        cbxVendorType.IsEnabled = True
 
     End Sub
+
+    Private Sub VendorTypeSelected(sender As Object, e As SelectionChangedEventArgs) Handles cbxVendorType.SelectionChanged
+        If NewVendor = False Then Exit Sub
+        CollapseForm(1)
+        cbxStatus.SelectedIndex = 0
+        DisplayForm()
+        cbxStatus.IsEnabled = False
+    End Sub
+
+    Private Sub VendorEditor_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
+        If ChangesMade = True Then
+            If VerifyDiscardChanges() = False Then
+                e.Cancel = True
+                Exit Sub
+            End If
+        End If
+    End Sub
+
+    Private Function VerifyDiscardChanges() As Boolean
+        Dim amsg = New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.YesNo, 12,,, "Discard changes?", "You have unsaved changes.  Continue and discard?", AgnesMessageBox.ImageType.Alert)
+        amsg.ShowDialog()
+        If amsg.ReturnResult = "No" Then
+            ChangeOverride = True
+            cbxVendorName.SelectedIndex = VendorIndex
+            ChangeOverride = False
+            amsg.Close()
+            Return False
+        Else
+            amsg.Close()
+        End If
+        Return True
+    End Function
+
 #End Region
 
 End Class

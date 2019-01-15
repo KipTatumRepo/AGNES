@@ -53,7 +53,7 @@ Public Class RadialPortal
         If dt IsNot Nothing Then Exit Sub
         dt = New DispatcherTimer()
         AddHandler dt.Tick, AddressOf ExpandRadial
-        dt.Interval = New TimeSpan(0, 0, 0, 1)
+        dt.Interval = New TimeSpan(0, 0, 0, 0, 500)
         dt.Start()
     End Sub
 

@@ -31,23 +31,23 @@
             <GroupBox x:Name="gbxCommonsGeneral" Height="120">
                 <Grid x:Name="grdCamKpi">
                     <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Cam Type" VerticalAlignment="Top" Width="247"/>
-                    <TextBlock x:Name="lblCamStart" TextAlignment="Center" HorizontalAlignment="Left" Margin="262,10,0,0" TextWrapping="Wrap" Text="Cam Start" VerticalAlignment="Top" Width="90"/>
-                    <TextBlock x:Name="lblCamAmt" TextAlignment="Center" HorizontalAlignment="Left" Margin="361,10,0,0" TextWrapping="Wrap" Text="Cam Amount" VerticalAlignment="Top" Width="82"/>
+                    <TextBlock x:Name="lblCamStart" TextAlignment="Center" HorizontalAlignment="Left" Margin="262,10,0,0" TextWrapping="Wrap" Text="Cam Start" VerticalAlignment="Top" Width="90" Visibility="Collapsed"/>
+                    <TextBlock x:Name="lblCamAmt" TextAlignment="Center" HorizontalAlignment="Left" Margin="361,10,0,0" TextWrapping="Wrap" Text="Cam Amount" VerticalAlignment="Top" Width="82" Visibility="Collapsed"/>
                     <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="10,59,0,0" TextWrapping="Wrap" Text="KPI Type" VerticalAlignment="Top" Width="247"/>
-                    <TextBlock x:Name="lblKpiStart" TextAlignment="Center" HorizontalAlignment="Left" Margin="262,59,0,0" TextWrapping="Wrap" Text="KPI Start" VerticalAlignment="Top" Width="90"/>
-                    <TextBlock x:Name="lblKpiAmt" TextAlignment="Center" HorizontalAlignment="Left" Margin="361,59,0,0" TextWrapping="Wrap" Text="KPI Amount" VerticalAlignment="Top" Width="82"/>
+                    <TextBlock x:Name="lblKpiStart" TextAlignment="Center" HorizontalAlignment="Left" Margin="262,59,0,0" TextWrapping="Wrap" Text="KPI Start" VerticalAlignment="Top" Width="90" Visibility="Collapsed"/>
+                    <TextBlock x:Name="lblKpiAmt" TextAlignment="Center" HorizontalAlignment="Left" Margin="361,59,0,0" TextWrapping="Wrap" Text="KPI Amount" VerticalAlignment="Top" Width="82" Visibility="Collapsed"/>
                     <ComboBox x:Name="cbxCamType" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" Width="247" FontSize="12">
                         <ComboBoxItem Content="None"/>
                         <ComboBoxItem Content="Percentage"/>
                         <ComboBoxItem Content="Flat Amount"/>
                     </ComboBox>
-                    <DatePicker x:Name="dtpCamStart" HorizontalAlignment="Left" Margin="262,31,0,0" VerticalAlignment="Top" FontSize="10" Width="90"/>
+                    <DatePicker x:Name="dtpCamStart" HorizontalAlignment="Left" Margin="262,31,0,0" VerticalAlignment="Top" FontSize="10" Width="90" Visibility="Collapsed"/>
                     <ComboBox x:Name="cbxKpiType" HorizontalAlignment="Left" Margin="10,77,0,0" VerticalAlignment="Top" Width="247" FontSize="12">
                         <ComboBoxItem Content="None"/>
                         <ComboBoxItem Content="Percentage"/>
                         <ComboBoxItem Content="Flat Amount"/>
                     </ComboBox>
-                    <DatePicker x:Name="dtpKpiStart" HorizontalAlignment="Left" Margin="262,77,0,0" VerticalAlignment="Top" FontSize="10" Width="90"/>
+                    <DatePicker x:Name="dtpKpiStart" HorizontalAlignment="Left" Margin="262,77,0,0" VerticalAlignment="Top" FontSize="10" Width="90" Visibility="Collapsed"/>
                 </Grid>
             </GroupBox>
 
