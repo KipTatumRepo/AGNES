@@ -2,6 +2,7 @@
 
 #Region "Properties"
     Public VendorSched As VendorSchedule
+    Public VendorEdit As VendorEditor
     Public NumberOfDaysInWeek As Byte
 #End Region
 
