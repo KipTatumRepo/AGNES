@@ -42,6 +42,7 @@ Public Class VendorEditor
         PopulateVendors()
         PopulateProductClasses()
         PopulateFoodTypes()
+        PopulateFoodSubTypes()
         CollapseForm(0)
         Height = 100
     End Sub
@@ -52,6 +53,7 @@ Public Class VendorEditor
 #End Region
 
 #Region "Private Methods"
+
     Private Sub AddInitialCustomFields()
 
         '// Add numbox for supplier code
@@ -120,16 +122,21 @@ Public Class VendorEditor
 
     Private Sub PopulateFoodTypes()
         cbxFoodType.Items.Clear()
-        cbxFoodSubType.Items.Clear()
+
         Dim qft = From ft In VendorData.FoodTypes
                   Select ft
+                  Order By ft.Type
 
         For Each ft In qft
             cbxFoodType.Items.Add(ft.Type)
         Next
+    End Sub
 
+    Private Sub PopulateFoodSubTypes()
+        cbxFoodSubType.Items.Clear()
         Dim qfs = From fs In VendorData.FoodSubTypes
                   Select fs
+                  Order By fs.Subtype
 
         For Each fs In qfs
             cbxFoodSubType.Items.Add(fs.Subtype)
@@ -517,6 +524,68 @@ Public Class VendorEditor
         End If
         Return True
     End Function
+
+    Private Sub AddNewFoodType(sender As Object, e As MouseButtonEventArgs) Handles imgAddFoodType.MouseLeftButtonDown
+        '// Get new food type name
+        Dim newfood As New SingleUserInput(EnterOnly:=False) With {.InputType = 0}
+        newfood.ShowDialog()
+        Dim FoodName As String = newfood.StringVal
+        newfood.Close()
+        If FoodName = "" Then Exit Sub
+
+        '// Check if food type already exists
+        Dim qft = From ft In VendorData.FoodTypes
+                  Where UCase(ft.Type) = UCase(FoodName)
+                  Select ft
+
+        If qft.Count > 0 Then
+            Dim amsg = New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.OkOnly, 12,,, "Cannot Add", "Food type already exists", AgnesMessageBox.ImageType.Danger)
+            amsg.ShowDialog()
+            amsg.Close()
+            Exit Sub
+        End If
+
+        '// Add to database
+        Dim nft As New FoodType
+        nft.Type = FoodName
+        VendorData.FoodTypes.Add(nft)
+        VendorData.SaveChanges()
+
+        '// Refresh combobox list and select new food type
+        PopulateFoodTypes()
+        cbxFoodType.Text = FoodName
+    End Sub
+
+    Private Sub AddNewFoodSubType(sender As Object, e As MouseButtonEventArgs) Handles imgAddFoodSubType.MouseLeftButtonDown
+        '// Get new food subtype name
+        Dim newfood As New SingleUserInput(EnterOnly:=False) With {.InputType = 0}
+        newfood.ShowDialog()
+        Dim FoodName As String = newfood.StringVal
+        newfood.Close()
+        If FoodName = "" Then Exit Sub
+
+        '// Check if food type already exists
+        Dim qft = From ft In VendorData.FoodSubTypes
+                  Where UCase(ft.Subtype) = UCase(FoodName)
+                  Select ft
+
+        If qft.Count > 0 Then
+            Dim amsg = New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Small, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.OkOnly, 12,,, "Cannot Add", "Food subtype already exists", AgnesMessageBox.ImageType.Danger)
+            amsg.ShowDialog()
+            amsg.Close()
+            Exit Sub
+        End If
+
+        '// Add to database
+        Dim nft As New FoodSubType
+        nft.Subtype = FoodName
+        VendorData.FoodSubTypes.Add(nft)
+        VendorData.SaveChanges()
+
+        '// Refresh combobox list and select new food type
+        PopulateFoodSubTypes()
+        cbxFoodSubType.Text = FoodName
+    End Sub
 
 #End Region
 
