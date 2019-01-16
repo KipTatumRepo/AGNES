@@ -253,6 +253,21 @@
     <Compile Include="Entities\FoodType.vb">
       <DependentUpon>VendorModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\ITCFGModel.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ITCFGModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ITCFGModel.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ITCFGModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ITCFGModel.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ITCFGModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\KPIWithholding.vb">
       <DependentUpon>VendorModel.tt</DependentUpon>
     </Compile>
@@ -273,6 +288,9 @@
     </Compile>
     <Compile Include="Entities\PopulationAllocation.vb">
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Product_Class_Master.vb">
+      <DependentUpon>ITCFGModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\ProfitCenter.vb">
       <DependentUpon>VendorModel.tt</DependentUpon>
@@ -932,6 +950,13 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>TrainingModel.Designer.vb</LastGenOutput>
     </EntityDeploy>
+    <EntityDeploy Include="Entities\ITCFGModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ITCFGModel.Designer.vb</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Entities\ITCFGModel.edmx.diagram">
+      <DependentUpon>ITCFGModel.edmx</DependentUpon>
+    </None>
     <None Include="Entities\TrainingModel.edmx.diagram">
       <DependentUpon>TrainingModel.edmx</DependentUpon>
     </None>
@@ -1015,6 +1040,18 @@
     <Resource Include="Resources\Plus.png" />
     <Resource Include="Resources\edit.png" />
     <Resource Include="Resources\receipt.png" />
+    <Content Include="Entities\ITCFGModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ITCFGModel.edmx</DependentUpon>
+      <LastGenOutput>ITCFGModel.Context.vb</LastGenOutput>
+    </Content>
+    <Content Include="Entities\ITCFGModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ITCFGModel.edmx</DependentUpon>
+      <LastGenOutput>ITCFGModel.vb</LastGenOutput>
+    </Content>
+    <Resource Include="Resources\Notification.png" />
+    <Resource Include="Resources\notificationbubble.png" />
     <Content Include="Resources\Sound Assets\jump.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -9,6 +9,7 @@ Module BaseModule
     Public FlashForecasts As ForecastEntity
     Public TrainingData As TrainingEntities
     Public VendorData As VendorEntity
+    Public ITData As LOCAL_IT_CFGEntities
     Public BGE As BGCRMEntity
     Public TimerOne As DispatcherTimer
     Public TimerTwo As DispatcherTimer
@@ -26,6 +27,7 @@ Module BaseModule
         FlashForecasts = New ForecastEntity
         TrainingData = New TrainingEntities
         VendorData = New VendorEntity
+        ITData = New LOCAL_IT_CFGEntities
     End Sub
 
     Public Function TruncateAlias(UserAlias As String) As String
@@ -392,6 +394,17 @@ Module BaseModule
         Return ""
     End Function
 
+    Public Function GetFoodTypeId(fn As String) As Long
+        Dim qft = From t In VendorData.FoodTypes
+                  Where t.Type = fn
+                  Select t
+
+        For Each t In qft
+            Return t.PID
+        Next
+        Return 0
+    End Function
+
     Public Function GetFoodSubType(ft As Long) As String
         Dim qft = From t In VendorData.FoodSubTypes
                   Where t.PID = ft
@@ -401,6 +414,17 @@ Module BaseModule
             Return t.Subtype
         Next
         Return ""
+    End Function
+
+    Public Function GetFoodSubTypeId(fn As String) As Long
+        Dim qft = From t In VendorData.FoodSubTypes
+                  Where t.Subtype = fn
+                  Select t
+
+        For Each t In qft
+            Return t.PID
+        Next
+        Return 0
     End Function
 
     Public Function GetVendorNameId(vn As String) As Long
@@ -419,6 +443,21 @@ Module BaseModule
         Return ""
     End Function
 
+    Public Function GetProductClassId(pcn As String) As Long
+        Dim qpc = (From pc In ITData.Product_Class_Master
+                   Where pc.prod_class_name = pcn
+                   Select pc).ToList(0)
+        Return qpc.prod_class_id
+    End Function
+
+    Public Function GetProductClassName(pcid As Integer) As String
+        Dim qpc = (From pc In ITData.Product_Class_Master
+                   Where pc.prod_class_id = pcid
+                   Select pc).ToList(0)
+        Return qpc.prod_class_name
+    End Function
+
 #End Region
+
 
 End Module

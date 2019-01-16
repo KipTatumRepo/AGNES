@@ -20,9 +20,15 @@
         InitializeComponent()
         If EnterOnly = True Then btnOkay.Visibility = Visibility.Hidden
     End Sub
+
 #End Region
 
 #Region "Private Methods"
+    Private Sub FocusUponLoad(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
+        txtUserInput.Focus()
+        txtUserInput.SelectAll()
+    End Sub
+
     Private Sub btnOkay_Click(sender As Object, e As RoutedEventArgs) Handles btnOkay.Click
         ExitAndSave()
     End Sub

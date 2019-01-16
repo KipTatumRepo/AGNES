@@ -317,13 +317,15 @@ Public Class VendorSchedule
     End Sub
 
     Private Sub VendorEditor(sender As Object, e As MouseButtonEventArgs) Handles imgEdit.MouseLeftButtonDown
-        Dim ve As New VendorEditor
-        ve.ShowDialog()
+        VendorEdit = New VendorEditor
+        VendorEdit.ShowDialog()
+        VendorEdit = Nothing
     End Sub
 
     Private Sub EnterReceipts(sender As Object, e As MouseButtonEventArgs) Handles imgReceipts.MouseLeftButtonDown
-        'TODO: Create receipt entry form
+        'CRITICAL: Create receipt entry form
     End Sub
+
 #End Region
 
     Private Sub LoadSchedule(LoadType As Integer)
