@@ -8,10 +8,10 @@
         Title="AGNES V2" Height="320" Width="320" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="{x:Null}">
     <Grid x:Name="grdPortal">
         <Image x:Name="imgAGNES" HorizontalAlignment="center" VerticalAlignment="center" Height="100" Width="90" Source="Resources/RadialUI Agnes Image.png" MouseLeftButtonDown="DragViaLeftMouse" MouseRightButtonDown="CloseAGNES" Stretch="UniformToFill" Panel.ZIndex="1"/>
+        <Image x:Name="imgNotifications" Source="Resources/notificationbubble.png" Width="120" Height="60" Margin="176,122,24,138" Panel.ZIndex="2" Visibility="Collapsed" />
         <TextBlock x:Name="txtVersion" HorizontalAlignment="center" VerticalAlignment="center" TextWrapping="Wrap" FontSize="8" Foreground="#FF8499F5" TextAlignment="Center" Width="90" Margin="115,210,115,100">
             <Run Text="Version 1.2.23"/>
         </TextBlock>
-
         <Canvas x:Name="cnvRadialMenu" Height="216" Width="216" RenderTransformOrigin="0.5,0.5" Panel.ZIndex="0">
             <Canvas.RenderTransform>
                 <TransformGroup>

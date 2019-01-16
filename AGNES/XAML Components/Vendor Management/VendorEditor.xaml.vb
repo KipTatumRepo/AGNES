@@ -63,7 +63,7 @@ Public Class VendorEditor
         grdSupplierInfo.Children.Add(numSupplierCode)
 
         '// Add numbox for maximum number of daily cafes
-        numDailyCafes = New NumberBox(90, True, False, True, False, True, AgnesBaseInput.FontSz.Standard) With {.Margin = New Thickness(346, 31, 0, 0)}
+        numDailyCafes = New NumberBox(94, True, False, True, False, True, AgnesBaseInput.FontSz.Standard) With {.Margin = New Thickness(10, 31, 0, 0)}
         AddHandler numDailyCafes.BaseTextBox.TextChanged, AddressOf FlagChanges
         grdBrandDetail.Children.Add(numDailyCafes)
 
@@ -205,7 +205,7 @@ Public Class VendorEditor
             txtCon.Visibility = Visibility.Visible
         End If
         cbxVendorType.IsEnabled = False
-        gbxBrands.Visibility = Visibility.Collapsed
+        gbxBrandsTrucks.Visibility = Visibility.Collapsed
         gbxCommonsFood.Visibility = Visibility.Collapsed
         gbxCommonsGeneral.Visibility = Visibility.Collapsed
         gbxNonRetail.Visibility = Visibility.Collapsed
@@ -232,10 +232,19 @@ Public Class VendorEditor
             Case 2  ' Local Brand
                 Height = 325
                 gbxNonRetail.Visibility = Visibility.Visible
-                gbxBrands.Visibility = Visibility.Visible
+                gbxBrandsTrucks.Visibility = Visibility.Visible
+                lblProdClass.Visibility = Visibility.Visible
+                lblHood.Visibility = Visibility.Visible
+                chkHood.Visibility = Visibility.Visible
+                cbxCommonsProductClass.Visibility = Visibility.Visible
             Case 3  ' Food Truck
-                Height = 270
+                Height = 325
                 gbxNonRetail.Visibility = Visibility.Visible
+                gbxBrandsTrucks.Visibility = Visibility.Visible
+                lblProdClass.Visibility = Visibility.Collapsed
+                lblHood.Visibility = Visibility.Collapsed
+                chkHood.Visibility = Visibility.Collapsed
+                cbxCommonsProductClass.Visibility = Visibility.Collapsed
 
         End Select
         cbxStatus.IsEnabled = True
@@ -358,8 +367,10 @@ Public Class VendorEditor
         Select Case e.NewValue
             Case True   ' Visible
                 If ActiveVendor Is Nothing Then Exit Sub
-                cbxCommonsProductClass.Text = GetProductClassName(ActiveVendor.ProductClassId)
-                chkHood.IsChecked = ActiveVendor.RequiresHood
+                If ActiveVendor.VendorType = 2 Then
+                    cbxCommonsProductClass.Text = GetProductClassName(ActiveVendor.ProductClassId)
+                    chkHood.IsChecked = ActiveVendor.RequiresHood
+                End If
                 numDailyCafes.SetAmount = ActiveVendor.MaximumDailyCafes
             Case False  ' Collapse/hidden
                 cbxCommonsProductClass.SelectedIndex = -1
@@ -626,16 +637,24 @@ Public Class VendorEditor
 
             Case 2  ' Local Brand
                 With nv
+                    .Invoice = cbxVendorName.Text
+                    .Supplier = 99999
+                    .StoreId = 99999
                     .RequiresHood = chkHood.IsChecked
-                    .MaximumDailyCafes = numDailyCafes.SetAmount
+                    .MaximumDailyCafes = numDailyCafes.Amount
                     .FoodType = GetFoodTypeId(cbxFoodType.Text)
                     .FoodSubType = GetFoodSubTypeId(cbxFoodSubType.Text)
                 End With
 
             Case 3  ' Food Truck
                 With nv
+                    .Invoice = cbxVendorName.Text
+                    .Supplier = 99998
+                    .StoreId = 99998
                     .FoodType = GetFoodTypeId(cbxFoodType.Text)
                     .FoodSubType = GetFoodSubTypeId(cbxFoodSubType.Text)
+                    .MaximumDailyCafes = numDailyCafes.Amount
+
                 End With
 
         End Select
@@ -703,7 +722,7 @@ Public Class VendorEditor
             Case 2  ' Local Brand
                 With ActiveVendor
                     .RequiresHood = chkHood.IsChecked
-                    .MaximumDailyCafes = numDailyCafes.SetAmount
+                    .MaximumDailyCafes = numDailyCafes.Amount
                     .FoodType = GetFoodTypeId(cbxFoodType.Text)
                     .FoodSubType = GetFoodSubTypeId(cbxFoodSubType.Text)
                 End With
@@ -712,6 +731,7 @@ Public Class VendorEditor
                 With ActiveVendor
                     .FoodType = GetFoodTypeId(cbxFoodType.Text)
                     .FoodSubType = GetFoodSubTypeId(cbxFoodSubType.Text)
+                    .MaximumDailyCafes = numDailyCafes.Amount
                 End With
 
         End Select

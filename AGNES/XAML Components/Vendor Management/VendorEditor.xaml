@@ -61,22 +61,22 @@
 
             <GroupBox x:Name="gbxNonRetail" Height="65">
                 <Grid>
-                    <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Food Type" VerticalAlignment="Top" Width="140"/>
-                    <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="197,10,0,0" TextWrapping="Wrap" Text="Food Subtype" VerticalAlignment="Top" Width="122"/>
-                    <ComboBox x:Name="cbxFoodType" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" Width="140" FontSize="10"/>
-                    <ComboBox x:Name="cbxFoodSubType" HorizontalAlignment="Left" Margin="197,31,0,0" VerticalAlignment="Top" Width="122" FontSize="10"/>
-                    <Image x:Name="imgAddFoodType"  HorizontalAlignment="Left" Height="30" Margin="155,26,0,0" VerticalAlignment="Top" Width="28" Source="/AGNES;component/Resources/Plus.png"/>
-                    <Image x:Name="imgAddFoodSubType" HorizontalAlignment="Left" Height="30" Margin="324,26,0,0" VerticalAlignment="Top" Width="28" Source="/AGNES;component/Resources/Plus.png"/>
+                    <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Food Type" VerticalAlignment="Top" Width="160"/>
+                    <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="237,10,0,0" TextWrapping="Wrap" Text="Food Subtype" VerticalAlignment="Top" Width="160"/>
+                    <ComboBox x:Name="cbxFoodType" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" Width="160" FontSize="10"/>
+                    <ComboBox x:Name="cbxFoodSubType" HorizontalAlignment="Left" Margin="237,31,0,0" VerticalAlignment="Top" Width="160" FontSize="10"/>
+                    <Image x:Name="imgAddFoodType"  HorizontalAlignment="Left" Height="30" Margin="175,26,0,0" VerticalAlignment="Top" Width="28" Source="/AGNES;component/Resources/Plus.png"/>
+                    <Image x:Name="imgAddFoodSubType" HorizontalAlignment="Left" Height="30" Margin="402,26,0,0" VerticalAlignment="Top" Width="28" Source="/AGNES;component/Resources/Plus.png"/>
                 </Grid>
             </GroupBox>
 
-            <GroupBox x:Name="gbxBrands" Height="65">
+            <GroupBox x:Name="gbxBrandsTrucks" Height="65">
                 <Grid x:Name="grdBrandDetail">
-                    <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="InfoG Product Class" VerticalAlignment="Top" Width="223"/>
-                    <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="238,13,0,0" TextWrapping="Wrap" Text="Hood Required?" VerticalAlignment="Top" Width="103"/>
-                    <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="346,13,0,0" TextWrapping="Wrap" Text="Max Daily?" VerticalAlignment="Top" Width="94"/>
-                    <ComboBox x:Name="cbxCommonsProductClass" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" Width="223" FontSize="10"/>
-                    <CheckBox x:Name="chkHood" HorizontalAlignment="Left" Margin="284,34,0,0" VerticalAlignment="Top"/>
+                    <TextBlock x:Name="lblProdClass" TextAlignment="Center" HorizontalAlignment="Left" Margin="229,10,0,0" TextWrapping="Wrap" Text="InfoG Product Class" VerticalAlignment="Top" Width="223"/>
+                    <TextBlock x:Name="lblHood" TextAlignment="Center" HorizontalAlignment="Left" Margin="121,10,0,0" TextWrapping="Wrap" Text="Hood Required?" VerticalAlignment="Top" Width="103"/>
+                    <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Max Daily?" VerticalAlignment="Top" Width="94"/>
+                    <ComboBox x:Name="cbxCommonsProductClass" HorizontalAlignment="Left" Margin="229,31,0,0" VerticalAlignment="Top" Width="223" FontSize="10"/>
+                    <CheckBox x:Name="chkHood" HorizontalAlignment="Left" Margin="168,34,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </GroupBox>
 

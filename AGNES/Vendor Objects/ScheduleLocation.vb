@@ -162,6 +162,8 @@ Public Class ScheduleLocation
             Exit Sub
         End If
 
+        'CRITICAL: CHECK TO MAKE SURE DAILY PLACEMENT IS NOT EXCEEDED
+
         VendorSched.tbSaveStatus.Text = "Okay to add"
         VendorSched.sbSaveStatus.Background = Brushes.LightGreen
         Background = Brushes.LightGreen
