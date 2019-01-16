@@ -53,7 +53,7 @@ Public Class RadialPortal
         If dt IsNot Nothing Then Exit Sub
         dt = New DispatcherTimer()
         AddHandler dt.Tick, AddressOf ExpandRadial
-        dt.Interval = New TimeSpan(0, 0, 0, 0, 500)
+        dt.Interval = New TimeSpan(0, 0, 0, 0, 300)
         dt.Start()
     End Sub
 
@@ -72,7 +72,7 @@ Public Class RadialPortal
         If RadialFull = True Then
             dt2 = New DispatcherTimer()
             AddHandler dt2.Tick, AddressOf ContractRadial
-            dt2.Interval = New TimeSpan(0, 0, 0, 1)
+            dt2.Interval = New TimeSpan(0, 0, 0, 0, 750)
             dt2.Start()
         End If
     End Sub
@@ -124,6 +124,7 @@ Public Class RadialPortal
             RadialFull = False
         End If
     End Sub
+
     Private Sub PortalEasterEggs()
         Dim m As Byte = Now.Month
         Dim d As Byte = Now.Day
