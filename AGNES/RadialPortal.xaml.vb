@@ -1,9 +1,16 @@
 ﻿Imports System.ComponentModel
 Imports System.Reflection
+Imports System.Windows.Threading
+
 Public Class RadialPortal
 
 #Region "Properties"
-
+    Private dt As DispatcherTimer
+    Private dt1 As DispatcherTimer
+    Private dt2 As DispatcherTimer
+    Private dt3 As DispatcherTimer
+    Private ScaleAmt As Double
+    Private RadialFull As Boolean
     Private bday As Boolean
     Private _buttonrest As Byte
     Private _buttonhover As Byte
@@ -34,12 +41,90 @@ Public Class RadialPortal
         SessionLog(0)
         ConstructRadialMenu()
         PortalEasterEggs()
-
+        AddHandler imgAGNES.MouseEnter, AddressOf EnteredImg
+        AddHandler imgAGNES.MouseLeave, AddressOf LeftImg
+        AddHandler grdPortal.MouseLeave, AddressOf LeftWindow
     End Sub
 
 #End Region
 
 #Region "Private Methods"
+    Private Sub EnteredImg()
+        If dt IsNot Nothing Then Exit Sub
+        dt = New DispatcherTimer()
+        AddHandler dt.Tick, AddressOf ExpandRadial
+        dt.Interval = New TimeSpan(0, 0, 0, 0, 300)
+        dt.Start()
+    End Sub
+
+    Private Sub LeftImg()
+        If dt IsNot Nothing Then
+            dt.Stop()
+            dt = Nothing
+        End If
+    End Sub
+
+    Private Sub LeftWindow()
+        If dt2 IsNot Nothing Then
+            dt2.Stop()
+            dt2 = Nothing
+        End If
+        If RadialFull = True Then
+            dt2 = New DispatcherTimer()
+            AddHandler dt2.Tick, AddressOf ContractRadial
+            dt2.Interval = New TimeSpan(0, 0, 0, 0, 750)
+            dt2.Start()
+        End If
+    End Sub
+
+    Private Sub ExpandRadial()
+        dt.Stop()
+        dt = Nothing
+        If (imgAGNES.IsMouseOver = True Or cnvRadialMenu.IsMouseOver = True) And Mouse.LeftButton <> MouseButtonState.Pressed And RadialFull = False Then
+            ScaleAmt = 0.25
+            dt1 = New DispatcherTimer()
+            AddHandler dt1.Tick, AddressOf ScaleUp
+            dt1.Interval = New TimeSpan(0, 0, 0, 0, 5)
+            dt1.Start()
+        End If
+
+    End Sub
+
+    Private Sub ContractRadial()
+        dt2.Stop()
+        dt2 = Nothing
+        If (imgAGNES.IsMouseOver = False And cnvRadialMenu.IsMouseOver = False) And Mouse.LeftButton <> MouseButtonState.Pressed And RadialFull = True Then
+            ScaleAmt = 1
+            dt3 = New DispatcherTimer()
+            AddHandler dt3.Tick, AddressOf ScaleDown
+            dt3.Interval = New TimeSpan(0, 0, 0, 0, 5)
+            dt3.Start()
+        End If
+
+    End Sub
+
+    Private Sub ScaleUp()
+        Dim st As ScaleTransform = New ScaleTransform(ScaleAmt, ScaleAmt)
+        cnvRadialMenu.RenderTransform = st
+        ScaleAmt += 0.05
+        If ScaleAmt >= 1 Then
+            dt1.Stop()
+            dt1 = Nothing
+            RadialFull = True
+        End If
+    End Sub
+
+    Private Sub ScaleDown()
+        Dim st As ScaleTransform = New ScaleTransform(ScaleAmt, ScaleAmt)
+        cnvRadialMenu.RenderTransform = st
+        ScaleAmt -= 0.05
+        If ScaleAmt <= 0.25 Then
+            dt3.Stop()
+            dt3 = Nothing
+            RadialFull = False
+        End If
+    End Sub
+
     Private Sub PortalEasterEggs()
         Dim m As Byte = Now.Month
         Dim d As Byte = Now.Day
@@ -344,7 +429,7 @@ Public Class RadialPortal
                 VendorModule.Runmodule()
             Case "Event Journal"
                 ''//TEST
-               ' If My.Computer.Keyboard.CtrlKeyDown Then WOPRModule.RunModule()
+                ' If My.Computer.Keyboard.CtrlKeyDown Then WOPRModule.RunModule()
                 'EventJournal.Runmodule()
                 ''//TEST
             Case "HR Manager"

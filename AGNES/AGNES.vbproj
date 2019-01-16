@@ -1050,6 +1050,8 @@
       <DependentUpon>ITCFGModel.edmx</DependentUpon>
       <LastGenOutput>ITCFGModel.vb</LastGenOutput>
     </Content>
+    <Resource Include="Resources\Notification.png" />
+    <Resource Include="Resources\notificationbubble.png" />
     <Content Include="Resources\Sound Assets\jump.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

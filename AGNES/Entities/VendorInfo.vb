@@ -14,7 +14,7 @@ Partial Public Class VendorInfo
     Public Property PID As Long
     Public Property Name As String
     Public Property Invoice As String
-    Public Property Supplier As Long
+    Public Property Supplier As Nullable(Of Long)
     Public Property ProductClassId As Nullable(Of Integer)
     Public Property StoreId As Nullable(Of Long)
     Public Property VendorType As Short
@@ -27,7 +27,7 @@ Partial Public Class VendorInfo
     Public Property KPIType As Nullable(Of Short)
     Public Property KPIStart As Nullable(Of Date)
     Public Property KPIAmount As Nullable(Of Decimal)
-    Public Property RequiresHood As Boolean
+    Public Property RequiresHood As Nullable(Of Boolean)
     Public Property InsuranceExpiration As Nullable(Of Date)
     Public Property ContractExpiration As Nullable(Of Date)
     Public Property MaximumDailyCafes As Nullable(Of Short)
