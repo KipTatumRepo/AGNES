@@ -68,25 +68,30 @@ Public Class VendorEditor
         grdBrandDetail.Children.Add(numDailyCafes)
 
         '// Add CAM amount currency box
-        curCam = New CurrencyBox(82, True, AgnesBaseInput.FontSz.Standard,, True, False) With {.Margin = New Thickness(361, 31, 0, 0), .Visibility = Visibility.Collapsed}
+        curCam = New CurrencyBox(82, True, AgnesBaseInput.FontSz.Standard,, True, False) With {.Margin = New Thickness(282, 31, 0, 0), .Visibility = Visibility.Collapsed}
         AddHandler curCam.BaseTextBox.TextChanged, AddressOf FlagChanges
         grdCamKpi.Children.Add(curCam)
 
         '// Add KPI amount currency box
-        curKpi = New CurrencyBox(82, True, AgnesBaseInput.FontSz.Standard,, True, False) With {.Margin = New Thickness(361, 77, 0, 0), .Visibility = Visibility.Collapsed}
+        curKpi = New CurrencyBox(82, True, AgnesBaseInput.FontSz.Standard,, True, False) With {.Margin = New Thickness(282, 77, 0, 0), .Visibility = Visibility.Collapsed}
         AddHandler curKpi.BaseTextBox.TextChanged, AddressOf FlagChanges
         grdCamKpi.Children.Add(curKpi)
 
         '// Add CAM amount percentage box
-        percCam = New PercentBox(82, True, AgnesBaseInput.FontSz.Standard, 1, True, False) With {.Margin = New Thickness(361, 31, 0, 0), .Visibility = Visibility.Collapsed}
+        percCam = New PercentBox(82, True, AgnesBaseInput.FontSz.Standard, 1, True, False) With {.Margin = New Thickness(282, 31, 0, 0), .Visibility = Visibility.Collapsed}
         AddHandler percCam.BaseTextBox.TextChanged, AddressOf FlagChanges
         grdCamKpi.Children.Add(percCam)
 
         '// Add KPI amount percentage box
-        percKpi = New PercentBox(82, True, AgnesBaseInput.FontSz.Standard, 1, True, False) With {.Margin = New Thickness(361, 77, 0, 0), .Visibility = Visibility.Collapsed}
+        percKpi = New PercentBox(82, True, AgnesBaseInput.FontSz.Standard, 1, True, False) With {.Margin = New Thickness(282, 77, 0, 0), .Visibility = Visibility.Collapsed}
         AddHandler percKpi.BaseTextBox.TextChanged, AddressOf FlagChanges
         grdCamKpi.Children.Add(percKpi)
 
+        '// Add day options to CAM due (1st-25th)
+        cbxCamDue.Items.Clear()
+        For x As Byte = 1 To 25
+            cbxCamDue.Items.Add(x)
+        Next
     End Sub
 
     Private Sub PopulateVendors()
@@ -270,6 +275,11 @@ Public Class VendorEditor
                         lblCamAmt.Visibility = Visibility.Visible
                         percCam.Visibility = Visibility.Visible
                         percCam.SetAmount = ActiveVendor.CAMAmount
+
+                        lblCamDue.Visibility = Visibility.Visible
+                        cbxCamDue.Visibility = Visibility.Visible
+                        cbxCamDue.Text = ActiveVendor.CamDue.ToString
+
                     Case 2  ' Flat amount
                         lblCamStart.Visibility = Visibility.Visible
                         dtpCamStart.Visibility = Visibility.Visible
@@ -279,6 +289,11 @@ Public Class VendorEditor
                         lblCamAmt.Visibility = Visibility.Visible
                         curCam.Visibility = Visibility.Visible
                         curCam.SetAmount = ActiveVendor.CAMAmount
+
+                        lblCamDue.Visibility = Visibility.Visible
+                        cbxCamDue.Visibility = Visibility.Visible
+                        cbxCamDue.Text = ActiveVendor.CamDue
+
                 End Select
 
                 cbxKpiType.SelectedIndex = ActiveVendor.KPIType - 1
@@ -333,6 +348,12 @@ Public Class VendorEditor
                 curKpi.SetAmount = 0
                 percKpi.Visibility = Visibility.Collapsed
                 percKpi.SetAmount = 0
+
+                lblCamDue.Visibility = Visibility.Collapsed
+                cbxCamDue.Visibility = Visibility.Collapsed
+                cbxCamDue.SelectedIndex = -1
+                cbxCamDue.Text = ""
+
         End Select
     End Sub
 
@@ -486,7 +507,7 @@ Public Class VendorEditor
         dtpContract.DisplayDate = Now()
 
         '// Get new vendor name
-        Dim newname As New SingleUserInput(EnterOnly:=True) With {.InputType = 0}
+        Dim newname As New SingleUserInput(EnterOnly:=True) With {.InputType = 0, .DisplayText = "Add new vendor name"}
         newname.ShowDialog()
         If newname.StringVal = "" Then Exit Sub
 
@@ -496,7 +517,6 @@ Public Class VendorEditor
         newname.Close()
 
         '// Add new vendor to combobox temporarily and suppress Add New Vendor option
-        'CRITICAL: ADD OPTION BACK IN ONCE NEW ADD IS COMPLETE
         cbxVendorName.Items.Insert(0, NewVendorName)
         cbxVendorName.SelectedIndex = 0
         cbxVendorName.Items.RemoveAt(1)
@@ -525,7 +545,7 @@ Public Class VendorEditor
 
     Private Sub AddNewFoodType(sender As Object, e As MouseButtonEventArgs) Handles imgAddFoodType.MouseLeftButtonDown
         '// Get new food type name
-        Dim newfood As New SingleUserInput(EnterOnly:=False) With {.InputType = 0}
+        Dim newfood As New SingleUserInput(EnterOnly:=False) With {.InputType = 0, .DisplayText = "Enter new food type name"}
         newfood.ShowDialog()
         Dim FoodName As String = newfood.StringVal
         newfood.Close()
@@ -556,7 +576,7 @@ Public Class VendorEditor
 
     Private Sub AddNewFoodSubType(sender As Object, e As MouseButtonEventArgs) Handles imgAddFoodSubType.MouseLeftButtonDown
         '// Get new food subtype name
-        Dim newfood As New SingleUserInput(EnterOnly:=False) With {.InputType = 0}
+        Dim newfood As New SingleUserInput(EnterOnly:=False) With {.InputType = 0, .DisplayText = "Enter new food subtype name"}
         newfood.ShowDialog()
         Dim FoodName As String = newfood.StringVal
         newfood.Close()
@@ -750,7 +770,7 @@ Public Class VendorEditor
 
     Private Sub ValidateEntry()
         Dim ph As String = ""
-
+        ' Verify daily max is saved if focus has not been lost
     End Sub
 
     Private Function VerifyDiscardChanges() As Boolean
@@ -767,7 +787,6 @@ Public Class VendorEditor
         End If
         Return True
     End Function
-
 
 #End Region
 

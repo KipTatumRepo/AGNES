@@ -31,5 +31,6 @@ Partial Public Class VendorInfo
     Public Property InsuranceExpiration As Nullable(Of Date)
     Public Property ContractExpiration As Nullable(Of Date)
     Public Property MaximumDailyCafes As Nullable(Of Short)
+    Public Property CamDue As Nullable(Of Short)
 
 End Class

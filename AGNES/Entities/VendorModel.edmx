@@ -127,6 +127,7 @@
           <Property Name="InsuranceExpiration" Type="date" />
           <Property Name="ContractExpiration" Type="date" />
           <Property Name="MaximumDailyCafes" Type="smallint" />
+          <Property Name="CamDue" Type="smallint" />
         </EntityType>
         <EntityContainer Name="VendorModelStoreContainer">
           <EntitySet Name="Availability" EntityType="Self.Availability" Schema="Vendors" store:Type="Tables" />
@@ -242,6 +243,7 @@
           <Property Name="InsuranceExpiration" Type="DateTime" Precision="0" />
           <Property Name="ContractExpiration" Type="DateTime" Precision="0" />
           <Property Name="MaximumDailyCafes" Type="Int16" />
+          <Property Name="CamDue" Type="Int16" />
         </EntityType>
         <EntityContainer Name="VendorEntity" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Availabilities" EntityType="Self.Availability" />
@@ -371,6 +373,7 @@
           <EntitySetMapping Name="VendorInfo">
             <EntityTypeMapping TypeName="VendorModel.VendorInfo">
               <MappingFragment StoreEntitySet="VendorInfo">
+                <ScalarProperty Name="CamDue" ColumnName="CamDue" />
                 <ScalarProperty Name="MaximumDailyCafes" ColumnName="MaximumDailyCafes" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />

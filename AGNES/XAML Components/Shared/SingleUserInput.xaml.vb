@@ -6,6 +6,16 @@
     Public Property DoubleVal As Double
     Public Property NumVal As Long
     Public Property InputType As Byte
+    Private _displaytext As String
+    Public Property DisplayText As String
+        Get
+            Return _displaytext
+        End Get
+        Set(value As String)
+            _displaytext = value
+            lblInputDirection.Text = value
+        End Set
+    End Property
 
     Public Enum InputDesired
         Textual
