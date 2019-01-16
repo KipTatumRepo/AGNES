@@ -50,8 +50,11 @@ namespace AGNESCSharp
             ApprovedBox.IsChecked = false;
             ClosedBox.IsChecked = false;
             ParentalBox.IsChecked = false;
+            InterBox.IsChecked = false;
+            ContBox.IsChecked = false;
             BeginLeave.SelectedDate = null;
             EndLeave.SelectedDate = null;
+            
             DescriptionTb.Clear();
             return;
         }
@@ -59,7 +62,7 @@ namespace AGNESCSharp
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             LOA leave = new LOA();
-            string type = "Leave";//selectedLeave;
+            string type = "Leave";
             DateTime? beginDate = BeginLeave.SelectedDate;
             DateTime? endDate = EndLeave.SelectedDate;
             string notes = DescriptionTb.Text;
@@ -77,6 +80,12 @@ namespace AGNESCSharp
             if (PendingBox.IsChecked == false && ApprovedBox.IsChecked == false && ClosedBox.IsChecked == false && ParentalBox.IsChecked == false)
             {
                 MessageBox.Show("Please Check At Least One of the Checkboxes");
+                return;
+            }
+
+            if (InterBox.IsChecked == true && ContBox.IsChecked == true)
+            {
+                MessageBox.Show("There Can Only Intermittent or Continuous Leave, Both Cannot Be Selected at The Same Time, Please Select Just One");
                 return;
             }
 

@@ -87,6 +87,7 @@ namespace AGNESCSharp
 
             //right now I am calculating the earliest valid date as -1 year from incident date, this may change
             (DateTime earlyDate, double occurrencePoints) = CountOccurrences(selectedDate, empID);
+            int anyPriorZero = CountZeroPoints(selectedDate, empID);
 
             FileInfo myFile = new FileInfo(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
             bool exists = myFile.Exists;
@@ -100,6 +101,19 @@ namespace AGNESCSharp
                     {
                         BIMessageBox.Show("Counseling Form Dialog", firstName + " Has a Variance Greater Than $3.00 but Less Than $20.00 This is an Automatic Progressive Counseling" +
                             " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
+                        Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
+                    }
+
+                    if (anyPriorZero == 2)
+                    {
+                        BIMessageBox.Show("Warning", firstName + " Has 2 Prior No Variance Found Violations, 1 More Will Result in a Progressive Counseling",
+                            MessageBoxButton.OK);
+                    }
+
+                    if (anyPriorZero == 3)
+                    {
+                        BIMessageBox.Show("Counseling Form Dialog", "This is " + firstName + "'s Thrid Occurrence For No Variance Found Violations and Requires a WRITTEN Counseling" +
+                                                    " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
                         Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
                     }
 
@@ -130,9 +144,7 @@ namespace AGNESCSharp
                         }
                       
                     }
-                    
                     break;
-
                 //Associate is IN 90 Probationary Period
                 case 1:
 
@@ -179,6 +191,19 @@ namespace AGNESCSharp
             occurrencePoints = occurrencePoints / 2;
 
             return (EarlyDate, occurrencePoints);
+        }
+
+        private int CountZeroPoints(DateTime date, long empID)
+        {
+            AGNESEntity agnesdb = new AGNESEntity();
+            DateTime cutOffDate = date.AddYears(-1);
+
+            var query = from employeeTable in agnesdb.CashHandles
+                        where employeeTable.PersNumber == empID && employeeTable.Date >= cutOffDate && employeeTable.Type == 0
+                        select employeeTable;
+
+            int count = query.Count();
+            return count;
         }
 
         private void CashCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
