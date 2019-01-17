@@ -1,6 +1,7 @@
 ﻿Public Class NotificationWindow
 
 #Region "Properties"
+    Private ActionPoint As String
     Private NotificationCount As Byte
     Private _currentnotification As Byte
     Private Property CurrentNotification As Byte
@@ -29,6 +30,7 @@
         NotificationCount = Notifications.Count()
         CurrentNotification = 0
     End Sub
+
 #End Region
 
 #Region "Public Methods"
@@ -49,6 +51,23 @@
             Dim p As New Paragraph(New Run(section)) With {.TextAlignment = TextAlignment.Left, .FontFamily = New FontFamily("Segoe UI"), .FontSize = 16}
             flwNotificationText.Blocks.Add(p)
         Next
+
+        '// Can notification be snoozed?
+        If qgn.Snooze = True Then
+            imgSnooze.Visibility = Visibility.Visible
+        Else
+            imgSnooze.Visibility = Visibility.Collapsed
+        End If
+
+        '// Is there a module action required?
+        If qgn.ActionPoint <> "" Then
+            ActionPoint = qgn.ActionPoint
+            imgGoToModule.Visibility = Visibility.Visible
+        Else
+            ActionPoint = ""
+            imgGoToModule.Visibility = Visibility.Collapsed
+        End If
+
     End Sub
 
     Private Sub Snoozle(sender As Object, e As MouseButtonEventArgs) Handles imgSnooze.MouseDown
@@ -79,6 +98,18 @@
     Private Sub imgNextNotification_MouseDown(sender As Object, e As MouseButtonEventArgs) Handles imgNextNotification.MouseDown
         NotificationConfirmation()
         CurrentNotification += 1
+    End Sub
+
+    Private Sub JumpToModule(sender As Object, e As MouseButtonEventArgs) Handles imgGoToModule.MouseDown
+        imgGoToModule.Visibility = Visibility.Collapsed
+        Select Case ActionPoint
+            Case ""
+                Exit Sub
+            Case "Flash"
+                JumpedFromNotification = True
+                FlashModule.Runmodule()
+
+        End Select
     End Sub
 
 #End Region

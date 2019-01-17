@@ -20,5 +20,6 @@ Partial Public Class Notification
     Public Property OneOffNotification As Boolean
     Public Property Snooze As Boolean
     Public Property RequireConfirm As Boolean
+    Public Property ActionPoint As String
 
 End Class

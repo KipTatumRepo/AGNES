@@ -1,0 +1,42 @@
+﻿<Window x:Class="NotificationEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AGNES"
+        mc:Ignorable="d"
+        Title="Notification Editor" Height="480" Width="400">
+    <Grid RenderTransformOrigin="0.457,0.511">
+        <TextBlock HorizontalAlignment="Left" Margin="12,4,0,0" TextWrapping="Wrap" Text="Enter your notification below" VerticalAlignment="Top" Width="368" TextAlignment="Center"/>
+        <RichTextBox x:Name="rtbNotification" HorizontalAlignment="Left" Height="190" Margin="12,25,0,0" VerticalAlignment="Top" Width="368">
+            <FlowDocument x:Name="flwNotification"/>
+        </RichTextBox>
+        <TextBlock HorizontalAlignment="Left" Margin="12,220,0,0" TextWrapping="Wrap" Text="Start Date" VerticalAlignment="Top" Width="102" TextAlignment="Center" Height="16"/>
+        <DatePicker x:Name="dtpStart" HorizontalAlignment="Left" Margin="12,241,0,0" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="126,220,0,0" TextWrapping="Wrap" Text="End Date" VerticalAlignment="Top" Width="102" TextAlignment="Center"/>
+        <DatePicker x:Name="dtpEnd" HorizontalAlignment="Left" Margin="126,241,0,0" VerticalAlignment="Top"/>
+        <Border Margin="12,270,271,0" BorderBrush="Black" BorderThickness="1" Height="42" VerticalAlignment="Top">
+            <Grid Margin="0,0,-1,0">
+                <RadioButton x:Name="rdbSnooze" Content="Snoozable" HorizontalAlignment="Left" VerticalAlignment="Top" GroupName="Snooze" Margin="2,3,0,0"/>
+                <RadioButton x:Name="rdbNoSnooze" Content="Not snoozable" HorizontalAlignment="Left" Margin="2,22,0,0" VerticalAlignment="Top" GroupName="Snooze"/>
+            </Grid>
+        </Border>
+        <Border Margin="144,270,139,0" BorderBrush="Black" BorderThickness="1" Height="42" VerticalAlignment="Top">
+            <Grid Margin="0,0,-1,0">
+                <RadioButton x:Name="rdbOneOff" Content="One-Off" HorizontalAlignment="Left" VerticalAlignment="Top" GroupName="Frequency" Margin="2,3,0,0"/>
+                <RadioButton x:Name="rdbRecur" Content="Recurring" HorizontalAlignment="Left" Margin="2,22,0,0" VerticalAlignment="Top" GroupName="Frequency"/>
+            </Grid>
+        </Border>
+        <Border Margin="271,270,12,0" BorderBrush="Black" BorderThickness="1" Height="42" VerticalAlignment="Top">
+            <Grid Margin="0,0,-1,0">
+                <RadioButton x:Name="rdbConfirm" Content="Require Confirm" HorizontalAlignment="Left" VerticalAlignment="Top" GroupName="Confirm" Margin="1,3,0,0"/>
+                <RadioButton x:Name="rdbNoConfirm" Content="Not Required" HorizontalAlignment="Left" Margin="1,22,0,0" VerticalAlignment="Top" GroupName="Confirm"/>
+            </Grid>
+        </Border>
+        <ComboBox x:Name="cbxAudience" HorizontalAlignment="Left" Margin="241,241,0,0" VerticalAlignment="Top" Width="139"/>
+        <TextBlock HorizontalAlignment="Left" Margin="241,220,0,0" TextWrapping="Wrap" Text="Target Audience" VerticalAlignment="Top" Width="139" TextAlignment="Center"/>
+        <TextBlock HorizontalAlignment="Left" Margin="126,317,0,0" TextWrapping="Wrap" Text="Action Target" VerticalAlignment="Top" Width="139" TextAlignment="Center"/>
+        <ComboBox x:Name="cbxActionTgt" HorizontalAlignment="Left" Margin="126,338,0,0" VerticalAlignment="Top" Width="139"/>
+        <Image x:Name="imgSave" HorizontalAlignment="Left" Height="40" Margin="180,369,0,0" VerticalAlignment="Top" Width="40" Source="/AGNES;component/Resources/save.png"/>
+    </Grid>
+</Window>

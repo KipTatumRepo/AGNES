@@ -5,6 +5,7 @@
     Public FlashPage As Flash
     Public InitialLoadStatus As Byte = 0
     Public AlertOverride As Boolean = False
+    Public JumpedFromNotification As Boolean
 #End Region
 
 #Region "Public Methods"

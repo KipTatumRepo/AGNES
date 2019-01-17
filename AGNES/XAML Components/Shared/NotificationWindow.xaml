@@ -19,7 +19,7 @@
         <SolidColorBrush Color="Black" Opacity="0.75"/>
     </Window.BorderBrush>
     <Grid>
-        <TextBlock x:Name="tbTitle" TextWrapping="Wrap" Text="Notifications (1/5)" VerticalAlignment="Top" TextAlignment="Center" FontSize="14" TextDecorations="{x:Null}" Height="22">
+        <TextBlock x:Name="tbTitle" TextWrapping="Wrap" Text="Notifications (x/x)" VerticalAlignment="Top" TextAlignment="Center" FontSize="14" TextDecorations="{x:Null}" Height="22">
             <TextBlock.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#FF9AF5F1" Offset="0"/>
@@ -27,13 +27,14 @@
                 </LinearGradientBrush>
             </TextBlock.Background>
         </TextBlock>
-        <Image x:Name="imgRightCheck" HorizontalAlignment="Left" Height="42" Margin="291,236,0,0" VerticalAlignment="Top" Width="42" Source="/AGNES;component/Resources/applycheck.png" ToolTip="Okay, got it!"/>
-        <Image x:Name="imgNextNotification" HorizontalAlignment="Left" Height="42" Margin="291,236,0,0" VerticalAlignment="Top" Width="42" Source="/AGNES;component/Resources/NextNotification.png" ToolTip="View next notification" Visibility="Collapsed"/>
-        <Image x:Name="imgSnooze" HorizontalAlignment="Left" Height="42" Margin="73,236,0,0" VerticalAlignment="Top" Width="42" Source="/AGNES;component/Resources/Reminder.png" ToolTip="Remind me later"/>
-
         <RichTextBox x:Name="rtbNotification" HorizontalAlignment="Left" Height="190" Margin="10,27,0,0" VerticalAlignment="Top" Width="368" Background="{x:Null}" BorderBrush="{x:Null}" IsReadOnly="True" Focusable="False" IsTabStop="False" AllowDrop="False">
             <FlowDocument x:Name="flwNotificationText" Focusable="False"/>
         </RichTextBox>
+        <Image x:Name="imgSnooze" HorizontalAlignment="Left" Height="42" Margin="73,236,0,0" VerticalAlignment="Top" Width="42" Source="/AGNES;component/Resources/Reminder.png" ToolTip="Remind me later"/>
+        <Image x:Name="imgGoToModule" HorizontalAlignment="Left" Height="42" Margin="182,236,0,0" VerticalAlignment="Top" Width="42" Source="/AGNES;component/Resources/GoToModule.png" ToolTip="Jump to appropriate module"/>
+        <Image x:Name="imgRightCheck" HorizontalAlignment="Left" Height="42" Margin="291,236,0,0" VerticalAlignment="Top" Width="42" Source="/AGNES;component/Resources/applycheck.png" ToolTip="Okay, got it!"/>
+        <Image x:Name="imgNextNotification" HorizontalAlignment="Left" Height="42" Margin="291,236,0,0" VerticalAlignment="Top" Width="42" Source="/AGNES;component/Resources/NextNotification.png" ToolTip="View next notification" Visibility="Collapsed"/>
+
 
     </Grid>
 </Window>

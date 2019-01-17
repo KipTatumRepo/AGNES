@@ -76,6 +76,7 @@
           <Property Name="OneOffNotification" Type="bit" Nullable="false" />
           <Property Name="Snooze" Type="bit" Nullable="false" />
           <Property Name="RequireConfirm" Type="bit" Nullable="false" />
+          <Property Name="ActionPoint" Type="varchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="UnitsSubunits">
           <Key>
@@ -112,48 +113,6 @@
           <Property Name="SavedBy" Type="varchar" MaxLength="128" Nullable="false" />
           <Property Name="DOB" Type="date" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'AGNES.dbo.AccessCosting' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="AccessCosting">
-          <Property Name="UserID" Type="nvarchar" MaxLength="255" />
-          <Property Name="ProfitCenterID" Type="float" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'AGNES.dbo.AccessFlash' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'AGNES.dbo.Budget' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="Budget">
-          <Property Name="MSFY" Type="float" />
-          <Property Name="MSP" Type="float" />
-          <Property Name="Cycle" Type="float" />
-          <Property Name="Unit" Type="float" />
-          <Property Name="Category" Type="nvarchar" MaxLength="255" />
-          <Property Name="Budget" Type="float" />
-          <Property Name="BudgetKey" Type="nvarchar" MaxLength="255" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'AGNES.dbo.FlashLocations' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="FlashLocations">
-          <Property Name="Group" Type="nvarchar" MaxLength="255" />
-          <Property Name="Unit_Number" Type="float" />
-          <Property Name="profit_center_id" Type="float" />
-          <Property Name="profit_center_name" Type="nvarchar" MaxLength="255" />
-          <Property Name="Unit" Type="nvarchar" MaxLength="255" />
-          <Property Name="DM" Type="nvarchar" MaxLength="255" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'AGNES.dbo.HRAuditLocations' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'AGNES.dbo.HRPersonnelList' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="HRPersonnelList">
-          <Property Name="CC" Type="float" />
-          <Property Name="Cost Center" Type="nvarchar" MaxLength="255" />
-          <Property Name="Compass Pers#No#" Type="float" />
-          <Property Name="Last name" Type="nvarchar" MaxLength="255" />
-          <Property Name="First name" Type="nvarchar" MaxLength="255" />
-          <Property Name="HeadTrax Personnel Number" Type="float" />
-          <Property Name="CardKeyNbr" Type="float" />
-        </EntityType>-->
         <EntityContainer Name="AGNESSharedDataModelStoreContainer">
           <EntitySet Name="AccessLevels" EntityType="Self.AccessLevels" Schema="agnes" store:Type="Tables" />
           <EntitySet Name="FlashTypes" EntityType="Self.FlashTypes" Schema="agnes" store:Type="Tables" />
@@ -166,7 +125,7 @@ warning 6013: The table/view 'AGNES.dbo.HRPersonnelList' does not have a primary
           <EntitySet Name="UnitsSubunits" EntityType="Self.UnitsSubunits" Schema="agnes" store:Type="Tables" />
           <EntitySet Name="UnitsUsers_Join" EntityType="Self.UnitsUsers_Join" Schema="agnes" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="agnes" store:Type="Tables" />
-          </EntityContainer>
+        </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -290,6 +249,7 @@ warning 6013: The table/view 'AGNES.dbo.HRPersonnelList' does not have a primary
           <Property Name="OneOffNotification" Type="Boolean" Nullable="false" />
           <Property Name="Snooze" Type="Boolean" Nullable="false" />
           <Property Name="RequireConfirm" Type="Boolean" Nullable="false" />
+          <Property Name="ActionPoint" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -403,6 +363,7 @@ warning 6013: The table/view 'AGNES.dbo.HRPersonnelList' does not have a primary
           <EntitySetMapping Name="Notifications">
             <EntityTypeMapping TypeName="AGNESSharedDataModel.Notification">
               <MappingFragment StoreEntitySet="Notifications">
+                <ScalarProperty Name="ActionPoint" ColumnName="ActionPoint" />
                 <ScalarProperty Name="RequireConfirm" ColumnName="RequireConfirm" />
                 <ScalarProperty Name="Snooze" ColumnName="Snooze" />
                 <ScalarProperty Name="OneOffNotification" ColumnName="OneOffNotification" />

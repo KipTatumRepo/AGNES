@@ -641,6 +641,9 @@
     <Compile Include="XAML Components\Shared\AssociateMapping.xaml.vb">
       <DependentUpon>AssociateMapping.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XAML Components\Shared\NotificationEditor.xaml.vb">
+      <DependentUpon>NotificationEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="XAML Components\Shared\NotificationWindow.xaml.vb">
       <DependentUpon>NotificationWindow.xaml</DependentUpon>
     </Compile>
@@ -783,6 +786,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="XAML Components\Shared\AssociateMapping.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XAML Components\Shared\NotificationEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1067,6 +1074,7 @@
     <Resource Include="Resources\notificationbubble.png" />
     <Resource Include="Resources\Reminder.png" />
     <Resource Include="Resources\NextNotification.png" />
+    <Resource Include="Resources\GoToModule.png" />
     <Content Include="Resources\Sound Assets\jump.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
