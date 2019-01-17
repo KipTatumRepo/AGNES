@@ -71,7 +71,6 @@ namespace AGNESCSharp
             }
             else
             {
-
                 var getUnit = from unitTable in MainWindow.agnesdb.UnitsUsers_Joins
                               where userAccess == unitTable.UserId
                               select unitTable.UnitNumber;
@@ -223,6 +222,7 @@ namespace AGNESCSharp
 
             var query = from employeeTable in MainWindow.agnesdb.Occurrences
                         where empId == employeeTable.PersNumber && employeeTable.Date >= cutOffDate
+                        orderby employeeTable.Date descending
                         select new
                         {
                             employeeTable.PID,
@@ -232,9 +232,11 @@ namespace AGNESCSharp
                             employeeTable.Notes,
                             employeeTable.AttendanceViolation
                         };
+                        
 
             var LoaQuery = from loaEmployeeTable in MainWindow.agnesdb.LOAs
                            where empId == loaEmployeeTable.PersNumber
+                           orderby loaEmployeeTable.DateStart descending
                            select new
                            {
                                loaEmployeeTable.PID,
@@ -247,6 +249,7 @@ namespace AGNESCSharp
 
             var cashHandleQuery = from chEmployeeTable in MainWindow.agnesdb.CashHandles
                                   where empId == chEmployeeTable.PersNumber
+                                  orderby chEmployeeTable.Date descending
                                   select new
                                   {
                                       chEmployeeTable.PID,
@@ -286,6 +289,7 @@ namespace AGNESCSharp
             empId = (long)lbi.Tag;
             var LoaQuery = from loaEmployeeTable in MainWindow.agnesdb.LOAs
                            where empId == loaEmployeeTable.PersNumber
+                           orderby loaEmployeeTable.DateStart descending
                            select new
                            {
                                loaEmployeeTable.PID,
@@ -312,6 +316,7 @@ namespace AGNESCSharp
             empId = (long)lbi.Tag;
             var OccQuery = from OccEmployeeTable in MainWindow.agnesdb.Occurrences
                            where empId == OccEmployeeTable.PersNumber
+                           orderby OccEmployeeTable.Date descending
                            select new
                            {
                                OccEmployeeTable.PID,
@@ -338,6 +343,7 @@ namespace AGNESCSharp
             empId = (long)lbi.Tag;
             var OccQuery = from CHEmployeeTable in MainWindow.agnesdb.CashHandles
                            where empId == CHEmployeeTable.PersNumber
+                           orderby CHEmployeeTable.Date descending
                            select new
                            {
                                CHEmployeeTable.PID,

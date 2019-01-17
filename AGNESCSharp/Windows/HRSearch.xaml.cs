@@ -29,6 +29,13 @@ namespace AGNESCSharp
         Dictionary<string, int> cbDictionary = new Dictionary<string, int>();
         DateTime today = DateTime.Now;
         int empInProbation = 0;
+
+        //public static string CashHandleNumberV;
+        //public static int SelectedIndexV;
+        //public static DateTime? CHDateV;
+        //public static string CHNoteV;
+
+       
         #endregion
 
         #region Main
@@ -139,21 +146,21 @@ namespace AGNESCSharp
 
                 var result = query.ToList();
 
-                if (result.Count > 1)
-                {
-                    MultipleNameDG.Visibility = Visibility.Visible;
-                    MultipleNameDG.ItemsSource = result;
+                //if (result.Count > 1)
+                //{
+                    //MultipleNameDG.Visibility = Visibility.Visible;
+                    //MultipleNameDG.ItemsSource = result;
 
-                }
-                else
-                {
+               // }
+                //else
+                //{
                     long queryMain = (from employeeTable in MainWindow.bidb.EmployeeLists
                                       where employeeTable.FirstName == firstName && employeeTable.LastName == lastName
                                       select employeeTable.PersNumber).SingleOrDefault();
 
                     assocNumber = queryMain;
                     SearchDb(buttonName, searchTable.Content.ToString(), assocNumber);
-                }
+                //}
                 //assocNumber = GetAssocNumber(firstName, lastName);
             }
         }
@@ -297,6 +304,14 @@ namespace AGNESCSharp
                 CHOccurrenceDP.SelectedDate = filteredRow.Date;
                 CHNote.Text = filteredRow.Notes;
                 violationAmount = filteredRow.Type;
+
+                #region Work on this for v2 
+                //set public static variable to carry from here to LOA Window when datagrid selection is made
+                //CashHandleNumberV = filteredRow.PID.ToString(); 
+                //SelectedIndexV = Convert.ToInt32(filteredRow.Type);
+                //CHDateV = filteredRow.Date;
+                //CHNoteV = filteredRow.Notes;
+                #endregion
             }
             UpdateButton.Visibility = Visibility.Visible;
         }
@@ -344,7 +359,7 @@ namespace AGNESCSharp
                             db.SaveChanges();
                             MessageBox.Show("Occurrence Record Has Been Updated.");
                             (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber, selectedSearchType);
-                            Report(firstName, violationText, occPoints, empInProbation, earlyDate);
+                            Report(firstName, violationText, occPoints, empInProbation, earlyDate, null, null);
                         }
                         else
                         {
@@ -353,7 +368,7 @@ namespace AGNESCSharp
                                 db.SaveChanges();
                                 MessageBox.Show("Occurrence Record Has Been Updated.");
                                 (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber, selectedSearchType);
-                                Report(firstName, violationText, occPoints, empInProbation, earlyDate);
+                                Report(firstName, violationText, occPoints, empInProbation, earlyDate, null, null);
 
                                 #region DELETE ME AFTER TESTING COMPLETE
                                 //get Write up form ready
@@ -502,8 +517,45 @@ namespace AGNESCSharp
                         result.DateStart = BeginLeave.SelectedDate;
                         result.DateEnd = EndLeave.SelectedDate;
                         result.Notes = LOANote.Text;
+
+                        if (BeginLeave.SelectedDate == null || BeginLeave.SelectedDate == null)
+                        {
+                            MessageBox.Show("Please Enter a Beginning Date AND Estimated Ending Date For The Leave");
+                            return;
+                        }
+                        if (BeginLeave.SelectedDate > EndLeave.SelectedDate || BeginLeave.SelectedDate == EndLeave.SelectedDate)
+                        {
+                            MessageBox.Show("The Ending Date For The Leave Must Be After The Begin Date For The Leave");
+                            return;
+                        }
+
+                        if (PendingBox.IsChecked == false && ApprovedBox.IsChecked == false && ClosedBox.IsChecked == false && ParentalBox.IsChecked == false)
+                        {
+                            MessageBox.Show("Please Select Pending, Approved, or Closed");
+                            return;
+                        }
+
+                        if (PendingBox.IsChecked == true && ApprovedBox.IsChecked == true || PendingBox.IsChecked == true && ClosedBox.IsChecked == true || ApprovedBox.IsChecked == true && ClosedBox.IsChecked == true)
+                        {
+                            MessageBox.Show("There Can Only Be One Option of Pending, Approved, or Closed Selected At A Time");
+                            return;
+                        }
+
+                        if (ParentalBox.IsChecked == true && PendingBox.IsChecked == true || ParentalBox.IsChecked == true && ApprovedBox.IsChecked == true || ParentalBox.IsChecked == true && ClosedBox.IsChecked == true || ParentalBox.IsChecked == true &&
+                            InterBox.IsChecked == true || ParentalBox.IsChecked == true && ContBox.IsChecked == true)
+                        {
+                            MessageBox.Show("If Parental Leave is Selected, No Other Selections May be Made");
+                            return;
+                        }
+
+                        if (InterBox.IsChecked == true && ContBox.IsChecked == true)
+                        {
+                            MessageBox.Show("There Can Only Intermittent or Continuous Leave, Both Cannot Be Selected at The Same Time, Please Select Just One");
+                            return;
+                        }
                         try
                         {
+
                             db.SaveChanges();
                             MessageBox.Show("Leave of Abscence Record Has Been Updated.");
                         }
@@ -550,7 +602,17 @@ namespace AGNESCSharp
                         DateTime date = (DateTime)CHOccurrenceDP.SelectedDate;
                         (DateTime earlyDate, double? occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber, selectedSearchType);
 
-                        if (type < violationAmount)
+                        if (type < violationAmount && type == 0)
+                        {
+                            var messageBoxResult = BIMessageBox.Show("Cash Handle Reduction", "This Change Will Require the Removal of A Written Counseling, Do You Wish To Continue?", MessageBoxButton.YesNo);
+                            if (messageBoxResult != MessageBoxResult.Yes) return;
+                            db.SaveChanges();
+                            MessageBox.Show("Occurrence Record Has Been Updated.");
+                            (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber, selectedSearchType);
+                            Report(firstName, violationNotes, occPoints, empInProbation, earlyDate, type, assocNumber);
+                        }
+
+                        else if (type < violationAmount)
                         {
                             decimal compareOccPoints = (decimal)occPoints;
                             decimal compareType = (decimal)type;
@@ -564,7 +626,7 @@ namespace AGNESCSharp
                             MessageBox.Show("Occurrence Record Has Been Updated.");
                             (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber, selectedSearchType);
                             //TODO: GO BACK TO THIS
-                            Report(firstName, violationNotes, occPoints, empInProbation, earlyDate);
+                            Report(firstName, violationNotes, occPoints, empInProbation, earlyDate, type, assocNumber);
                         }
                         else
                         {
@@ -572,11 +634,19 @@ namespace AGNESCSharp
                             {
                                 db.SaveChanges();
                                 MessageBox.Show("Cash Handling Record Has Been Updated.");
-                                if (type == 2)
+                                if (type == 1)
                                 {
-                                    BIMessageBox.Show("Counseling Form Dialog", firstName + "'s Variance Type Was Changed To Greater Than $3.00 but Less Than $20.00, This is an Automatic Progressive Counseling" +
+                                    BIMessageBox.Show("Counseling Form Dialog", firstName + "'s Variance Type Was Changed To Between $3.00 and $20.00, This is an Automatic Progressive Counseling" +
                                                         " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
                                     Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                                }
+                                else
+                                {
+                                    BIMessageBox.Show("Contact HRBP Dialong", "This Type of Cash Handling Violation Requires Notification of Your DM AND HRBP, Please Contact Them", MessageBoxButton.OK);
+
+                                    BIMessageBox.Show("Counseling Form Dialog", firstName + " Has a Variance Greater Than $20.00 This is an Automatic Progressive Counseling" +
+                                        " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
+                                    Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
                                 }
                             }
                             catch (Exception ex)
@@ -693,47 +763,55 @@ namespace AGNESCSharp
                 }
                 else
                 {
-                    if (result.Count == 1)
-                    {
-                        string attendanceViolation;
-                        MultipleOccurrenceView.Visibility = Visibility.Visible;
-                        SearchOccDisplayGrid.Visibility = Visibility.Visible;
-                        foreach (var row in result)
-                        {
-                            OccNumber.Text = row.PersNumber.ToString();
-                            OccName.Text = row.FirstName + " " + row.LastName;
-                            OccDate.SelectedDate = row.Date;
-                            CHOccNumber.Text = row.PID.ToString();
-                            violationAmount = row.Type;
-                            
-                            if (row.AttendanceViolation != null)
-                            {
-                                OccCB.Visibility = Visibility.Visible;
-                                AttLabel.Visibility = Visibility.Visible;
-                                attendanceViolation = row.AttendanceViolation.ToString();
 
-                                //set the selected index to match what is in DB
-                                OccCB.SelectedIndex = SetIndex(attendanceViolation);
-                            }
-                            else
-                            {
-                                OccCB.SelectedIndex = -1;
-                                OccCB.Visibility = Visibility.Collapsed;
-                                AttLabel.Visibility = Visibility.Collapsed;
-                            }
-                            //get type value from db to select correct radio button
-                            byte? type = row.Type;
-                            
-                            OccNotes.Text = row.Notes;
-                        }
-                        UpdateButton.Visibility = Visibility.Visible;
-                    }
-                    else
-                    {
-                        MultipleOccurrenceView.Visibility = Visibility.Visible;
-                        MultipleOccurrencDG.Visibility = Visibility.Visible;
-                        MultipleOccurrencDG.ItemsSource = result;
-                    }
+                    MultipleOccurrenceView.Visibility = Visibility.Visible;
+                    MultipleOccurrencDG.Visibility = Visibility.Visible;
+                    MultipleOccurrencDG.ItemsSource = result;
+                    UpdateButton.Visibility = Visibility.Visible;
+
+                    #region DELETE AFTER TESTING
+                    //if (result.Count == 1)
+                    //{
+                    //string attendanceViolation;
+                    //MultipleOccurrenceView.Visibility = Visibility.Visible;
+                    //SearchOccDisplayGrid.Visibility = Visibility.Visible;
+                    //foreach (var row in result)
+                    //{
+                    //    OccNumber.Text = row.PersNumber.ToString();
+                    //    OccName.Text = row.FirstName + " " + row.LastName;
+                    //    OccDate.SelectedDate = row.Date;
+                    //    CHOccNumber.Text = row.PID.ToString();
+                    //    violationAmount = row.Type;
+
+                    //    if (row.AttendanceViolation != null)
+                    //    {
+                    //        OccCB.Visibility = Visibility.Visible;
+                    //        AttLabel.Visibility = Visibility.Visible;
+                    //        attendanceViolation = row.AttendanceViolation.ToString();
+
+                    //        //set the selected index to match what is in DB
+                    //        OccCB.SelectedIndex = SetIndex(attendanceViolation);
+                    //    }
+                    //    else
+                    //    {
+                    //        OccCB.SelectedIndex = -1;
+                    //        OccCB.Visibility = Visibility.Collapsed;
+                    //        AttLabel.Visibility = Visibility.Collapsed;
+                    //    }
+                    //    //get type value from db to select correct radio button
+                    //    byte? type = row.Type;
+
+                    //    OccNotes.Text = row.Notes;
+                    //}
+                    //
+                    //}
+                    //else
+                    //{
+                    //    MultipleOccurrenceView.Visibility = Visibility.Visible;
+                    //    MultipleOccurrencDG.Visibility = Visibility.Visible;
+                    //    MultipleOccurrencDG.ItemsSource = result;
+                    //}
+# endregion 
                 }
             }
             #endregion
@@ -748,8 +826,6 @@ namespace AGNESCSharp
 
                 var result = query.ToList();
 
-                result = query.ToList();
-
                 if (result.Count <= 0)
                 {
                     MessageBox.Show("There Are No Leave of Abscenses For " + firstName);
@@ -757,49 +833,56 @@ namespace AGNESCSharp
                 }
                 else
                 {
-                    if (result.Count == 1)
-                    {
-                        MultipleLOAView.Visibility = Visibility.Visible;
-                        LOADisplayGrid.Visibility = Visibility.Visible;
-                        foreach (var row in result)
-                        {
-                            LeaveNumber.Text = row.PID.ToString();
-                            BeginLeave.SelectedDate = row.DateStart;
-                            EndLeave.SelectedDate = row.DateEnd;
-                            LOANote.Text = row.Notes;
-                            if (row.Pending == 1)
-                            {
-                                PendingBox.IsChecked = true;
-                            }
-                            if (row.Approved == 1)
-                            {
-                                ApprovedBox.IsChecked = true;
-                            }
-                            if (row.Closed == 1)
-                            {
-                                ClosedBox.IsChecked = true;
-                            }
-                            if (row.Parental == 1)
-                            {
-                                ParentalBox.IsChecked = true;
-                            }
-                            if (row.Intermittent == 1)
-                            {
-                                InterBox.IsChecked = true;
-                            }
-                            if (row.Continuous == 1)
-                            {
-                                ContBox.IsChecked = true;
-                            }
-                        }
-                        UpdateButton.Visibility = Visibility.Visible;
-                    }
-                    else
-                    {
-                        MultipleLOAView.Visibility = Visibility.Visible;
-                        MultipleLOADG.Visibility = Visibility.Visible;
-                        MultipleLOADG.ItemsSource = result;
-                    }
+                    MultipleLOAView.Visibility = Visibility.Visible;
+                    MultipleLOADG.Visibility = Visibility.Visible;
+                    MultipleLOADG.ItemsSource = result;
+                    UpdateButton.Visibility = Visibility.Visible;
+
+                    #region DELETE AFTER TESTING
+                    //if (result.Count == 1)
+                    //{
+                    //MultipleLOAView.Visibility = Visibility.Visible;
+                    //LOADisplayGrid.Visibility = Visibility.Visible;
+                    //foreach (var row in result)
+                    //{
+                    //    LeaveNumber.Text = row.PID.ToString();
+                    //    BeginLeave.SelectedDate = row.DateStart;
+                    //    EndLeave.SelectedDate = row.DateEnd;
+                    //    LOANote.Text = row.Notes;
+                    //    if (row.Pending == 1)
+                    //    {
+                    //        PendingBox.IsChecked = true;
+                    //    }
+                    //    if (row.Approved == 1)
+                    //    {
+                    //        ApprovedBox.IsChecked = true;
+                    //    }
+                    //    if (row.Closed == 1)
+                    //    {
+                    //        ClosedBox.IsChecked = true;
+                    //    }
+                    //    if (row.Parental == 1)
+                    //    {
+                    //        ParentalBox.IsChecked = true;
+                    //    }
+                    //    if (row.Intermittent == 1)
+                    //    {
+                    //        InterBox.IsChecked = true;
+                    //    }
+                    //    if (row.Continuous == 1)
+                    //    {
+                    //        ContBox.IsChecked = true;
+                    //    }
+                    //}
+                    //
+                    //}
+                    //else
+                    //{
+                    //    MultipleLOAView.Visibility = Visibility.Visible;
+                    //    MultipleLOADG.Visibility = Visibility.Visible;
+                    //    MultipleLOADG.ItemsSource = result;
+                    //}
+                    #endregion
                 }
             }
             #endregion
@@ -813,10 +896,7 @@ namespace AGNESCSharp
                             select CashTable;
 
                 var result = query.ToList();
-
-
-                result = query.ToList();
-
+               
                 if (result.Count <= 0)
                 {
                     MessageBox.Show("There Are No Cash Handling Violations For " + firstName);
@@ -824,33 +904,46 @@ namespace AGNESCSharp
                 }
                 else
                 {
-                    if (result.Count == 1)
-                    {
-                        MultipleCashHandleView.Visibility = Visibility.Visible;
-                        CashHandleDisplayGrid.Visibility = Visibility.Visible;
-                        foreach (var row in result)
-                        {
-                            CashHandleNumber.Text = row.PID.ToString();
-                            CashCB.SelectedIndex = Convert.ToInt32(row.Type);
-                            CHOccurrenceDP.SelectedDate = row.Date;
-                            CHNote.Text = row.Notes;
-                            violationAmount = row.Type;
-                        }
-                        UpdateButton.Visibility = Visibility.Visible;
-                    }
-                    else
-                    {
-                        MultipleCashHandleView.Visibility = Visibility.Visible;
-                        MultipleCashHandleDG.Visibility = Visibility.Visible;
-                        MultipleCashHandleDG.ItemsSource = result;
-                    }
+                    MultipleCashHandleView.Visibility = Visibility.Visible;
+                    MultipleCashHandleDG.Visibility = Visibility.Visible;
+                    MultipleCashHandleDG.ItemsSource = result;
+                    UpdateButton.Visibility = Visibility.Visible;
+
+                    #region DELETE AFTER TESTING
+                    //if (result.Count == 1)
+                    //{
+                    //MultipleCashHandleView.Visibility = Visibility.Visible;
+                    //CashHandleDisplayGrid.Visibility = Visibility.Visible;
+                    //foreach (var row in result)
+                    //{
+                    //    CashHandleNumber.Text = row.PID.ToString();
+                    //    CashCB.SelectedIndex = Convert.ToInt32(row.Type);
+                    //    CHOccurrenceDP.SelectedDate = row.Date;
+                    //    CHNote.Text = row.Notes;
+                    //    violationAmount = row.Type;
+                    //}
+                    //
+                    //}
+                    //else
+                    //{
+                    //    MultipleCashHandleView.Visibility = Visibility.Visible;
+                    //    MultipleCashHandleDG.Visibility = Visibility.Visible;
+                    //    MultipleCashHandleDG.ItemsSource = result;
+                    //}
+                    #endregion
                 }
             }
             #endregion
         }
 
-        private void Report(string firstName, string violationText, double? occPoints, int empInProbation, DateTime earlyDate)
+        private void Report(string firstName, string violationText, double? occPoints, int empInProbation, DateTime earlyDate, int? cashHandleType, long? empId)
         {
+            int? CashHandleType = cashHandleType;
+            if (cashHandleType == null)
+            {
+                CashHandleType = 100;
+            }
+
             //get Write up form ready
             FileInfo myFile = new FileInfo(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
             bool exists = myFile.Exists;
@@ -858,13 +951,52 @@ namespace AGNESCSharp
             {
                 case 0:
 
+                    //this may be redone
+                    if (CashHandleType == 0)
+                    {
+                        int anyPriorZero = HRCashHandle.CountZeroPoints(earlyDate, empId);
+
+                        if (anyPriorZero == 2)
+                        {
+                            BIMessageBox.Show("Warning", firstName + " Has 2 Prior No Variance Found Violations, 1 More Will Result in a Progressive Counseling",
+                                MessageBoxButton.OK);
+                        }
+
+                        if (anyPriorZero == 3)
+                        {
+                            BIMessageBox.Show("Counseling Form Dialog", "This is " + firstName + "'s Thrid Occurrence For No Variance Found Violations and Requires a WRITTEN Counseling" +
+                                                        " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
+                            Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
+                        }
+                        return;
+                    }
+
+                    if (CashHandleType == 1)
+                    {
+                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Has a Variance Between $3.00 and $20.00 This is an Automatic Progressive Counseling" +
+                            " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
+                        Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
+                        return;
+                    }
+
+                    if (CashHandleType == 2)
+                    {
+                        BIMessageBox.Show("Contact HRBP Dialong", "This Type of Cash Handling Violation Requires Notification of Your DM AND HRBP, Please Contact Them", MessageBoxButton.OK);
+
+                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Has a Variance Greater Than $20.00 This is an Automatic Progressive Counseling" +
+                            " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
+                        Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
+                        return;
+                    }
+                    //through here
+
                     if (violationText == "No Call No Show")
                     {
                         BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show Requires An Automatic Written Progressive Counseling, Please Fill Out And Print This Form", MessageBoxButton.OK);
                         Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
                     }
 
-                    if (occPoints < 4)
+                    if (occPoints < 4 )
                     {
                         MessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points");
                     }

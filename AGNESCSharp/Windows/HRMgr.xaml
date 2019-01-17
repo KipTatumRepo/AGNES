@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGNESCSharp"
         mc:Ignorable="d"
-        Title="HR Associate Manager" Height="600" Width="965" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+        Title="HRBP Associate Manager" Height="600" Width="965" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="44*"/>
@@ -53,8 +53,9 @@
             <TextBlock x:Name="tbAssociates" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" Margin="96,10,78,9" TextWrapping="Wrap" Text="Associates" VerticalAlignment="Center" FontSize="24" FontWeight="Bold" Height="34" TextAlignment="Center" Width="116" />
             <local:UnselectableListBox x:Name ="lbxAssociates" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" Margin="2,2,2,2" VerticalAlignment="Stretch"/>
             <TextBlock x:Name="tbHistory" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Margin="266,10,251,9" TextWrapping="Wrap" Text="Event History" VerticalAlignment="Center" FontSize="24" FontWeight="Bold" Height="34" TextAlignment="Center" Width="152" />
-            <StackPanel x:Name="lbxHistory" HorizontalAlignment="Stretch" Margin="2,2,2,2" VerticalAlignment="Stretch" Visibility="Visible" Grid.Column="1" Grid.Row="1">
-                <StackPanel x:Name="OccStackPanel" Visibility="Collapsed">
+            <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto">
+                <StackPanel x:Name="lbxHistory" HorizontalAlignment="Stretch" Margin="2,2,2,2" VerticalAlignment="Stretch" Visibility="Visible" >
+                    <StackPanel x:Name="OccStackPanel" Visibility="Collapsed">
                     <TextBlock Text="Occurrence Related Violations" TextAlignment="Center" Margin="0,0,0,2"/>
                     <ScrollViewer x:Name="OccurrenceSV" HorizontalAlignment="Stretch" Margin="0,0,0,10" VerticalScrollBarVisibility="Auto" Visibility="Visible">
                         <DataGrid x:Name="OccurrenceDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" SelectionUnit="FullRow" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,5">
@@ -62,7 +63,7 @@
                                 <local:IntToStringConverter x:Key="MyConverter"/>
                             </DataGrid.Resources>
                             <DataGrid.Columns>
-                                <DataGridTextColumn x:Name="PID" Header="PID" Binding="{Binding PID, Mode=OneWay}" />
+                                <DataGridTextColumn x:Name="PID" Header="PID" Binding="{Binding PID, Mode=OneWay}" Visibility="Collapsed" />
                                 <DataGridTextColumn x:Name="AssociateNumber" Header="Asc Number" Binding="{Binding PersNumber, Mode=OneWay}"/>
                                 <DataGridTextColumn x:Name="OccurrenceType" Header="Occ Type" Binding="{Binding Type, Mode=OneWay, Converter={StaticResource MyConverter}}"/>
                                 <DataGridTextColumn x:Name="Date" Header="Occ Date" Binding="{Binding Date, StringFormat=\{0:MM/dd/yy\}, Mode=OneWay}" />
@@ -89,7 +90,7 @@
                     <ScrollViewer x:Name="LoaSV" HorizontalAlignment="Stretch" Margin="0,0,0,10" VerticalScrollBarVisibility="Auto" Visibility="Visible">
                         <DataGrid x:Name="LoaDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" SelectionUnit="FullRow" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,5">
                             <DataGrid.Columns>
-                                <DataGridTextColumn x:Name="LoaPID" Header="PID" Binding="{Binding PID, Mode=OneWay}" />
+                                <DataGridTextColumn x:Name="LoaPID" Header="PID" Binding="{Binding PID, Mode=OneWay}" Visibility="Collapsed" />
                                 <DataGridTextColumn x:Name="LoaAssociateNumber" Header="Asc Number" Binding="{Binding PersNumber, Mode=OneWay}"/>
                                 <DataGridTextColumn x:Name="LoaOccurrenceType" Header="LOA Type" Binding="{Binding Type, Mode=OneWay}"/>
                                 <DataGridTextColumn x:Name="LoaBeginDate" Header="Start Date" Binding="{Binding DateStart, StringFormat=\{0:MM/dd/yy\}, Mode=OneWay}" />
@@ -113,7 +114,7 @@
                                 <local:CHIntToStringConverter x:Key="CashHandleConverter"/>
                             </DataGrid.Resources>
                             <DataGrid.Columns>
-                                <DataGridTextColumn x:Name="CHPID" Header="PID" Binding="{Binding PID, Mode=OneWay}" />
+                                <DataGridTextColumn x:Name="CHPID" Header="PID" Binding="{Binding PID, Mode=OneWay}" Visibility="Collapsed"/>
                                 <DataGridTextColumn x:Name="CHAssociateNumber" Header="Asc Number" Binding="{Binding PersNumber, Mode=OneWay}"/>
                                 <DataGridTextColumn x:Name="CHOccurrenceType" Header="Occ Type" Binding="{Binding Type, Mode=OneWay, Converter={StaticResource CashHandleConverter}}"/>
                                 <DataGridTextColumn x:Name="CHDate" Header="Occ Date" Binding="{Binding Date, StringFormat=\{0:MM/dd/yy\}, Mode=OneWay}" />
@@ -129,7 +130,8 @@
                     </ScrollViewer>
                 </StackPanel>
             </StackPanel>
-        </Grid>
+        </ScrollViewer>
+    </Grid>
         <StatusBar x:Name="sbHRMgr" HorizontalAlignment="Left" Height="27" VerticalAlignment="Top" Width="954" Grid.Row="2"/>
     </Grid>
 </Window>
