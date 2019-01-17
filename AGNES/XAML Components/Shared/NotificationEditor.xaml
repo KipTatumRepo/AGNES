@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AGNES"
         mc:Ignorable="d"
-        Title="Notification Editor" Height="480" Width="400">
+        Title="Notification Editor" Height="480" Width="400" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid RenderTransformOrigin="0.457,0.511">
         <TextBlock HorizontalAlignment="Left" Margin="12,4,0,0" TextWrapping="Wrap" Text="Enter your notification below" VerticalAlignment="Top" Width="368" TextAlignment="Center"/>
         <RichTextBox x:Name="rtbNotification" HorizontalAlignment="Left" Height="190" Margin="12,25,0,0" VerticalAlignment="Top" Width="368">

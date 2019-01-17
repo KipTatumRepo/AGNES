@@ -32,12 +32,15 @@ Public Class VendorEditor
     Private ActiveVendor As VendorInfo
     Private VendorIndex As Byte
     Private NewVendor As Boolean
+    Private StartVendor As String
+    Private StartVendorIndex As Integer
 
 #End Region
 
 #Region "Constructor"
-    Public Sub New()
+    Public Sub New(Optional VendorShow As String = "")
         InitializeComponent()
+        If VendorShow <> "" Then StartVendor = VendorShow
         AddInitialCustomFields()
         PopulateVendors()
         PopulateProductClasses()
@@ -114,7 +117,9 @@ Public Class VendorEditor
                     DisplayVendName &= "Food Truck]"
 
             End Select
+            If av.Name = StartVendor Then StartVendor = DisplayVendName
             cbxVendorName.Items.Add(DisplayVendName)
+
         Next
     End Sub
 
@@ -787,6 +792,14 @@ Public Class VendorEditor
         End If
         Return True
     End Function
+
+    Private Sub OnceLoaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
+        If StartVendor <> "" Then
+            StartVendorIndex = cbxVendorName.Items.IndexOf(StartVendor)
+            cbxVendorName.SelectedIndex = StartVendorIndex
+        End If
+
+    End Sub
 
 #End Region
 

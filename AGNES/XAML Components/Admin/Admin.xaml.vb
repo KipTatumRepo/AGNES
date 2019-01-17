@@ -529,6 +529,11 @@ Public Class Admin
 
     End Sub
 
+    Private Sub Button_Click(sender As Object, e As RoutedEventArgs)
+        Dim NotEdit As New NotificationEditor
+        NotEdit.ShowDialog()
+    End Sub
+
 #End Region
 
 End Class
