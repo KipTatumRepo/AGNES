@@ -10,25 +10,25 @@
         <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Vendor" VerticalAlignment="Top" Width="239"/>
         <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="254,10,0,0" TextWrapping="Wrap" Text="Vendor Type" VerticalAlignment="Top" Width="116"/>
         <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="375,10,0,0" TextWrapping="Wrap" Text="Status" VerticalAlignment="Top" Width="74"/>
-        <ComboBox x:Name="cbxVendorName" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" Width="239" FontSize="10"/>
-        <ComboBox x:Name="cbxVendorType" HorizontalAlignment="Left" Margin="254,31,0,0" VerticalAlignment="Top" Width="116" FontSize="10" IsEnabled="False">
+        <ComboBox x:Name="cbxVendorName" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" Width="239" FontSize="10" TabIndex="0"/>
+        <ComboBox x:Name="cbxVendorType" HorizontalAlignment="Left" Margin="254,31,0,0" VerticalAlignment="Top" Width="116" FontSize="10" IsEnabled="False" TabIndex="1">
             <ComboBoxItem Content="Commons Vendor"/>
             <ComboBoxItem Content="Retail Vendor"/>
             <ComboBoxItem Content="Local Brand"/>
             <ComboBoxItem Content="Food Truck"/>
         </ComboBox>
-        <ComboBox x:Name="cbxStatus" HorizontalAlignment="Left" Margin="375,31,0,0" VerticalAlignment="Top" Width="74" FontSize="10" IsEnabled="False">
+        <ComboBox x:Name="cbxStatus" HorizontalAlignment="Left" Margin="375,31,0,0" VerticalAlignment="Top" Width="74" FontSize="10" IsEnabled="False" TabIndex="2">
             <ComboBoxItem Content="Active"/>
             <ComboBoxItem Content="Inactive"/>
         </ComboBox>
-        <TextBlock x:Name="txtIns" TextAlignment="Center" HorizontalAlignment="Left" Margin="10,55,0,0" TextWrapping="Wrap" Text="Insurance Expiration" VerticalAlignment="Top" Width="175" Visibility="Collapsed"/>
+        <TextBlock x:Name="txtIns" TextAlignment="Center" HorizontalAlignment="Left" Margin="10,55,0,0" TextWrapping="Wrap" Text="Insurance Expiration" VerticalAlignment="Top" Width="175"/>
         <TextBlock x:Name="txtCon" TextAlignment="Center" HorizontalAlignment="Left" Margin="288,55,0,0" TextWrapping="Wrap" Text="Contract Expiration" VerticalAlignment="Top" Width="161"/>
-        <DatePicker x:Name="dtpInsurance" HorizontalAlignment="Left" Margin="10,76,0,0" VerticalAlignment="Top" FontSize="10" Width="175" IsEnabled="False"/>
-        <DatePicker x:Name="dtpContract" HorizontalAlignment="Left" Margin="288,76,0,0" VerticalAlignment="Top" FontSize="10" Width="161" IsEnabled="False"/>
+        <DatePicker x:Name="dtpInsurance" HorizontalAlignment="Left" Margin="10,76,0,0" VerticalAlignment="Top" FontSize="10" Width="175" IsEnabled="False" TabIndex="3" IsTabStop="True"/>
+        <DatePicker x:Name="dtpContract" HorizontalAlignment="Left" Margin="288,76,0,0" VerticalAlignment="Top" FontSize="10" Width="161" IsEnabled="False" TabIndex="4" IsTabStop="True"/>
 
         <StackPanel x:Name="stkDetails" Margin="0,105,0,0">
 
-            <GroupBox x:Name="gbxCommonsGeneral" Height="120">
+            <GroupBox x:Name="gbxCommonsGeneral" Height="120" TabIndex="5">
                 <Grid x:Name="grdCamKpi">
                     <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Cam Type" VerticalAlignment="Top" Width="171"/>
                     <TextBlock x:Name="lblCamStart" TextAlignment="Center" HorizontalAlignment="Left" Margin="187,10,0,0" TextWrapping="Wrap" Text="CAM Start" VerticalAlignment="Top" Width="90" Visibility="Collapsed"/>
@@ -36,49 +36,50 @@
                     <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="10,59,0,0" TextWrapping="Wrap" Text="KPI Type" VerticalAlignment="Top" Width="171"/>
                     <TextBlock x:Name="lblKpiStart" TextAlignment="Center" HorizontalAlignment="Left" Margin="187,59,0,0" TextWrapping="Wrap" Text="KPI Start" VerticalAlignment="Top" Width="90" Visibility="Collapsed"/>
                     <TextBlock x:Name="lblKpiAmt" TextAlignment="Center" HorizontalAlignment="Left" Margin="282,59,0,0" TextWrapping="Wrap" Text="KPI Amount" VerticalAlignment="Top" Width="82" Visibility="Collapsed"/>
-                    <ComboBox x:Name="cbxCamType" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" Width="171" FontSize="12">
+                    <ComboBox x:Name="cbxCamType" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" Width="171" FontSize="12" TabIndex="5">
                         <ComboBoxItem Content="None"/>
                         <ComboBoxItem Content="Percentage"/>
                         <ComboBoxItem Content="Flat Amount"/>
                     </ComboBox>
-                    <DatePicker x:Name="dtpCamStart" HorizontalAlignment="Left" Margin="187,31,0,0" VerticalAlignment="Top" FontSize="10" Width="90" Visibility="Collapsed"/>
-                    <ComboBox x:Name="cbxKpiType" HorizontalAlignment="Left" Margin="10,77,0,0" VerticalAlignment="Top" Width="171" FontSize="12">
-                        <ComboBoxItem Content="None"/>
-                        <ComboBoxItem Content="Percentage"/>
-                        <ComboBoxItem Content="Flat Amount"/>
-                    </ComboBox>
-                    <DatePicker x:Name="dtpKpiStart" HorizontalAlignment="Left" Margin="187,77,0,0" VerticalAlignment="Top" FontSize="10" Width="90" Visibility="Collapsed"/>
+                    <DatePicker x:Name="dtpCamStart" HorizontalAlignment="Left" Margin="187,31,0,0" VerticalAlignment="Top" FontSize="10" Width="90" Visibility="Collapsed" TabIndex="6"/>
                     <TextBlock x:Name="lblCamDue" TextAlignment="Center" HorizontalAlignment="Left" Margin="379,10,0,0" TextWrapping="Wrap" Text="Day Due" VerticalAlignment="Top" Width="59" Visibility="Collapsed"/>
-                    <ComboBox x:Name="cbxCamDue" HorizontalAlignment="Left" Margin="379,32,0,0" VerticalAlignment="Top" Width="64" Visibility="Collapsed"/>
+                    <ComboBox x:Name="cbxCamDue" HorizontalAlignment="Left" Margin="379,32,0,0" VerticalAlignment="Top" Width="64" Visibility="Collapsed" TabIndex="9"/>
+
+                    <ComboBox x:Name="cbxKpiType" HorizontalAlignment="Left" Margin="10,77,0,0" VerticalAlignment="Top" Width="171" FontSize="12" TabIndex="10">
+                        <ComboBoxItem Content="None"/>
+                        <ComboBoxItem Content="Percentage"/>
+                        <ComboBoxItem Content="Flat Amount"/>
+                    </ComboBox>
+                    <DatePicker x:Name="dtpKpiStart" HorizontalAlignment="Left" Margin="187,77,0,0" VerticalAlignment="Top" FontSize="10" Width="90" Visibility="Collapsed" TabIndex="11"/>
                 </Grid>
             </GroupBox>
 
-            <GroupBox x:Name="gbxCommonsFood" Height="80">
+            <GroupBox x:Name="gbxCommonsFood" Height="80" TabIndex="6">
                 <Grid x:Name="grdSupplierInfo" >
                     <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Invoice Name" VerticalAlignment="Top" Width="170"/>
                     <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="227,10,0,0" TextWrapping="Wrap" Text="Supplier Code" VerticalAlignment="Top" Width="125"/>
-                    <TextBox x:Name="txtInvoiceName" HorizontalAlignment="Left" Height="23" Margin="10,29,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="170" FontSize="10"/>
+                    <TextBox x:Name="txtInvoiceName" HorizontalAlignment="Left" Height="23" Margin="10,29,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="170" FontSize="10" TabIndex="14"/>
                 </Grid>
             </GroupBox>
 
-            <GroupBox x:Name="gbxNonRetail" Height="65">
+            <GroupBox x:Name="gbxNonRetail" Height="65" TabIndex="7">
                 <Grid>
                     <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Food Type" VerticalAlignment="Top" Width="160"/>
                     <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="237,10,0,0" TextWrapping="Wrap" Text="Food Subtype" VerticalAlignment="Top" Width="160"/>
-                    <ComboBox x:Name="cbxFoodType" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" Width="160" FontSize="10"/>
-                    <ComboBox x:Name="cbxFoodSubType" HorizontalAlignment="Left" Margin="237,31,0,0" VerticalAlignment="Top" Width="160" FontSize="10"/>
+                    <ComboBox x:Name="cbxFoodType" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" Width="160" FontSize="10" TabIndex="16"/>
+                    <ComboBox x:Name="cbxFoodSubType" HorizontalAlignment="Left" Margin="237,31,0,0" VerticalAlignment="Top" Width="160" FontSize="10" TabIndex="17"/>
                     <Image x:Name="imgAddFoodType"  HorizontalAlignment="Left" Height="30" Margin="175,26,0,0" VerticalAlignment="Top" Width="28" Source="/AGNES;component/Resources/Plus.png"/>
                     <Image x:Name="imgAddFoodSubType" HorizontalAlignment="Left" Height="30" Margin="402,26,0,0" VerticalAlignment="Top" Width="28" Source="/AGNES;component/Resources/Plus.png"/>
                 </Grid>
             </GroupBox>
 
-            <GroupBox x:Name="gbxBrandsTrucks" Height="65">
+            <GroupBox x:Name="gbxBrandsTrucks" Height="65" TabIndex="8">
                 <Grid x:Name="grdBrandDetail">
                     <TextBlock x:Name="lblProdClass" TextAlignment="Center" HorizontalAlignment="Left" Margin="229,10,0,0" TextWrapping="Wrap" Text="InfoG Product Class" VerticalAlignment="Top" Width="223"/>
                     <TextBlock x:Name="lblHood" TextAlignment="Center" HorizontalAlignment="Left" Margin="121,10,0,0" TextWrapping="Wrap" Text="Hood Required?" VerticalAlignment="Top" Width="103"/>
                     <TextBlock TextAlignment="Center" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Max Daily?" VerticalAlignment="Top" Width="94"/>
-                    <ComboBox x:Name="cbxCommonsProductClass" HorizontalAlignment="Left" Margin="229,31,0,0" VerticalAlignment="Top" Width="223" FontSize="10"/>
-                    <CheckBox x:Name="chkHood" HorizontalAlignment="Left" Margin="168,34,0,0" VerticalAlignment="Top"/>
+                    <ComboBox x:Name="cbxCommonsProductClass" HorizontalAlignment="Left" Margin="229,31,0,0" VerticalAlignment="Top" Width="223" FontSize="10" TabIndex="20"/>
+                    <CheckBox x:Name="chkHood" HorizontalAlignment="Left" Margin="168,34,0,0" VerticalAlignment="Top" TabIndex="19"/>
                 </Grid>
             </GroupBox>
 

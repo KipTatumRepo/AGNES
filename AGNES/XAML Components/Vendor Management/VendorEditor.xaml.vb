@@ -62,31 +62,37 @@ Public Class VendorEditor
 
         '// Add numbox for supplier code
         numSupplierCode = New NumberBox(125, True, False, True, False, True, AgnesBaseInput.FontSz.Standard,,, True) With {.Margin = New Thickness(227, 26, 0, 0)}
+        numSupplierCode.BaseTextBox.TabIndex = 15
         AddHandler numSupplierCode.BaseTextBox.TextChanged, AddressOf FlagChanges
         grdSupplierInfo.Children.Add(numSupplierCode)
 
         '// Add numbox for maximum number of daily cafes
         numDailyCafes = New NumberBox(94, True, False, True, False, True, AgnesBaseInput.FontSz.Standard) With {.Margin = New Thickness(10, 31, 0, 0)}
+        numDailyCafes.BaseTextBox.TabIndex = 18
         AddHandler numDailyCafes.BaseTextBox.TextChanged, AddressOf FlagChanges
         grdBrandDetail.Children.Add(numDailyCafes)
 
         '// Add CAM amount currency box
         curCam = New CurrencyBox(82, True, AgnesBaseInput.FontSz.Standard,, True, False) With {.Margin = New Thickness(282, 31, 0, 0), .Visibility = Visibility.Collapsed}
         AddHandler curCam.BaseTextBox.TextChanged, AddressOf FlagChanges
+        curCam.tb.TabIndex = 7
         grdCamKpi.Children.Add(curCam)
 
         '// Add KPI amount currency box
         curKpi = New CurrencyBox(82, True, AgnesBaseInput.FontSz.Standard,, True, False) With {.Margin = New Thickness(282, 77, 0, 0), .Visibility = Visibility.Collapsed}
+        curKpi.tb.TabIndex = 12
         AddHandler curKpi.BaseTextBox.TextChanged, AddressOf FlagChanges
         grdCamKpi.Children.Add(curKpi)
 
         '// Add CAM amount percentage box
         percCam = New PercentBox(82, True, AgnesBaseInput.FontSz.Standard, 1, True, False) With {.Margin = New Thickness(282, 31, 0, 0), .Visibility = Visibility.Collapsed}
+        percCam.BaseTextBox.TabIndex = 8
         AddHandler percCam.BaseTextBox.TextChanged, AddressOf FlagChanges
         grdCamKpi.Children.Add(percCam)
 
         '// Add KPI amount percentage box
         percKpi = New PercentBox(82, True, AgnesBaseInput.FontSz.Standard, 1, True, False) With {.Margin = New Thickness(282, 77, 0, 0), .Visibility = Visibility.Collapsed}
+        percKpi.BaseTextBox.TabIndex = 13
         AddHandler percKpi.BaseTextBox.TextChanged, AddressOf FlagChanges
         grdCamKpi.Children.Add(percKpi)
 
@@ -408,6 +414,7 @@ Public Class VendorEditor
 
     Private Sub LockImmutables()
         cbxCommonsProductClass.IsEnabled = False
+        txtInvoiceName.IsEnabled = False
         numSupplierCode.IsEnabled = False
         cbxVendorType.IsEnabled = False
     End Sub
@@ -433,6 +440,8 @@ Public Class VendorEditor
                     percCam.Visibility = Visibility.Visible
                     percCam.SetAmount = 0
                     curCam.Visibility = Visibility.Collapsed
+                    lblCamDue.Visibility = Visibility.Visible
+                    cbxCamDue.Visibility = Visibility.Visible
                     curCam.SetAmount = 0
                 Case 2  ' Flat
                     lblCamStart.Visibility = Visibility.Visible
@@ -443,6 +452,8 @@ Public Class VendorEditor
                     curCam.Visibility = Visibility.Visible
                     curCam.SetAmount = 0
                     percCam.Visibility = Visibility.Collapsed
+                    lblCamDue.Visibility = Visibility.Visible
+                    cbxCamDue.Visibility = Visibility.Visible
                     percCam.SetAmount = 0
                 Case Else
                     lblCamStart.Visibility = Visibility.Collapsed
@@ -529,6 +540,7 @@ Public Class VendorEditor
         '// Open up the vendor type combobox
         cbxVendorType.IsEnabled = True
 
+
     End Sub
 
     Private Sub VendorTypeSelected(sender As Object, e As SelectionChangedEventArgs) Handles cbxVendorType.SelectionChanged
@@ -537,6 +549,7 @@ Public Class VendorEditor
         cbxStatus.SelectedIndex = 0
         DisplayForm()
         cbxStatus.IsEnabled = False
+        dtpInsurance.Focus()
     End Sub
 
     Private Sub VendorEditor_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
@@ -644,7 +657,6 @@ Public Class VendorEditor
                     .FoodSubType = GetFoodSubTypeId(cbxFoodSubType.Text)
                     .Invoice = txtInvoiceName.Text
                     .Supplier = numSupplierCode.SetAmount
-                    .ProductClassId = GetProductClassId(cbxCommonsProductClass.Text)
                 End With
 
             Case 1  ' Commons Retail
@@ -669,6 +681,7 @@ Public Class VendorEditor
                     .MaximumDailyCafes = numDailyCafes.Amount
                     .FoodType = GetFoodTypeId(cbxFoodType.Text)
                     .FoodSubType = GetFoodSubTypeId(cbxFoodSubType.Text)
+                    .ProductClassId = GetProductClassId(cbxCommonsProductClass.Text)
                 End With
 
             Case 3  ' Food Truck
