@@ -382,4 +382,10 @@
   <data name="notificationbubble" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\notificationbubble.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Reminder" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Reminder.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NextNotification" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NextNotification.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

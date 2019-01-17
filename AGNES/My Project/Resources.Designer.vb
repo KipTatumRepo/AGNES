@@ -593,6 +593,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property NextNotification() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("NextNotification", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property No() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("No", resourceCulture)
@@ -766,6 +776,16 @@ Namespace My.Resources
         Friend ReadOnly Property refresh() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("refresh", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Reminder() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Reminder", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

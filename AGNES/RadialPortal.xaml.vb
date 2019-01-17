@@ -41,6 +41,7 @@ Public Class RadialPortal
         SessionLog(0)
         ConstructRadialMenu()
         PortalEasterEggs()
+        CheckForNotifications()
         AddHandler imgAGNES.MouseEnter, AddressOf EnteredImg
         AddHandler imgAGNES.MouseLeave, AddressOf LeftImg
         AddHandler grdPortal.MouseLeave, AddressOf LeftWindow
@@ -142,6 +143,45 @@ Public Class RadialPortal
         End If
 
 
+    End Sub
+
+    Private Sub CheckForNotifications()
+        Dim MyGroup As Byte = 0
+        Notifications.Clear()
+        imgNotifications.Visibility = Visibility.Collapsed
+        '// Determine group
+        'TEST
+        MyGroup = 0
+
+        '// Capture active notifications
+        Dim qng = From ng In AGNESShared.Notifications
+                  Where ng.StartDate <= Today And
+                      ng.EndDate > Today And
+                      ng.Audience = MyGroup
+                  Select ng
+
+        For Each ng In qng
+            '// Check if user has already seen notification, if it's a one-off
+            If ng.OneOffNotification = True Then
+                If CheckIfNotificationSeen(ng.PID) = False Then
+                    Notifications.Add(ng.PID)
+                End If
+            Else
+                Notifications.Add(ng.PID)
+            End If
+
+        Next
+
+        If Notifications.Count = 0 Then Exit Sub
+        imgNotifications.Visibility = Visibility.Visible
+
+    End Sub
+
+    Private Sub DisplayNotifications(sender As Object, e As MouseButtonEventArgs) Handles imgNotifications.PreviewMouseLeftButtonDown
+        imgNotifications.Visibility = Visibility.Collapsed
+        Dim ShowNotifications As New NotificationWindow
+        ShowNotifications.ShowDialog()
+        ShowNotifications.Close()
     End Sub
 
     Private Sub GetVersion()
@@ -452,6 +492,17 @@ Public Class RadialPortal
         Dim startInfo As New ProcessStartInfo With {.FileName = "WINWORD.EXE", .Arguments = f}
         Process.Start(startInfo)
     End Sub
+
+    Private Function CheckIfNotificationSeen(NotificationId As Long) As Boolean
+        Dim nscount As Integer = (From ns In AGNESShared.NotificationConfirms
+                                  Where ns.Notification = NotificationId And
+                                  ns.UserId = My.Settings.UserID
+                                  Select ns).Count()
+
+        If nscount = 0 Then Return False
+        Return True
+
+    End Function
 
 #End Region
 

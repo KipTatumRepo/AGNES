@@ -14,6 +14,7 @@ Module BaseModule
     Public TimerOne As DispatcherTimer
     Public TimerTwo As DispatcherTimer
     Public CurrentFiscalYear As Integer = 2019
+    Public Notifications As List(Of Long)
     Public Property FlashNotes As String
 #End Region
 
@@ -28,6 +29,7 @@ Module BaseModule
         TrainingData = New TrainingEntities
         VendorData = New VendorEntity
         ITData = New LOCAL_IT_CFGEntities
+        Notifications = New List(Of Long)
     End Sub
 
     Public Function TruncateAlias(UserAlias As String) As String
