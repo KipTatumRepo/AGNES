@@ -14,5 +14,6 @@ Partial Public Class NotificationConfirm
     Public Property PID As Long
     Public Property Notification As Long
     Public Property UserId As Long
+    Public Property ConfirmDate As Nullable(Of Date)
 
 End Class

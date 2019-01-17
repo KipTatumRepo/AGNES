@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="21d4ffebbe0a489c974d5a0de111295a" Name="Diagram1">
+      <Diagram DiagramId="21d4ffebbe0a489c974d5a0de111295a" Name="Diagram1" ZoomLevel="88">
         <EntityTypeShape EntityType="AGNESSharedDataModel.AccessLevel" Width="1.5" PointX="7" PointY="2.625" IsExpanded="true" />
         <EntityTypeShape EntityType="AGNESSharedDataModel.ModuleGroup" Width="1.5" PointX="5.375" PointY="2.625" IsExpanded="true" />
         <EntityTypeShape EntityType="AGNESSharedDataModel.Module" Width="1.5" PointX="5.375" PointY="0.5" IsExpanded="true" />
@@ -16,7 +16,7 @@
         <EntityTypeShape EntityType="AGNESSharedDataModel.UnitsUsers_Join" Width="1.5" PointX="7" PointY="0.5" />
         <EntityTypeShape EntityType="AGNESSharedDataModel.NotificationConfirm" Width="1.5" PointX="3.75" PointY="2.625" />
         <EntityTypeShape EntityType="AGNESSharedDataModel.Notification" Width="1.5" PointX="2.125" PointY="0.5" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

@@ -61,6 +61,7 @@
           <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Notification" Type="bigint" Nullable="false" />
           <Property Name="UserId" Type="bigint" Nullable="false" />
+          <Property Name="ConfirmDate" Type="date" />
         </EntityType>
         <EntityType Name="Notifications">
           <Key>
@@ -111,6 +112,48 @@
           <Property Name="SavedBy" Type="varchar" MaxLength="128" Nullable="false" />
           <Property Name="DOB" Type="date" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'AGNES.dbo.AccessCosting' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="AccessCosting">
+          <Property Name="UserID" Type="nvarchar" MaxLength="255" />
+          <Property Name="ProfitCenterID" Type="float" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'AGNES.dbo.AccessFlash' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'AGNES.dbo.Budget' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="Budget">
+          <Property Name="MSFY" Type="float" />
+          <Property Name="MSP" Type="float" />
+          <Property Name="Cycle" Type="float" />
+          <Property Name="Unit" Type="float" />
+          <Property Name="Category" Type="nvarchar" MaxLength="255" />
+          <Property Name="Budget" Type="float" />
+          <Property Name="BudgetKey" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'AGNES.dbo.FlashLocations' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="FlashLocations">
+          <Property Name="Group" Type="nvarchar" MaxLength="255" />
+          <Property Name="Unit_Number" Type="float" />
+          <Property Name="profit_center_id" Type="float" />
+          <Property Name="profit_center_name" Type="nvarchar" MaxLength="255" />
+          <Property Name="Unit" Type="nvarchar" MaxLength="255" />
+          <Property Name="DM" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'AGNES.dbo.HRAuditLocations' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'AGNES.dbo.HRPersonnelList' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="HRPersonnelList">
+          <Property Name="CC" Type="float" />
+          <Property Name="Cost Center" Type="nvarchar" MaxLength="255" />
+          <Property Name="Compass Pers#No#" Type="float" />
+          <Property Name="Last name" Type="nvarchar" MaxLength="255" />
+          <Property Name="First name" Type="nvarchar" MaxLength="255" />
+          <Property Name="HeadTrax Personnel Number" Type="float" />
+          <Property Name="CardKeyNbr" Type="float" />
+        </EntityType>-->
         <EntityContainer Name="AGNESSharedDataModelStoreContainer">
           <EntitySet Name="AccessLevels" EntityType="Self.AccessLevels" Schema="agnes" store:Type="Tables" />
           <EntitySet Name="FlashTypes" EntityType="Self.FlashTypes" Schema="agnes" store:Type="Tables" />
@@ -123,7 +166,7 @@
           <EntitySet Name="UnitsSubunits" EntityType="Self.UnitsSubunits" Schema="agnes" store:Type="Tables" />
           <EntitySet Name="UnitsUsers_Join" EntityType="Self.UnitsUsers_Join" Schema="agnes" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="agnes" store:Type="Tables" />
-        </EntityContainer>
+          </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -189,7 +232,7 @@
           <EntitySet Name="UnitsUsers_Join" EntityType="AGNESSharedDataModel.UnitsUsers_Join" />
           <EntitySet Name="NotificationConfirms" EntityType="AGNESSharedDataModel.NotificationConfirm" />
           <EntitySet Name="Notifications" EntityType="AGNESSharedDataModel.Notification" />
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="FlashType">
           <Key>
             <PropertyRef Name="PID" />
@@ -232,6 +275,7 @@
           <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Notification" Type="Int64" Nullable="false" />
           <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="ConfirmDate" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="Notification">
           <Key>
@@ -247,7 +291,7 @@
           <Property Name="Snooze" Type="Boolean" Nullable="false" />
           <Property Name="RequireConfirm" Type="Boolean" Nullable="false" />
         </EntityType>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -349,6 +393,7 @@
           <EntitySetMapping Name="NotificationConfirms">
             <EntityTypeMapping TypeName="AGNESSharedDataModel.NotificationConfirm">
               <MappingFragment StoreEntitySet="NotificationConfirms">
+                <ScalarProperty Name="ConfirmDate" ColumnName="ConfirmDate" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Notification" ColumnName="Notification" />
                 <ScalarProperty Name="PID" ColumnName="PID" />
@@ -370,7 +415,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

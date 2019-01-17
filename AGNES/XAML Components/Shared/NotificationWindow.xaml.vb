@@ -70,6 +70,7 @@
         With SawNote
             .Notification = Notifications(CurrentNotification)
             .UserId = My.Settings.UserID
+            .ConfirmDate = Now()
         End With
         AGNESShared.NotificationConfirms.Add(SawNote)
         AGNESShared.SaveChanges()
