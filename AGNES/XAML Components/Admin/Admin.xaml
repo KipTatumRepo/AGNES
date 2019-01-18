@@ -41,7 +41,9 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Other Features">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <Button Content="Notification Editor" HorizontalAlignment="Left" Margin="372,145,0,0" VerticalAlignment="Top" Width="149" Height="57" Click="Button_Click"/>
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>

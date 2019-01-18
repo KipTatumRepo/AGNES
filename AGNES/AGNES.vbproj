@@ -280,6 +280,12 @@
     <Compile Include="Entities\Market.vb">
       <DependentUpon>GeneralSharedData.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Notification.vb">
+      <DependentUpon>AgnesSharedDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\NotificationConfirm.vb">
+      <DependentUpon>AgnesSharedDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Occurrence.vb">
       <DependentUpon>AGNESModel.tt</DependentUpon>
     </Compile>
@@ -620,7 +626,7 @@
       <DependentUpon>AgnesSharedDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\UnitsUsers_Join.vb">
-      <DependentUpon>AGNESModel.tt</DependentUpon>
+      <DependentUpon>AgnesSharedDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\User.vb">
       <DependentUpon>AgnesSharedDataModel.tt</DependentUpon>
@@ -634,6 +640,12 @@
     <Compile Include="Module Orchestrators\TrainingModule.vb" />
     <Compile Include="XAML Components\Shared\AssociateMapping.xaml.vb">
       <DependentUpon>AssociateMapping.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="XAML Components\Shared\NotificationEditor.xaml.vb">
+      <DependentUpon>NotificationEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="XAML Components\Shared\NotificationWindow.xaml.vb">
+      <DependentUpon>NotificationWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="XAML Components\Shared\PrintJobInfo.xaml.vb">
       <DependentUpon>PrintJobInfo.xaml</DependentUpon>
@@ -774,6 +786,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="XAML Components\Shared\AssociateMapping.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XAML Components\Shared\NotificationEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XAML Components\Shared\NotificationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1052,6 +1072,9 @@
     </Content>
     <Resource Include="Resources\Notification.png" />
     <Resource Include="Resources\notificationbubble.png" />
+    <Resource Include="Resources\Reminder.png" />
+    <Resource Include="Resources\NextNotification.png" />
+    <Resource Include="Resources\GoToModule.png" />
     <Content Include="Resources\Sound Assets\jump.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

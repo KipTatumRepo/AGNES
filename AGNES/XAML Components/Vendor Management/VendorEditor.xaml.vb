@@ -32,12 +32,15 @@ Public Class VendorEditor
     Private ActiveVendor As VendorInfo
     Private VendorIndex As Byte
     Private NewVendor As Boolean
+    Private StartVendor As String
+    Private StartVendorIndex As Integer
 
 #End Region
 
 #Region "Constructor"
-    Public Sub New()
+    Public Sub New(Optional VendorShow As String = "")
         InitializeComponent()
+        If VendorShow <> "" Then StartVendor = VendorShow
         AddInitialCustomFields()
         PopulateVendors()
         PopulateProductClasses()
@@ -59,34 +62,45 @@ Public Class VendorEditor
 
         '// Add numbox for supplier code
         numSupplierCode = New NumberBox(125, True, False, True, False, True, AgnesBaseInput.FontSz.Standard,,, True) With {.Margin = New Thickness(227, 26, 0, 0)}
+        numSupplierCode.BaseTextBox.TabIndex = 15
         AddHandler numSupplierCode.BaseTextBox.TextChanged, AddressOf FlagChanges
         grdSupplierInfo.Children.Add(numSupplierCode)
 
         '// Add numbox for maximum number of daily cafes
         numDailyCafes = New NumberBox(94, True, False, True, False, True, AgnesBaseInput.FontSz.Standard) With {.Margin = New Thickness(10, 31, 0, 0)}
+        numDailyCafes.BaseTextBox.TabIndex = 18
         AddHandler numDailyCafes.BaseTextBox.TextChanged, AddressOf FlagChanges
         grdBrandDetail.Children.Add(numDailyCafes)
 
         '// Add CAM amount currency box
-        curCam = New CurrencyBox(82, True, AgnesBaseInput.FontSz.Standard,, True, False) With {.Margin = New Thickness(361, 31, 0, 0), .Visibility = Visibility.Collapsed}
+        curCam = New CurrencyBox(82, True, AgnesBaseInput.FontSz.Standard,, True, False) With {.Margin = New Thickness(282, 31, 0, 0), .Visibility = Visibility.Collapsed}
         AddHandler curCam.BaseTextBox.TextChanged, AddressOf FlagChanges
+        curCam.tb.TabIndex = 7
         grdCamKpi.Children.Add(curCam)
 
         '// Add KPI amount currency box
-        curKpi = New CurrencyBox(82, True, AgnesBaseInput.FontSz.Standard,, True, False) With {.Margin = New Thickness(361, 77, 0, 0), .Visibility = Visibility.Collapsed}
+        curKpi = New CurrencyBox(82, True, AgnesBaseInput.FontSz.Standard,, True, False) With {.Margin = New Thickness(282, 77, 0, 0), .Visibility = Visibility.Collapsed}
+        curKpi.tb.TabIndex = 12
         AddHandler curKpi.BaseTextBox.TextChanged, AddressOf FlagChanges
         grdCamKpi.Children.Add(curKpi)
 
         '// Add CAM amount percentage box
-        percCam = New PercentBox(82, True, AgnesBaseInput.FontSz.Standard, 1, True, False) With {.Margin = New Thickness(361, 31, 0, 0), .Visibility = Visibility.Collapsed}
+        percCam = New PercentBox(82, True, AgnesBaseInput.FontSz.Standard, 1, True, False) With {.Margin = New Thickness(282, 31, 0, 0), .Visibility = Visibility.Collapsed}
+        percCam.BaseTextBox.TabIndex = 8
         AddHandler percCam.BaseTextBox.TextChanged, AddressOf FlagChanges
         grdCamKpi.Children.Add(percCam)
 
         '// Add KPI amount percentage box
-        percKpi = New PercentBox(82, True, AgnesBaseInput.FontSz.Standard, 1, True, False) With {.Margin = New Thickness(361, 77, 0, 0), .Visibility = Visibility.Collapsed}
+        percKpi = New PercentBox(82, True, AgnesBaseInput.FontSz.Standard, 1, True, False) With {.Margin = New Thickness(282, 77, 0, 0), .Visibility = Visibility.Collapsed}
+        percKpi.BaseTextBox.TabIndex = 13
         AddHandler percKpi.BaseTextBox.TextChanged, AddressOf FlagChanges
         grdCamKpi.Children.Add(percKpi)
 
+        '// Add day options to CAM due (1st-25th)
+        cbxCamDue.Items.Clear()
+        For x As Byte = 1 To 25
+            cbxCamDue.Items.Add(x)
+        Next
     End Sub
 
     Private Sub PopulateVendors()
@@ -109,7 +123,9 @@ Public Class VendorEditor
                     DisplayVendName &= "Food Truck]"
 
             End Select
+            If av.Name = StartVendor Then StartVendor = DisplayVendName
             cbxVendorName.Items.Add(DisplayVendName)
+
         Next
     End Sub
 
@@ -162,6 +178,8 @@ Public Class VendorEditor
                 ActiveVendor = Nothing
                 NewVendor = True
                 AddNewVendor()
+                txtInvoiceName.IsEnabled = True
+                numSupplierCode.IsEnabled = True
                 'CRITICAL: ADD NOTIFICATION HANDLER FOR STORE ID
             Case Else ' Existing vendor selected
                 If ActiveVendor IsNot Nothing Then
@@ -270,6 +288,11 @@ Public Class VendorEditor
                         lblCamAmt.Visibility = Visibility.Visible
                         percCam.Visibility = Visibility.Visible
                         percCam.SetAmount = ActiveVendor.CAMAmount
+
+                        lblCamDue.Visibility = Visibility.Visible
+                        cbxCamDue.Visibility = Visibility.Visible
+                        cbxCamDue.Text = ActiveVendor.CamDue.ToString
+
                     Case 2  ' Flat amount
                         lblCamStart.Visibility = Visibility.Visible
                         dtpCamStart.Visibility = Visibility.Visible
@@ -279,6 +302,11 @@ Public Class VendorEditor
                         lblCamAmt.Visibility = Visibility.Visible
                         curCam.Visibility = Visibility.Visible
                         curCam.SetAmount = ActiveVendor.CAMAmount
+
+                        lblCamDue.Visibility = Visibility.Visible
+                        cbxCamDue.Visibility = Visibility.Visible
+                        cbxCamDue.Text = ActiveVendor.CamDue
+
                 End Select
 
                 cbxKpiType.SelectedIndex = ActiveVendor.KPIType - 1
@@ -333,6 +361,12 @@ Public Class VendorEditor
                 curKpi.SetAmount = 0
                 percKpi.Visibility = Visibility.Collapsed
                 percKpi.SetAmount = 0
+
+                lblCamDue.Visibility = Visibility.Collapsed
+                cbxCamDue.Visibility = Visibility.Collapsed
+                cbxCamDue.SelectedIndex = -1
+                cbxCamDue.Text = ""
+
         End Select
     End Sub
 
@@ -382,6 +416,7 @@ Public Class VendorEditor
 
     Private Sub LockImmutables()
         cbxCommonsProductClass.IsEnabled = False
+        txtInvoiceName.IsEnabled = False
         numSupplierCode.IsEnabled = False
         cbxVendorType.IsEnabled = False
     End Sub
@@ -407,6 +442,8 @@ Public Class VendorEditor
                     percCam.Visibility = Visibility.Visible
                     percCam.SetAmount = 0
                     curCam.Visibility = Visibility.Collapsed
+                    lblCamDue.Visibility = Visibility.Visible
+                    cbxCamDue.Visibility = Visibility.Visible
                     curCam.SetAmount = 0
                 Case 2  ' Flat
                     lblCamStart.Visibility = Visibility.Visible
@@ -417,6 +454,8 @@ Public Class VendorEditor
                     curCam.Visibility = Visibility.Visible
                     curCam.SetAmount = 0
                     percCam.Visibility = Visibility.Collapsed
+                    lblCamDue.Visibility = Visibility.Visible
+                    cbxCamDue.Visibility = Visibility.Visible
                     percCam.SetAmount = 0
                 Case Else
                     lblCamStart.Visibility = Visibility.Collapsed
@@ -478,15 +517,9 @@ Public Class VendorEditor
     End Sub
 
     Private Sub AddNewVendor()
-        cbxVendorType.SelectedIndex = -1
-        cbxStatus.SelectedIndex = -1
-        dtpInsurance.SelectedDate = Nothing
-        dtpInsurance.DisplayDate = Now()
-        dtpContract.SelectedDate = Nothing
-        dtpContract.DisplayDate = Now()
 
         '// Get new vendor name
-        Dim newname As New SingleUserInput(EnterOnly:=True) With {.InputType = 0}
+        Dim newname As New SingleUserInput(EnterOnly:=True) With {.InputType = 0, .DisplayText = "Add new vendor name"}
         newname.ShowDialog()
         If newname.StringVal = "" Then Exit Sub
 
@@ -495,8 +528,15 @@ Public Class VendorEditor
         Dim NewVendorName As String = newname.StringVal
         newname.Close()
 
+        ChangeOverride = True
+        cbxVendorType.SelectedIndex = -1
+        cbxStatus.SelectedIndex = -1
+        dtpInsurance.SelectedDate = Nothing
+        dtpInsurance.DisplayDate = Now()
+        dtpContract.SelectedDate = Nothing
+        dtpContract.DisplayDate = Now()
+
         '// Add new vendor to combobox temporarily and suppress Add New Vendor option
-        'CRITICAL: ADD OPTION BACK IN ONCE NEW ADD IS COMPLETE
         cbxVendorName.Items.Insert(0, NewVendorName)
         cbxVendorName.SelectedIndex = 0
         cbxVendorName.Items.RemoveAt(1)
@@ -504,14 +544,17 @@ Public Class VendorEditor
         '// Open up the vendor type combobox
         cbxVendorType.IsEnabled = True
 
+        ChangeOverride = False
+
     End Sub
 
     Private Sub VendorTypeSelected(sender As Object, e As SelectionChangedEventArgs) Handles cbxVendorType.SelectionChanged
-        If NewVendor = False Then Exit Sub
+        If NewVendor = False Or ChangeOverride = True Then Exit Sub
         CollapseForm(1)
         cbxStatus.SelectedIndex = 0
         DisplayForm()
         cbxStatus.IsEnabled = False
+        dtpInsurance.Focus()
     End Sub
 
     Private Sub VendorEditor_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
@@ -525,7 +568,7 @@ Public Class VendorEditor
 
     Private Sub AddNewFoodType(sender As Object, e As MouseButtonEventArgs) Handles imgAddFoodType.MouseLeftButtonDown
         '// Get new food type name
-        Dim newfood As New SingleUserInput(EnterOnly:=False) With {.InputType = 0}
+        Dim newfood As New SingleUserInput(EnterOnly:=False) With {.InputType = 0, .DisplayText = "Enter new food type name"}
         newfood.ShowDialog()
         Dim FoodName As String = newfood.StringVal
         newfood.Close()
@@ -556,7 +599,7 @@ Public Class VendorEditor
 
     Private Sub AddNewFoodSubType(sender As Object, e As MouseButtonEventArgs) Handles imgAddFoodSubType.MouseLeftButtonDown
         '// Get new food subtype name
-        Dim newfood As New SingleUserInput(EnterOnly:=False) With {.InputType = 0}
+        Dim newfood As New SingleUserInput(EnterOnly:=False) With {.InputType = 0, .DisplayText = "Enter new food subtype name"}
         newfood.ShowDialog()
         Dim FoodName As String = newfood.StringVal
         newfood.Close()
@@ -619,7 +662,6 @@ Public Class VendorEditor
                     .FoodSubType = GetFoodSubTypeId(cbxFoodSubType.Text)
                     .Invoice = txtInvoiceName.Text
                     .Supplier = numSupplierCode.SetAmount
-                    .ProductClassId = GetProductClassId(cbxCommonsProductClass.Text)
                 End With
 
             Case 1  ' Commons Retail
@@ -644,6 +686,7 @@ Public Class VendorEditor
                     .MaximumDailyCafes = numDailyCafes.Amount
                     .FoodType = GetFoodTypeId(cbxFoodType.Text)
                     .FoodSubType = GetFoodSubTypeId(cbxFoodSubType.Text)
+                    .ProductClassId = GetProductClassId(cbxCommonsProductClass.Text)
                 End With
 
             Case 3  ' Food Truck
@@ -750,7 +793,7 @@ Public Class VendorEditor
 
     Private Sub ValidateEntry()
         Dim ph As String = ""
-
+        ' Verify daily max is saved if focus has not been lost
     End Sub
 
     Private Function VerifyDiscardChanges() As Boolean
@@ -768,6 +811,13 @@ Public Class VendorEditor
         Return True
     End Function
 
+    Private Sub OnceLoaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
+        If StartVendor <> "" Then
+            StartVendorIndex = cbxVendorName.Items.IndexOf(StartVendor)
+            cbxVendorName.SelectedIndex = StartVendorIndex
+        End If
+
+    End Sub
 
 #End Region
 
