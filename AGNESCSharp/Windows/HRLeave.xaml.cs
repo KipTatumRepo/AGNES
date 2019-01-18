@@ -71,6 +71,11 @@ namespace AGNESCSharp
             FileInfo myFile = new FileInfo(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\LOANotification.pdf");
             bool LOAExists = myFile.Exists;
 
+            if (beginDate == null || endDate == null)
+            {
+                MessageBox.Show("Please Enter a Beginning Date AND Estimated Ending Date For The Leave");
+                return;
+            }
             if (beginDate > endDate || beginDate == endDate)
             {
                 MessageBox.Show("The Ending Date For The Leave Must Be After The Begin Date For The Leave");
@@ -79,7 +84,20 @@ namespace AGNESCSharp
 
             if (PendingBox.IsChecked == false && ApprovedBox.IsChecked == false && ClosedBox.IsChecked == false && ParentalBox.IsChecked == false)
             {
-                MessageBox.Show("Please Check At Least One of the Checkboxes");
+                MessageBox.Show("Please Select Pending, Approved, or Closed");
+                return;
+            }
+
+            if (PendingBox.IsChecked == true && ApprovedBox.IsChecked == true || PendingBox.IsChecked == true && ClosedBox.IsChecked == true || ApprovedBox.IsChecked == true && ClosedBox.IsChecked == true)
+            {
+                MessageBox.Show("There Can Only Be One Option of Pending, Approved, or Closed Selected At A Time");
+                return;
+            }
+
+            if (ParentalBox.IsChecked == true && PendingBox.IsChecked == true || ParentalBox.IsChecked == true && ApprovedBox.IsChecked == true || ParentalBox.IsChecked == true && ClosedBox.IsChecked == true || ParentalBox.IsChecked == true &&
+                InterBox.IsChecked == true || ParentalBox.IsChecked == true && ContBox.IsChecked == true )
+            {
+                MessageBox.Show("If Parental Leave is Selected, No Other Selections May be Made");
                 return;
             }
 
@@ -168,6 +186,7 @@ namespace AGNESCSharp
             BeginLeave.SelectedDate = null;
             EndLeave.SelectedDate = null;
             DescriptionTb.Clear();
+            this.Close();
         }
         #endregion
     }

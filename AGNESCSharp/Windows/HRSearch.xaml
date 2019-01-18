@@ -249,8 +249,8 @@
                     <Label x:Name="CashLabel" Grid.Column="0" Content="Variance Amount" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="16" Height="31" Margin="5,5,0,4.8" Width="131"/>
                     <ComboBox x:Name="CashCB" VerticalAlignment="Center" HorizontalAlignment="Center" Width="224" FontSize="14" VerticalContentAlignment="Center" SelectionChanged="CashCB_SelectionChanged" Margin="23,8,87.4,8.8" Height="24" Grid.Column="1" >
                         <ComboBoxItem>Variance Reported None Found</ComboBoxItem>
-                        <ComboBoxItem>Equal to $3.00</ComboBoxItem>
-                        <ComboBoxItem>&gt;$3.00 but &lt;$20.00</ComboBoxItem>
+                        <ComboBoxItem>$3.00 - $20.00</ComboBoxItem>
+                        <ComboBoxItem>$20.01 +</ComboBoxItem>
                     </ComboBox>
                     <Label x:Name="CHDPLabel" Grid.Column="4" Content="Occurrence Date" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Height="31" Width="128" Margin="5.4,5,1.8,4.8" />
                     <DatePicker x:Name="CHOccurrenceDP" Grid.Column="5" HorizontalAlignment="Right" VerticalAlignment="Center" Width="157" VerticalContentAlignment="Center" FontSize="16" Margin="0,5,4.4,4.8" Height="31" >

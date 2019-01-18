@@ -14,15 +14,15 @@ namespace AGNESCSharp
 
             if ((byte)value == 0)
             {
-                return "No Value";
+                return "Variance Reported None Found";
             }
             else if ((byte)value == 1)
             {
-                return "Half";
+                return "$3.00 - $20.00";
             }
             else
             {
-                return "Full";
+                return "$20.01 +";
             }
         }
 
