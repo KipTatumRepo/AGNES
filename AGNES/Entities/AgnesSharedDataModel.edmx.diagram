@@ -4,17 +4,19 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="21d4ffebbe0a489c974d5a0de111295a" Name="Diagram1">
-        <EntityTypeShape EntityType="AGNESSharedDataModel.AccessLevel" Width="1.5" PointX="7" PointY="2.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="AGNESSharedDataModel.ModuleGroup" Width="1.5" PointX="10.25" PointY="0.5" IsExpanded="true" />
+      <Diagram DiagramId="21d4ffebbe0a489c974d5a0de111295a" Name="Diagram1" ZoomLevel="88">
+        <EntityTypeShape EntityType="AGNESSharedDataModel.AccessLevel" Width="1.5" PointX="7" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AGNESSharedDataModel.ModuleGroup" Width="1.5" PointX="5.375" PointY="2.625" IsExpanded="true" />
         <EntityTypeShape EntityType="AGNESSharedDataModel.Module" Width="1.5" PointX="5.375" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="AGNESSharedDataModel.ModulesUsers_Join" Width="1.5" PointX="7" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AGNESSharedDataModel.ModulesUsers_Join" Width="1.5" PointX="10.25" PointY="0.5" IsExpanded="true" />
         <EntityTypeShape EntityType="AGNESSharedDataModel.User" Width="1.5" PointX="0.5" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="AGNESSharedDataModel.FlashType" Width="1.5" PointX="8.625" PointY="2.25" />
+        <EntityTypeShape EntityType="AGNESSharedDataModel.FlashType" Width="1.5" PointX="8.625" PointY="2.625" />
         <EntityTypeShape EntityType="AGNESSharedDataModel.FlashTypesUsers_Join" Width="1.5" PointX="8.625" PointY="0.5" />
         <EntityTypeShape EntityType="AGNESSharedDataModel.UnitsSubunit" Width="1.5" PointX="3.75" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="AGNESSharedDataModel.UnitsUsers_Join" Width="1.5" PointX="2.125" PointY="0.5" />
-      </Diagram>
+        <EntityTypeShape EntityType="AGNESSharedDataModel.UnitsUsers_Join" Width="1.5" PointX="7" PointY="0.5" />
+        <EntityTypeShape EntityType="AGNESSharedDataModel.NotificationConfirm" Width="1.5" PointX="3.75" PointY="2.625" />
+        <EntityTypeShape EntityType="AGNESSharedDataModel.Notification" Width="1.5" PointX="2.125" PointY="0.5" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

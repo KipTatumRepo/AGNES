@@ -97,6 +97,7 @@ namespace AGNESCSharp
             PointValue = cbi.Tag.ToString();
             AttType = cbi.Content.ToString();
             type = Convert.ToByte(PointValue);
+            ButtonGrid.Visibility = Visibility.Visible;
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -175,7 +176,8 @@ namespace AGNESCSharp
 
                     if (AttType == "No Call No Show" && date != new DateTime(1001, 1, 1))
                     {
-                        BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show is " + firstName + "'s Second In Less Than a Year And Requires Termination.  Please Fill Out And Print This Form", MessageBoxButton.OK);
+                        BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show is " + firstName + "'s Second In Less Than a Year And Requires Termination.  Please Fill Out And Print This Progressive Counseling and Separation Form", MessageBoxButton.OK);
+                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
                         Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
                         this.Close();
                         return;
@@ -196,6 +198,12 @@ namespace AGNESCSharp
                     }
                     else if (occPoints >= 5 && occPoints < 6)
                     {
+                        if (type == 0)
+                        {
+                            this.Close();
+                            return;
+                        }
+
                         BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This WRITTEN Warning Form" +
                                 "That I Will Open For You", MessageBoxButton.OK);
                         if (ProgExists == true)
@@ -207,8 +215,14 @@ namespace AGNESCSharp
                             MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
                         }
                     }
-                    else if (occPoints >= 6 && occPoints < 7)
+                    else if (occPoints >= 6 && occPoints < 7 )
                     {
+                        if (type == 0)
+                        {
+                            this.Close();
+                            return;
+                        }
+
                         BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This FINAL Warning Form" +
                                 "That I Will Open For You", MessageBoxButton.OK);
                         if (ProgExists == true)
@@ -222,7 +236,7 @@ namespace AGNESCSharp
                     }
                     else
                     {
-                        BIMessageBox.Show("Termination Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This DISCHARGE Form" +
+                        BIMessageBox.Show("Termination Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This SEPARATION Form" +
                                 "That I Will Open For You", MessageBoxButton.OK);
                         Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\TermLetter.docx");
                     }
@@ -233,8 +247,8 @@ namespace AGNESCSharp
 
                     if (AttType == "No Call No Show")
                     {
-                        BIMessageBox.Show("No Call No Show Dialog", firstName + "Is In The Associates 90 Probationary Period, This No Call No Show Requires Automatic Termination " +
-                            "Please Fill Out And Print This DISCHARGE Form", MessageBoxButton.OK);
+                        BIMessageBox.Show("No Call No Show Dialog", firstName + "Is In The Associates 90 Probationary Period, This No Call No Show Requires Automatic Separation " +
+                            "Please Fill Out And Print This SEPARTATION Form", MessageBoxButton.OK);
                         Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
                         this.Close();
                         return; 
@@ -262,7 +276,7 @@ namespace AGNESCSharp
                     }
                     else
                     {
-                        BIMessageBox.Show("Termination Form Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points, Please Print This DISCHARGE Form" +
+                        BIMessageBox.Show("Termination Form Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points, Please Print This SEPARATION Form" +
                                 "That I Will Open For You", MessageBoxButton.OK);
                         if (TermExists == true)
                         {
@@ -278,13 +292,14 @@ namespace AGNESCSharp
             DescriptionTb.Clear();
             AOccurrenceDP.SelectedDate = null;
             AttendanceType.SelectedItem = null;
+            this.Close();
         }
 
-        private void OccurrenceCategory_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            selectedIndex = OccurrenceCategory.SelectedIndex;
-            ShowElements(selectedIndex);
-        }
+        //private void OccurrenceCategory_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        //{
+        //    selectedIndex = OccurrenceCategory.SelectedIndex;
+        //    ShowElements(selectedIndex);
+        //}
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
@@ -377,21 +392,21 @@ namespace AGNESCSharp
         //}
 
         //Take in occurrence type and show appropriate page elements
-        private void ShowElements(int cbIndex)
-        {
-            if (cbIndex == 0)
-            {
-                OccurrenceSelection.Visibility = Visibility.Collapsed;
-                AttendanceGrid.Visibility = Visibility.Visible;
-                DescriptionTbLable.Visibility = Visibility.Visible;
-                DescriptionSV.Visibility = Visibility.Visible;
-                ButtonGrid.Visibility = Visibility.Visible;
-                //SelectedDate = AOccurrenceDP.SelectedDate;
-                selectedDate = AOccurrenceDP.SelectedDate;
-                //selectedDate = (DateTime)SelectedDate;
-                layoutFlag = 0;
-            }
-        }
+        //private void ShowElements(int cbIndex)
+        //{
+        //    if (cbIndex == 0)
+        //    {
+        //        OccurrenceSelection.Visibility = Visibility.Collapsed;
+        //        AttendanceGrid.Visibility = Visibility.Visible;
+        //        DescriptionTbLable.Visibility = Visibility.Visible;
+        //        DescriptionSV.Visibility = Visibility.Visible;
+        //        ButtonGrid.Visibility = Visibility.Visible;
+        //        //SelectedDate = AOccurrenceDP.SelectedDate;
+        //        selectedDate = AOccurrenceDP.SelectedDate;
+        //        //selectedDate = (DateTime)SelectedDate;
+        //        layoutFlag = 0;
+        //    }
+        //}
         #endregion
     }
 }

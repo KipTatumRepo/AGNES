@@ -157,13 +157,43 @@ Public Class ScheduleLocation
         'Validation routines to preemptively notify about whether vendor is allowed to be scheduled; this is food trucks at the location level
         DropAllowed = True
 
-        If IsVendorTypeAllowedAtBuilding() = False Then    '//     Check if vendor type (truck or brand) is allowed at building
+        '// Check if vendor type (truck or brand) is allowed at building
+        If IsVendorTypeAllowedAtBuilding() = False Then
             DropAllowed = False
             Exit Sub
         End If
 
-        'CRITICAL: CHECK TO MAKE SURE DAILY PLACEMENT IS NOT EXCEEDED
+        '// Check if truck is already at the location
+        For Each tl As Object In StationStack.Children
+            If TypeOf (tl) Is ScheduleTruckStation Then
+                Dim sts As ScheduleTruckStation = tl
+                If sts.TruckName = vn Then
+                    DropAllowed = False
+                    Exit Sub
+                End If
+            End If
+        Next
 
+        '// Check if truck drop would exceed daily max placements
+        Dim CheckMax As Byte = 0
+        For Each locobj In CurrentWeekDay.LocationStack.Children
+            If TypeOf (locobj) Is ScheduleLocation Then
+                Dim loc As ScheduleLocation = locobj
+                For Each stationobj As Object In loc.StationStack.Children
+                    If TypeOf (stationobj) Is ScheduleTruckStation Then
+                        Dim station As ScheduleTruckStation = stationobj
+                        If station.TruckName = vn Then CheckMax += 1
+                    End If
+                Next
+            End If
+        Next
+
+        If CheckMax >= VendorSched.ActiveVendor.MaxDailySlots Then
+            DropAllowed = False
+            Exit Sub
+        End If
+
+        '// Appears all good
         VendorSched.tbSaveStatus.Text = "Okay to add"
         VendorSched.sbSaveStatus.Background = Brushes.LightGreen
         Background = Brushes.LightGreen

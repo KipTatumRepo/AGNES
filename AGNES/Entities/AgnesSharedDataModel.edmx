@@ -54,6 +54,30 @@
           <Property Name="ModuleId" Type="bigint" Nullable="false" />
           <Property Name="UserId" Type="bigint" Nullable="false" />
         </EntityType>
+        <EntityType Name="NotificationConfirms">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Notification" Type="bigint" Nullable="false" />
+          <Property Name="UserId" Type="bigint" Nullable="false" />
+          <Property Name="ConfirmDate" Type="date" />
+        </EntityType>
+        <EntityType Name="Notifications">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StartDate" Type="date" Nullable="false" />
+          <Property Name="EndDate" Type="date" Nullable="false" />
+          <Property Name="Audience" Type="bigint" Nullable="false" />
+          <Property Name="Message" Type="varchar" MaxLength="1024" Nullable="false" />
+          <Property Name="Creator" Type="bigint" Nullable="false" />
+          <Property Name="OneOffNotification" Type="bit" Nullable="false" />
+          <Property Name="Snooze" Type="bit" Nullable="false" />
+          <Property Name="RequireConfirm" Type="bit" Nullable="false" />
+          <Property Name="ActionPoint" Type="varchar" MaxLength="128" />
+        </EntityType>
         <EntityType Name="UnitsSubunits">
           <Key>
             <PropertyRef Name="PID" />
@@ -96,6 +120,8 @@
           <EntitySet Name="ModuleGroups" EntityType="Self.ModuleGroups" Schema="agnes" store:Type="Tables" />
           <EntitySet Name="Modules" EntityType="Self.Modules" Schema="agnes" store:Type="Tables" />
           <EntitySet Name="ModulesUsers_Join" EntityType="Self.ModulesUsers_Join" Schema="agnes" store:Type="Tables" />
+          <EntitySet Name="NotificationConfirms" EntityType="Self.NotificationConfirms" Schema="agnes" store:Type="Tables" />
+          <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="agnes" store:Type="Tables" />
           <EntitySet Name="UnitsSubunits" EntityType="Self.UnitsSubunits" Schema="agnes" store:Type="Tables" />
           <EntitySet Name="UnitsUsers_Join" EntityType="Self.UnitsUsers_Join" Schema="agnes" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="agnes" store:Type="Tables" />
@@ -163,7 +189,9 @@
           <EntitySet Name="FlashTypesUsers_Join" EntityType="AGNESSharedDataModel.FlashTypesUsers_Join" />
           <EntitySet Name="UnitsSubunits" EntityType="AGNESSharedDataModel.UnitsSubunit" />
           <EntitySet Name="UnitsUsers_Join" EntityType="AGNESSharedDataModel.UnitsUsers_Join" />
-        </EntityContainer>
+          <EntitySet Name="NotificationConfirms" EntityType="AGNESSharedDataModel.NotificationConfirm" />
+          <EntitySet Name="Notifications" EntityType="AGNESSharedDataModel.Notification" />
+          </EntityContainer>
         <EntityType Name="FlashType">
           <Key>
             <PropertyRef Name="PID" />
@@ -199,7 +227,31 @@
           <Property Name="Delegate" Type="Boolean" />
           <Property Name="DelegateAddedBy" Type="Int64" />
         </EntityType>
-      </Schema>
+        <EntityType Name="NotificationConfirm">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Notification" Type="Int64" Nullable="false" />
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="ConfirmDate" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="Notification">
+          <Key>
+            <PropertyRef Name="PID" />
+          </Key>
+          <Property Name="PID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Audience" Type="Int64" Nullable="false" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="false" />
+          <Property Name="Creator" Type="Int64" Nullable="false" />
+          <Property Name="OneOffNotification" Type="Boolean" Nullable="false" />
+          <Property Name="Snooze" Type="Boolean" Nullable="false" />
+          <Property Name="RequireConfirm" Type="Boolean" Nullable="false" />
+          <Property Name="ActionPoint" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+        </EntityType>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -298,7 +350,33 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          <EntitySetMapping Name="NotificationConfirms">
+            <EntityTypeMapping TypeName="AGNESSharedDataModel.NotificationConfirm">
+              <MappingFragment StoreEntitySet="NotificationConfirms">
+                <ScalarProperty Name="ConfirmDate" ColumnName="ConfirmDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Notification" ColumnName="Notification" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Notifications">
+            <EntityTypeMapping TypeName="AGNESSharedDataModel.Notification">
+              <MappingFragment StoreEntitySet="Notifications">
+                <ScalarProperty Name="ActionPoint" ColumnName="ActionPoint" />
+                <ScalarProperty Name="RequireConfirm" ColumnName="RequireConfirm" />
+                <ScalarProperty Name="Snooze" ColumnName="Snooze" />
+                <ScalarProperty Name="OneOffNotification" ColumnName="OneOffNotification" />
+                <ScalarProperty Name="Creator" ColumnName="Creator" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Audience" ColumnName="Audience" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

@@ -1,0 +1,40 @@
+﻿<Window x:Class="NotificationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AGNES"
+        mc:Ignorable="d"
+        Title="Notifications (1/5)" Height="300" Width="400" BorderThickness="2" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False" WindowStartupLocation="CenterScreen">
+    <Window.Effect>
+        <DropShadowEffect Opacity="0.6" ShadowDepth="8" BlurRadius="8" Direction="310"/>
+    </Window.Effect>
+    <Window.Background>
+        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+            <GradientStop Color="#FFF0EEC5" Offset="0"/>
+            <GradientStop Color="White" Offset="1"/>
+        </LinearGradientBrush>
+    </Window.Background>
+    <Window.BorderBrush>
+        <SolidColorBrush Color="Black" Opacity="0.75"/>
+    </Window.BorderBrush>
+    <Grid>
+        <TextBlock x:Name="tbTitle" TextWrapping="Wrap" Text="Notifications (x/x)" VerticalAlignment="Top" TextAlignment="Center" FontSize="14" TextDecorations="{x:Null}" Height="22">
+            <TextBlock.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF9AF5F1" Offset="0"/>
+                    <GradientStop Color="#FFDBFDFF" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBlock.Background>
+        </TextBlock>
+        <RichTextBox x:Name="rtbNotification" HorizontalAlignment="Left" Height="190" Margin="10,27,0,0" VerticalAlignment="Top" Width="368" Background="{x:Null}" BorderBrush="{x:Null}" IsReadOnly="True" Focusable="False" IsTabStop="False" AllowDrop="False">
+            <FlowDocument x:Name="flwNotificationText" Focusable="False"/>
+        </RichTextBox>
+        <Image x:Name="imgSnooze" HorizontalAlignment="Left" Height="42" Margin="73,236,0,0" VerticalAlignment="Top" Width="42" Source="/AGNES;component/Resources/Reminder.png" ToolTip="Remind me later"/>
+        <Image x:Name="imgGoToModule" HorizontalAlignment="Left" Height="42" Margin="182,236,0,0" VerticalAlignment="Top" Width="42" Source="/AGNES;component/Resources/GoToModule.png" ToolTip="Jump to appropriate module"/>
+        <Image x:Name="imgRightCheck" HorizontalAlignment="Left" Height="42" Margin="291,236,0,0" VerticalAlignment="Top" Width="42" Source="/AGNES;component/Resources/applycheck.png" ToolTip="Okay, got it!"/>
+        <Image x:Name="imgNextNotification" HorizontalAlignment="Left" Height="42" Margin="291,236,0,0" VerticalAlignment="Top" Width="42" Source="/AGNES;component/Resources/NextNotification.png" ToolTip="View next notification" Visibility="Collapsed"/>
+
+
+    </Grid>
+</Window>

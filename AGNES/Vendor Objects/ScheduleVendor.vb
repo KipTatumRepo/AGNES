@@ -115,8 +115,6 @@ Public Class ScheduleVendor
         AddHandler VendorContextMenu.Loaded, AddressOf FilterEnable
         cmiEdit = New MenuItem With {.Header = "Edit Vendor"}
         AddHandler cmiEdit.Click, AddressOf EditVendor
-        cmiDeactivate = New MenuItem With {.Header = "Deactivate Vendor"}
-        AddHandler cmiDeactivate.Click, AddressOf DeactivateVendor
         cmiFilter = New MenuItem With {.Header = "Filter on Vendor"}
         AddHandler cmiFilter.Click, AddressOf VendorFilter
         cmiKillFilters = New MenuItem With {.Header = "Remove Vendor Filters"}
@@ -125,13 +123,7 @@ Public Class ScheduleVendor
             .Add(cmiFilter)
             .Add(cmiKillFilters)
             .Add(cmiEdit)
-            .Add(cmiDeactivate)
         End With
-        If VendorItem.VendorType = 3 Then
-            Dim cmiReceipts As New MenuItem With {.Header = "Record Receipts"}
-            AddHandler cmiReceipts.Click, AddressOf EnterReceipts
-            VendorContextMenu.Items.Add(cmiReceipts)
-        End If
     End Sub
 
     Private Sub FilterEnable()
@@ -145,15 +137,8 @@ Public Class ScheduleVendor
     End Sub
 
     Private Sub EditVendor()
-        Dim ph As String = ""
-    End Sub
-
-    Private Sub DeactivateVendor()
-        Dim ph As String = ""
-    End Sub
-
-    Private Sub EnterReceipts()
-        Dim ph As String = ""
+        Dim NewEditor As New VendorEditor(VendorItem.Name)
+        NewEditor.ShowDialog()
     End Sub
 
     Private Sub VendorFilter()
