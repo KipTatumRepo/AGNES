@@ -178,6 +178,8 @@ Public Class VendorEditor
                 ActiveVendor = Nothing
                 NewVendor = True
                 AddNewVendor()
+                txtInvoiceName.IsEnabled = True
+                numSupplierCode.IsEnabled = True
                 'CRITICAL: ADD NOTIFICATION HANDLER FOR STORE ID
             Case Else ' Existing vendor selected
                 If ActiveVendor IsNot Nothing Then
@@ -515,12 +517,6 @@ Public Class VendorEditor
     End Sub
 
     Private Sub AddNewVendor()
-        cbxVendorType.SelectedIndex = -1
-        cbxStatus.SelectedIndex = -1
-        dtpInsurance.SelectedDate = Nothing
-        dtpInsurance.DisplayDate = Now()
-        dtpContract.SelectedDate = Nothing
-        dtpContract.DisplayDate = Now()
 
         '// Get new vendor name
         Dim newname As New SingleUserInput(EnterOnly:=True) With {.InputType = 0, .DisplayText = "Add new vendor name"}
@@ -532,6 +528,14 @@ Public Class VendorEditor
         Dim NewVendorName As String = newname.StringVal
         newname.Close()
 
+        ChangeOverride = True
+        cbxVendorType.SelectedIndex = -1
+        cbxStatus.SelectedIndex = -1
+        dtpInsurance.SelectedDate = Nothing
+        dtpInsurance.DisplayDate = Now()
+        dtpContract.SelectedDate = Nothing
+        dtpContract.DisplayDate = Now()
+
         '// Add new vendor to combobox temporarily and suppress Add New Vendor option
         cbxVendorName.Items.Insert(0, NewVendorName)
         cbxVendorName.SelectedIndex = 0
@@ -540,11 +544,12 @@ Public Class VendorEditor
         '// Open up the vendor type combobox
         cbxVendorType.IsEnabled = True
 
+        ChangeOverride = False
 
     End Sub
 
     Private Sub VendorTypeSelected(sender As Object, e As SelectionChangedEventArgs) Handles cbxVendorType.SelectionChanged
-        If NewVendor = False Then Exit Sub
+        If NewVendor = False Or ChangeOverride = True Then Exit Sub
         CollapseForm(1)
         cbxStatus.SelectedIndex = 0
         DisplayForm()
