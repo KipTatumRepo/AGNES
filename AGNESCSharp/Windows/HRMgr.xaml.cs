@@ -626,7 +626,7 @@ namespace AGNESCSharp
                     {
                         empInProbationPeriod = 1;
                     }
-                    Window newWindow = new HRCashHandle(name, empId, empInProbationPeriod);
+                    Window newWindow = new HRCashHandle(name, empId, empInProbationPeriod, 0);
                     LeaveButton.IsChecked = false;
                     OccButton.IsChecked = false;
                     CashHandleButton.IsChecked = false;

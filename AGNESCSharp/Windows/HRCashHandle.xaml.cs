@@ -17,6 +17,7 @@ namespace AGNESCSharp
         string nameToInsert;
         int empInProbation;
         int occPoint;
+        long SelectOccurrence;
         private string empCostCenter;
         string firstName;
         string lastName;
@@ -27,30 +28,49 @@ namespace AGNESCSharp
         #endregion
 
         #region Main
-        public HRCashHandle(string emp, int empNum, int empInProbationPeriod)
+        public HRCashHandle(string emp, int empNum, int empInProbationPeriod, int navFromSearch)
         {
             InitializeComponent();
-            nameToInsert = emp;
-            var name = emp.Split(',');
-            lastName = name[0].Trim();
-            firstName = name[1].Trim();
             empID = empNum;
             empInProbation = empInProbationPeriod;
 
-            TopTextBox.Text = "Please Enter The Details For " + firstName + " " + lastName + "'S" + " Cash Handling Violation";
-
-            var query = from employeeTable in MainWindow.bidb.EmployeeLists
-                        where employeeTable.PersNumber == empNum
-                        select employeeTable;
-
-            var results = query.ToList();
-            foreach (var result in query)
+            if (navFromSearch == 0)
             {
-                hireDate = result.DateOfHire;
-                empCostCenter = result.CostCenter;
+                UpdateButton.Visibility = Visibility.Collapsed;
+                nameToInsert = emp;
+                var name = emp.Split(',');
+                lastName = name[0].Trim();
+                firstName = name[1].Trim();
+                
+
+                TopTextBox.Text = "Please Enter The Details For " + firstName + " " + lastName + "'S" + " Cash Handling Violation";
+
+                var query = from employeeTable in MainWindow.bidb.EmployeeLists
+                            where employeeTable.PersNumber == empNum
+                            select employeeTable;
+
+                var results = query.ToList();
+                foreach (var result in query)
+                {
+                    hireDate = result.DateOfHire;
+                    empCostCenter = result.CostCenter;
+                }
+                CHOccurrenceDP.DisplayDateStart = DateTime.Now.AddDays(-60);
+                CHOccurrenceDP.DisplayDateEnd = DateTime.Now;
+                SaveButton.Visibility = Visibility.Visible;
             }
-            CHOccurrenceDP.DisplayDateStart = DateTime.Now.AddDays(-60);
-            CHOccurrenceDP.DisplayDateEnd = DateTime.Now;
+            else
+            {
+                nameToInsert = emp;
+                var name = emp.Split(',');
+                firstName = name[0].Trim();
+                SaveButton.Visibility = Visibility.Collapsed;
+                TopTextBox.Text = "Please Enter The Details For " + firstName + "'S" + " Cash Handling Violation";
+                CashCB.SelectedIndex = HRSearch.SelectedIndexV;
+                CHOccurrenceDP.SelectedDate = HRSearch.CHDateV;
+                DescriptionTb.Text = HRSearch.CHNoteV;
+                UpdateButton.Visibility = Visibility.Visible;
+            }
         }
         #endregion
 
@@ -233,5 +253,98 @@ namespace AGNESCSharp
             }
         }
         #endregion
+
+        private void UpdateButton_Click(object sender, RoutedEventArgs e)
+        {
+            byte type;
+
+            if (CashCB.SelectedIndex == 0)
+            {
+                type = 0;
+            }
+            else if (CashCB.SelectedIndex == 1)
+            {
+                type = 1;
+            }
+            else
+            {
+                type = 2;
+            }
+
+            using (var db = new AGNESEntity())
+            {
+                
+                string selectOccurrence = HRSearch.CashHandleNumberV; //CashHandleNumber.Text;
+                SelectOccurrence = Convert.ToInt64(selectOccurrence);
+
+                var result = db.CashHandles.SingleOrDefault(f => f.PID == SelectOccurrence);
+                if (result != null)
+                {
+                    byte? oldType = result.Type;
+                    result.Type = type;
+                    result.Date = CHOccurrenceDP.SelectedDate;
+                    result.Notes = DescriptionTb.Text;
+                    string violationNotes = DescriptionTb.Text;
+
+                    DateTime date = (DateTime)CHOccurrenceDP.SelectedDate;
+                    (DateTime earlyDate, double? occPoints) = HROccurrence.CountOccurrences(date, empID, 1);
+
+                    if (type < oldType/*violationAmount*/ && type == 0)
+                    {
+                        var messageBoxResult = BIMessageBox.Show("Cash Handle Reduction", "This Change Will Require the Removal of A Written Counseling, Do You Wish To Continue?", MessageBoxButton.YesNo);
+                        if (messageBoxResult != MessageBoxResult.Yes) return;
+                        db.SaveChanges();
+                        MessageBox.Show("Occurrence Record Has Been Updated.");
+                        (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, empID, 1);
+                        HRSearch.Report(firstName, violationNotes, occPoints, empInProbation, earlyDate, type, empID);
+                    }
+
+                    else if (type < oldType/*violationAmount*/)
+                    {
+                        decimal compareOccPoints = (decimal)occPoints;
+                        decimal compareType = (decimal)type;
+                        decimal quotientOldType = (decimal)oldType / 2;
+                        decimal quotientCompareType = (decimal)compareType / 2;
+                        var messageBoxResult = BIMessageBox.Show("Occurrence Point Reduction Dialog", "The Selected Violation Will Result In A Reduction Of Occurrence Points From " + occPoints +
+                           " To " + (compareOccPoints - (quotientOldType - quotientCompareType)) + " For " + firstName + " and May Require Removal of A Written Counseling, Do You Wish To Continue?", MessageBoxButton.YesNo);
+
+                        if (messageBoxResult != MessageBoxResult.Yes) return;
+                        db.SaveChanges();
+                        MessageBox.Show("Occurrence Record Has Been Updated.");
+                        (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, empID, 1);
+                        //TODO: GO BACK TO THIS
+                        HRSearch.Report(firstName, violationNotes, occPoints, empInProbation, earlyDate, type, empID);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            db.SaveChanges();
+                            MessageBox.Show("Cash Handling Record Has Been Updated.");
+                            if (type == 1)
+                            {
+                                BIMessageBox.Show("Counseling Form Dialog", firstName + "'s Variance Type Was Changed To Between $3.00 and $20.00, This is an Automatic Progressive Counseling" +
+                                                    " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
+                                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                            }
+                            else
+                            {
+                                BIMessageBox.Show("Contact HRBP Dialong", "This Type of Cash Handling Violation Requires Notification of Your DM AND HRBP, Please Contact Them", MessageBoxButton.OK);
+
+                                BIMessageBox.Show("Counseling Form Dialog", firstName + " Has a Variance Greater Than $20.00 This is an Automatic Progressive Counseling" +
+                                    " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
+                                Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("There was a problem updating the CASH HANDLING record in the database please contact Business Intelligence " + ex);
+                        }
+                    }
+                }
+            }
+            this.Close();
+        }
     }
+    //}
 }

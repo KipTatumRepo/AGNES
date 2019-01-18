@@ -19,6 +19,7 @@ namespace AGNESCSharp
         byte? violationAmount;
         int selectedSearch;
         int selectedSearchType;
+        int navFromSearch = 1;
         long SelectOccurrence;
         long? assocNumber;
         ComboBoxItem searchTable;
@@ -30,12 +31,12 @@ namespace AGNESCSharp
         DateTime today = DateTime.Now;
         int empInProbation = 0;
 
-        //public static string CashHandleNumberV;
-        //public static int SelectedIndexV;
-        //public static DateTime? CHDateV;
-        //public static string CHNoteV;
+        public static string CashHandleNumberV;
+        public static int SelectedIndexV;
+        public static DateTime? CHDateV;
+        public static string CHNoteV;
 
-       
+
         #endregion
 
         #region Main
@@ -280,7 +281,9 @@ namespace AGNESCSharp
         {
             UpdateButton.Visibility = Visibility.Visible;
             MultipleCashHandleDG.Visibility = Visibility.Collapsed;
-            
+            int EmpNumber;
+            //int PID;
+
             if (MultipleCashHandleDG.SelectedItem == null) return;
 
             object row = MultipleCashHandleDG.SelectedValue;
@@ -298,21 +301,27 @@ namespace AGNESCSharp
 
             foreach (var filteredRow in result)
             {
-                CashHandleDisplayGrid.Visibility = Visibility.Visible;
-                CashHandleNumber.Text = filteredRow.PID.ToString();
-                CashCB.SelectedIndex = Convert.ToInt32(filteredRow.Type);
-                CHOccurrenceDP.SelectedDate = filteredRow.Date;
-                CHNote.Text = filteredRow.Notes;
-                violationAmount = filteredRow.Type;
+                //CashHandleDisplayGrid.Visibility = Visibility.Visible;
+                //CashHandleNumber.Text = filteredRow.PID.ToString();
+                //CashCB.SelectedIndex = Convert.ToInt32(filteredRow.Type);
+                //CHOccurrenceDP.SelectedDate = filteredRow.Date;
+                //CHNote.Text = filteredRow.Notes;
+                //violationAmount = filteredRow.Type;
 
                 #region Work on this for v2 
                 //set public static variable to carry from here to LOA Window when datagrid selection is made
-                //CashHandleNumberV = filteredRow.PID.ToString(); 
-                //SelectedIndexV = Convert.ToInt32(filteredRow.Type);
-                //CHDateV = filteredRow.Date;
-                //CHNoteV = filteredRow.Notes;
+                CashHandleNumberV = filteredRow.PID.ToString();
+                SelectedIndexV = Convert.ToInt32(filteredRow.Type);
+                CHDateV = filteredRow.Date;
+                CHNoteV = filteredRow.Notes;
+                
+
+               
                 #endregion
             }
+            EmpNumber = (int)assocNumber;
+            Window newWindow = new HRCashHandle(firstName, EmpNumber, empInProbation, 1);
+            newWindow.ShowDialog();
             UpdateButton.Visibility = Visibility.Visible;
         }
 
@@ -936,7 +945,7 @@ namespace AGNESCSharp
             #endregion
         }
 
-        private void Report(string firstName, string violationText, double? occPoints, int empInProbation, DateTime earlyDate, int? cashHandleType, long? empId)
+        public static void Report(string firstName, string violationText, double? occPoints, int empInProbation, DateTime earlyDate, int? cashHandleType, long? empId)
         {
             int? CashHandleType = cashHandleType;
             if (cashHandleType == null)
@@ -1044,7 +1053,7 @@ namespace AGNESCSharp
                         BIMessageBox.Show("Termination Form Dialog", "This Update to No Call No Show For The Associate In Their Probationary Period Requires Termination" +
                             " Please Fill Out and Print This Form", MessageBoxButton.OK);
                         Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
-                        this.Close();
+                        //this.Close();
                         return;
                     }
 
