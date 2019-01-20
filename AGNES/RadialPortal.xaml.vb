@@ -456,7 +456,7 @@ Public Class RadialPortal
             Case "Business Group CRM"
                 BGCRMModule.Runmodule()
             Case "Flash"
-                FlashModule.Runmodule()
+                FlashModule.Runmodule(-1)
             Case "Flash Status"
                 FlashStatusModule.Runmodule()
             Case "Forecast"

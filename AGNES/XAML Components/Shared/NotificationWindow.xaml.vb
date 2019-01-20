@@ -107,7 +107,7 @@
                 Exit Sub
             Case "Flash"
                 JumpedFromNotification = True
-                FlashModule.Runmodule()
+                FlashModule.Runmodule(-1)
 
         End Select
     End Sub
