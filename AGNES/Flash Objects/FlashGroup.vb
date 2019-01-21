@@ -301,6 +301,7 @@
     End Function
 
     Public Sub Update(TargetFlashGroup As FlashGroup)
+        'CRITICAL: CHANGING SALES DOES NOT TRIGGER A COMPLETE REFRESH OF PERCENTAGES ACROSS OTHER CATEGORIES
         '//     Recalculate subtotals, if applicable
         If TargetFlashGroup.GroupIsSubTotal = True Then
             Dim flashsub As Double, budgetsub As Double, forecastsub As Double
@@ -492,10 +493,11 @@
         ForecastContent = CalculateForecast
     End Sub
 
-    Private Sub UpdateSubtotals()
+    Private Sub UpdateSubtotals(sender As FlashGroup)
         Dim grd As Grid = Parent
         For Each fg As FlashGroup In grd.Children
             If fg.GroupIsSubTotal = True Then Update(fg)
+            If fg.SalesFlashGroup Is sender Then Update(fg)
         Next
     End Sub
 
@@ -678,7 +680,7 @@
 #Region "Event Listeners"
     Private Sub FlashChanged()
         Update(Me)
-        UpdateSubtotals()
+        UpdateSubtotals(Me)
         FlashPage.SaveStatus = 0
     End Sub
 #End Region
