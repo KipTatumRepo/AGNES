@@ -1,5 +1,13 @@
 ﻿Public Class NotificationEditor
 
+    '#  Group 0 = All users
+    '#  Group 994 = Chefs
+    '#  Group 995 = Cafe FSDs
+    '#  Group 996 = POS Team
+    '#  Group 997 = HR
+    '#  Group 998 = Superusers
+    '#  Group 999 = Admin
+
 #Region "Properties"
 
 #End Region

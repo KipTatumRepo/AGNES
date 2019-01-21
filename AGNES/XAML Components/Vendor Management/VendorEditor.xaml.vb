@@ -637,8 +637,8 @@ Public Class VendorEditor
     End Sub
 
     Private Sub SaveNewVendor()
-        ValidateEntry()
-        Dim nv As New VendorInfo
+        ValidateEntry(0)
+        Dim nv As New VendorInfo, NotifyAboutStore As Boolean = False
         With nv
             .Name = cbxVendorName.Text
             .VendorType = cbxVendorType.SelectedIndex
@@ -663,7 +663,7 @@ Public Class VendorEditor
                     .Invoice = txtInvoiceName.Text
                     .Supplier = numSupplierCode.SetAmount
                 End With
-
+                NotifyAboutStore = True
             Case 1  ' Commons Retail
                 With nv
                     .CAMType = cbxCamType.SelectedIndex + 1
@@ -688,6 +688,7 @@ Public Class VendorEditor
                     .FoodSubType = GetFoodSubTypeId(cbxFoodSubType.Text)
                     .ProductClassId = GetProductClassId(cbxCommonsProductClass.Text)
                 End With
+                NotifyAboutStore = True
 
             Case 3  ' Food Truck
                 With nv
@@ -697,7 +698,6 @@ Public Class VendorEditor
                     .FoodType = GetFoodTypeId(cbxFoodType.Text)
                     .FoodSubType = GetFoodSubTypeId(cbxFoodSubType.Text)
                     .MaximumDailyCafes = numDailyCafes.Amount
-
                 End With
 
         End Select
@@ -707,6 +707,7 @@ Public Class VendorEditor
         Try
             VendorData.VendorInfo.Add(nv)
             VendorData.SaveChanges()
+            If NotifyAboutStore = True Then AddStoreNotification(nv.Name)
         Catch ex As Exception
             MsgBox("Error: " & ex.Message)
         End Try
@@ -719,7 +720,7 @@ Public Class VendorEditor
     End Sub
 
     Private Sub UpdateVendor()
-        ValidateEntry()
+        ValidateEntry(1)
         With ActiveVendor
             .Active = (1 - cbxStatus.SelectedIndex)
             .InsuranceExpiration = dtpInsurance.SelectedDate
@@ -791,9 +792,38 @@ Public Class VendorEditor
         Close()
     End Sub
 
-    Private Sub ValidateEntry()
+    Private Sub ValidateEntry(NewOrUpdate As Boolean) ' 0 = New, 1 = Update
         Dim ph As String = ""
         ' Verify daily max is saved if focus has not been lost
+    End Sub
+
+    Private Sub OnceLoaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
+        If StartVendor <> "" Then
+            StartVendorIndex = cbxVendorName.Items.IndexOf(StartVendor)
+            cbxVendorName.SelectedIndex = StartVendorIndex
+        End If
+
+    End Sub
+
+    Private Sub AddStoreNotification(vendorname)
+        Dim NewNote As New Notification
+        With NewNote
+            .StartDate = Now()
+            .EndDate = Now.AddDays(365)
+            .Audience = 999
+            .Message = "A new Vendor -" & vendorname & "- has been created.  A store ID required."
+            .Creator = 0
+            .OneOffNotification = False
+            .Snooze = True
+            .RequireConfirm = False
+            .Dismissable = True
+        End With
+        Try
+            AGNESShared.Notifications.Add(NewNote)
+            AGNESShared.SaveChanges()
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Private Function VerifyDiscardChanges() As Boolean
@@ -811,13 +841,6 @@ Public Class VendorEditor
         Return True
     End Function
 
-    Private Sub OnceLoaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
-        If StartVendor <> "" Then
-            StartVendorIndex = cbxVendorName.Items.IndexOf(StartVendor)
-            cbxVendorName.SelectedIndex = StartVendorIndex
-        End If
-
-    End Sub
 
 #End Region
 

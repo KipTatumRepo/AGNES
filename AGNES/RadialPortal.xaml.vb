@@ -146,12 +146,12 @@ Public Class RadialPortal
     End Sub
 
     Private Sub CheckForNotifications()
-        Dim MyGroup As Byte = 0
+        Dim MyGroup As Integer = 0
         Notifications.Clear()
         imgNotifications.Visibility = Visibility.Collapsed
         '// Determine group
         'TEST
-        MyGroup = 0
+        MyGroup = 999
 
         '// Capture active notifications
         Dim qng = From ng In AGNESShared.Notifications
@@ -161,9 +161,14 @@ Public Class RadialPortal
                   Select ng
 
         For Each ng In qng
-            '// Check if user has already seen notification, if it's a one-off
+            '// Check if user has already seen notification, if it's a one-off, of if it's been dismissed
+
             If ng.OneOffNotification = True Then
                 If CheckIfNotificationSeen(ng.PID) = False Then
+                    Notifications.Add(ng.PID)
+                End If
+            ElseIf ng.Dismissable = True Then
+                If ng.DismissedBy = "" Then
                     Notifications.Add(ng.PID)
                 End If
             Else

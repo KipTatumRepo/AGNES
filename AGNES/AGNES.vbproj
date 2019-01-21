@@ -1075,6 +1075,7 @@
     <Resource Include="Resources\Reminder.png" />
     <Resource Include="Resources\NextNotification.png" />
     <Resource Include="Resources\GoToModule.png" />
+    <Resource Include="Resources\NotificationDismiss.png" />
     <Content Include="Resources\Sound Assets\jump.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
