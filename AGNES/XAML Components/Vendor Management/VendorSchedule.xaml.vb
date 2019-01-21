@@ -323,7 +323,7 @@ Public Class VendorSchedule
     End Sub
 
     Private Sub EnterReceipts(sender As Object, e As MouseButtonEventArgs) Handles imgReceipts.MouseLeftButtonDown
-        'CRITICAL: Create receipt entry form
+        'CRITICAL: CREATE RECEIPT ENTRY FORM
     End Sub
 
 #End Region
