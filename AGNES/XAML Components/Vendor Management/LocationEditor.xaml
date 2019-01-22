@@ -19,8 +19,6 @@
         <TextBlock HorizontalAlignment="Left" Margin="172,296,0,0" TextWrapping="Wrap" Text="Anchor Food Subtype" VerticalAlignment="Top" TextAlignment="Center" Width="141"/>
         <ComboBox x:Name="cbxFoodType" HorizontalAlignment="Left" Margin="10,317,0,0" VerticalAlignment="Top" Width="141" FontSize="16" TabIndex="3" IsEnabled="False"/>
         <ComboBox x:Name="cbxFoodSubType" HorizontalAlignment="Left" Margin="172,317,0,0" VerticalAlignment="Top" Width="141" FontSize="16" TabIndex="4" IsEnabled="False"/>
-        <local:YesNoSlider x:Name="synTruck" Opacity=".6" HorizontalAlignment="Left" Height="30" Margin="228,258,0,0" VerticalAlignment="Top" Width="80" IsEnabled="False"/>
-        <local:YesNoSlider x:Name="synHood" Opacity=".6" HorizontalAlignment="Left" Height="30" Margin="135,258,0,0" VerticalAlignment="Top" Width="80" IsEnabled="False"/>
 
     </Grid>
 </Window>

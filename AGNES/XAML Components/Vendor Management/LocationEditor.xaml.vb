@@ -3,34 +3,6 @@ Imports System.ComponentModel
 Public Class LocationEditor
 
 #Region "Properties"
-    Private _truckyesno As Boolean
-    Public Property TruckYesNo As Boolean
-        Get
-            Return _truckyesno
-        End Get
-        Set(value As Boolean)
-            _truckyesno = value
-            TruckPanelTimer = New DispatcherTimer()
-            AddHandler TruckPanelTimer.Tick, AddressOf SlideTruckPanel
-            TruckPanelTimer.Interval = New TimeSpan(0, 0, 0, 0, 0.25)
-            TruckPanelTimer.Start()
-        End Set
-    End Property
-
-    Private _hoodyesno As Boolean
-    Public Property HoodYesNo As Boolean
-        Get
-            Return _hoodyesno
-        End Get
-        Set(value As Boolean)
-            _hoodyesno = value
-            HoodPanelTimer = New DispatcherTimer()
-            AddHandler HoodPanelTimer.Tick, AddressOf SlideHoodPanel
-            HoodPanelTimer.Interval = New TimeSpan(0, 0, 0, 0, 0.25)
-            HoodPanelTimer.Start()
-        End Set
-    End Property
-
     Private _cansave As Boolean
     Private Property CanSave As Boolean
         Get
@@ -48,10 +20,8 @@ Public Class LocationEditor
     End Property
 
     Public numStationCount As NumberBox
-    Private TruckPanelTimer As DispatcherTimer
-    Private HoodPanelTimer As DispatcherTimer
-    Private TruckPanelXPos As Integer
-    Private HoodPanelXPos As Integer
+    Public bspTrucks As BinarySlider
+    Public bspHood As BinarySlider
 
 #End Region
 
@@ -62,7 +32,7 @@ Public Class LocationEditor
         PopulateBuildings()
         PopulateFoodTypes()
         PopulateFoodSubtypes()
-        ConstructNewFields()
+        ConstructNewObjects()
 
     End Sub
 
@@ -118,73 +88,25 @@ Public Class LocationEditor
         Next
     End Sub
 
-    Private Sub ConstructNewFields()
+    Private Sub ConstructNewObjects()
         numStationCount = New NumberBox(118, True, False, True, False, True, AgnesBaseInput.FontSz.Medium) With {.Margin = New Thickness(10, 258, 0, 0), .IsEnabled = False}
         numStationCount.BaseTextBox.TabIndex = 2
-        grdMain.Children.Add(numStationCount)
-    End Sub
+        bspTrucks = New BinarySlider(BinarySlider.SliderSize.Medium, "Yes", "No") With {.Margin = New Thickness(238, 258, 0, 0), .IsEnabled = False}
+        bspHood = New BinarySlider(BinarySlider.SliderSize.Medium, "Yes", "No") With {.Margin = New Thickness(145, 258, 0, 0), .IsEnabled = False}
 
-    Private Sub SlideTruckYesNo(sender As Object, e As MouseButtonEventArgs) Handles synTruck.MouseLeftButtonDown
-        If TruckPanelTimer IsNot Nothing Then Exit Sub
-        TruckYesNo = Not TruckYesNo
+        With grdMain.Children
+            .Add(numStationCount)
+            .Add(bspHood)
+            .Add(bspTrucks)
+        End With
 
-    End Sub
-
-    Private Sub SlideTruckPanel()
-        If TruckYesNo = True Then
-            TruckPanelXPos += 1
-            If TruckPanelXPos > 40 Then
-                TruckPanelTimer.Stop()
-                TruckPanelTimer = Nothing
-            Else
-                synTruck.brdSlider.Margin = New Thickness(TruckPanelXPos, 0, 0, 0)
-            End If
-        Else
-            TruckPanelXPos -= 1
-            If TruckPanelXPos < 0 Then
-                TruckPanelTimer.Stop()
-                TruckPanelTimer = Nothing
-            Else
-                synTruck.brdSlider.Margin = New Thickness(TruckPanelXPos, 0, 0, 0)
-            End If
-        End If
-
-
-    End Sub
-
-    Private Sub SlideHoodYesNo(sender As Object, e As MouseButtonEventArgs) Handles synHood.MouseLeftButtonDown
-        If HoodPanelTimer IsNot Nothing Then Exit Sub
-        HoodYesNo = Not HoodYesNo
-
-    End Sub
-
-    Private Sub SlideHoodPanel()
-        If HoodYesNo = True Then
-            HoodPanelXPos += 1
-            If HoodPanelXPos > 40 Then
-                HoodPanelTimer.Stop()
-                HoodPanelTimer = Nothing
-            Else
-                synHood.brdSlider.Margin = New Thickness(HoodPanelXPos, 0, 0, 0)
-            End If
-        Else
-            HoodPanelXPos -= 1
-            If HoodPanelXPos < 0 Then
-                HoodPanelTimer.Stop()
-                HoodPanelTimer = Nothing
-            Else
-                synHood.brdSlider.Margin = New Thickness(HoodPanelXPos, 0, 0, 0)
-            End If
-        End If
     End Sub
 
     Private Sub lbxCafes_SelectionChanged(sender As Object, e As SelectionChangedEventArgs) Handles lbxCafes.SelectionChanged
         If lbxCafes.SelectedIndex = -1 Then
             CanSave = False
-            synHood.Opacity = 0.6
-            synHood.IsEnabled = False
-            synTruck.Opacity = 0.6
-            synTruck.IsEnabled = False
+            bspHood.IsEnabled = False
+            bspTrucks.IsEnabled = False
             cbxFoodType.SelectedIndex = -1
             cbxFoodType.IsEnabled = False
             cbxFoodSubType.SelectedIndex = -1
@@ -195,10 +117,8 @@ Public Class LocationEditor
         End If
         lbxBuilding.SelectedIndex = -1
         lbxBuilding.SelectedValue = ""
-        synHood.Opacity = 1
-        synHood.IsEnabled = True
-        synTruck.Opacity = 1
-        synTruck.IsEnabled = True
+        bspHood.IsEnabled = True
+        bspTrucks.IsEnabled = True
         cbxFoodType.IsEnabled = True
         cbxFoodSubType.IsEnabled = True
         LoadCafeInfo(lbxCafes.SelectedValue)
@@ -225,8 +145,8 @@ Public Class LocationEditor
                    Select gc).ToList(0)
 
         numStationCount.SetAmount = qgc.BrandStations
-        HoodYesNo = qgc.HasHood
-        TruckYesNo = CheckForTrucksAtCafe(qgc.BldgId)
+        bspHood.ChoiceVal = qgc.HasHood
+        bspTrucks.ChoiceVal = CheckForTrucksAtCafe(qgc.BldgId)
         cbxFoodType.Text = GetFoodType(qgc.AnchorStationFoodType)
         cbxFoodSubType.Text = GetFoodSubType(qgc.AnchorStationFoodSubType)
 
@@ -238,13 +158,12 @@ Public Class LocationEditor
                    Select gb).ToList(0)
 
         Try
-            TruckYesNo = qgb.AllowFoodTrucks
+            bspTrucks.ChoiceVal = qgb.AllowFoodTrucks
         Catch
-            TruckYesNo = False
+            bspTrucks.ChoiceVal = False
         End Try
-        HoodYesNo = False
-        synTruck.IsEnabled = True
-        synTruck.Opacity = 1
+        bspHood.ChoiceVal = False
+        bspTrucks.IsEnabled = True
 
     End Sub
 
@@ -265,7 +184,7 @@ Public Class LocationEditor
 
         With qgc
             .BrandStations = numStationCount.Amount
-            .HasHood = HoodYesNo
+            .HasHood = bspHood.ChoiceVal
         End With
 
         If cbxFoodType.SelectedIndex > -1 Then qgc.AnchorStationFoodType = GetFoodTypeId(cbxFoodType.SelectedValue)
@@ -276,16 +195,14 @@ Public Class LocationEditor
                    Where ct.PID = Bid
                    Select ct).ToList(0)
 
-        qct.AllowFoodTrucks = TruckYesNo
+        qct.AllowFoodTrucks = bspTrucks.ChoiceVal
 
         lbxCafes.SelectedIndex = -1
         lbxCafes.SelectedValue = ""
-        TruckYesNo = False
-        synTruck.Opacity = 0.6
-        synTruck.IsEnabled = False
-        HoodYesNo = False
-        synHood.Opacity = 0.6
-        synHood.IsEnabled = False
+        bspTrucks.ChoiceVal = False
+        bspTrucks.IsEnabled = False
+        bspHood.ChoiceVal = False
+        bspHood.IsEnabled = False
         CanSave = False
     End Sub
 
@@ -295,12 +212,11 @@ Public Class LocationEditor
                    Where gb.BldgName = BldgNm
                    Select gb).ToList(0)
 
-        qgb.AllowFoodTrucks = TruckYesNo
+        qgb.AllowFoodTrucks = bspTrucks.ChoiceVal
         lbxBuilding.SelectedIndex = -1
         lbxBuilding.SelectedValue = ""
-        TruckYesNo = False
-        synTruck.Opacity = 0.6
-        synTruck.IsEnabled = False
+        bspTrucks.ChoiceVal = False
+        bspTrucks.IsEnabled = False
         CanSave = False
     End Sub
 

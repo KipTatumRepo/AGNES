@@ -177,6 +177,7 @@
     </ApplicationDefinition>
     <Compile Include="Admin Objects\ModuleListItem.vb" />
     <Compile Include="Application Objects\AgnesBaseInput.vb" />
+    <Compile Include="Application Objects\BinarySlider.vb" />
     <Compile Include="Application Objects\MonthChooser.vb" />
     <Compile Include="Application Objects\PercentBox.vb" />
     <Compile Include="Application Objects\YearChooser.vb" />
@@ -371,9 +372,6 @@
     <Compile Include="Vendor Objects\ScheduleStation.vb" />
     <Compile Include="Vendor Objects\TruckSchedulePrintMatrix.vb" />
     <Compile Include="Vendor Objects\VendorInStation.vb" />
-    <Compile Include="XAML Components\Shared\YesNoSlider.xaml.vb">
-      <DependentUpon>YesNoSlider.xaml</DependentUpon>
-    </Compile>
     <Compile Include="XAML Components\EasterEggs\Birthday.xaml.vb">
       <DependentUpon>Birthday.xaml</DependentUpon>
     </Compile>
@@ -747,10 +745,6 @@
       <DependentUpon>WCRHello.xaml</DependentUpon>
     </Compile>
     <Compile Include="WCR Objects\WCRObject.vb" />
-    <Page Include="XAML Components\Shared\YesNoSlider.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="XAML Components\EasterEggs\Birthday.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
