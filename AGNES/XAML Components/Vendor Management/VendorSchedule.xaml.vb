@@ -316,14 +316,20 @@ Public Class VendorSchedule
         CollapseBrands()
     End Sub
 
-    Private Sub VendorEditor(sender As Object, e As MouseButtonEventArgs) Handles imgEdit.MouseLeftButtonDown
+    Private Sub OpenVendorEditor(sender As Object, e As MouseButtonEventArgs) Handles imgEdit.MouseLeftButtonDown
         VendorEdit = New VendorEditor
         VendorEdit.ShowDialog()
         VendorEdit = Nothing
     End Sub
 
-    Private Sub EnterReceipts(sender As Object, e As MouseButtonEventArgs) Handles imgReceipts.MouseLeftButtonDown
-        'CRITICAL: CREATE RECEIPT ENTRY FORM
+    Private Sub OpenLocationEditor(sender As Object, e As MouseButtonEventArgs) Handles imgLocations.MouseLeftButtonDown
+        Dim LocEdit As New LocationEditor
+        LocEdit.ShowDialog()
+
+    End Sub
+
+    Private Sub OpenReceiptEditor(sender As Object, e As MouseButtonEventArgs) Handles imgReceipts.MouseLeftButtonDown
+        'CRITICAL: CREATE RECEIPT ENTRY EDITOR
     End Sub
 
 #End Region
@@ -975,7 +981,6 @@ Public Class VendorSchedule
         LoadSchedule(0)
         SaveStatus = 1
     End Sub
-
 
 #End Region
 

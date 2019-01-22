@@ -371,6 +371,9 @@
     <Compile Include="Vendor Objects\ScheduleStation.vb" />
     <Compile Include="Vendor Objects\TruckSchedulePrintMatrix.vb" />
     <Compile Include="Vendor Objects\VendorInStation.vb" />
+    <Compile Include="XAML Components\Shared\YesNoSlider.xaml.vb">
+      <DependentUpon>YesNoSlider.xaml</DependentUpon>
+    </Compile>
     <Compile Include="XAML Components\EasterEggs\Birthday.xaml.vb">
       <DependentUpon>Birthday.xaml</DependentUpon>
     </Compile>
@@ -725,6 +728,9 @@
     <Compile Include="XAML Components\Training\Training.xaml.vb">
       <DependentUpon>Training.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XAML Components\Vendor Management\LocationEditor.xaml.vb">
+      <DependentUpon>LocationEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="XAML Components\Vendor Management\VendorEditor.xaml.vb">
       <DependentUpon>VendorEditor.xaml</DependentUpon>
     </Compile>
@@ -741,6 +747,10 @@
       <DependentUpon>WCRHello.xaml</DependentUpon>
     </Compile>
     <Compile Include="WCR Objects\WCRObject.vb" />
+    <Page Include="XAML Components\Shared\YesNoSlider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="XAML Components\EasterEggs\Birthday.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -842,6 +852,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="XAML Components\Training\Training.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XAML Components\Vendor Management\LocationEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

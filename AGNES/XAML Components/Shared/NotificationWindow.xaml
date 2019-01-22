@@ -34,7 +34,7 @@
         <Image x:Name="imgGoToModule" HorizontalAlignment="Left" Height="42" Margin="182,236,0,0" VerticalAlignment="Top" Width="42" Source="/AGNES;component/Resources/GoToModule.png" ToolTip="Jump to appropriate module"/>
         <Image x:Name="imgRightCheck" HorizontalAlignment="Left" Height="42" Margin="291,236,0,0" VerticalAlignment="Top" Width="42" Source="/AGNES;component/Resources/applycheck.png" ToolTip="Okay, got it!"/>
         <Image x:Name="imgNextNotification" HorizontalAlignment="Left" Height="42" Margin="291,236,0,0" VerticalAlignment="Top" Width="42" Source="/AGNES;component/Resources/NextNotification.png" ToolTip="View next notification" Visibility="Collapsed"/>
-        <Image x:Name="imgDismiss" HorizontalAlignment="Left" Height="42" Margin="291,236,0,0" VerticalAlignment="Top" Width="42" Source="/AGNES;component/Resources/NotificationDismiss.png" ToolTip="Okay, got it!" Visibility="Collapsed"/>
+        <Image x:Name="imgDismiss" HorizontalAlignment="Left" Height="42" Margin="291,236,0,0" VerticalAlignment="Top" Width="42" Source="/AGNES;component/Resources/NotificationDismiss.png" ToolTip="Dismiss notification (nobody else will receive it)" Visibility="Collapsed"/>
 
 
     </Grid>
