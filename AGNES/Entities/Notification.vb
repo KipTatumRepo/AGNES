@@ -21,5 +21,7 @@ Partial Public Class Notification
     Public Property Snooze As Boolean
     Public Property RequireConfirm As Boolean
     Public Property ActionPoint As String
+    Public Property Dismissable As Boolean
+    Public Property DismissedBy As String
 
 End Class

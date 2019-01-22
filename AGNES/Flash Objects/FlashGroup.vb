@@ -2,6 +2,7 @@
     Inherits DockPanel
     'REFRESH: REPLACE TEXTBOXES WITH PERCENTAGE BOXES
     'REFRESH: REPLACE REFERENCED WEEK, PERIOD, AND UNIT CHOOSERS WITH ACTUALS BOUND TO XAML PAGES
+
 #Region "Properties"
     Public GroupCategory As String
     Public FlashVal As CurrencyBox
@@ -301,7 +302,6 @@
     End Function
 
     Public Sub Update(TargetFlashGroup As FlashGroup)
-        'CRITICAL: CHANGING SALES DOES NOT TRIGGER A COMPLETE REFRESH OF PERCENTAGES ACROSS OTHER CATEGORIES
         '//     Recalculate subtotals, if applicable
         If TargetFlashGroup.GroupIsSubTotal = True Then
             Dim flashsub As Double, budgetsub As Double, forecastsub As Double

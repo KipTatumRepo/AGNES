@@ -180,7 +180,6 @@ Public Class VendorEditor
                 AddNewVendor()
                 txtInvoiceName.IsEnabled = True
                 numSupplierCode.IsEnabled = True
-                'CRITICAL: ADD NOTIFICATION HANDLER FOR STORE ID
             Case Else ' Existing vendor selected
                 If ActiveVendor IsNot Nothing Then
                     If ChangesMade = True Then
@@ -236,6 +235,15 @@ Public Class VendorEditor
             VendType = ActiveVendor.VendorType
         Else
             VendType = cbxVendorType.SelectedIndex
+            cbxCamType.IsEnabled = True
+            dtpCamStart.IsEnabled = True
+            curCam.IsEnabled = True
+            percCam.IsEnabled = True
+            cbxCamDue.IsEditable = True
+            cbxKpiType.IsEnabled = True
+            dtpKpiStart.IsEnabled = True
+            curKpi.IsEnabled = True
+            percKpi.IsEnabled = True
         End If
         Select Case VendType
             Case 0  ' Commons Food
@@ -243,7 +251,6 @@ Public Class VendorEditor
                 gbxCommonsGeneral.Visibility = Visibility.Visible
                 gbxNonRetail.Visibility = Visibility.Visible
                 gbxCommonsFood.Visibility = Visibility.Visible
-
             Case 1  ' Commons Retail
                 Height = 320
                 gbxCommonsGeneral.Visibility = Visibility.Visible
@@ -419,6 +426,15 @@ Public Class VendorEditor
         txtInvoiceName.IsEnabled = False
         numSupplierCode.IsEnabled = False
         cbxVendorType.IsEnabled = False
+        cbxCamType.IsEnabled = False
+        dtpCamStart.IsEnabled = False
+        curCam.IsEnabled = False
+        percCam.IsEnabled = False
+        cbxCamDue.IsEditable = False
+        cbxKpiType.IsEnabled = False
+        dtpKpiStart.IsEnabled = False
+        curKpi.IsEnabled = False
+        percKpi.IsEnabled = False
     End Sub
 
     Private Sub FlagChanges() Handles cbxStatus.SelectionChanged, dtpContract.SelectedDateChanged, dtpInsurance.SelectedDateChanged,
@@ -431,89 +447,80 @@ Public Class VendorEditor
 
     Private Sub CamSelected(sender As Object, e As SelectionChangedEventArgs) Handles cbxCamType.SelectionChanged
         If SystemLoad = False Then ChangesMade = True
-        If NewVendor = True Then
-            Select Case cbxCamType.SelectedIndex
-                Case 1  ' Percentage
-                    lblCamStart.Visibility = Visibility.Visible
-                    dtpCamStart.Visibility = Visibility.Visible
-                    dtpCamStart.SelectedDate = Nothing
-                    dtpCamStart.DisplayDate = Now()
-                    lblCamAmt.Visibility = Visibility.Visible
-                    percCam.Visibility = Visibility.Visible
-                    percCam.SetAmount = 0
-                    curCam.Visibility = Visibility.Collapsed
-                    lblCamDue.Visibility = Visibility.Visible
-                    cbxCamDue.Visibility = Visibility.Visible
-                    curCam.SetAmount = 0
-                Case 2  ' Flat
-                    lblCamStart.Visibility = Visibility.Visible
-                    dtpCamStart.Visibility = Visibility.Visible
-                    dtpCamStart.SelectedDate = Nothing
-                    dtpCamStart.DisplayDate = Now()
-                    lblCamAmt.Visibility = Visibility.Visible
-                    curCam.Visibility = Visibility.Visible
-                    curCam.SetAmount = 0
-                    percCam.Visibility = Visibility.Collapsed
-                    lblCamDue.Visibility = Visibility.Visible
-                    cbxCamDue.Visibility = Visibility.Visible
-                    percCam.SetAmount = 0
-                Case Else
-                    lblCamStart.Visibility = Visibility.Collapsed
-                    dtpCamStart.Visibility = Visibility.Collapsed
-                    dtpCamStart.SelectedDate = Nothing
-                    dtpCamStart.DisplayDate = Now()
+        Select Case cbxCamType.SelectedIndex
+            Case 1  ' Percentage
+                lblCamStart.Visibility = Visibility.Visible
+                dtpCamStart.Visibility = Visibility.Visible
+                dtpCamStart.SelectedDate = Nothing
+                dtpCamStart.DisplayDate = Now()
+                lblCamAmt.Visibility = Visibility.Visible
+                percCam.Visibility = Visibility.Visible
+                percCam.SetAmount = 0
+                curCam.Visibility = Visibility.Collapsed
+                lblCamDue.Visibility = Visibility.Visible
+                cbxCamDue.Visibility = Visibility.Visible
+                curCam.SetAmount = 0
+            Case 2  ' Flat
+                lblCamStart.Visibility = Visibility.Visible
+                dtpCamStart.Visibility = Visibility.Visible
+                dtpCamStart.SelectedDate = Nothing
+                dtpCamStart.DisplayDate = Now()
+                lblCamAmt.Visibility = Visibility.Visible
+                curCam.Visibility = Visibility.Visible
+                curCam.SetAmount = 0
+                percCam.Visibility = Visibility.Collapsed
+                lblCamDue.Visibility = Visibility.Visible
+                cbxCamDue.Visibility = Visibility.Visible
+                percCam.SetAmount = 0
+            Case Else
+                lblCamStart.Visibility = Visibility.Collapsed
+                dtpCamStart.Visibility = Visibility.Collapsed
+                dtpCamStart.SelectedDate = Nothing
+                dtpCamStart.DisplayDate = Now()
 
-                    lblCamAmt.Visibility = Visibility.Collapsed
-                    curCam.Visibility = Visibility.Collapsed
-                    curCam.SetAmount = 0
-                    percCam.Visibility = Visibility.Collapsed
-                    percCam.SetAmount = 0
-            End Select
-        Else
-            'CRITICAL: ADD ROUTINE FOR NEW CAM TYPE FOR EXISTING VENDOR
-        End If
-
+                lblCamAmt.Visibility = Visibility.Collapsed
+                curCam.Visibility = Visibility.Collapsed
+                curCam.SetAmount = 0
+                percCam.Visibility = Visibility.Collapsed
+                percCam.SetAmount = 0
+        End Select
     End Sub
 
     Private Sub KPISelected(sender As Object, e As SelectionChangedEventArgs) Handles cbxKpiType.SelectionChanged
         If SystemLoad = False Then ChangesMade = True
-        If NewVendor = True Then
-            Select Case cbxKpiType.SelectedIndex
-                Case 1  ' Percentage
-                    lblKpiStart.Visibility = Visibility.Visible
-                    dtpKpiStart.Visibility = Visibility.Visible
-                    dtpKpiStart.SelectedDate = Nothing
-                    dtpKpiStart.DisplayDate = Now()
-                    lblKpiAmt.Visibility = Visibility.Visible
-                    percKpi.Visibility = Visibility.Visible
-                    percKpi.SetAmount = 0
-                    curKpi.Visibility = Visibility.Collapsed
-                    curKpi.SetAmount = 0
-                Case 2  ' Flat
-                    lblKpiStart.Visibility = Visibility.Visible
-                    dtpKpiStart.Visibility = Visibility.Visible
-                    dtpKpiStart.SelectedDate = Nothing
-                    dtpKpiStart.DisplayDate = Now()
-                    lblKpiAmt.Visibility = Visibility.Visible
-                    curKpi.Visibility = Visibility.Visible
-                    curKpi.SetAmount = 0
-                    percKpi.Visibility = Visibility.Collapsed
-                    percKpi.SetAmount = 0
-                Case Else
-                    lblKpiStart.Visibility = Visibility.Collapsed
-                    dtpKpiStart.Visibility = Visibility.Collapsed
-                    dtpKpiStart.SelectedDate = Nothing
-                    dtpKpiStart.DisplayDate = Now()
+        Select Case cbxKpiType.SelectedIndex
+            Case 1  ' Percentage
+                lblKpiStart.Visibility = Visibility.Visible
+                dtpKpiStart.Visibility = Visibility.Visible
+                dtpKpiStart.SelectedDate = Nothing
+                dtpKpiStart.DisplayDate = Now()
+                lblKpiAmt.Visibility = Visibility.Visible
+                percKpi.Visibility = Visibility.Visible
+                percKpi.SetAmount = 0
+                curKpi.Visibility = Visibility.Collapsed
+                curKpi.SetAmount = 0
+            Case 2  ' Flat
+                lblKpiStart.Visibility = Visibility.Visible
+                dtpKpiStart.Visibility = Visibility.Visible
+                dtpKpiStart.SelectedDate = Nothing
+                dtpKpiStart.DisplayDate = Now()
+                lblKpiAmt.Visibility = Visibility.Visible
+                curKpi.Visibility = Visibility.Visible
+                curKpi.SetAmount = 0
+                percKpi.Visibility = Visibility.Collapsed
+                percKpi.SetAmount = 0
+            Case Else
+                lblKpiStart.Visibility = Visibility.Collapsed
+                dtpKpiStart.Visibility = Visibility.Collapsed
+                dtpKpiStart.SelectedDate = Nothing
+                dtpKpiStart.DisplayDate = Now()
 
-                    lblKpiAmt.Visibility = Visibility.Collapsed
-                    curKpi.Visibility = Visibility.Collapsed
-                    curKpi.SetAmount = 0
-                    percKpi.Visibility = Visibility.Collapsed
-                    percKpi.SetAmount = 0
-            End Select
-        Else
-            'CRITICAL: ADD ROUTINE FOR NEW KPI TYPE FOR EXISTING VENDOR
-        End If
+                lblKpiAmt.Visibility = Visibility.Collapsed
+                curKpi.Visibility = Visibility.Collapsed
+                curKpi.SetAmount = 0
+                percKpi.Visibility = Visibility.Collapsed
+                percKpi.SetAmount = 0
+        End Select
     End Sub
 
     Private Sub AddNewVendor()
@@ -637,8 +644,8 @@ Public Class VendorEditor
     End Sub
 
     Private Sub SaveNewVendor()
-        ValidateEntry()
-        Dim nv As New VendorInfo
+        If ValidateEntry(cbxVendorType.SelectedIndex) = False Then Exit Sub
+        Dim nv As New VendorInfo, NotifyAboutStore As Boolean = False
         With nv
             .Name = cbxVendorName.Text
             .VendorType = cbxVendorType.SelectedIndex
@@ -663,7 +670,7 @@ Public Class VendorEditor
                     .Invoice = txtInvoiceName.Text
                     .Supplier = numSupplierCode.SetAmount
                 End With
-
+                NotifyAboutStore = True
             Case 1  ' Commons Retail
                 With nv
                     .CAMType = cbxCamType.SelectedIndex + 1
@@ -688,6 +695,7 @@ Public Class VendorEditor
                     .FoodSubType = GetFoodSubTypeId(cbxFoodSubType.Text)
                     .ProductClassId = GetProductClassId(cbxCommonsProductClass.Text)
                 End With
+                NotifyAboutStore = True
 
             Case 3  ' Food Truck
                 With nv
@@ -697,7 +705,6 @@ Public Class VendorEditor
                     .FoodType = GetFoodTypeId(cbxFoodType.Text)
                     .FoodSubType = GetFoodSubTypeId(cbxFoodSubType.Text)
                     .MaximumDailyCafes = numDailyCafes.Amount
-
                 End With
 
         End Select
@@ -707,6 +714,7 @@ Public Class VendorEditor
         Try
             VendorData.VendorInfo.Add(nv)
             VendorData.SaveChanges()
+            If NotifyAboutStore = True Then AddStoreNotification(nv.Name)
         Catch ex As Exception
             MsgBox("Error: " & ex.Message)
         End Try
@@ -719,7 +727,7 @@ Public Class VendorEditor
     End Sub
 
     Private Sub UpdateVendor()
-        ValidateEntry()
+        If ValidateEntry(ActiveVendor.VendorType) = False Then Exit Sub
         With ActiveVendor
             .Active = (1 - cbxStatus.SelectedIndex)
             .InsuranceExpiration = dtpInsurance.SelectedDate
@@ -729,37 +737,9 @@ Public Class VendorEditor
         Select Case cbxVendorType.SelectedIndex
             Case 0  ' Commons Food
                 With ActiveVendor
-
-                    'CRITICAL: ADD ROUTINE FOR NEW CAM TYPE FOR EXISTING VENDOR
-
-                    .CAMType = cbxCamType.SelectedIndex + 1
-                    .CAMStart = dtpCamStart.SelectedDate
-                    .CAMAmount = curCam.SetAmount
-                    .CAMAmount = percCam.SetAmount
-
-                    'CRITICAL: ADD ROUTINE FOR NEW KPI TYPE FOR EXISTING VENDOR
-
-
-                    .KPIType = cbxKpiType.SelectedIndex + 1
-                    .KPIStart = dtpKpiStart.SelectedDate
-                    .KPIAmount = curKpi.SetAmount
-                    .KPIAmount = percKpi.SetAmount
                     .FoodType = GetFoodTypeId(cbxFoodType.Text)
                     .FoodSubType = GetFoodSubTypeId(cbxFoodSubType.Text)
                     .Invoice = txtInvoiceName.Text
-                End With
-
-            Case 1  ' Commons Retail
-                With ActiveVendor
-                    .CAMType = cbxCamType.SelectedIndex + 1
-                    .CAMStart = dtpCamStart.SelectedDate
-                    .CAMAmount = curCam.SetAmount
-                    .CAMAmount = percCam.SetAmount
-
-                    .KPIType = cbxKpiType.SelectedIndex + 1
-                    .KPIStart = dtpKpiStart.SelectedDate
-                    .KPIAmount = curKpi.SetAmount
-                    .KPIAmount = percKpi.SetAmount
                 End With
 
             Case 2  ' Local Brand
@@ -791,9 +771,210 @@ Public Class VendorEditor
         Close()
     End Sub
 
-    Private Sub ValidateEntry()
+    Private Function ValidateEntry(VendType As Byte) As Boolean
         Dim ph As String = ""
-        ' Verify daily max is saved if focus has not been lost
+        Dim errorlist As New List(Of String)
+        '// Validate basics, which should never be in error except through deliberate stupidity
+        If cbxVendorName.SelectedIndex = -1 Or cbxVendorName.Text = "" Then
+            errorlist.Add("Vendor name missing")
+        End If
+        If cbxVendorType.SelectedIndex = -1 Or cbxVendorType.Text = "" Then
+            errorlist.Add("Vendor type missing")
+        End If
+        If cbxStatus.SelectedIndex = -1 Or cbxStatus.Text = "" Then
+            errorlist.Add("Vendor status missing")
+        End If
+        If dtpInsurance.SelectedDate Is Nothing Then
+            errorlist.Add("Insurance start date missing")
+        End If
+        If dtpContract.SelectedDate Is Nothing Then
+            errorlist.Add("Contract start date missing")
+        End If
+
+        Select Case VendType
+            Case 0  ' Commons Food
+                If cbxCamType.SelectedIndex = -1 Or cbxCamType.Text = "" Then
+                    errorlist.Add("CAM type missing")
+                End If
+                Select Case cbxCamType.SelectedIndex
+                    Case 0  ' None
+                    Case 1  ' Percentage
+                        If dtpCamStart.SelectedDate Is Nothing Then
+                            errorlist.Add("CAM start date missing")
+                        End If
+                        If percCam.SetAmount = 0 Then
+                            errorlist.Add("CAM percentage missing")
+                        End If
+                    Case 2  ' Flat
+                        If dtpCamStart.SelectedDate Is Nothing Then
+                            errorlist.Add("CAM start date missing")
+                        End If
+                        If curCam.SetAmount = 0 Then
+                            errorlist.Add("CAM amount missing")
+                        End If
+                End Select
+
+                If cbxKpiType.SelectedIndex = -1 Or cbxKpiType.Text = "" Then
+                    errorlist.Add("KPI type missing")
+                End If
+                Select Case cbxKpiType.SelectedIndex
+                    Case 0  ' None
+                    Case 1  ' Percentage
+                        If dtpKpiStart.SelectedDate Is Nothing Then
+                            errorlist.Add("KPI start date missing")
+                        End If
+                        If percKpi.SetAmount = 0 Then
+                            errorlist.Add("KPI percentage missing")
+                        End If
+                    Case 2  ' Flat
+                        If dtpKpiStart.SelectedDate Is Nothing Then
+                            errorlist.Add("KPI start date missing")
+                        End If
+                        If curKpi.SetAmount = 0 Then
+                            errorlist.Add("KPI amount missing")
+                        End If
+                End Select
+
+                If txtInvoiceName.Text = "" Then
+                    errorlist.Add("Invoice name missing")
+                End If
+
+                If numSupplierCode.Amount = 0 Then
+                    errorlist.Add("Supplier missing")
+                End If
+
+                If cbxFoodType.SelectedIndex = -1 Or cbxFoodType.Text = "" Then
+                    errorlist.Add("Food type missing")
+                End If
+
+                If cbxFoodSubType.SelectedIndex = -1 Or cbxFoodSubType.Text = "" Then
+                    errorlist.Add("Food subtype missing")
+                End If
+
+            Case 1  ' Commons Retail
+                If cbxCamType.SelectedIndex = -1 Or cbxCamType.Text = "" Then
+                    errorlist.Add("CAM type missing")
+                End If
+                Select Case cbxCamType.SelectedIndex
+                    Case 0  ' None
+                    Case 1  ' Percentage
+                        If dtpCamStart.SelectedDate Is Nothing Then
+                            errorlist.Add("CAM start date missing")
+                        End If
+                        If percCam.SetAmount = 0 Then
+                            errorlist.Add("CAM percentage missing")
+                        End If
+                    Case 2  ' Flat
+                        If dtpCamStart.SelectedDate Is Nothing Then
+                            errorlist.Add("CAM start date missing")
+                        End If
+                        If curCam.SetAmount = 0 Then
+                            errorlist.Add("CAM amount missing")
+                        End If
+                End Select
+
+                If cbxKpiType.SelectedIndex = -1 Or cbxKpiType.Text = "" Then
+                    errorlist.Add("KPI type missing")
+                End If
+                Select Case cbxKpiType.SelectedIndex
+                    Case 0  ' None
+                    Case 1  ' Percentage
+                        If dtpKpiStart.SelectedDate Is Nothing Then
+                            errorlist.Add("KPI start date missing")
+                        End If
+                        If percKpi.SetAmount = 0 Then
+                            errorlist.Add("KPI percentage missing")
+                        End If
+                    Case 2  ' Flat
+                        If dtpKpiStart.SelectedDate Is Nothing Then
+                            errorlist.Add("KPI start date missing")
+                        End If
+                        If curKpi.SetAmount = 0 Then
+                            errorlist.Add("KPI amount missing")
+                        End If
+                End Select
+
+                If txtInvoiceName.Text = "" Then
+                    errorlist.Add("Invoice name missing")
+                End If
+
+                If numSupplierCode.Amount = 0 Then
+                    errorlist.Add("Supplier missing")
+                End If
+
+            Case 2  ' Local Brand
+                If cbxFoodType.SelectedIndex = -1 Or cbxFoodType.Text = "" Then
+                    errorlist.Add("Food type missing")
+                End If
+
+                If cbxFoodSubType.SelectedIndex = -1 Or cbxFoodSubType.Text = "" Then
+                    errorlist.Add("Food subtype missing")
+                End If
+
+                If numDailyCafes.Amount = 0 Then
+                    errorlist.Add("Max daily cafes missing")
+                End If
+
+                If cbxCommonsProductClass.SelectedIndex = -1 Or cbxCommonsProductClass.Text = "" Then
+                    errorlist.Add("Product class selection missing")
+                End If
+
+            Case 3  ' Food Truck
+                If cbxFoodType.SelectedIndex = -1 Or cbxFoodType.Text = "" Then
+                    errorlist.Add("Food type missing")
+                End If
+
+                If cbxFoodSubType.SelectedIndex = -1 Or cbxFoodSubType.Text = "" Then
+                    errorlist.Add("Food subtype missing")
+                End If
+
+                If numDailyCafes.Amount = 0 Then
+                    errorlist.Add("Max daily locations missing")
+                End If
+
+        End Select
+
+        If errorlist.Count > 0 Then
+            Dim errmsg As String = ""
+            For Each li In errorlist
+                errmsg = errmsg & li & Chr(13)
+            Next
+            Dim amsg As New AgnesMessageBox(AgnesMessageBox.MsgBoxSize.Medium, AgnesMessageBox.MsgBoxLayout.TextAndImage, AgnesMessageBox.MsgBoxType.OkOnly, 12,,, "Unable to save", errmsg, AgnesMessageBox.ImageType.Danger)
+            amsg.ShowDialog()
+            amsg.Close()
+            Return False
+        End If
+
+        Return True
+    End Function
+
+    Private Sub OnceLoaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
+        If StartVendor <> "" Then
+            StartVendorIndex = cbxVendorName.Items.IndexOf(StartVendor)
+            cbxVendorName.SelectedIndex = StartVendorIndex
+        End If
+
+    End Sub
+
+    Private Sub AddStoreNotification(vendorname)
+        Dim NewNote As New Notification
+        With NewNote
+            .StartDate = Now()
+            .EndDate = Now.AddDays(365)
+            .Audience = 999
+            .Message = "A new Vendor -" & vendorname & "- has been created.  A store ID required."
+            .Creator = 0
+            .OneOffNotification = False
+            .Snooze = True
+            .RequireConfirm = False
+            .Dismissable = True
+        End With
+        Try
+            AGNESShared.Notifications.Add(NewNote)
+            AGNESShared.SaveChanges()
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Private Function VerifyDiscardChanges() As Boolean
@@ -811,13 +992,6 @@ Public Class VendorEditor
         Return True
     End Function
 
-    Private Sub OnceLoaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
-        If StartVendor <> "" Then
-            StartVendorIndex = cbxVendorName.Items.IndexOf(StartVendor)
-            cbxVendorName.SelectedIndex = StartVendorIndex
-        End If
-
-    End Sub
 
 #End Region
 
