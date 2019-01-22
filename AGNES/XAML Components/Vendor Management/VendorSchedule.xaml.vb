@@ -325,7 +325,6 @@ Public Class VendorSchedule
     Private Sub OpenLocationEditor(sender As Object, e As MouseButtonEventArgs) Handles imgLocations.MouseLeftButtonDown
         Dim LocEdit As New LocationEditor
         LocEdit.ShowDialog()
-
     End Sub
 
     Private Sub OpenReceiptEditor(sender As Object, e As MouseButtonEventArgs) Handles imgReceipts.MouseLeftButtonDown
