@@ -16,26 +16,44 @@ namespace AGNESCSharp
     public partial class HRSearch : Window
     {
         #region Variables
-        byte? violationAmount;
-        int selectedSearch;
-        int selectedSearchType;
-        long SelectOccurrence;
-        long? assocNumber;
-        ComboBoxItem searchTable;
-        string selectedOccurrence;
-        string searchTableItem;
-        string lastName;
-        string firstName;
+        //byte? violationAmount;
+        private int selectedSearch;
+        private int selectedSearchType;
+        //int navFromSearch = 1;
+        private long SelectOccurrence;
+        private long? assocNumber;
+        private ComboBoxItem searchTable;
+        private string selectedOccurrence;
+        private string searchTableItem;
+        private string lastName;
+        private string firstName;
         Dictionary<string, int> cbDictionary = new Dictionary<string, int>();
-        DateTime today = DateTime.Now;
-        int empInProbation = 0;
+        private DateTime today = DateTime.Now;
+        private int empInProbation = 0;
+        private int EmpNumber;
+        //Cash Handling Violation Passable Variables
+        public static string CashHandleNumberV;
+        public static int CHSelectedIndexV;
+        public static DateTime? CHDateV;
+        public static string CHNoteV;
+        //Leave Of Absence Passable Variables
+        public static string LOANumberV;
+        public static DateTime? LOADateStartV;
+        public static DateTime? LOADateEndV;
+        public static string LOANoteV;
+        public static int? Approved;
+        public static int? Pending;
+        public static int? ClosedV;
+        public static int? Parental;
+        public static int? Intermittent;
+        public static int? Continuous;
+        //Occurrence Passable Variables
+        public static string OccNumberV;
+        public static DateTime? OccDateV;
+        public static string OccAttViolation;
+        public static byte? OccType;
+        public static string OccNotesV;
 
-        //public static string CashHandleNumberV;
-        //public static int SelectedIndexV;
-        //public static DateTime? CHDateV;
-        //public static string CHNoteV;
-
-       
         #endregion
 
         #region Main
@@ -61,6 +79,156 @@ namespace AGNESCSharp
                 cbi.Tag = item.Value;
                 OccCB.Items.Add(cbi);
             }
+        }
+        #endregion
+
+        #region Public Methods
+        public static int SetIndex(string cbSelection)
+        {
+
+            int index;
+            List<string> cbList = new List<string>();
+            cbList.Add("Consecutive Unexcused Absence");
+            cbList.Add("Early Out");
+            cbList.Add("Failure to follow Meal/Rest break");
+            cbList.Add("Late");
+            cbList.Add("LOA Approved");
+            cbList.Add("LOA Denied");
+            cbList.Add("LOA Pending");
+            cbList.Add("No Call No Show");
+            cbList.Add("Sick, insufficient sick time");
+            cbList.Add("Sick, no sick time available");
+            cbList.Add("Unexcused Absence");
+
+            index = cbList.FindIndex(x => x.StartsWith(cbSelection));
+
+            return index;
+        }
+
+        public static void Report(string firstName, string violationText, double? occPoints, int empInProbation, DateTime earlyDate, int? cashHandleType, long? empId)
+        {
+            int? CashHandleType = cashHandleType;
+            if (cashHandleType == null)
+            {
+                CashHandleType = 100;
+            }
+
+            //get Write up form ready
+            FileInfo myFile = new FileInfo(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+            bool exists = myFile.Exists;
+            switch (empInProbation)
+            {
+                case 0:
+                    //this may be redone
+                    if (CashHandleType == 0)
+                    {
+                        int anyPriorZero = HRCashHandle.CountZeroPoints(earlyDate, empId);
+
+                        if (anyPriorZero == 2)
+                        {
+                            BIMessageBox.Show("Warning", firstName + " Has 2 Prior No Variance Found Violations, 1 More Will Result in a Progressive Counseling",
+                                MessageBoxButton.OK);
+                        }
+
+                        if (anyPriorZero == 3)
+                        {
+                            BIMessageBox.Show("Counseling Form Dialog", "This is " + firstName + "'s Thrid Occurrence For No Variance Found Violations and Requires a WRITTEN Counseling" +
+                                                        " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
+                            Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
+                        }
+                        return;
+                    }
+
+                    if (CashHandleType == 1)
+                    {
+                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Has a Variance Between $3.00 and $20.00 This is an Automatic Progressive Counseling" +
+                            " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
+                        Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
+                        return;
+                    }
+
+                    if (CashHandleType == 2)
+                    {
+                        BIMessageBox.Show("Contact HRBP Dialong", "This Type of Cash Handling Violation Requires Notification of Your DM AND HRBP, Please Contact Them", MessageBoxButton.OK);
+
+                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Has a Variance Greater Than $20.00 This is an Automatic Progressive Counseling" +
+                            " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
+                        Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
+                        return;
+                    }
+
+                    if (occPoints < 4)
+                    {
+                        MessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points");
+                    }
+                    else if (occPoints >= 4 && occPoints < 5)
+                    {
+                        BIMessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points " + (5 - occPoints) + " More Before " + earlyDate.ToShortDateString() + " Will Require A Written Progressive Counseling.");
+                    }
+                    else if (occPoints >= 5 && occPoints < 6)
+                    {
+                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This WRITTEN Warning Form" +
+                                "That I Will Open For You", MessageBoxButton.OK);
+                        if (exists == true)
+                        {
+                            Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
+                        }
+                    }
+                    else if (occPoints >= 6 && occPoints < 7)
+                    {
+                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This FINAL Warning Form" +
+                                "That I Will Open For You", MessageBoxButton.OK);
+                        if (exists == true)
+                        {
+                            Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
+                        }
+                    }
+                    else
+                    {
+                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Print This DISCHARGE Form" +
+                                "That I Will Open For You", MessageBoxButton.OK);
+                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
+                    }
+                    break;
+
+                case 1:
+                    if (violationText == "No Call No Show")
+                    {
+                        BIMessageBox.Show("Termination Form Dialog", "This Update to No Call No Show For The Associate In Their Probationary Period Requires Termination" +
+                            " Please Fill Out and Print This Form", MessageBoxButton.OK);
+                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
+                        //this.Close();
+                        return;
+                    }
+
+                    if (occPoints < 1)
+                    {
+                        BIMessageBox.Show("Warning Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points.  " + (1 - occPoints) +
+                            " Will Require A Written Progressive Counseling", MessageBoxButton.OK);
+                    }
+
+                    else if (occPoints >= 1 && occPoints < 2)
+                    {
+                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points, Please Please Fill Out" +
+                                " and Print This FINAL Warning Form That I will Open For You", MessageBoxButton.OK);
+                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                    }
+                    else
+                    {
+                        BIMessageBox.Show("Termination Form Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points, Please Print This DISCHARGE Form" +
+                                "That I Will Open For You", MessageBoxButton.OK);
+                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
+                    }
+                    break;
+            };
         }
         #endregion
 
@@ -106,7 +274,7 @@ namespace AGNESCSharp
         {
 
             Button button = (Button)e.OriginalSource;
-            UpdateButton.Visibility = Visibility.Collapsed;
+            //UpdateButton.Visibility = Visibility.Collapsed;
             MultipleOccurrenceView.Visibility = Visibility.Collapsed;
             MultipleLOAView.Visibility = Visibility.Collapsed;
             MultipleCashHandleView.Visibility = Visibility.Collapsed;
@@ -167,7 +335,7 @@ namespace AGNESCSharp
 
         private void PID_CellClicked(object sender, MouseButtonEventArgs e)
         {
-            UpdateButton.Visibility = Visibility.Visible;
+            //UpdateButton.Visibility = Visibility.Visible;
             MultipleOccurrencDG.Visibility = Visibility.Collapsed;
             AttLabel.Visibility = Visibility.Collapsed;
             OccCB.Visibility = Visibility.Collapsed;
@@ -190,40 +358,51 @@ namespace AGNESCSharp
 
             foreach (var filteredRow in result)
             {
-                SearchOccDisplayGrid.Visibility = Visibility.Visible;
-                OccNumber.Text = filteredRow.PersNumber.ToString();
-                OccName.Text = filteredRow.FirstName + " " + filteredRow.LastName;
-                OccDate.SelectedDate = filteredRow.Date;
-                CHOccNumber.Text = filteredRow.PID.ToString();
-                violationAmount = filteredRow.Type;
+                //SearchOccDisplayGrid.Visibility = Visibility.Visible;
+                //OccNumber.Text = filteredRow.PersNumber.ToString();
+                //OccName.Text = filteredRow.FirstName + " " + filteredRow.LastName;
+                //OccDate.SelectedDate = filteredRow.Date;
+                //CHOccNumber.Text = filteredRow.PID.ToString();
+                //violationAmount = filteredRow.Type;
 
                 if (filteredRow.AttendanceViolation != null)
                 {
-                    attendanceViolation = filteredRow.AttendanceViolation.ToString();
-                    OccCB.Visibility = Visibility.Visible;
-                    AttLabel.Visibility = Visibility.Visible;
-                    OccCB.SelectedIndex = SetIndex(attendanceViolation);
-                }
-                else
-                {
-                    OccCB.SelectedIndex = -1;
-                    OccCB.Visibility = Visibility.Collapsed;
-                    AttLabel.Visibility = Visibility.Collapsed;
+                    OccNumberV = filteredRow.PID.ToString();
+                    OccDateV = filteredRow.Date;
+                    OccAttViolation = filteredRow.AttendanceViolation;
+                    OccType = filteredRow.Type;
+                    OccNotesV = filteredRow.Notes;
+
+
+                //    attendanceViolation = filteredRow.AttendanceViolation.ToString();
+                //    OccCB.Visibility = Visibility.Visible;
+                //    AttLabel.Visibility = Visibility.Visible;
+                //    OccCB.SelectedIndex = SetIndex(attendanceViolation);
+                //}
+                //else
+                //{
+                //    OccCB.SelectedIndex = -1;
+                //    OccCB.Visibility = Visibility.Collapsed;
+                //    AttLabel.Visibility = Visibility.Collapsed;
                 }
 
-                byte? type = filteredRow.Type;
+                //byte? type = filteredRow.Type;
                 
-                OccNotes.Text = filteredRow.Notes;
+                //OccNotes.Text = filteredRow.Notes;
             }
-            UpdateButton.Visibility = Visibility.Visible;
+
+            EmpNumber = (int)assocNumber;
+            Window newWindow = new HROccurrence(firstName, EmpNumber, empInProbation, 1);
+            newWindow.ShowDialog();
+            //UpdateButton.Visibility = Visibility.Visible;
         }
 
         private void LOA_PID_CellClicked(object sender, MouseButtonEventArgs e)
         {
-            DateTime? dateStart;
-            DateTime? dateEnd;
+            //DateTime? dateStart;
+            //DateTime? dateEnd;
             MultipleLOADG.Visibility = Visibility.Collapsed;
-            UpdateButton.Visibility = Visibility.Visible;
+            //UpdateButton.Visibility = Visibility.Visible;
             if (MultipleLOADG.SelectedItem == null) return;
 
             object row = MultipleLOADG.SelectedValue;
@@ -241,12 +420,12 @@ namespace AGNESCSharp
 
             foreach (var filteredRow in result)
             {
-                LOADisplayGrid.Visibility = Visibility.Visible;
-                LeaveNumber.Text = filteredRow.PID.ToString();
-                dateStart = filteredRow.DateStart;
-                dateEnd = filteredRow.DateEnd;
-                BeginLeave.SelectedDate = dateStart;
-                EndLeave.SelectedDate = dateEnd;
+                //LOADisplayGrid.Visibility = Visibility.Visible;
+                //LeaveNumber.Text = filteredRow.PID.ToString();
+                //dateStart = filteredRow.DateStart;
+                //dateEnd = filteredRow.DateEnd;
+                //BeginLeave.SelectedDate = dateStart;
+                //EndLeave.SelectedDate = dateEnd;
 
                 if (filteredRow.Pending == 1)
                 {
@@ -265,10 +444,24 @@ namespace AGNESCSharp
                     ParentalBox.IsChecked = true;
                 }
 
-                LOANote.Text = filteredRow.Notes;
+                //LOANote.Text = filteredRow.Notes;
+                LOANumberV = filteredRow.PID.ToString();
+                LOADateStartV = filteredRow.DateStart;
+                LOADateEndV = filteredRow.DateEnd;
+                LOANoteV = filteredRow.Notes;
+                Approved = filteredRow.Approved;
+                Pending = filteredRow.Pending;
+                ClosedV = filteredRow.Closed;
+                Parental = filteredRow.Parental;
+                Continuous = filteredRow.Continuous;
+                Intermittent = filteredRow.Intermittent;
 
             }
-            UpdateButton.Visibility = Visibility.Visible;
+            EmpNumber = (int)assocNumber;
+            Window newWindow = new HRLeave(firstName, EmpNumber, 1);
+            newWindow.ShowDialog();
+            //UpdateButton.Visibility = Visibility.Visible;
+            //UpdateButton.Visibility = Visibility.Visible;
         }
 
         private void CashCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -278,9 +471,11 @@ namespace AGNESCSharp
 
         private void CashHandle_PID_CellClicked(object sender, MouseButtonEventArgs e)
         {
-            UpdateButton.Visibility = Visibility.Visible;
+            //UpdateButton.Visibility = Visibility.Visible;
             MultipleCashHandleDG.Visibility = Visibility.Collapsed;
-            
+            //int EmpNumber;
+            //int PID;
+
             if (MultipleCashHandleDG.SelectedItem == null) return;
 
             object row = MultipleCashHandleDG.SelectedValue;
@@ -298,365 +493,24 @@ namespace AGNESCSharp
 
             foreach (var filteredRow in result)
             {
-                CashHandleDisplayGrid.Visibility = Visibility.Visible;
-                CashHandleNumber.Text = filteredRow.PID.ToString();
-                CashCB.SelectedIndex = Convert.ToInt32(filteredRow.Type);
-                CHOccurrenceDP.SelectedDate = filteredRow.Date;
-                CHNote.Text = filteredRow.Notes;
-                violationAmount = filteredRow.Type;
+                //CashHandleDisplayGrid.Visibility = Visibility.Visible;
+                //CashHandleNumber.Text = filteredRow.PID.ToString();
+                //CashCB.SelectedIndex = Convert.ToInt32(filteredRow.Type);
+                //CHOccurrenceDP.SelectedDate = filteredRow.Date;
+                //CHNote.Text = filteredRow.Notes;
+                //violationAmount = filteredRow.Type;
 
-                #region Work on this for v2 
                 //set public static variable to carry from here to LOA Window when datagrid selection is made
-                //CashHandleNumberV = filteredRow.PID.ToString(); 
-                //SelectedIndexV = Convert.ToInt32(filteredRow.Type);
-                //CHDateV = filteredRow.Date;
-                //CHNoteV = filteredRow.Notes;
-                #endregion
+                CashHandleNumberV = filteredRow.PID.ToString();
+                CHSelectedIndexV = Convert.ToInt32(filteredRow.Type);
+                CHDateV = filteredRow.Date;
+                CHNoteV = filteredRow.Notes;
+               
             }
-            UpdateButton.Visibility = Visibility.Visible;
-        }
-
-        private void UpdateButton_Click(object sender, RoutedEventArgs e)
-        {
-            AGNESEntity agnesdb = new AGNESEntity();
-
-            //Occurrence Violation Selected
-            if (selectedSearchType == 0)
-            {
-                string selectOccurrence = CHOccNumber.Text;
-                byte type = 0;
-                string violationText;
-                SelectOccurrence = Convert.ToInt64(selectOccurrence);
-
-                using (var db = new AGNESEntity())
-                {
-                    var result = db.Occurrences.SingleOrDefault(f => f.PID == SelectOccurrence);
-                    if (result != null)
-                    {
-                        byte? oldType = result.Type;
-                        ComboBoxItem cbi = new ComboBoxItem();
-                        cbi = (ComboBoxItem)OccCB.SelectedItem;
-                        type = Convert.ToByte(cbi.Tag);
-                        violationText = cbi.Content.ToString();
-                        result.AttendanceViolation = violationText;
-                        result.Type = type;
-                        result.Date = OccDate.SelectedDate;
-                        result.Notes = OccNotes.Text;
-
-                        DateTime date = (DateTime)OccDate.SelectedDate;
-                        (DateTime earlyDate, double? occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber, selectedSearchType);
-
-                        if (type < violationAmount)
-                        {
-                            decimal compareOccPoints = (decimal)occPoints;
-                            decimal compareType = (decimal)type;
-                            decimal quotientOldType = (decimal)oldType / 2;
-                            decimal quotientCompareType = (decimal)compareType / 2;
-                            var messageBoxResult = BIMessageBox.Show("Occurrence Point Reduction Dialog", "The Selected Violation Will Result In A Reduction Of Occurrence Points From " + occPoints +
-                               " To " + (compareOccPoints - (quotientOldType - quotientCompareType)) + " For " + firstName + " and May Require Removal of A Written Counseling, Do You Wish To Continue?", MessageBoxButton.YesNo);
-
-                            if (messageBoxResult != MessageBoxResult.Yes) return;
-                            db.SaveChanges();
-                            MessageBox.Show("Occurrence Record Has Been Updated.");
-                            (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber, selectedSearchType);
-                            Report(firstName, violationText, occPoints, empInProbation, earlyDate, null, null);
-                        }
-                        else
-                        {
-                            try
-                            {
-                                db.SaveChanges();
-                                MessageBox.Show("Occurrence Record Has Been Updated.");
-                                (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber, selectedSearchType);
-                                Report(firstName, violationText, occPoints, empInProbation, earlyDate, null, null);
-
-                                #region DELETE ME AFTER TESTING COMPLETE
-                                //get Write up form ready
-                                //FileInfo myFile = new FileInfo(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
-                                //bool exists = myFile.Exists;
-
-                                //switch (empInProbation)
-                                //{
-                                //    case 0:
-
-                                //        if (violationText == "No Call No Show")
-                                //        {
-                                //            BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show Requires An Automatic Written Progressive Counseling, Please Fill Out And Print This Form", MessageBoxButton.OK);
-                                //            Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
-                                //        }
-
-                                //        if (occPoints < 4)
-                                //        {
-                                //            MessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points");
-                                //        }
-                                //        else if (occPoints >= 4 && occPoints < 5)
-                                //        {
-                                //            BIMessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points " + (5 - occPoints) + " More Before " + earlyDate.ToShortDateString() + " Will Require A Written Progressive Counseling.");
-                                //        }
-                                //        else if (occPoints >= 5 && occPoints < 6)
-                                //        {
-                                //            BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This WRITTEN Warning Form" +
-                                //                    "That I Will Open For You", MessageBoxButton.OK);
-                                //            if (exists == true)
-                                //            {
-                                //                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
-                                //            }
-                                //            else
-                                //            {
-                                //                MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
-                                //            }
-                                //        }
-                                //        else if (occPoints >= 6 && occPoints < 7)
-                                //        {
-                                //            BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This FINAL Warning Form" +
-                                //                    "That I Will Open For You", MessageBoxButton.OK);
-                                //            if (exists == true)
-                                //            {
-                                //                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
-                                //            }
-                                //            else
-                                //            {
-                                //                MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
-                                //            }
-                                //        }
-                                //        else
-                                //        {
-                                //            BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Print This DISCHARGE Form" +
-                                //                    "That I Will Open For You", MessageBoxButton.OK);
-                                //            Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
-                                //        }
-                                //        break;
-
-                                //    case 1:
-                                //        if (violationText == "No Call No Show")
-                                //        {
-                                //            BIMessageBox.Show("Termination Form Dialog", "This Update to No Call No Show For The Associate In Their Probationary Period Requires Termination" +
-                                //                " Please Fill Out and Print This Form", MessageBoxButton.OK);
-                                //            Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
-                                //            this.Close();
-                                //            return;
-                                //        }
-
-                                //        if (occPoints < 1)
-                                //        {
-                                //            BIMessageBox.Show("Warning Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points.  " + (1 - occPoints) +
-                                //                " Will Require A Written Progressive Counseling", MessageBoxButton.OK);
-                                //        }
-
-                                //        else if (occPoints >= 1 && occPoints < 2)
-                                //        {
-                                //            BIMessageBox.Show("Counseling Form Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points, Please Please Fill Out" +
-                                //                    " and Print This FINAL Warning Form That I will Open For You", MessageBoxButton.OK);
-                                //            Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
-                                //        }
-                                //        else
-                                //        {
-                                //            BIMessageBox.Show("Termination Form Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points, Please Print This DISCHARGE Form" +
-                                //                    "That I Will Open For You", MessageBoxButton.OK);
-                                //            Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
-                                //        }
-                                //        break;
-                                //};
-                                #endregion
-                            }
-                            catch (Exception ex)
-                            {
-                                MessageBox.Show("There was a problem updating the OCCURRENCE record in the database please contact Business Intelligence " + ex);
-                            }
-                        }
-                    }
-                }
-            }
-
-            //Leave Of Absense Selected
-            else if (selectedSearchType == 1)
-            {
-                string selectOccurrence = LeaveNumber.Text;
-                SelectOccurrence = Convert.ToInt64(selectOccurrence);
-                byte PendingBoxValue = 0;
-                byte ApprovedBoxValue = 0;
-                byte ClosedBoxValue = 0;
-                byte ParentalBoxValue = 0;
-                byte InterBoxValue = 0;
-                byte ContBoxValue = 0;
-                if (PendingBox.IsChecked == true)
-                {
-                    PendingBoxValue = 1;
-                }
-                if (ApprovedBox.IsChecked == true)
-                {
-                    ApprovedBoxValue = 1;
-                }
-                if (ClosedBox.IsChecked == true)
-                {
-                    ClosedBoxValue = 1;
-                }
-                if (ParentalBox.IsChecked == true)
-                {
-                    ParentalBoxValue = 1;
-                }
-                if (InterBox.IsChecked == true)
-                {
-                    InterBoxValue = 1;
-                }
-                if (ContBox.IsChecked == true)
-                {
-                    ContBoxValue = 1;
-                }
-                using (var db = new AGNESEntity())
-                {
-                    var result = db.LOAs.SingleOrDefault(f => f.PID == SelectOccurrence);
-                    if (result != null)
-                    {
-                        result.Intermittent = InterBoxValue;
-                        result.Continuous = ContBoxValue;
-                        result.Pending = PendingBoxValue;
-                        result.Approved = ApprovedBoxValue;
-                        result.Closed = ClosedBoxValue;
-                        result.Parental = ParentalBoxValue;
-                        result.DateStart = BeginLeave.SelectedDate;
-                        result.DateEnd = EndLeave.SelectedDate;
-                        result.Notes = LOANote.Text;
-
-                        if (BeginLeave.SelectedDate == null || BeginLeave.SelectedDate == null)
-                        {
-                            MessageBox.Show("Please Enter a Beginning Date AND Estimated Ending Date For The Leave");
-                            return;
-                        }
-                        if (BeginLeave.SelectedDate > EndLeave.SelectedDate || BeginLeave.SelectedDate == EndLeave.SelectedDate)
-                        {
-                            MessageBox.Show("The Ending Date For The Leave Must Be After The Begin Date For The Leave");
-                            return;
-                        }
-
-                        if (PendingBox.IsChecked == false && ApprovedBox.IsChecked == false && ClosedBox.IsChecked == false && ParentalBox.IsChecked == false)
-                        {
-                            MessageBox.Show("Please Select Pending, Approved, or Closed");
-                            return;
-                        }
-
-                        if (PendingBox.IsChecked == true && ApprovedBox.IsChecked == true || PendingBox.IsChecked == true && ClosedBox.IsChecked == true || ApprovedBox.IsChecked == true && ClosedBox.IsChecked == true)
-                        {
-                            MessageBox.Show("There Can Only Be One Option of Pending, Approved, or Closed Selected At A Time");
-                            return;
-                        }
-
-                        if (ParentalBox.IsChecked == true && PendingBox.IsChecked == true || ParentalBox.IsChecked == true && ApprovedBox.IsChecked == true || ParentalBox.IsChecked == true && ClosedBox.IsChecked == true || ParentalBox.IsChecked == true &&
-                            InterBox.IsChecked == true || ParentalBox.IsChecked == true && ContBox.IsChecked == true)
-                        {
-                            MessageBox.Show("If Parental Leave is Selected, No Other Selections May be Made");
-                            return;
-                        }
-
-                        if (InterBox.IsChecked == true && ContBox.IsChecked == true)
-                        {
-                            MessageBox.Show("There Can Only Intermittent or Continuous Leave, Both Cannot Be Selected at The Same Time, Please Select Just One");
-                            return;
-                        }
-                        try
-                        {
-
-                            db.SaveChanges();
-                            MessageBox.Show("Leave of Abscence Record Has Been Updated.");
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show("There was a problem updating the LOA record in the database please contact Business Intelligence " + ex);
-                        }
-                    }
-                }
-            }
-
-            //Cash Handle Occurrence Selected
-            else
-            {
-                byte type;
-
-                if (CashCB.SelectedIndex == 0)
-                {
-                    type = 0;
-                }
-                else if (CashCB.SelectedIndex == 1)
-                {
-                    type = 1;
-                }
-                else
-                {
-                    type = 2;
-                }
-
-                using (var db = new AGNESEntity())
-                {
-                    string selectOccurrence = CashHandleNumber.Text;
-                    SelectOccurrence = Convert.ToInt64(selectOccurrence);
-
-                    var result = db.CashHandles.SingleOrDefault(f => f.PID == SelectOccurrence);
-                    if (result != null)
-                    {
-                        byte? oldType = result.Type;
-                        result.Type = type;
-                        result.Date = CHOccurrenceDP.SelectedDate;
-                        result.Notes = CHNote.Text;
-                        string violationNotes = CHNote.Text;
-
-                        DateTime date = (DateTime)CHOccurrenceDP.SelectedDate;
-                        (DateTime earlyDate, double? occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber, selectedSearchType);
-
-                        if (type < violationAmount && type == 0)
-                        {
-                            var messageBoxResult = BIMessageBox.Show("Cash Handle Reduction", "This Change Will Require the Removal of A Written Counseling, Do You Wish To Continue?", MessageBoxButton.YesNo);
-                            if (messageBoxResult != MessageBoxResult.Yes) return;
-                            db.SaveChanges();
-                            MessageBox.Show("Occurrence Record Has Been Updated.");
-                            (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber, selectedSearchType);
-                            Report(firstName, violationNotes, occPoints, empInProbation, earlyDate, type, assocNumber);
-                        }
-
-                        else if (type < violationAmount)
-                        {
-                            decimal compareOccPoints = (decimal)occPoints;
-                            decimal compareType = (decimal)type;
-                            decimal quotientOldType = (decimal)oldType / 2;
-                            decimal quotientCompareType = (decimal)compareType / 2;
-                            var messageBoxResult = BIMessageBox.Show("Occurrence Point Reduction Dialog", "The Selected Violation Will Result In A Reduction Of Occurrence Points From " + occPoints +
-                               " To " + (compareOccPoints - (quotientOldType - quotientCompareType)) + " For " + firstName + " and May Require Removal of A Written Counseling, Do You Wish To Continue?", MessageBoxButton.YesNo);
-
-                            if (messageBoxResult != MessageBoxResult.Yes) return;
-                            db.SaveChanges();
-                            MessageBox.Show("Occurrence Record Has Been Updated.");
-                            (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber, selectedSearchType);
-                            //TODO: GO BACK TO THIS
-                            Report(firstName, violationNotes, occPoints, empInProbation, earlyDate, type, assocNumber);
-                        }
-                        else
-                        {
-                            try
-                            {
-                                db.SaveChanges();
-                                MessageBox.Show("Cash Handling Record Has Been Updated.");
-                                if (type == 1)
-                                {
-                                    BIMessageBox.Show("Counseling Form Dialog", firstName + "'s Variance Type Was Changed To Between $3.00 and $20.00, This is an Automatic Progressive Counseling" +
-                                                        " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
-                                    Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
-                                }
-                                else
-                                {
-                                    BIMessageBox.Show("Contact HRBP Dialong", "This Type of Cash Handling Violation Requires Notification of Your DM AND HRBP, Please Contact Them", MessageBoxButton.OK);
-
-                                    BIMessageBox.Show("Counseling Form Dialog", firstName + " Has a Variance Greater Than $20.00 This is an Automatic Progressive Counseling" +
-                                        " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
-                                    Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                MessageBox.Show("There was a problem updating the CASH HANDLING record in the database please contact Business Intelligence " + ex);
-                            }
-                        }
-                    }
-                }
-            }
+            EmpNumber = (int)assocNumber;
+            Window newWindow = new HRCashHandle(firstName, EmpNumber, empInProbation, 1);
+            newWindow.ShowDialog();
+            //UpdateButton.Visibility = Visibility.Visible;
         }
 
         private void MultipleNameDG_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -666,28 +520,6 @@ namespace AGNESCSharp
             assocNumber = Convert.ToInt64(AssocNumber);
             SearchDb(null, searchTable.Content.ToString(), assocNumber);
         } 
-
-        private int SetIndex(string cbSelection)
-        {
-
-            int index;
-            List<string> cbList = new List<string>();
-            cbList.Add("Consecutive Unexcused Absence");
-            cbList.Add("Early Out");
-            cbList.Add("Failure to follow Meal/Rest break");
-            cbList.Add("Late");
-            cbList.Add("LOA Approved");
-            cbList.Add("LOA Denied");
-            cbList.Add("LOA Pending");
-            cbList.Add("No Call No Show");
-            cbList.Add("Sick, insufficient sick time");
-            cbList.Add("Sick, no sick time available");
-            cbList.Add("Unexcused Absence");
-
-            index = cbList.FindIndex(x => x.StartsWith(cbSelection));
-            
-            return index;
-        }
 
         private void FirstNameBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -767,7 +599,7 @@ namespace AGNESCSharp
                     MultipleOccurrenceView.Visibility = Visibility.Visible;
                     MultipleOccurrencDG.Visibility = Visibility.Visible;
                     MultipleOccurrencDG.ItemsSource = result;
-                    UpdateButton.Visibility = Visibility.Visible;
+                    //UpdateButton.Visibility = Visibility.Visible;
 
                     #region DELETE AFTER TESTING
                     //if (result.Count == 1)
@@ -836,7 +668,7 @@ namespace AGNESCSharp
                     MultipleLOAView.Visibility = Visibility.Visible;
                     MultipleLOADG.Visibility = Visibility.Visible;
                     MultipleLOADG.ItemsSource = result;
-                    UpdateButton.Visibility = Visibility.Visible;
+                    //UpdateButton.Visibility = Visibility.Visible;
 
                     #region DELETE AFTER TESTING
                     //if (result.Count == 1)
@@ -907,7 +739,7 @@ namespace AGNESCSharp
                     MultipleCashHandleView.Visibility = Visibility.Visible;
                     MultipleCashHandleDG.Visibility = Visibility.Visible;
                     MultipleCashHandleDG.ItemsSource = result;
-                    UpdateButton.Visibility = Visibility.Visible;
+                    //UpdateButton.Visibility = Visibility.Visible;
 
                     #region DELETE AFTER TESTING
                     //if (result.Count == 1)
@@ -935,151 +767,379 @@ namespace AGNESCSharp
             }
             #endregion
         }
-
-        private void Report(string firstName, string violationText, double? occPoints, int empInProbation, DateTime earlyDate, int? cashHandleType, long? empId)
-        {
-            int? CashHandleType = cashHandleType;
-            if (cashHandleType == null)
-            {
-                CashHandleType = 100;
-            }
-
-            //get Write up form ready
-            FileInfo myFile = new FileInfo(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
-            bool exists = myFile.Exists;
-            switch (empInProbation)
-            {
-                case 0:
-
-                    //this may be redone
-                    if (CashHandleType == 0)
-                    {
-                        int anyPriorZero = HRCashHandle.CountZeroPoints(earlyDate, empId);
-
-                        if (anyPriorZero == 2)
-                        {
-                            BIMessageBox.Show("Warning", firstName + " Has 2 Prior No Variance Found Violations, 1 More Will Result in a Progressive Counseling",
-                                MessageBoxButton.OK);
-                        }
-
-                        if (anyPriorZero == 3)
-                        {
-                            BIMessageBox.Show("Counseling Form Dialog", "This is " + firstName + "'s Thrid Occurrence For No Variance Found Violations and Requires a WRITTEN Counseling" +
-                                                        " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
-                            Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
-                        }
-                        return;
-                    }
-
-                    if (CashHandleType == 1)
-                    {
-                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Has a Variance Between $3.00 and $20.00 This is an Automatic Progressive Counseling" +
-                            " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
-                        Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
-                        return;
-                    }
-
-                    if (CashHandleType == 2)
-                    {
-                        BIMessageBox.Show("Contact HRBP Dialong", "This Type of Cash Handling Violation Requires Notification of Your DM AND HRBP, Please Contact Them", MessageBoxButton.OK);
-
-                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Has a Variance Greater Than $20.00 This is an Automatic Progressive Counseling" +
-                            " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
-                        Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
-                        return;
-                    }
-                    //through here
-
-                    if (violationText == "No Call No Show")
-                    {
-                        BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show Requires An Automatic Written Progressive Counseling, Please Fill Out And Print This Form", MessageBoxButton.OK);
-                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
-                    }
-
-                    if (occPoints < 4 )
-                    {
-                        MessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points");
-                    }
-                    else if (occPoints >= 4 && occPoints < 5)
-                    {
-                        BIMessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points " + (5 - occPoints) + " More Before " + earlyDate.ToShortDateString() + " Will Require A Written Progressive Counseling.");
-                    }
-                    else if (occPoints >= 5 && occPoints < 6)
-                    {
-                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This WRITTEN Warning Form" +
-                                "That I Will Open For You", MessageBoxButton.OK);
-                        if (exists == true)
-                        {
-                            Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
-                        }
-                        else
-                        {
-                            MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
-                        }
-                    }
-                    else if (occPoints >= 6 && occPoints < 7)
-                    {
-                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This FINAL Warning Form" +
-                                "That I Will Open For You", MessageBoxButton.OK);
-                        if (exists == true)
-                        {
-                            Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
-                        }
-                        else
-                        {
-                            MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
-                        }
-                    }
-                    else
-                    {
-                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Print This DISCHARGE Form" +
-                                "That I Will Open For You", MessageBoxButton.OK);
-                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
-                    }
-                    break;
-
-                case 1:
-                    if (violationText == "No Call No Show")
-                    {
-                        BIMessageBox.Show("Termination Form Dialog", "This Update to No Call No Show For The Associate In Their Probationary Period Requires Termination" +
-                            " Please Fill Out and Print This Form", MessageBoxButton.OK);
-                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
-                        this.Close();
-                        return;
-                    }
-
-                    if (occPoints < 1)
-                    {
-                        BIMessageBox.Show("Warning Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points.  " + (1 - occPoints) +
-                            " Will Require A Written Progressive Counseling", MessageBoxButton.OK);
-                    }
-
-                    else if (occPoints >= 1 && occPoints < 2)
-                    {
-                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points, Please Please Fill Out" +
-                                " and Print This FINAL Warning Form That I will Open For You", MessageBoxButton.OK);
-                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
-                    }
-                    else
-                    {
-                        BIMessageBox.Show("Termination Form Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points, Please Print This DISCHARGE Form" +
-                                "That I Will Open For You", MessageBoxButton.OK);
-                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
-                    }
-                    break;
-            };
-        }
-
-        //private long GetAssocNumber(string firstName, string lastName)
-        //{
-        //    //long PersNumber = (from employeeTable in MainWindow.bidb.EmployeeLists
-        //    //                  where employeeTable.FirstName == firstName && employeeTable.LastName == lastName
-        //    //                  select employeeTable.PersNumber).SingleOrDefault();
-
-
-
-        //    //return PersNumber;
-        //}
         #endregion
     }
 }
+
+#region DELETE ME
+//private long GetAssocNumber(string firstName, string lastName)
+//{
+//    //long PersNumber = (from employeeTable in MainWindow.bidb.EmployeeLists
+//    //                  where employeeTable.FirstName == firstName && employeeTable.LastName == lastName
+//    //                  select employeeTable.PersNumber).SingleOrDefault();
+
+
+
+//    //return PersNumber;
+//}
+
+//through here
+
+//if (violationText == "No Call No Show" && date != new DateTime(1001, 1, 1))
+//{
+//    BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show is " + firstName + "'s Second In Less Than a Year And Requires Termination.  Please Fill Out And Print This Progressive Counseling and Separation Form", MessageBoxButton.OK);
+//    Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+//    Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
+//    this.Close();
+//    return;
+//}
+
+//if (violationText == "No Call No Show")
+//{
+//    BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show Requires An Automatic Written Progressive Counseling, Please Fill Out And Print This Form", MessageBoxButton.OK);
+//    Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+//}
+
+//private void UpdateButton_Click(object sender, RoutedEventArgs e)
+//{
+//AGNESEntity agnesdb = new AGNESEntity();
+
+////Occurrence Violation Selected
+//if (selectedSearchType == 0)
+//{
+//    string selectOccurrence = CHOccNumber.Text;
+//    byte type = 0;
+//    string violationText;
+//    SelectOccurrence = Convert.ToInt64(selectOccurrence);
+
+//    using (var db = new AGNESEntity())
+//    {
+//        var result = db.Occurrences.SingleOrDefault(f => f.PID == SelectOccurrence);
+//        if (result != null)
+//        {
+//            byte? oldType = result.Type;
+//            ComboBoxItem cbi = new ComboBoxItem();
+//            cbi = (ComboBoxItem)OccCB.SelectedItem;
+//            type = Convert.ToByte(cbi.Tag);
+//            violationText = cbi.Content.ToString();
+//            result.AttendanceViolation = violationText;
+//            result.Type = type;
+//            result.Date = OccDate.SelectedDate;
+//            result.Notes = OccNotes.Text;
+
+//            DateTime date = (DateTime)OccDate.SelectedDate;
+//            (DateTime earlyDate, double? occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber, selectedSearchType);
+
+//            if (type < violationAmount)
+//            {
+//                decimal compareOccPoints = (decimal)occPoints;
+//                decimal compareType = (decimal)type;
+//                decimal quotientOldType = (decimal)oldType / 2;
+//                decimal quotientCompareType = (decimal)compareType / 2;
+//                var messageBoxResult = BIMessageBox.Show("Occurrence Point Reduction Dialog", "The Selected Violation Will Result In A Reduction Of Occurrence Points From " + occPoints +
+//                   " To " + (compareOccPoints - (quotientOldType - quotientCompareType)) + " For " + firstName + " and May Require Removal of A Written Counseling, Do You Wish To Continue?", MessageBoxButton.YesNo);
+
+//                if (messageBoxResult != MessageBoxResult.Yes) return;
+//                db.SaveChanges();
+//                MessageBox.Show("Occurrence Record Has Been Updated.");
+//                (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber, selectedSearchType);
+//                Report(firstName, violationText, occPoints, empInProbation, earlyDate, null, null);
+//            }
+//            else
+//            {
+//                try
+//                {
+//                    db.SaveChanges();
+//                    MessageBox.Show("Occurrence Record Has Been Updated.");
+//                    (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber, selectedSearchType);
+//                    Report(firstName, violationText, occPoints, empInProbation, earlyDate, null, null);
+
+//                    #region DELETE ME AFTER TESTING COMPLETE
+//                    //get Write up form ready
+//                    //FileInfo myFile = new FileInfo(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+//                    //bool exists = myFile.Exists;
+
+//                    //switch (empInProbation)
+//                    //{
+//                    //    case 0:
+
+//                    //        if (violationText == "No Call No Show")
+//                    //        {
+//                    //            BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show Requires An Automatic Written Progressive Counseling, Please Fill Out And Print This Form", MessageBoxButton.OK);
+//                    //            Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+//                    //        }
+
+//                    //        if (occPoints < 4)
+//                    //        {
+//                    //            MessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points");
+//                    //        }
+//                    //        else if (occPoints >= 4 && occPoints < 5)
+//                    //        {
+//                    //            BIMessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points " + (5 - occPoints) + " More Before " + earlyDate.ToShortDateString() + " Will Require A Written Progressive Counseling.");
+//                    //        }
+//                    //        else if (occPoints >= 5 && occPoints < 6)
+//                    //        {
+//                    //            BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This WRITTEN Warning Form" +
+//                    //                    "That I Will Open For You", MessageBoxButton.OK);
+//                    //            if (exists == true)
+//                    //            {
+//                    //                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+//                    //            }
+//                    //            else
+//                    //            {
+//                    //                MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
+//                    //            }
+//                    //        }
+//                    //        else if (occPoints >= 6 && occPoints < 7)
+//                    //        {
+//                    //            BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This FINAL Warning Form" +
+//                    //                    "That I Will Open For You", MessageBoxButton.OK);
+//                    //            if (exists == true)
+//                    //            {
+//                    //                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+//                    //            }
+//                    //            else
+//                    //            {
+//                    //                MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
+//                    //            }
+//                    //        }
+//                    //        else
+//                    //        {
+//                    //            BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Print This DISCHARGE Form" +
+//                    //                    "That I Will Open For You", MessageBoxButton.OK);
+//                    //            Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
+//                    //        }
+//                    //        break;
+
+//                    //    case 1:
+//                    //        if (violationText == "No Call No Show")
+//                    //        {
+//                    //            BIMessageBox.Show("Termination Form Dialog", "This Update to No Call No Show For The Associate In Their Probationary Period Requires Termination" +
+//                    //                " Please Fill Out and Print This Form", MessageBoxButton.OK);
+//                    //            Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
+//                    //            this.Close();
+//                    //            return;
+//                    //        }
+
+//                    //        if (occPoints < 1)
+//                    //        {
+//                    //            BIMessageBox.Show("Warning Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points.  " + (1 - occPoints) +
+//                    //                " Will Require A Written Progressive Counseling", MessageBoxButton.OK);
+//                    //        }
+
+//                    //        else if (occPoints >= 1 && occPoints < 2)
+//                    //        {
+//                    //            BIMessageBox.Show("Counseling Form Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points, Please Please Fill Out" +
+//                    //                    " and Print This FINAL Warning Form That I will Open For You", MessageBoxButton.OK);
+//                    //            Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+//                    //        }
+//                    //        else
+//                    //        {
+//                    //            BIMessageBox.Show("Termination Form Dialog", firstName + " Is In The Associates 90 Day Probationary Period and Has " + occPoints + " Occurrence Points, Please Print This DISCHARGE Form" +
+//                    //                    "That I Will Open For You", MessageBoxButton.OK);
+//                    //            Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
+//                    //        }
+//                    //        break;
+//                    //};
+//                    #endregion
+//                }
+//                catch (Exception ex)
+//                {
+//                    MessageBox.Show("There was a problem updating the OCCURRENCE record in the database please contact Business Intelligence " + ex);
+//                }
+//            }
+//        }
+//    }
+//}
+
+//Leave Of Absense Selected
+//else if (selectedSearchType == 1)
+//{
+//    string selectOccurrence = LeaveNumber.Text;
+//    SelectOccurrence = Convert.ToInt64(selectOccurrence);
+//    byte PendingBoxValue = 0;
+//    byte ApprovedBoxValue = 0;
+//    byte ClosedBoxValue = 0;
+//    byte ParentalBoxValue = 0;
+//    byte InterBoxValue = 0;
+//    byte ContBoxValue = 0;
+//    if (PendingBox.IsChecked == true)
+//    {
+//        PendingBoxValue = 1;
+//    }
+//    if (ApprovedBox.IsChecked == true)
+//    {
+//        ApprovedBoxValue = 1;
+//    }
+//    if (ClosedBox.IsChecked == true)
+//    {
+//        ClosedBoxValue = 1;
+//    }
+//    if (ParentalBox.IsChecked == true)
+//    {
+//        ParentalBoxValue = 1;
+//    }
+//    if (InterBox.IsChecked == true)
+//    {
+//        InterBoxValue = 1;
+//    }
+//    if (ContBox.IsChecked == true)
+//    {
+//        ContBoxValue = 1;
+//    }
+//    using (var db = new AGNESEntity())
+//    {
+//        var result = db.LOAs.SingleOrDefault(f => f.PID == SelectOccurrence);
+//        if (result != null)
+//        {
+//            result.Intermittent = InterBoxValue;
+//            result.Continuous = ContBoxValue;
+//            result.Pending = PendingBoxValue;
+//            result.Approved = ApprovedBoxValue;
+//            result.Closed = ClosedBoxValue;
+//            result.Parental = ParentalBoxValue;
+//            result.DateStart = BeginLeave.SelectedDate;
+//            result.DateEnd = EndLeave.SelectedDate;
+//            result.Notes = LOANote.Text;
+
+//            if (BeginLeave.SelectedDate == null || BeginLeave.SelectedDate == null)
+//            {
+//                MessageBox.Show("Please Enter a Beginning Date AND Estimated Ending Date For The Leave");
+//                return;
+//            }
+//            if (BeginLeave.SelectedDate > EndLeave.SelectedDate || BeginLeave.SelectedDate == EndLeave.SelectedDate)
+//            {
+//                MessageBox.Show("The Ending Date For The Leave Must Be After The Begin Date For The Leave");
+//                return;
+//            }
+
+//            if (PendingBox.IsChecked == false && ApprovedBox.IsChecked == false && ClosedBox.IsChecked == false && ParentalBox.IsChecked == false)
+//            {
+//                MessageBox.Show("Please Select Pending, Approved, or Closed");
+//                return;
+//            }
+
+//            if (PendingBox.IsChecked == true && ApprovedBox.IsChecked == true || PendingBox.IsChecked == true && ClosedBox.IsChecked == true || ApprovedBox.IsChecked == true && ClosedBox.IsChecked == true)
+//            {
+//                MessageBox.Show("There Can Only Be One Option of Pending, Approved, or Closed Selected At A Time");
+//                return;
+//            }
+
+//            if (ParentalBox.IsChecked == true && PendingBox.IsChecked == true || ParentalBox.IsChecked == true && ApprovedBox.IsChecked == true || ParentalBox.IsChecked == true && ClosedBox.IsChecked == true || ParentalBox.IsChecked == true &&
+//                InterBox.IsChecked == true || ParentalBox.IsChecked == true && ContBox.IsChecked == true)
+//            {
+//                MessageBox.Show("If Parental Leave is Selected, No Other Selections May be Made");
+//                return;
+//            }
+
+//            if (InterBox.IsChecked == true && ContBox.IsChecked == true)
+//            {
+//                MessageBox.Show("There Can Only Intermittent or Continuous Leave, Both Cannot Be Selected at The Same Time, Please Select Just One");
+//                return;
+//            }
+//            try
+//            {
+
+//                db.SaveChanges();
+//                MessageBox.Show("Leave of Abscence Record Has Been Updated.");
+//            }
+//            catch (Exception ex)
+//            {
+//                MessageBox.Show("There was a problem updating the LOA record in the database please contact Business Intelligence " + ex);
+//            }
+//        }
+//    }
+//}
+
+//Cash Handle Occurrence Selected
+//else
+//{
+//    byte type;
+
+//    if (CashCB.SelectedIndex == 0)
+//    {
+//        type = 0;
+//    }
+//    else if (CashCB.SelectedIndex == 1)
+//    {
+//        type = 1;
+//    }
+//    else
+//    {
+//        type = 2;
+//    }
+
+//    using (var db = new AGNESEntity())
+//    {
+//        string selectOccurrence = CashHandleNumber.Text;
+//        SelectOccurrence = Convert.ToInt64(selectOccurrence);
+
+//        var result = db.CashHandles.SingleOrDefault(f => f.PID == SelectOccurrence);
+//        if (result != null)
+//        {
+//            byte? oldType = result.Type;
+//            result.Type = type;
+//            result.Date = CHOccurrenceDP.SelectedDate;
+//            result.Notes = CHNote.Text;
+//            string violationNotes = CHNote.Text;
+
+//            DateTime date = (DateTime)CHOccurrenceDP.SelectedDate;
+//            (DateTime earlyDate, double? occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber, selectedSearchType);
+
+//            if (type < violationAmount && type == 0)
+//            {
+//                var messageBoxResult = BIMessageBox.Show("Cash Handle Reduction", "This Change Will Require the Removal of A Written Counseling, Do You Wish To Continue?", MessageBoxButton.YesNo);
+//                if (messageBoxResult != MessageBoxResult.Yes) return;
+//                db.SaveChanges();
+//                MessageBox.Show("Occurrence Record Has Been Updated.");
+//                (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber, selectedSearchType);
+//                Report(firstName, violationNotes, occPoints, empInProbation, earlyDate, type, assocNumber);
+//            }
+
+//            else if (type < violationAmount)
+//            {
+//                decimal compareOccPoints = (decimal)occPoints;
+//                decimal compareType = (decimal)type;
+//                decimal quotientOldType = (decimal)oldType / 2;
+//                decimal quotientCompareType = (decimal)compareType / 2;
+//                var messageBoxResult = BIMessageBox.Show("Occurrence Point Reduction Dialog", "The Selected Violation Will Result In A Reduction Of Occurrence Points From " + occPoints +
+//                   " To " + (compareOccPoints - (quotientOldType - quotientCompareType)) + " For " + firstName + " and May Require Removal of A Written Counseling, Do You Wish To Continue?", MessageBoxButton.YesNo);
+
+//                if (messageBoxResult != MessageBoxResult.Yes) return;
+//                db.SaveChanges();
+//                MessageBox.Show("Occurrence Record Has Been Updated.");
+//                (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, (long)assocNumber, selectedSearchType);
+//                //TODO: GO BACK TO THIS
+//                Report(firstName, violationNotes, occPoints, empInProbation, earlyDate, type, assocNumber);
+//            }
+//            else
+//            {
+//                try
+//                {
+//                    db.SaveChanges();
+//                    MessageBox.Show("Cash Handling Record Has Been Updated.");
+//                    if (type == 1)
+//                    {
+//                        BIMessageBox.Show("Counseling Form Dialog", firstName + "'s Variance Type Was Changed To Between $3.00 and $20.00, This is an Automatic Progressive Counseling" +
+//                                            " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
+//                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+//                    }
+//                    else
+//                    {
+//                        BIMessageBox.Show("Contact HRBP Dialong", "This Type of Cash Handling Violation Requires Notification of Your DM AND HRBP, Please Contact Them", MessageBoxButton.OK);
+
+//                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Has a Variance Greater Than $20.00 This is an Automatic Progressive Counseling" +
+//                            " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
+//                        Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
+//                    }
+//                }
+//                catch (Exception ex)
+//                {
+//                    MessageBox.Show("There was a problem updating the CASH HANDLING record in the database please contact Business Intelligence " + ex);
+//                }
+//            }
+//        }
+//    }
+//}
+//}
+#endregion
