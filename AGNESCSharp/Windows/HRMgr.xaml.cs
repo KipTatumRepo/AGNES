@@ -23,7 +23,7 @@ namespace AGNESCSharp
     {
         #region Properties
         public static string empCostCenter;
-        public static int empInProbationPeriod = 0;
+        public static int empInProbationPeriod = 2;
         private List<string> CostCenters = new List<string>();
         private Dictionary<long, string> Employees = new Dictionary<long, string>();
         private DateTime today = DateTime.Now;
@@ -31,6 +31,32 @@ namespace AGNESCSharp
         private ListBoxItem lbi;
         private long empId;
         private string costCenterSel;
+        string selectedOccurrence;
+        //Cash Handling Violation Passable Variables
+        public static string CashHandleNumberV;
+        public static int SelectedIndexV;
+        public static DateTime? CHDateV;
+        public static string CHNoteV;
+        public static string firstName;
+        public static DateTime? DateEnd;
+        //Leave Of Absence Passable Variables
+        public static string LOANumberV;
+        public static DateTime? LOADateStartV;
+        public static DateTime? LOADateEndV;
+        public static String LOANoteV;
+        public static int? Approved;
+        public static int? Pending;
+        public static int? ClosedV;
+        public static int? Parental;
+        public static int? Intermittent;
+        public static int? Continuous;
+        //Occurrence Passable Variables
+        public static string OccNumberV;
+        public static DateTime? OccDateV;
+        public static string OccAttViolation;
+        public static byte? OccType;
+        public static string OccNotesV;
+
         #endregion
 
         #region Constructor/Main
@@ -42,7 +68,6 @@ namespace AGNESCSharp
             LoadCostCenters(userAccess);
 
             cbxCostCenters.SelectedIndex = 0;
-           
         }
 
         #endregion
@@ -219,6 +244,24 @@ namespace AGNESCSharp
             LOAStackPanel.Visibility = Visibility.Collapsed;
             CashHandleStackPanel.Visibility = Visibility.Collapsed;
             DateTime cutOffDate = today.AddYears(-1);
+
+            var querys = from employeeTable in MainWindow.bidb.EmployeeLists
+                        where employeeTable.PersNumber == empId
+                        select employeeTable;
+
+            foreach (var resultes in querys)
+            {
+                hireDate = resultes.DateOfHire;
+            }
+
+            if (hireDate.AddDays(90) >= today)
+            {
+                empInProbationPeriod = 1;
+            }
+            else
+            {
+                empInProbationPeriod = 0;
+            }
 
             var query = from employeeTable in MainWindow.agnesdb.Occurrences
                         where empId == employeeTable.PersNumber && employeeTable.Date >= cutOffDate
@@ -424,7 +467,7 @@ namespace AGNESCSharp
                     lbi = lbxAssociates.SelectedItem as ListBoxItem;
                     string name = lbi.Content.ToString();
                     int empId = Convert.ToInt32(lbi.Tag.ToString());
-                    Window newWindow = new HRLeave(name, empId);
+                    Window newWindow = new HRLeave(name, empId, 0);
                     LeaveButton.IsChecked = false;
                     OccButton.IsChecked = false;
                     CashHandleButton.IsChecked = false;
@@ -514,7 +557,7 @@ namespace AGNESCSharp
                                 where employeeTable.PersNumber == empId
                                 select employeeTable;
 
-                    var results = query.ToList();
+                    //var results = query.ToList();
 
                     foreach (var result in query)
                     {
@@ -525,8 +568,13 @@ namespace AGNESCSharp
                     {
                         empInProbationPeriod = 1;
                     }
+                    else
+                    {
+                        empInProbationPeriod = 0;
+                    }
 
-                    Window newPage = new HROccurrence(name, empId, empInProbationPeriod);
+
+                    Window newPage = new HROccurrence(name, empId, empInProbationPeriod, 0);
                     LeaveButton.IsChecked = false;
                     OccButton.IsChecked = false;
                     CashHandleButton.IsChecked = false;
@@ -626,6 +674,10 @@ namespace AGNESCSharp
                     {
                         empInProbationPeriod = 1;
                     }
+                    else
+                    {
+                        empInProbationPeriod = 0;
+                    }
                     Window newWindow = new HRCashHandle(name, empId, empInProbationPeriod, 0);
                     LeaveButton.IsChecked = false;
                     OccButton.IsChecked = false;
@@ -656,6 +708,109 @@ namespace AGNESCSharp
             LOAStackPanel.Visibility = Visibility.Collapsed;
             CashHandleStackPanel.Visibility = Visibility.Collapsed;
             Window newWindow = new HRSearch();
+            newWindow.ShowDialog();
+        }
+
+        private void CashHandle_PID_CellClicked(object sender, MouseButtonEventArgs e)
+        {
+            if (CashHandleDataGrid.SelectedItem == null) { return; }
+            object row = CashHandleDataGrid.SelectedValue;
+            selectedOccurrence = (CashHandleDataGrid.SelectedCells[0].Column.GetCellContent(row) as TextBlock).Text;
+            long SelectOccurrence = Int64.Parse(selectedOccurrence);
+
+            AGNESEntity agnesdb = new AGNESEntity();
+
+            //find corresponding occurrence in table
+            var query = from FilteredCHTable in agnesdb.CashHandles
+                        where SelectOccurrence == FilteredCHTable.PID
+                        select FilteredCHTable;
+
+            var result = query.ToList();
+
+            foreach (var filteredRow in result)
+            {
+                //set public static variable to carry from here to LOA Window when datagrid selection is made
+                firstName = filteredRow.FirstName;
+                CashHandleNumberV = filteredRow.PID.ToString();
+                SelectedIndexV = Convert.ToInt32(filteredRow.Type);
+                CHDateV = filteredRow.Date;
+                CHNoteV = filteredRow.Notes;
+
+            }
+            Window newWindow = new HRCashHandle(firstName, (int)empId, empInProbationPeriod, 2);
+            lbxHistory.Visibility = Visibility.Collapsed;
+            newWindow.ShowDialog();
+        }
+
+        private void LOA_PID_CellClicked(object sender, MouseButtonEventArgs e)
+        {
+
+            if (LoaDataGrid.SelectedItem == null) { return; }
+            object row = LoaDataGrid.SelectedValue;
+            selectedOccurrence = (LoaDataGrid.SelectedCells[0].Column.GetCellContent(row) as TextBlock).Text;
+           
+            long SelectOccurrence = Int64.Parse(selectedOccurrence);
+
+            AGNESEntity agnesdb = new AGNESEntity();
+
+            //find corresponding occurrence in table
+            var query = from FilteredLOATable in agnesdb.LOAs
+                        where SelectOccurrence == FilteredLOATable.PID
+                        select FilteredLOATable;
+
+            var result = query.ToList();
+
+            foreach (var filteredRow in result)
+            {
+                #region Work on this for v2 
+                //set public static variable to carry from here to LOA Window when datagrid selection is made
+                firstName = filteredRow.FirstName;
+                LOANumberV = filteredRow.PID.ToString();
+                LOADateStartV = filteredRow.DateStart;
+                LOADateEndV = filteredRow.DateEnd;
+                LOANoteV = filteredRow.Notes;
+                Approved = filteredRow.Approved;
+                Pending = filteredRow.Pending;
+                ClosedV = filteredRow.Closed;
+                Parental = filteredRow.Parental;
+                Continuous = filteredRow.Continuous;
+                Intermittent = filteredRow.Intermittent;
+                #endregion
+            }
+
+            Window newWindow = new HRLeave(firstName, (int)empId, 2);
+            lbxHistory.Visibility = Visibility.Collapsed;
+            newWindow.ShowDialog();
+        }
+
+        private void Occ_PID_CellClicked(object sender, MouseButtonEventArgs e)
+        {
+            if (OccurrenceDataGrid.SelectedItem == null) { return; }
+            object row = OccurrenceDataGrid.SelectedValue;
+            selectedOccurrence = (OccurrenceDataGrid.SelectedCells[0].Column.GetCellContent(row) as TextBlock).Text;
+            long SelectOccurrence = Int64.Parse(selectedOccurrence);
+
+            AGNESEntity agnesdb = new AGNESEntity();
+
+            //find corresponding occurrence in table
+            var query = from FilteredOccTable in agnesdb.Occurrences
+                        where SelectOccurrence == FilteredOccTable.PID
+                        select FilteredOccTable;
+
+            var result = query.ToList();
+
+            foreach (var filteredRow in result)
+            {
+                firstName = filteredRow.FirstName;
+                OccNumberV = filteredRow.PID.ToString();
+                OccDateV = filteredRow.Date;
+                OccAttViolation = filteredRow.AttendanceViolation;
+                OccType = filteredRow.Type;
+                OccNotesV = filteredRow.Notes;
+            }
+
+            Window newWindow = new HROccurrence(firstName, (int)empId, empInProbationPeriod, 2);
+            lbxHistory.Visibility = Visibility.Collapsed;
             newWindow.ShowDialog();
         }
         #endregion

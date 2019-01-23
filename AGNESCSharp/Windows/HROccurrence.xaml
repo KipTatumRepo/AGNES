@@ -62,20 +62,21 @@
         <ScrollViewer x:Name="DescriptionSV" HorizontalAlignment="Stretch" Margin="10,0,10,0" Grid.Row="3" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto">
             <TextBox x:Name="DescriptionTb" HorizontalAlignment="Stretch" Margin="0,0,0,2" Grid.Row="3" TextWrapping="Wrap" VerticalAlignment="Stretch" FontSize="20" />
         </ScrollViewer>
-        <Grid x:Name="ButtonGrid" Grid.Row="4" Visibility="Collapsed">
+        <Grid x:Name="ButtonGrid" Grid.Row="4" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="CancelButton" Content="Clear" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" Click="CancelButton_Click"/>
+            <Button x:Name="CancelButton" Content="Clear" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" Click="CancelButton_Click" Visibility="Collapsed"/>
             <!--<Button x:Name="CancelButton" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Click="CancelButton_Click" BorderThickness="0" BorderBrush="White" Padding="0" Foreground="White">
                 <StackPanel Margin="0,0,0,0" Orientation="Horizontal" Background="White">
                     <Image x:Name="eraseImage" Source="/AGNESCSharp;component/Resources/eraser.png" OpacityMask="White" MouseEnter="EraseImage_MouseEnter" MouseLeave="EraseImage_MouseLeave"  />
                 </StackPanel>
             </Button>-->
 
-            <Button x:Name="SaveButton" Content="Save Occurrence" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="101" Click="SaveButton_Click" />
+            <Button x:Name="SaveButton" Content="Save Occurrence" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="101" Click="SaveButton_Click" Visibility="Collapsed" />
+            <Button x:Name="UpdateButton" Content="Update Occurrence" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="110" Height="23" Click="UpdateButton_Click" Visibility="Collapsed"/>
             <!--<Button x:Name="SaveButton" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Click="SaveButton_Click" BorderThickness="0" BorderBrush="White" Padding="0" Foreground="White">
                 <StackPanel Margin="0,0,0,0" Orientation="Horizontal" Background="White">
                     <Image x:Name="saveImage" Source="/AGNESCSharp;component/Resources/save.png" OpacityMask="White" MouseEnter="Image_MouseEnter" MouseLeave="SaveImage_MouseLeave" />
