@@ -15,7 +15,7 @@ namespace AGNESCSharp
         #region Variables
         private string lastName;
         private string firstName;
-        private long empId;
+        private long? empId;
         private long SelectOccurrence;
         private string empCostCenter;
         private int NavFromSearch;
@@ -23,7 +23,7 @@ namespace AGNESCSharp
         #endregion
 
         #region Main
-        public HRLeave(string emp, int empNum, int navFromSearch)
+        public HRLeave(string emp, long? empNum, int navFromSearch)
         {
             InitializeComponent();
             empId = empNum;
@@ -31,6 +31,7 @@ namespace AGNESCSharp
 
             if (NavFromSearch == 0)
             {
+                UpdateButton.Visibility = Visibility.Collapsed;
                 var name = emp.Split(',');
                 lastName = name[0].Trim();
                 firstName = name[1].Trim();
@@ -46,6 +47,7 @@ namespace AGNESCSharp
                 BeginLeave.DisplayDateStart = DateTime.Now.AddDays(-60);
                 BeginLeave.DisplayDateEnd = DateTime.Now.AddDays(60);
                 SaveButton.Visibility = Visibility.Visible;
+                CancelButton.Visibility = Visibility.Visible;
                 
             }
             else if (NavFromSearch == 1)
@@ -285,7 +287,7 @@ namespace AGNESCSharp
                 }
                 else
                 {
-                    string selectOccurrence = HRMgr.CashHandleNumberV;
+                    string selectOccurrence = HRMgr.LOANumberV;
                     SelectOccurrence = Convert.ToInt64(selectOccurrence);
                 }
                 var result = db.LOAs.SingleOrDefault(f => f.PID == SelectOccurrence);
@@ -378,6 +380,7 @@ namespace AGNESCSharp
                     }
                 }
             }
+            this.Close();
         }
         #endregion
     }
