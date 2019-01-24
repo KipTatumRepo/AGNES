@@ -22,14 +22,14 @@ namespace AGNESCSharp
         string firstName;
         string lastName;
         byte type;
-        long empID;
+        long? empID;
         int NavFromSearch;
         DateTime hireDate;
         DateTime selectedDate;
         #endregion
 
         #region Main
-        public HRCashHandle(string emp, int empNum, int empInProbationPeriod, int navFromSearch)
+        public HRCashHandle(string emp, long? empNum, int empInProbationPeriod, int navFromSearch)
         {
             InitializeComponent();
             empID = empNum;
@@ -59,7 +59,7 @@ namespace AGNESCSharp
                 }
                 CHOccurrenceDP.DisplayDateStart = DateTime.Now.AddDays(-60);
                 CHOccurrenceDP.DisplayDateEnd = DateTime.Now;
-                SaveButton.Visibility = Visibility.Visible;
+                //SaveButton.Visibility = Visibility.Visible;
                 
             }
             else if (NavFromSearch == 1)
@@ -68,11 +68,12 @@ namespace AGNESCSharp
                 var name = emp.Split(',');
                 firstName = name[0].Trim();
                 SaveButton.Visibility = Visibility.Collapsed;
+                CancelButton.Visibility = Visibility.Collapsed;
                 TopTextBox.Text = "Please Enter The Details For " + firstName + "'S" + " Cash Handling Violation";
                 CashCB.SelectedIndex = HRSearch.CHSelectedIndexV;
                 CHOccurrenceDP.SelectedDate = HRSearch.CHDateV;
                 DescriptionTb.Text = HRSearch.CHNoteV;
-                UpdateButton.Visibility = Visibility.Visible;
+                //UpdateButton.Visibility = Visibility.Visible;
             }
             else
             {
@@ -80,11 +81,12 @@ namespace AGNESCSharp
                 var name = emp.Split(',');
                 firstName = name[0].Trim();
                 SaveButton.Visibility = Visibility.Collapsed;
+                CancelButton.Visibility = Visibility.Collapsed;
                 TopTextBox.Text = "Please Enter The Details For " + firstName + "'S" + " Cash Handling Violation";
                 CashCB.SelectedIndex = HRMgr.SelectedIndexV;
                 CHOccurrenceDP.SelectedDate = HRMgr.CHDateV;
                 DescriptionTb.Text = HRMgr.CHNoteV;
-                UpdateButton.Visibility = Visibility.Visible;
+                //UpdateButton.Visibility = Visibility.Visible;
             }
         }
         #endregion
@@ -160,6 +162,16 @@ namespace AGNESCSharp
 
         private void CashCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (NavFromSearch == 0)
+            {
+                CancelButton.Visibility = Visibility.Visible;
+                SaveButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                UpdateButton.Visibility = Visibility.Visible;
+            }
+
             if (CashCB.SelectedIndex == 0)
             {
                 type = 0;

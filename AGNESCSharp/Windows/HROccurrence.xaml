@@ -75,8 +75,8 @@
                 </StackPanel>
             </Button>-->
 
-            <Button x:Name="SaveButton" Content="Save Occurrence" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="101" Click="SaveButton_Click" Visibility="Collapsed" />
-            <Button x:Name="UpdateButton" Content="Update Occurrence" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="110" Height="23" Click="UpdateButton_Click" Visibility="Collapsed"/>
+            <Button x:Name="SaveButton" Content="Save Occurrence" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="101" Margin="0,0,5,0" Click="SaveButton_Click" Visibility="Collapsed" />
+            <Button x:Name="UpdateButton" Content="Update Occurrence" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="115" Margin="0,0,5,0" Height="23" Click="UpdateButton_Click" Visibility="Collapsed"/>
             <!--<Button x:Name="SaveButton" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Click="SaveButton_Click" BorderThickness="0" BorderBrush="White" Padding="0" Foreground="White">
                 <StackPanel Margin="0,0,0,0" Orientation="Horizontal" Background="White">
                     <Image x:Name="saveImage" Source="/AGNESCSharp;component/Resources/save.png" OpacityMask="White" MouseEnter="Image_MouseEnter" MouseLeave="SaveImage_MouseLeave" />

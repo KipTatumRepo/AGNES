@@ -20,7 +20,7 @@ namespace AGNESCSharp
         private string firstName;
         private string lastName;
         private string AttType;
-        private long empID;
+        private long? empID;
         private byte? type;
         private int empInProbation;
         private int NavFromSearch;
@@ -39,7 +39,7 @@ namespace AGNESCSharp
         #endregion
 
         #region Main
-        public HROccurrence(string emp, int empNum, int empInProbationPeriod, int navFromSearch)
+        public HROccurrence(string emp, long? empNum, int empInProbationPeriod, int navFromSearch)
         {
             InitializeComponent();
             NavFromSearch = navFromSearch;
@@ -69,6 +69,8 @@ namespace AGNESCSharp
 
             if (NavFromSearch == 0)
             {
+                UpdateButton.Visibility = Visibility.Collapsed;
+                
                 var name = emp.Split(',');
                 firstName = name[1].Trim();
                 lastName = name[0].Trim();
@@ -95,6 +97,7 @@ namespace AGNESCSharp
                 selectedIndex = HRSearch.SetIndex(HRSearch.OccAttViolation);
                 var name = emp.Split(',');
                 firstName = name[0].Trim();
+                CancelButton.Visibility = Visibility.Collapsed;
                 SaveButton.Visibility = Visibility.Collapsed;
                 TopTextBox.Text = "Occurrence Details for " + firstName;
                 AOccurrenceDP.SelectedDate = HRSearch.OccDateV;
@@ -103,13 +106,14 @@ namespace AGNESCSharp
                 type = HRSearch.OccType;
                 violationAmount = HRSearch.OccType;
 
-                UpdateButton.Visibility = Visibility.Visible;
+                //UpdateButton.Visibility = Visibility.Visible;
             }
             else
             {
                 selectedIndex = HRSearch.SetIndex(HRMgr.OccAttViolation);
                 var name = emp.Split(',');
                 firstName = name[0].Trim();
+                CancelButton.Visibility = Visibility.Collapsed;
                 SaveButton.Visibility = Visibility.Collapsed;
                 TopTextBox.Text = "Occurrence Details for " + firstName;
                 AOccurrenceDP.SelectedDate = HRMgr.OccDateV;
@@ -117,8 +121,7 @@ namespace AGNESCSharp
                 DescriptionTb.Text = HRMgr.OccNotesV;
                 type = HRMgr.OccType;
                 violationAmount = HRMgr.OccType;
-
-                UpdateButton.Visibility = Visibility.Visible;
+                //UpdateButton.Visibility = Visibility.Visible;
             }
             //OOccurrenceDP.DisplayDateStart = DateTime.Now.AddYears(-1);
             //OOccurrenceDP.DisplayDateEnd = DateTime.Now;
@@ -128,7 +131,7 @@ namespace AGNESCSharp
         #region Public Methods
         //This function returns a Tuple that gets the earliest valid occurrence and how many occurence points an associate has
         //The earliest valid occurrence is 1 year prior to selected write up date
-        public static (DateTime EarlyDate, double? occurencePoints) CountOccurrences(DateTime date, long empID, int selectedSearchType)
+        public static (DateTime EarlyDate, double? occurencePoints) CountOccurrences(DateTime date, long? empID, int selectedSearchType)
         {
             double? occurrencePoints = 0;
             AGNESEntity agnesdb = new AGNESEntity();
@@ -196,7 +199,15 @@ namespace AGNESCSharp
             AttType = cbi.Content.ToString();
             type = Convert.ToByte(PointValue);
             ButtonGrid.Visibility = Visibility.Visible;
-            SaveButton.Visibility = Visibility.Visible;
+            if (NavFromSearch == 0)
+            {
+                CancelButton.Visibility = Visibility.Visible;
+                SaveButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                UpdateButton.Visibility = Visibility.Visible;
+            }
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -216,30 +227,6 @@ namespace AGNESCSharp
                 return;
             }
 
-            fDate = DateTime.Parse(selectedDate.ToString());
-            //TODO: THIS CUTOFFDATE CALCULATION MAY CHANGE, RIGHT NOW IT IS 1 YEAR PRIOR TO SELECTED DATE OF WRITE UP
-            cutOffDate = fDate.AddYears(-1);
-            //TODO: THIS CUTOFFDATE MAY CHANGE, RIGHT NOW IT IS 1 YEAR PRIOR TO SELECTED DATE OF WRITE UP
-
-            //Need to Check is Associate has a previous No Call No Show in the previous year
-            var NoCallFromDB = (from table in MainWindow.agnesdb.Occurrences
-                                where table.PersNumber == empID && table.AttendanceViolation == "No Call No Show" && table.Date >= cutOffDate
-                                orderby table.Date ascending
-                                select new
-                                {
-                                    table.AttendanceViolation,
-                                    table.Date
-                                }).FirstOrDefault();
-           
-            if (NoCallFromDB == null)
-            {
-                date = new DateTime(1001, 1, 1);
-            }
-            else
-            {
-                date = NoCallFromDB.Date;
-            }
-
             string notes = DescriptionTb.Text;
 
             oc.PersNumber = empID;
@@ -255,6 +242,23 @@ namespace AGNESCSharp
             MainWindow.agnesdb.SaveChanges();
             MessageBox.Show("The Occurrence for " + firstName + " has been added");
 
+            fDate = DateTime.Parse(selectedDate.ToString());
+            //TODO: THIS CUTOFFDATE CALCULATION MAY CHANGE, RIGHT NOW IT IS 1 YEAR PRIOR TO SELECTED DATE OF WRITE UP
+            cutOffDate = fDate.AddYears(-1);
+            //TODO: THIS CUTOFFDATE MAY CHANGE, RIGHT NOW IT IS 1 YEAR PRIOR TO SELECTED DATE OF WRITE UP
+
+            //Need to Check is Associate has a previous No Call No Show in the previous year
+            var NoCallFromDB = from table in MainWindow.agnesdb.Occurrences
+                               where table.PersNumber == empID && table.AttendanceViolation == "No Call No Show" && table.Date >= cutOffDate
+                               orderby table.Date ascending
+                               select new
+                               {
+                                   table.AttendanceViolation,
+                                   table.Date
+                               };
+
+            int ncnsCount = (NoCallFromDB.ToList()).Count;
+
             //get Write up form ready
             FileInfo myFileTerm = new FileInfo(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
             FileInfo myFileProg = new FileInfo(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
@@ -265,18 +269,19 @@ namespace AGNESCSharp
             //right now earliest date is -1 year from incident date
             (DateTime earlyDate, double? occPoints) = CountOccurrences(fDate, empID, 0);
 
-            if (AttType == "No Call No Show" && date != new DateTime(1001, 1, 1))
+            if (AttType == "No Call No Show" && ncnsCount >= 2)
             {
                 BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show is " + firstName + "'s Second In Less Than a Year And Requires Termination.  Please Fill Out And Print This Progressive Counseling and Separation Form", MessageBoxButton.OK);
                 Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
                 Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
-                return;
+                this.Close();
             }
 
-            if (AttType == "No Call No Show")
+            if (AttType == "No Call No Show" && ncnsCount == 1)
             {
                 BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show Requires An Automatic Written Progressive Counseling, Please Fill Out And Print This Form", MessageBoxButton.OK);
                 Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                this.Close();
             }
 
             HRSearch.Report(firstName, AttType, occPoints, empInProbation, earlyDate, null, empID);
@@ -355,22 +360,42 @@ namespace AGNESCSharp
                     }
                 }
             }
-            //check ot see if NO Call No Show is Involved
-            if (violationText == "No Call No Show")
-            {
-                BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show Requires An Automatic Written Progressive Counseling, Please Fill Out And Print This Form", MessageBoxButton.OK);
-                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
-            }
 
-            if (AttType == "No Call No Show" && date != new DateTime(1001, 1, 1))
+            fDate = (DateTime)AOccurrenceDP.SelectedDate; //DateTime.Parse(selectedDate.ToString());
+            //TODO: THIS CUTOFFDATE CALCULATION MAY CHANGE, RIGHT NOW IT IS 1 YEAR PRIOR TO SELECTED DATE OF WRITE UP
+            cutOffDate = fDate.AddYears(-1);
+            //TODO: THIS CUTOFFDATE MAY CHANGE, RIGHT NOW IT IS 1 YEAR PRIOR TO SELECTED DATE OF WRITE UP
+
+            //Need to Check is Associate has a previous No Call No Show in the previous year
+            var NoCallFromDB = from table in MainWindow.agnesdb.Occurrences
+                               where table.PersNumber == empID && table.AttendanceViolation == "No Call No Show" && table.Date >= cutOffDate
+                               orderby table.Date ascending
+                               select new
+                               {
+                                   table.AttendanceViolation,
+                                   table.Date
+                               };
+            
+            int ncnsCount = (NoCallFromDB.ToList()).Count;
+
+            //check ot see if NO Call No Show is Involved
+            if (ncnsCount >= 2 && AttType == "No Call No Show")// && date != new DateTime(1001, 1, 1))
             {
                 BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show is " + firstName + "'s Second In Less Than a Year And Requires Termination.  Please Fill Out And Print This Progressive Counseling and Separation Form", MessageBoxButton.OK);
                 Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
                 Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
-                //this.Close();
-                return;
+                this.Close();
             }
+            else if (ncnsCount == 1 && AttType == "No Call No Show")//violationText == "No Call No Show")
+            {
+                BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show Requires An Automatic Written Progressive Counseling, Please Fill Out And Print This Form", MessageBoxButton.OK);
+                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                this.Close();
+            }
+            else
+            { 
             this.Close();
+            }
         }
         #endregion
     }

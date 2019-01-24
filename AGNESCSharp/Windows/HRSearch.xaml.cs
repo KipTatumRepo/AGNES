@@ -316,18 +316,18 @@ namespace AGNESCSharp
 
                 //if (result.Count > 1)
                 //{
-                    //MultipleNameDG.Visibility = Visibility.Visible;
-                    //MultipleNameDG.ItemsSource = result;
+                //MultipleNameDG.Visibility = Visibility.Visible;
+                //MultipleNameDG.ItemsSource = result;
 
-               // }
+                // }
                 //else
                 //{
-                    long queryMain = (from employeeTable in MainWindow.bidb.EmployeeLists
-                                      where employeeTable.FirstName == firstName && employeeTable.LastName == lastName
-                                      select employeeTable.PersNumber).SingleOrDefault();
+                long queryMain = (from employeeTable in MainWindow.bidb.EmployeeLists
+                                  where employeeTable.FirstName == firstName && employeeTable.LastName == lastName
+                                  select employeeTable.PersNumber).SingleOrDefault();
 
-                    assocNumber = queryMain;
-                    SearchDb(buttonName, searchTable.Content.ToString(), assocNumber);
+                assocNumber = queryMain;
+                SearchDb(buttonName, searchTable.Content.ToString(), assocNumber);
                 //}
                 //assocNumber = GetAssocNumber(firstName, lastName);
             }
@@ -340,7 +340,7 @@ namespace AGNESCSharp
             AttLabel.Visibility = Visibility.Collapsed;
             OccCB.Visibility = Visibility.Collapsed;
             string attendanceViolation;
-           
+
             if (MultipleOccurrencDG.SelectedItem == null) return;
 
             object row = MultipleOccurrencDG.SelectedValue;
@@ -374,20 +374,20 @@ namespace AGNESCSharp
                     OccNotesV = filteredRow.Notes;
 
 
-                //    attendanceViolation = filteredRow.AttendanceViolation.ToString();
-                //    OccCB.Visibility = Visibility.Visible;
-                //    AttLabel.Visibility = Visibility.Visible;
-                //    OccCB.SelectedIndex = SetIndex(attendanceViolation);
-                //}
-                //else
-                //{
-                //    OccCB.SelectedIndex = -1;
-                //    OccCB.Visibility = Visibility.Collapsed;
-                //    AttLabel.Visibility = Visibility.Collapsed;
+                    //    attendanceViolation = filteredRow.AttendanceViolation.ToString();
+                    //    OccCB.Visibility = Visibility.Visible;
+                    //    AttLabel.Visibility = Visibility.Visible;
+                    //    OccCB.SelectedIndex = SetIndex(attendanceViolation);
+                    //}
+                    //else
+                    //{
+                    //    OccCB.SelectedIndex = -1;
+                    //    OccCB.Visibility = Visibility.Collapsed;
+                    //    AttLabel.Visibility = Visibility.Collapsed;
                 }
 
                 //byte? type = filteredRow.Type;
-                
+
                 //OccNotes.Text = filteredRow.Notes;
             }
 
@@ -505,7 +505,7 @@ namespace AGNESCSharp
                 CHSelectedIndexV = Convert.ToInt32(filteredRow.Type);
                 CHDateV = filteredRow.Date;
                 CHNoteV = filteredRow.Notes;
-               
+
             }
             EmpNumber = (int)assocNumber;
             Window newWindow = new HRCashHandle(firstName, EmpNumber, empInProbation, 1);
@@ -519,7 +519,7 @@ namespace AGNESCSharp
             string AssocNumber = (MultipleNameDG.SelectedCells[0].Column.GetCellContent(row) as TextBlock).Text;
             assocNumber = Convert.ToInt64(AssocNumber);
             SearchDb(null, searchTable.Content.ToString(), assocNumber);
-        } 
+        }
 
         private void FirstNameBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -540,7 +540,9 @@ namespace AGNESCSharp
             BIEntity bidb = new BIEntity();
             MultipleNameDG.Visibility = Visibility.Collapsed;
             DateTime hireDate;
-            
+            DateTime earliestDate;
+            earliestDate = today.AddYears(-1);
+
 
             //if we are searching by name we cant search without a name
             if (button == "NameSearchButton") //button.Name
@@ -582,7 +584,7 @@ namespace AGNESCSharp
             if (table == "Occurrence Search")
             {
                 var query = from occTable in agnesdb.Occurrences
-                            where assocNumber == occTable.PersNumber 
+                            where assocNumber == occTable.PersNumber && occTable.Date >= earliestDate
                             orderby occTable.Date ascending
                             select occTable;
 
@@ -643,7 +645,7 @@ namespace AGNESCSharp
                     //    MultipleOccurrencDG.Visibility = Visibility.Visible;
                     //    MultipleOccurrencDG.ItemsSource = result;
                     //}
-# endregion 
+                    #endregion
                 }
             }
             #endregion
@@ -652,7 +654,7 @@ namespace AGNESCSharp
             else if (table == "LOA Search")
             {
                 var query = from LOATable in agnesdb.LOAs
-                            where assocNumber == LOATable.PersNumber 
+                            where assocNumber == LOATable.PersNumber
                             orderby LOATable.DateStart ascending
                             select LOATable;
 
@@ -723,12 +725,12 @@ namespace AGNESCSharp
             else
             {
                 var query = from CashTable in agnesdb.CashHandles
-                            where assocNumber == CashTable.PersNumber 
+                            where assocNumber == CashTable.PersNumber && CashTable.Date >= earliestDate
                             orderby CashTable.Date ascending
                             select CashTable;
 
                 var result = query.ToList();
-               
+
                 if (result.Count <= 0)
                 {
                     MessageBox.Show("There Are No Cash Handling Violations For " + firstName);

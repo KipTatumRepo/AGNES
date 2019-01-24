@@ -240,6 +240,7 @@ namespace AGNESCSharp
         {
             lbi = (ListBoxItem)sender;
             empId = (long)lbi.Tag;
+            
             OccStackPanel.Visibility = Visibility.Collapsed;
             LOAStackPanel.Visibility = Visibility.Collapsed;
             CashHandleStackPanel.Visibility = Visibility.Collapsed;
@@ -308,8 +309,23 @@ namespace AGNESCSharp
 
             if (result.Count >= 1)
             {
+                double? Points = 0;
                 OccStackPanel.Visibility = Visibility.Visible;
                 OccurrenceDataGrid.ItemsSource = result;
+                OccPointDisplay.Foreground = Brushes.Black;
+                double? OccPoints = 0;
+
+                foreach (var row in result)
+                {
+                    Points += row.Type;
+                }
+                OccPoints = Points / 2;
+
+                if (OccPoints >= 4)
+                {
+                    OccPointDisplay.Foreground = Brushes.Red;
+                }
+                OccPointDisplay.Text = OccPoints.ToString();
             }
 
             if (loaResult.Count >= 1)
@@ -322,6 +338,22 @@ namespace AGNESCSharp
             {
                 CashHandleStackPanel.Visibility = Visibility.Visible;
                 CashHandleDataGrid.ItemsSource = cashHandleResult;
+                CHPointDisplay.Foreground = Brushes.Black;
+                double? NoVarianceCount = 0;
+
+                foreach (var row in cashHandleResult)
+                {
+                    if (row.Type == 0)
+                    {
+                        NoVarianceCount++;
+                    }
+                }
+
+                if (NoVarianceCount >= 2)
+                {
+                    CHPointDisplay.Foreground = Brushes.Red;
+                }
+                CHPointDisplay.Text = NoVarianceCount.ToString();
             }
             lbxHistory.Visibility = Visibility.Visible;
         }
@@ -813,6 +845,31 @@ namespace AGNESCSharp
             lbxHistory.Visibility = Visibility.Collapsed;
             newWindow.ShowDialog();
         }
+
+        private void AddNew_Click(object sender, RoutedEventArgs e)
+        {
+            lbxHistory.Visibility = Visibility.Collapsed;
+            string name = lbi.Content.ToString();
+            Window newWindow = new HROccurrence(name, empId, empInProbationPeriod, 0);
+            newWindow.ShowDialog();
+        }
+
+        private void LOAAddNew_Click(object sender, RoutedEventArgs e)
+        {
+            lbxHistory.Visibility = Visibility.Collapsed;
+            string name = lbi.Content.ToString();
+            Window newWindow = new HRLeave(name, empId, 0);
+            newWindow.ShowDialog();
+        }
+
+        private void CHAddNew_Click(object sender, RoutedEventArgs e)
+        {
+            lbxHistory.Visibility = Visibility.Collapsed;
+            string name = lbi.Content.ToString();
+            Window newWindow = new HRCashHandle(name, empId, empInProbationPeriod, 0);
+            newWindow.ShowDialog();
+        }
+
         #endregion
     }
 }

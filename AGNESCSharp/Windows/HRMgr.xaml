@@ -39,7 +39,6 @@
                 </StackPanel>
             </ToggleButton>
             <Separator/>
-
         </ToolBar>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -50,95 +49,155 @@
                 <RowDefinition Height="3*"/>
                 <RowDefinition Height="25*"/>
             </Grid.RowDefinitions>
-            <TextBlock x:Name="tbAssociates" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" Margin="96,10,78,9" TextWrapping="Wrap" Text="Associates" VerticalAlignment="Center" FontSize="24" FontWeight="Bold" Height="34" TextAlignment="Center" Width="116" />
+            <TextBlock x:Name="tbAssociates" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" Margin="96,10,78,9" TextWrapping="Wrap" Text="Associates" VerticalAlignment="Center" FontSize="24" FontWeight="Bold" Height="34" 
+                       TextAlignment="Center" Width="116" />
             <local:UnselectableListBox x:Name ="lbxAssociates" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" Margin="2,2,2,2" VerticalAlignment="Stretch"/>
-            <TextBlock x:Name="tbHistory" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Margin="266,10,251,9" TextWrapping="Wrap" Text="Event History" VerticalAlignment="Center" FontSize="24" FontWeight="Bold" Height="34" TextAlignment="Center" Width="152" />
+            <TextBlock x:Name="tbHistory" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Margin="266,10,251,9" TextWrapping="Wrap" Text="Event History" VerticalAlignment="Center" FontSize="24" FontWeight="Bold" Height="34" 
+                       TextAlignment="Center" Width="152" />
             <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto">
                 <StackPanel x:Name="lbxHistory" HorizontalAlignment="Stretch" Margin="2,2,2,2" VerticalAlignment="Stretch" Visibility="Visible" >
-                    <StackPanel x:Name="OccStackPanel" Visibility="Collapsed">
-                    <TextBlock Text="Occurrence Related Violations" TextAlignment="Center" Margin="0,0,0,2"/>
-                    <ScrollViewer x:Name="OccurrenceSV" HorizontalAlignment="Stretch" Margin="0,0,0,10" VerticalScrollBarVisibility="Auto" Visibility="Visible">
-                            <DataGrid x:Name="OccurrenceDataGrid" MouseDoubleClick="Occ_PID_CellClicked" AutoGenerateColumns="False" CanUserAddRows="False" SelectionUnit="FullRow" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,5" SelectedItem="{Binding Path=PID, Mode=OneWay}">
-                            <DataGrid.Resources>
-                                <local:IntToStringConverter x:Key="MyConverter"/>
-                            </DataGrid.Resources>
-                            <DataGrid.Columns>
-                                <DataGridTextColumn x:Name="PID" Header="PID" Binding="{Binding PID, Mode=OneWay}" MaxWidth="0" />
-                                <DataGridTextColumn x:Name="AssociateNumber" Header="Asc Number" Binding="{Binding PersNumber, Mode=OneWay}"/>
-                                <DataGridTextColumn x:Name="OccurrenceType" Header="Occ Type" Binding="{Binding Type, Mode=OneWay, Converter={StaticResource MyConverter}}"/>
-                                <DataGridTextColumn x:Name="Date" Header="Occ Date" Binding="{Binding Date, StringFormat=\{0:MM/dd/yy\}, Mode=OneWay}" />
-                                <DataGridTextColumn x:Name="AttViolation" Header="Att Violation Type" Binding="{Binding AttendanceViolation, Mode=OneWay}">
-                                    <DataGridTextColumn.ElementStyle>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="TextWrapping" Value="Wrap"/>
-                                        </Style>
-                                    </DataGridTextColumn.ElementStyle>
-                                </DataGridTextColumn>
-                                <DataGridTextColumn x:Name="Notes" Header="Notes" Binding="{Binding Notes, Mode=OneWay}" Width="*">
-                                    <DataGridTextColumn.ElementStyle>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="TextWrapping" Value="Wrap"/>
-                                        </Style>
-                                    </DataGridTextColumn.ElementStyle>
-                                </DataGridTextColumn>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </ScrollViewer>
+                    <StackPanel x:Name="OccStackPanel" Visibility="Collapsed" Background="AliceBlue">
+                        <Border BorderBrush="Black" BorderThickness="1" CornerRadius="3">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="Occurrence Related Violations" TextAlignment="Center" Margin="0,0,0,5"/>
+                                <ScrollViewer Grid.Row="1" x:Name="OccurrenceSV" HorizontalAlignment="Stretch" Margin="0,0,0,10" VerticalScrollBarVisibility="Auto" Visibility="Visible">
+                                    <DataGrid x:Name="OccurrenceDataGrid" MouseDoubleClick="Occ_PID_CellClicked" AutoGenerateColumns="False" CanUserAddRows="False" SelectionUnit="FullRow" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                                              Margin="5,0,5,10" SelectedItem="{Binding Path=PID, Mode=OneWay}">
+                                        <DataGrid.Resources>
+                                            <local:IntToStringConverter x:Key="MyConverter"/>
+                                        </DataGrid.Resources>
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn x:Name="PID" Header="PID" Binding="{Binding PID, Mode=OneWay}" MaxWidth="0" />
+                                            <DataGridTextColumn x:Name="AssociateNumber" Header="Asc Number" Binding="{Binding PersNumber, Mode=OneWay}"/>
+                                            <DataGridTextColumn x:Name="OccurrenceType" Header="Occ Type" Binding="{Binding Type, Mode=OneWay, Converter={StaticResource MyConverter}}"/>
+                                            <DataGridTextColumn x:Name="Date" Header="Occ Date" Binding="{Binding Date, StringFormat=\{0:MM/dd/yy\}, Mode=OneWay}" />
+                                            <DataGridTextColumn x:Name="AttViolation" Header="Att Violation Type" Binding="{Binding AttendanceViolation, Mode=OneWay}">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn x:Name="Notes" Header="Notes" Binding="{Binding Notes, Mode=OneWay}" Width="*">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </ScrollViewer>
+                                <Grid Grid.Row="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width=".28*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border BorderBrush="Black" BorderThickness="1" Margin="5,0,0,3">
+                                        <Label Grid.Column="0" Content="Current Points" Background="White"/>
+                                    </Border>
+                                    <TextBlock x:Name="OccPointDisplay" Grid.Column="0" Text="somthing" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="16" Background="White" Margin="0,0,3,0" Foreground="Black"/>
+                                    <Button x:Name="AddNew" Content="Add New Record" Grid.Column="1" Width="110" HorizontalAlignment="Right" Margin="0,0,5,3" Background="WhiteSmoke" Click="AddNew_Click"/>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel x:Name="LOAStackPanel" Visibility="Collapsed" Margin="0,10,0,0" Background="AliceBlue">
+                        <Border BorderBrush="Black" BorderThickness="1" CornerRadius="3">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="Leave of Absences" TextAlignment="Center" Margin="0,0,0,2"/>
+                                <ScrollViewer x:Name="LoaSV" Grid.Row="1" HorizontalAlignment="Stretch" Margin="0,0,0,10" VerticalScrollBarVisibility="Auto" Visibility="Visible">
+                                    <DataGrid x:Name="LoaDataGrid" MouseDoubleClick="LOA_PID_CellClicked" AutoGenerateColumns="False" CanUserAddRows="False" SelectionUnit="FullRow" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                                              Margin="5,0,5,10" SelectedItem="{Binding Path=PID, Mode=OneWay}">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn x:Name="LoaPID" Header="PID" Binding="{Binding PID, Mode=OneWay}" MaxWidth="0" />
+                                            <DataGridTextColumn x:Name="LoaAssociateNumber" Header="Asc Number" Binding="{Binding PersNumber, Mode=OneWay}"/>
+                                            <DataGridTextColumn x:Name="LoaOccurrenceType" Header="LOA Type" Binding="{Binding Type, Mode=OneWay}"/>
+                                            <DataGridTextColumn x:Name="LoaBeginDate" Header="Start Date" Binding="{Binding DateStart, StringFormat=\{0:MM/dd/yy\}, Mode=OneWay}" />
+                                            <DataGridTextColumn x:Name="LoaEndDate" Header="End Date" Binding="{Binding DateEnd, StringFormat=\{0:MM/dd/yy\}, Mode=OneWay}" />
+                                            <DataGridTextColumn x:Name="LoaApproved" Header="LOA Type" Binding="{Binding Approved, Mode=OneWay}" MaxWidth="0"/>
+                                            <DataGridTextColumn x:Name="LoaPending" Header="LOA Type" Binding="{Binding Pending, Mode=OneWay}" MaxWidth="0"/>
+                                            <DataGridTextColumn x:Name="LoaClosed" Header="LOA Type" Binding="{Binding Closed, Mode=OneWay}" MaxWidth="0"/>
+                                            <DataGridTextColumn x:Name="LoaParental" Header="LOA Type" Binding="{Binding Parental, Mode=OneWay}" MaxWidth="0"/>
+                                            <DataGridTextColumn x:Name="LoaContinuous" Header="LOA Type" Binding="{Binding Continuous, Mode=OneWay}" MaxWidth="0"/>
+                                            <DataGridTextColumn x:Name="LoaIntermittent" Header="LOA Type" Binding="{Binding Intermittent, Mode=OneWay}" MaxWidth="0"/>
+                                            <DataGridTextColumn x:Name="LoaNotes" Header="Notes" Binding="{Binding Notes, Mode=OneWay}" Width="*">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </ScrollViewer>
+                                <Grid Grid.Row="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width=".28*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button x:Name="LOAAddNew" Content="Add New Record" Grid.Column="1" Width="110" HorizontalAlignment="Right" Margin="0,0,5,3" Background="WhiteSmoke" Click="LOAAddNew_Click"/>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel x:Name="CashHandleStackPanel" Visibility="Collapsed" Margin="0,10,0,2" Background="AliceBlue">
+                        <Border BorderBrush="Black" BorderThickness="1" CornerRadius="3">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Cash Handling Violations" Grid.Row="0" TextAlignment="Center" Margin="0,0,0,2"/>
+                                <ScrollViewer x:Name="CashHandleSV" Grid.Row="1" HorizontalAlignment="Stretch" Margin="0,0,0,10" VerticalScrollBarVisibility="Auto" Visibility="Visible">
+                                    <DataGrid x:Name="CashHandleDataGrid" MouseDoubleClick="CashHandle_PID_CellClicked" AutoGenerateColumns="False" CanUserAddRows="False" SelectionUnit="FullRow" SelectedItem="{Binding Path=PID, Mode=OneWay}" 
+                                              HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,0,5,10">
+                                        <DataGrid.Resources>
+                                            <local:CHIntToStringConverter x:Key="CashHandleConverter"/>
+                                        </DataGrid.Resources>
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn x:Name="CHPID" Header="PID" Binding="{Binding PID, Mode=OneWay}" MaxWidth="0"/>
+                                            <DataGridTextColumn x:Name="CHAssociateNumber" Header="Asc Number" Binding="{Binding PersNumber, Mode=OneWay}"/>
+                                            <DataGridTextColumn x:Name="CHOccurrenceType" Header="Occ Type" Binding="{Binding Type, Mode=OneWay, Converter={StaticResource CashHandleConverter}}"/>
+                                            <DataGridTextColumn x:Name="CHDate" Header="Occ Date" Binding="{Binding Date, StringFormat=\{0:MM/dd/yy\}, Mode=OneWay}" />
+                                            <DataGridTextColumn x:Name="CHNotes" Header="Notes" Binding="{Binding Notes, Mode=OneWay}" Width="*">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </ScrollViewer>
+                                <Grid Grid.Row="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width=".68*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border BorderBrush="Black" BorderThickness="1" Margin="5,0,0,3">
+                                        <Label Grid.Column="0" Content="Current Points" Background="White"/>
+                                    </Border>
+                                    <TextBlock x:Name="CHPointDisplay" Grid.Column="0" Text="somthing" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="16" Background="White" Margin="0,0,3,0" Foreground="Black"/>
+                                    <Button x:Name="CHAddNew" Content="Add New Record" Grid.Column="1" Width="110" HorizontalAlignment="Right" Margin="0,0,5,3" Background="WhiteSmoke" Click="CHAddNew_Click"/>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
                 </StackPanel>
-                <StackPanel x:Name="LOAStackPanel" Visibility="Collapsed">
-                    <TextBlock Text="Leave of Absences" TextAlignment="Center" Margin="0,0,0,2"/>
-                        <ScrollViewer x:Name="LoaSV" HorizontalAlignment="Stretch" Margin="0,0,0,10" VerticalScrollBarVisibility="Auto" Visibility="Visible">
-                            <DataGrid x:Name="LoaDataGrid" MouseDoubleClick="LOA_PID_CellClicked" AutoGenerateColumns="False" CanUserAddRows="False" SelectionUnit="FullRow" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,5" SelectedItem="{Binding Path=PID, Mode=OneWay}">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn x:Name="LoaPID" Header="PID" Binding="{Binding PID, Mode=OneWay}" MaxWidth="0" />
-                                    <DataGridTextColumn x:Name="LoaAssociateNumber" Header="Asc Number" Binding="{Binding PersNumber, Mode=OneWay}"/>
-                                    <DataGridTextColumn x:Name="LoaOccurrenceType" Header="LOA Type" Binding="{Binding Type, Mode=OneWay}"/>
-                                    <DataGridTextColumn x:Name="LoaBeginDate" Header="Start Date" Binding="{Binding DateStart, StringFormat=\{0:MM/dd/yy\}, Mode=OneWay}" />
-                                    <DataGridTextColumn x:Name="LoaEndDate" Header="End Date" Binding="{Binding DateEnd, StringFormat=\{0:MM/dd/yy\}, Mode=OneWay}" />
-                                    <DataGridTextColumn x:Name="LoaApproved" Header="LOA Type" Binding="{Binding Approved, Mode=OneWay}" MaxWidth="0"/>
-                                    <DataGridTextColumn x:Name="LoaPending" Header="LOA Type" Binding="{Binding Pending, Mode=OneWay}" MaxWidth="0"/>
-                                    <DataGridTextColumn x:Name="LoaClosed" Header="LOA Type" Binding="{Binding Closed, Mode=OneWay}" MaxWidth="0"/>
-                                    <DataGridTextColumn x:Name="LoaParental" Header="LOA Type" Binding="{Binding Parental, Mode=OneWay}" MaxWidth="0"/>
-                                    <DataGridTextColumn x:Name="LoaContinuous" Header="LOA Type" Binding="{Binding Continuous, Mode=OneWay}" MaxWidth="0"/>
-                                    <DataGridTextColumn x:Name="LoaIntermittent" Header="LOA Type" Binding="{Binding Intermittent, Mode=OneWay}" MaxWidth="0"/>
-                                    <DataGridTextColumn x:Name="LoaNotes" Header="Notes" Binding="{Binding Notes, Mode=OneWay}" Width="*">
-                                    <DataGridTextColumn.ElementStyle>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="TextWrapping" Value="Wrap"/>
-                                        </Style>
-                                    </DataGridTextColumn.ElementStyle>
-                                </DataGridTextColumn>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </ScrollViewer>
-                </StackPanel>
-                <StackPanel x:Name="CashHandleStackPanel" Visibility="Collapsed">
-                    <TextBlock Text="Cash Handling Violations" TextAlignment="Center" Margin="0,0,0,2"/>
-                    <ScrollViewer x:Name="CashHandleSV" HorizontalAlignment="Stretch" Margin="0,0,0,10" VerticalScrollBarVisibility="Auto" Visibility="Visible">
-                        <DataGrid x:Name="CashHandleDataGrid" MouseDoubleClick="CashHandle_PID_CellClicked" AutoGenerateColumns="False" CanUserAddRows="False" SelectionUnit="FullRow" SelectedItem="{Binding Path=PID, Mode=OneWay}" 
-                                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,5">
-                            <DataGrid.Resources>
-                                <local:CHIntToStringConverter x:Key="CashHandleConverter"/>
-                            </DataGrid.Resources>
-                            <DataGrid.Columns>
-                                <DataGridTextColumn x:Name="CHPID" Header="PID" Binding="{Binding PID, Mode=OneWay}" MaxWidth="0"/>
-                                <DataGridTextColumn x:Name="CHAssociateNumber" Header="Asc Number" Binding="{Binding PersNumber, Mode=OneWay}"/>
-                                <DataGridTextColumn x:Name="CHOccurrenceType" Header="Occ Type" Binding="{Binding Type, Mode=OneWay, Converter={StaticResource CashHandleConverter}}"/>
-                                <DataGridTextColumn x:Name="CHDate" Header="Occ Date" Binding="{Binding Date, StringFormat=\{0:MM/dd/yy\}, Mode=OneWay}" />
-                                <DataGridTextColumn x:Name="CHNotes" Header="Notes" Binding="{Binding Notes, Mode=OneWay}" Width="*">
-                                    <DataGridTextColumn.ElementStyle>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="TextWrapping" Value="Wrap"/>
-                                        </Style>
-                                    </DataGridTextColumn.ElementStyle>
-                                </DataGridTextColumn>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </ScrollViewer>
-                </StackPanel>
-            </StackPanel>
-        </ScrollViewer>
-    </Grid>
+            </ScrollViewer>
+        </Grid>
         <StatusBar x:Name="sbHRMgr" HorizontalAlignment="Left" Height="27" VerticalAlignment="Top" Width="954" Grid.Row="2"/>
     </Grid>
 </Window>
