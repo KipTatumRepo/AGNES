@@ -467,10 +467,11 @@
         If W5Val.Visibility = Visibility.Visible Then W5FoVal = LoadSingleWeekAndUnitForecast(GroupCategory, UnitChooseObject.CurrentUnit, CurrentFiscalYear, PeriodChooseObject.CurrentPeriod, 5)
     End Sub
 
-    Private Sub UpdateSubtotals()
+    Private Sub UpdateSubtotals(sender As ForecastGroup)
         Dim grd As Grid = Parent
         For Each fg As ForecastGroup In grd.Children
             If fg.GroupIsSubTotal = True Then Update(fg)
+            If fg.SalesFcastGroup Is sender Then Update(fg)
         Next
     End Sub
 
@@ -754,7 +755,7 @@
 #Region "Event Listeners"
     Private Sub ForecastChanged()
         Update(Me)
-        UpdateSubtotals()
+        UpdateSubtotals(Me)
         FcastPage.SaveStatus = 0
     End Sub
 

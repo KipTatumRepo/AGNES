@@ -638,7 +638,11 @@ Public Class Flash
             If amsg.ReturnResult = "No" Then e.Cancel = True
             amsg.Close()
         End If
-
+        If My.Computer.Keyboard.CtrlKeyDown And My.Computer.Keyboard.ShiftKeyDown Then
+            AnotherFlashRequested = TypeOfFlash
+        Else
+            AnotherFlashRequested = -1
+        End If
     End Sub
 
 #End Region

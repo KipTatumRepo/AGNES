@@ -177,6 +177,7 @@
     </ApplicationDefinition>
     <Compile Include="Admin Objects\ModuleListItem.vb" />
     <Compile Include="Application Objects\AgnesBaseInput.vb" />
+    <Compile Include="Application Objects\BinarySlider.vb" />
     <Compile Include="Application Objects\MonthChooser.vb" />
     <Compile Include="Application Objects\PercentBox.vb" />
     <Compile Include="Application Objects\YearChooser.vb" />
@@ -725,6 +726,9 @@
     <Compile Include="XAML Components\Training\Training.xaml.vb">
       <DependentUpon>Training.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XAML Components\Vendor Management\LocationEditor.xaml.vb">
+      <DependentUpon>LocationEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="XAML Components\Vendor Management\VendorEditor.xaml.vb">
       <DependentUpon>VendorEditor.xaml</DependentUpon>
     </Compile>
@@ -842,6 +846,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="XAML Components\Training\Training.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XAML Components\Vendor Management\LocationEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1075,6 +1083,7 @@
     <Resource Include="Resources\Reminder.png" />
     <Resource Include="Resources\NextNotification.png" />
     <Resource Include="Resources\GoToModule.png" />
+    <Resource Include="Resources\NotificationDismiss.png" />
     <Content Include="Resources\Sound Assets\jump.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

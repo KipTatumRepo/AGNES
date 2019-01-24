@@ -16,6 +16,17 @@ Module BaseModule
     Public CurrentFiscalYear As Integer = 2019
     Public Notifications As List(Of Long)
     Public Property FlashNotes As String
+    Private _reselectflash As Long
+    Public Property ReselectFlash As Long
+        Get
+            Return _reselectflash
+        End Get
+        Set(value As Long)
+            _reselectflash = value
+            If value = -1 Then Exit Property
+            FlashModule.Runmodule(value)
+        End Set
+    End Property
 #End Region
 
 #Region "Public Methods" '// Globally Shared Methods
@@ -236,7 +247,7 @@ Module BaseModule
         Return 0
     End Function
 
-    Public Function SelectFlashForecastTypeAndUnit(Optional ignoreunits As Boolean = False) As (flashselection As Long, unitselection As Long)
+    Public Function SelectFlashForecastTypeAndUnit(Optional ignoreunits As Boolean = False, Optional ignoretypes As Boolean = False) As (flashselection As Long, unitselection As Long)
         Dim fs As Long, us As Long, availableflashtypes As New List(Of Long), availableunits As New List(Of Long), usr As Integer, ulvl As Byte
         Dim LocalAGNESShared As AGNESSharedDataEntity = New AGNESSharedDataEntity
         usr = My.Settings.UserID : ulvl = My.Settings.UserLevel
@@ -263,16 +274,20 @@ Module BaseModule
                 Next
 
         End Select
-        If availableflashtypes.Count > 1 Then
-            '// Offer choice popup for which type the user wants; this is assigned to fs
-            Dim flchs As New FlashForecastChooser With {.ChooserType = 0}
-            flchs.Populate(availableflashtypes)
-            flchs.ShowDialog()
-            fs = flchs.UserChoice
-            flchs.Close()
-        Else
-            fs = availableflashtypes(0)
+        If ignoretypes = False Then
+            If availableflashtypes.Count > 1 Then
+                '// Offer choice popup for which type the user wants; this is assigned to fs
+                Dim flchs As New FlashForecastChooser With {.ChooserType = 0}
+                flchs.Populate(availableflashtypes)
+                flchs.ShowDialog()
+                fs = flchs.UserChoice
+                flchs.Close()
+            Else
+                fs = availableflashtypes(0)
+            End If
+
         End If
+        If ignoretypes = True Then fs = ReselectFlash
         If ignoreunits = True Then
             Return (fs, 0)
             Exit Function
@@ -460,6 +475,5 @@ Module BaseModule
     End Function
 
 #End Region
-
 
 End Module

@@ -44,7 +44,15 @@
         <ScrollViewer HorizontalAlignment="Stretch" Margin="10,0,10,0" Grid.Row="3" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto">
             <TextBox x:Name="DescriptionTb" HorizontalAlignment="Stretch" Margin="0,0,0,2" Grid.Row="3" TextWrapping="Wrap" VerticalAlignment="Stretch" FontSize="20" />
         </ScrollViewer>
-        <Button x:Name="CancelButton" Content="Cancel" HorizontalAlignment="Left" Margin="10,0,0,5" Grid.Row="4" VerticalAlignment="Center" Width="75" Click="CancelButton_Click"/>
-        <Button x:Name="SaveButton" Content="Save Occurrence" HorizontalAlignment="Right" Margin="0,0,10,5" Grid.Row="4" VerticalAlignment="Center" Width="101" Height="23" Click="SaveButton_Click"/>
+        <Grid x:Name="ButtonGrid" Grid.Row="4" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="CancelButton" Content="Clear" Grid.Column="0" HorizontalAlignment="Left" Margin="10,0,0,5" Grid.Row="4" VerticalAlignment="Center" Width="75" Click="CancelButton_Click" Visibility="Collapsed"/>
+            <Button x:Name="SaveButton" Content="Save Occurrence" Grid.Column="2" HorizontalAlignment="Center" Margin="0,0,10,5" Grid.Row="4" VerticalAlignment="Center" Width="101" Height="23" Click="SaveButton_Click" Visibility="Collapsed"/>
+            <Button x:Name="UpdateButton" Content="Update Occurrence" Grid.Column="1" HorizontalAlignment="Center" Margin="0,0,10,5" Grid.Row="4" VerticalAlignment="Center" Width="115" Height="23" Click="UpdateButton_Click" Visibility="Collapsed"/>
+        </Grid>
     </Grid>
 </Window>

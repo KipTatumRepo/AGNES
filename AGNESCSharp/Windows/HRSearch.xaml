@@ -167,6 +167,13 @@
                     <DataGridTextColumn x:Name="LOAEndDate" Header="Leave End" Binding="{Binding DateEnd, Mode=OneWay, StringFormat=\{0:MM/dd/yy\}}" />
                     <DataGridTextColumn x:Name="LOAType" Header="Type of Leave" Binding="{Binding Type, Mode=OneWay}"/>
                     <DataGridTextColumn x:Name="LOANotes" Header="Notes" Width="*" Binding="{Binding Notes, Mode=OneWay}"/>
+                    <DataGridTextColumn x:Name="LoaApproved" Header="LOA Type" Binding="{Binding Approved, Mode=OneWay}" MaxWidth="0"/>
+                    <DataGridTextColumn x:Name="LoaPending" Header="LOA Type" Binding="{Binding Pending, Mode=OneWay}" MaxWidth="0"/>
+                    <DataGridTextColumn x:Name="LoaClosed" Header="LOA Type" Binding="{Binding Closed, Mode=OneWay}" MaxWidth="0"/>
+                    <DataGridTextColumn x:Name="LoaParental" Header="LOA Type" Binding="{Binding Parental, Mode=OneWay}" MaxWidth="0"/>
+                    <DataGridTextColumn x:Name="LoaContinuous" Header="LOA Type" Binding="{Binding Continuous, Mode=OneWay}" MaxWidth="0"/>
+                    <DataGridTextColumn x:Name="LoaIntermittent" Header="LOA Type" Binding="{Binding Intermittent, Mode=OneWay}" MaxWidth="0"/>
+                    <DataGridTextColumn x:Name="LoaNotes" Header="Notes" Binding="{Binding Notes, Mode=OneWay}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
             <Grid x:Name="LOADisplayGrid" Grid.Row="3" Visibility="Collapsed">
@@ -261,7 +268,7 @@
             </Grid>
         </Grid>
         <!-- End Cash Handle View-->
-        <Button x:Name="UpdateButton" Content="Update" HorizontalAlignment="Center" Grid.Row="4" VerticalAlignment="Center" Width="75" Click="UpdateButton_Click" Visibility="Hidden" Height="20" />
-        
+       <!-- <Button x:Name="UpdateButton" Content="Update" HorizontalAlignment="Center" Grid.Row="4" VerticalAlignment="Center" Width="75" Click="UpdateButton_Click" Visibility="Hidden" Height="20" />
+        -->
     </Grid>
 </Window>
