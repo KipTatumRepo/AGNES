@@ -105,7 +105,7 @@ namespace AGNESCSharp
             return index;
         }
 
-        public static void Report(string firstName, string violationText, double? occPoints, int empInProbation, DateTime earlyDate, int? cashHandleType, long? empId)
+        public static void Report(string firstName, string violationText, int? type, double? occPoints, int empInProbation, DateTime earlyDate, int? cashHandleType, long? empId)
         {
             int? CashHandleType = cashHandleType;
             if (cashHandleType == null)
@@ -132,7 +132,7 @@ namespace AGNESCSharp
 
                         if (anyPriorZero == 3)
                         {
-                            BIMessageBox.Show("Counseling Form Dialog", "This is " + firstName + "'s Thrid Occurrence For No Variance Found Violations and Requires a WRITTEN Counseling" +
+                            BIMessageBox.Show("Counseling Form Dialog", "This is " + firstName + "'s Third Occurrence For No Variance Found Violations and Requires a WRITTEN Counseling" +
                                                         " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
                             Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
                         }
@@ -161,11 +161,15 @@ namespace AGNESCSharp
                     {
                         MessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points");
                     }
+                    else if (occPoints > 4 && type == 0)
+                    {
+                        MessageBox.Show("Record Has Been Updated");
+                    }
                     else if (occPoints >= 4 && occPoints < 5)
                     {
                         BIMessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points " + (5 - occPoints) + " More Before " + earlyDate.ToShortDateString() + " Will Require A Written Progressive Counseling.");
                     }
-                    else if (occPoints >= 5 && occPoints < 6)
+                    else if (occPoints >= 5 && occPoints < 6 && type != 0)
                     {
                         BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This WRITTEN Warning Form" +
                                 "That I Will Open For You", MessageBoxButton.OK);
@@ -178,7 +182,7 @@ namespace AGNESCSharp
                             MessageBox.Show("Oops there was a problem trying to open the Progressive Counseling Form, Please contact Business Intelligence and let them know!");
                         }
                     }
-                    else if (occPoints >= 6 && occPoints < 7)
+                    else if (occPoints >= 6 && occPoints < 7 && type != 0)
                     {
                         BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This FINAL Warning Form" +
                                 "That I Will Open For You", MessageBoxButton.OK);
@@ -193,8 +197,9 @@ namespace AGNESCSharp
                     }
                     else
                     {
-                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Print This DISCHARGE Form" +
-                                "That I Will Open For You", MessageBoxButton.OK);
+                        BIMessageBox.Show("Counseling Form Dialog", firstName + " Has " + occPoints + " Occurrence Points, Please Fill Out and Print This DISCHARGE Form" +
+                                " AND Progressive Counseling Form That I Will Open For You", MessageBoxButton.OK);
+                        Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
                         Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
                     }
                     break;

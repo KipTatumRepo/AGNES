@@ -276,8 +276,6 @@ namespace AGNESCSharp
                             employeeTable.Notes,
                             employeeTable.AttendanceViolation
                         };
-                        
-
             var LoaQuery = from loaEmployeeTable in MainWindow.agnesdb.LOAs
                            where empId == loaEmployeeTable.PersNumber
                            orderby loaEmployeeTable.DateStart descending
@@ -288,11 +286,16 @@ namespace AGNESCSharp
                                loaEmployeeTable.Type,
                                loaEmployeeTable.DateStart,
                                loaEmployeeTable.DateEnd,
+                               loaEmployeeTable.Approved,
+                               loaEmployeeTable.Pending,
+                               loaEmployeeTable.Closed,
+                               loaEmployeeTable.Parental,
+                               loaEmployeeTable.Continuous,
+                               loaEmployeeTable.Intermittent,
                                loaEmployeeTable.Notes
                            };
-
             var cashHandleQuery = from chEmployeeTable in MainWindow.agnesdb.CashHandles
-                                  where empId == chEmployeeTable.PersNumber
+                                  where empId == chEmployeeTable.PersNumber && chEmployeeTable.Date >= cutOffDate
                                   orderby chEmployeeTable.Date descending
                                   select new
                                   {
