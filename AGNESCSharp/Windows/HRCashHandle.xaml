@@ -20,14 +20,14 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label x:Name="CashLabel" Content="Amount of Variance" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="20"/>
-            <ComboBox x:Name="CashCB" VerticalAlignment="Center" HorizontalAlignment="Right" Width="250" Margin="0,0,20,0" FontSize="14" Height="40" VerticalContentAlignment="Center" SelectionChanged="CashCB_SelectionChanged">
+            <Label x:Name="CashLabel" Content="Amount of Variance" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="20"/>
+            <ComboBox x:Name="CashCB" VerticalAlignment="Center" Grid.Column="1" HorizontalAlignment="Right" Width="250" Margin="0,0,20,0" FontSize="14" Height="40" VerticalContentAlignment="Center" SelectionChanged="CashCB_SelectionChanged">
                 <ComboBoxItem>Variance Reported None Found</ComboBoxItem>
                 <ComboBoxItem>$3.00 - $20.00</ComboBoxItem>
                 <ComboBoxItem>$20.01 +</ComboBoxItem>
             </ComboBox>
-            <Label x:Name="CHDPLabel" Content="Date of Occurrence" Grid.Column="1"  Margin="30,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20" />
-            <DatePicker x:Name="CHOccurrenceDP" Grid.Column="1" Grid.Row="1" Margin="0,0,30,0" HorizontalAlignment="Right" VerticalAlignment="Center" Height="40" Width="200" VerticalContentAlignment="Center" FontSize="20"/>
+            <Label x:Name="CHDPLabel" Content="Date of Occurrence" Grid.Column="0"  Margin="30,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20" />
+            <DatePicker x:Name="CHOccurrenceDP" Grid.Column="0" Grid.Row="0" Margin="0,0,30,0" HorizontalAlignment="Right" VerticalAlignment="Center" Height="40" Width="200" VerticalContentAlignment="Center" FontSize="20"/>
         </Grid>
         <Grid Grid.Row="1"  Visibility="Collapsed" >
             <Grid.ColumnDefinitions>
@@ -50,9 +50,9 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="CancelButton" Content="Clear" Grid.Column="0" HorizontalAlignment="Left" Margin="10,0,0,5" Grid.Row="4" VerticalAlignment="Center" Width="75" Click="CancelButton_Click" Visibility="Collapsed"/>
+            <Button x:Name="CancelButton" Content="Clear" Grid.Column="0" HorizontalAlignment="Center" Margin="0,0,0,5" Grid.Row="4" VerticalAlignment="Center" Width="75" Click="CancelButton_Click" Visibility="Collapsed"/>
             <Button x:Name="SaveButton" Content="Save Occurrence" Grid.Column="2" HorizontalAlignment="Center" Margin="0,0,10,5" Grid.Row="4" VerticalAlignment="Center" Width="101" Height="23" Click="SaveButton_Click" Visibility="Collapsed"/>
-            <Button x:Name="UpdateButton" Content="Update Occurrence" Grid.Column="1" HorizontalAlignment="Center" Margin="0,0,10,5" Grid.Row="4" VerticalAlignment="Center" Width="115" Height="23" Click="UpdateButton_Click" Visibility="Collapsed"/>
+            <Button x:Name="UpdateButton" Content="Update Occurrence" Grid.Column="1" HorizontalAlignment="Center" Margin="0,0,0,5" Grid.Row="4" VerticalAlignment="Center" Width="115" Height="23" Click="UpdateButton_Click" Visibility="Collapsed"/>
         </Grid>
     </Grid>
 </Window>

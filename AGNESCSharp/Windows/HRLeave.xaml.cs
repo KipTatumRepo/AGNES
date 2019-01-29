@@ -254,16 +254,17 @@ namespace AGNESCSharp
             {
                 MessageBox.Show(f.ToString());
             }
-            MessageBox.Show("The Leave for " + firstName + " Has Been Added, Please Fill Out This Form And Submit To HR.");
 
-            if (LOAExists == true)
+
+            if (LOAExists == true && ClosedBox.IsChecked == false && ApprovedBox.IsChecked == false)
             {
+                MessageBox.Show("The Leave for " + firstName + " Has Been Added, Please Fill Out This Form And Submit To HR.");
                 Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\LOANotification.pdf");
-                
+
             }
             else
             {
-                MessageBox.Show("Oops there was a problem trying to open the Leave Of Abscence Form, Please contact Business Intelligence and let them know!");
+                MessageBox.Show("The Leave for " + firstName + " Has Been Added.");
             }
 
             PendingBox.IsChecked = false;
@@ -370,7 +371,6 @@ namespace AGNESCSharp
                     }
                     try
                     {
-
                         db.SaveChanges();
                         MessageBox.Show("Leave of Abscence Record Has Been Updated.");
                     }
