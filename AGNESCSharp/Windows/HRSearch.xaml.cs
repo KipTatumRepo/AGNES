@@ -157,15 +157,16 @@ namespace AGNESCSharp
                         return;
                     }
 
-                    if (occPoints <= 4)
+                    if (occPoints < 4)
                     {
                         MessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points");
                     }
                     else if (occPoints > 4 && type == 0)
                     {
-                        MessageBox.Show("Record Has Been Updated");
+                        return;
+                        //MessageBox.Show("Record Has Been Updated");
                     }
-                    else if (ncnsCount != null && ncnsCount != 0)
+                    else if (violationText == "No Call No Show")//ncnsCount != null && ncnsCount != 0)
                     {
                         return;
                     }

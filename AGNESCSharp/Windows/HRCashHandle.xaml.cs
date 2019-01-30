@@ -108,7 +108,7 @@ namespace AGNESCSharp
         }
         #endregion
 
-        #region Prvate Methods
+        #region Private Methods
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             CashHandle ch = new CashHandle();
@@ -269,7 +269,7 @@ namespace AGNESCSharp
                             var messageBoxResult = BIMessageBox.Show("Cash Handle Reduction", "This Change Will Require the Removal of A Written Counseling, Do You Wish To Continue?", MessageBoxButton.YesNo);
                             if (messageBoxResult != MessageBoxResult.Yes) return;
                             db.SaveChanges();
-                            MessageBox.Show("Occurrence Record Has Been Updated.");
+                            MessageBox.Show("Cash Handling Record Has Been Updated.");
                             (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, empID, 1);
                             HRSearch.Report(firstName, violationNotes, null, occPoints, empInProbation, earlyDate, type, empID, null);
                         }
@@ -285,7 +285,7 @@ namespace AGNESCSharp
 
                             if (messageBoxResult != MessageBoxResult.Yes) return;
                             db.SaveChanges();
-                            MessageBox.Show("Occurrence Record Has Been Updated.");
+                            MessageBox.Show("Cash Handling Record Has Been Updated.");
                             (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, empID, 1);
                             HRSearch.Report(firstName, violationNotes, null, occPoints, empInProbation, earlyDate, type, empID, null);
                         }
@@ -316,7 +316,6 @@ namespace AGNESCSharp
                                 MessageBox.Show("There was a problem updating the CASH HANDLING record in the database please contact Business Intelligence " + ex);
                             }
                         }
-
                     }
                 }
             }
