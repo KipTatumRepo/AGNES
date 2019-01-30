@@ -407,6 +407,21 @@ namespace AGNESCSharp
                     //We can update the Occurrence on a date that already exists
                     else
                     {
+                        //Count number of prior consecutive unexcused absences for possible LOA reasons
+                        DayOfWeek day = fDate.DayOfWeek;
+                        DateTime currentDate = fDate;
+                        DateTime checkDate;
+
+                        if (day == DayOfWeek.Monday || day == DayOfWeek.Tuesday)
+                        {
+                            checkDate = fDate.AddDays(-4);
+                        }
+                        else
+                        {
+                            checkDate = fDate.AddDays(-2);
+                        }
+                        
+
                         if (type < violationAmount && previousTry == false)
                         {
                             decimal compareOccPoints = (decimal)occPoints;
@@ -435,6 +450,19 @@ namespace AGNESCSharp
                             {
                                 MessageBox.Show("There was a problem updating the OCCURRENCE record in the database please contact Business Intelligence " + ex);
                             }
+                        }
+                        var UnexcusedAbsences = from newTable in MainWindow.agnesdb.Occurrences
+                                                where newTable.PersNumber == empID && newTable.AttendanceViolation == "Consecutive Unexcused Absence" && newTable.Date >= checkDate && newTable.Date <= fDate
+                                                orderby newTable.Date descending
+                                                select newTable.Date;
+
+                        int UnexcusedAbsenceCount = UnexcusedAbsences.ToList().Count();
+
+                        if (UnexcusedAbsenceCount >= 3)
+                        {
+                            BIMessageBox.Show("Contact HRBP Dialog", firstName + " Has At Least Three Consecutive Unexcused Absences, Please Contact HRBP To Determine If This Requires Leave Of Absence Protocol.");
+                            this.Close();
+                            return;
                         }
                     }
                 }
