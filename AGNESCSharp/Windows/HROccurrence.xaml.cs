@@ -276,7 +276,6 @@ namespace AGNESCSharp
 
             //Count number of prior consecutive unexcused absences for possible LOA reasons
             DayOfWeek day = fDate.DayOfWeek;
-            //int skipWeekend = 0;
             DateTime currentDate = fDate;
             DateTime checkDate;
 
@@ -284,10 +283,6 @@ namespace AGNESCSharp
             {
                 checkDate = fDate.AddDays(-4);
             }
-            //else if (day == DayOfWeek.Tuesday)
-            //{
-            //    checkDate = fDate.AddDays(-4);
-            //}
             else
             {
                 checkDate = fDate.AddDays(-2);
@@ -298,10 +293,7 @@ namespace AGNESCSharp
                                     orderby newTable.Date descending
                                     select newTable.Date;
 
-            //List<DateTime?> AbsenceList = UnexcusedAbsences.ToList();
             int UnexcusedAbsenceCount = UnexcusedAbsences.ToList().Count();
-            //int LOAPossible = 0;
-            //int j = 1;
 
             if (UnexcusedAbsenceCount >= 3)
             {
@@ -335,7 +327,7 @@ namespace AGNESCSharp
                 this.Close();
             }
 
-            HRSearch.Report(firstName, AttType, type, occPoints, empInProbation, earlyDate, null, empID);
+            HRSearch.Report(firstName, AttType, type, occPoints, empInProbation, earlyDate, null, empID, ncnsCount);
 
             DescriptionTb.Clear();
             AOccurrenceDP.SelectedDate = null;
@@ -352,6 +344,24 @@ namespace AGNESCSharp
 
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
+            int ncnsCount = 0;
+            fDate = (DateTime)AOccurrenceDP.SelectedDate; //DateTime.Parse(selectedDate.ToString());
+            //TODO: THIS CUTOFFDATE CALCULATION MAY CHANGE, RIGHT NOW IT IS 1 YEAR PRIOR TO SELECTED DATE OF WRITE UP
+            cutOffDate = fDate.AddYears(-1);
+            //TODO: THIS CUTOFFDATE MAY CHANGE, RIGHT NOW IT IS 1 YEAR PRIOR TO SELECTED DATE OF WRITE UP
+
+            //Need to Check is Associate has a previous No Call No Show in the previous year
+            var NoCallFromDB = from table in MainWindow.agnesdb.Occurrences
+                               where table.PersNumber == empID && table.AttendanceViolation == "No Call No Show" && table.Date >= cutOffDate
+                               orderby table.Date ascending
+                               select new
+                               {
+                                   table.AttendanceViolation,
+                                   table.Date
+                               };
+
+            ncnsCount = (NoCallFromDB.ToList()).Count;
+
             if (NavFromSearch == 1)
             {
                 string selectOccurrence = HRSearch.OccNumberV;
@@ -410,7 +420,7 @@ namespace AGNESCSharp
                             db.SaveChanges();
                             MessageBox.Show("Occurrence Record Has Been Updated.");
                             (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, empID, 0);
-                            HRSearch.Report(firstName, violationText, type, occPoints, empInProbation, earlyDate, null, empID);
+                            HRSearch.Report(firstName, violationText, type, occPoints, empInProbation, earlyDate, null, empID, ncnsCount);
                         }
                         else
                         {
@@ -419,7 +429,7 @@ namespace AGNESCSharp
                                 db.SaveChanges();
                                 MessageBox.Show("Occurrence Record Has Been Updated.");
                                 (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, empID, 0);
-                                HRSearch.Report(firstName, violationText, type, occPoints, empInProbation, earlyDate, null, empID);
+                                HRSearch.Report(firstName, violationText, type, occPoints, empInProbation, earlyDate, null, empID, ncnsCount);
                             }
                             catch (Exception ex)
                             {
@@ -429,33 +439,15 @@ namespace AGNESCSharp
                     }
                 }
             }
-
-            fDate = (DateTime)AOccurrenceDP.SelectedDate; //DateTime.Parse(selectedDate.ToString());
-            //TODO: THIS CUTOFFDATE CALCULATION MAY CHANGE, RIGHT NOW IT IS 1 YEAR PRIOR TO SELECTED DATE OF WRITE UP
-            cutOffDate = fDate.AddYears(-1);
-            //TODO: THIS CUTOFFDATE MAY CHANGE, RIGHT NOW IT IS 1 YEAR PRIOR TO SELECTED DATE OF WRITE UP
-
-            //Need to Check is Associate has a previous No Call No Show in the previous year
-            var NoCallFromDB = from table in MainWindow.agnesdb.Occurrences
-                               where table.PersNumber == empID && table.AttendanceViolation == "No Call No Show" && table.Date >= cutOffDate
-                               orderby table.Date ascending
-                               select new
-                               {
-                                   table.AttendanceViolation,
-                                   table.Date
-                               };
-            
-            int ncnsCount = (NoCallFromDB.ToList()).Count;
-
             //check ot see if NO Call No Show is Involved
-            if (ncnsCount >= 2 && AttType == "No Call No Show")// && date != new DateTime(1001, 1, 1))
+            if (ncnsCount >= 1 && AttType == "No Call No Show")// && date != new DateTime(1001, 1, 1))
             {
                 BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show is " + firstName + "'s Second In Less Than a Year And Requires Termination.  Please Fill Out And Print This Progressive Counseling and Separation Form", MessageBoxButton.OK);
                 Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
                 Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
                 this.Close();
             }
-            else if (ncnsCount == 1 && AttType == "No Call No Show")//violationText == "No Call No Show")
+            else if (AttType == "No Call No Show")//violationText == "No Call No Show")
             {
                 BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show Requires An Automatic Written Progressive Counseling, Please Fill Out And Print This Form", MessageBoxButton.OK);
                 Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");

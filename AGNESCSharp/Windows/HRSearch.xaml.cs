@@ -105,7 +105,7 @@ namespace AGNESCSharp
             return index;
         }
 
-        public static void Report(string firstName, string violationText, int? type, double? occPoints, int empInProbation, DateTime earlyDate, int? cashHandleType, long? empId)
+        public static void Report(string firstName, string violationText, int? type, double? occPoints, int empInProbation, DateTime earlyDate, int? cashHandleType, long? empId, int? ncnsCount)
         {
             int? CashHandleType = cashHandleType;
             if (cashHandleType == null)
@@ -157,13 +157,17 @@ namespace AGNESCSharp
                         return;
                     }
 
-                    if (occPoints < 4)
+                    if (occPoints <= 4)
                     {
                         MessageBox.Show(firstName + " Has " + occPoints + " Occurrence Points");
                     }
                     else if (occPoints > 4 && type == 0)
                     {
                         MessageBox.Show("Record Has Been Updated");
+                    }
+                    else if (ncnsCount != null && ncnsCount != 0)
+                    {
+                        return;
                     }
                     else if (occPoints >= 4 && occPoints < 5)
                     {
@@ -590,7 +594,7 @@ namespace AGNESCSharp
             {
                 var query = from occTable in agnesdb.Occurrences
                             where assocNumber == occTable.PersNumber && occTable.Date >= earliestDate
-                            orderby occTable.Date ascending
+                            orderby occTable.Date descending
                             select occTable;
 
                 var result = query.ToList();
@@ -660,7 +664,7 @@ namespace AGNESCSharp
             {
                 var query = from LOATable in agnesdb.LOAs
                             where assocNumber == LOATable.PersNumber
-                            orderby LOATable.DateStart ascending
+                            orderby LOATable.DateStart descending
                             select LOATable;
 
                 var result = query.ToList();
@@ -731,7 +735,7 @@ namespace AGNESCSharp
             {
                 var query = from CashTable in agnesdb.CashHandles
                             where assocNumber == CashTable.PersNumber && CashTable.Date >= earliestDate
-                            orderby CashTable.Date ascending
+                            orderby CashTable.Date descending
                             select CashTable;
 
                 var result = query.ToList();

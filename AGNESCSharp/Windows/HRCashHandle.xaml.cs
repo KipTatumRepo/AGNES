@@ -164,7 +164,7 @@ namespace AGNESCSharp
             FileInfo myFile = new FileInfo(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
             bool exists = myFile.Exists;
 
-            HRSearch.Report(firstName, null, null, null, empInProbation, earlyDate, type, empID);
+            HRSearch.Report(firstName, null, null, null, empInProbation, earlyDate, type, empID, null);
 
             CashCB.SelectedItem = null;
             CHOccurrenceDP.SelectedDate = null;
@@ -271,7 +271,7 @@ namespace AGNESCSharp
                             db.SaveChanges();
                             MessageBox.Show("Occurrence Record Has Been Updated.");
                             (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, empID, 1);
-                            HRSearch.Report(firstName, violationNotes, null, occPoints, empInProbation, earlyDate, type, empID);
+                            HRSearch.Report(firstName, violationNotes, null, occPoints, empInProbation, earlyDate, type, empID, null);
                         }
 
                         else if (type < oldType )
@@ -287,7 +287,7 @@ namespace AGNESCSharp
                             db.SaveChanges();
                             MessageBox.Show("Occurrence Record Has Been Updated.");
                             (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, empID, 1);
-                            HRSearch.Report(firstName, violationNotes, null, occPoints, empInProbation, earlyDate, type, empID);
+                            HRSearch.Report(firstName, violationNotes, null, occPoints, empInProbation, earlyDate, type, empID, null);
                         }
                         //the type of cash handling occurrence has been updated and is not on a date that already exists in the database
                         else
