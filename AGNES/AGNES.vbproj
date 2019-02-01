@@ -181,7 +181,6 @@
     <Compile Include="Application Objects\MonthChooser.vb" />
     <Compile Include="Application Objects\PercentBox.vb" />
     <Compile Include="Application Objects\YearChooser.vb" />
-    <Compile Include="EE Objects\Chef.vb" />
     <Compile Include="Entities\AGNESModel.Context.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -356,7 +355,6 @@
     <Compile Include="Module Orchestrators\FlashStatusModule.vb" />
     <Compile Include="Module Orchestrators\ForecastModule.vb" />
     <Compile Include="Module Orchestrators\VendorModule.vb" />
-    <Compile Include="Module Orchestrators\WOPRModule.vb" />
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -374,18 +372,6 @@
     <Compile Include="Vendor Objects\VendorInStation.vb" />
     <Compile Include="XAML Components\EasterEggs\Birthday.xaml.vb">
       <DependentUpon>Birthday.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="XAML Components\EasterEggs\ChaosCafeSplash.xaml.vb">
-      <DependentUpon>ChaosCafeSplash.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="XAML Components\EasterEggs\ChaosOne.xaml.vb">
-      <DependentUpon>ChaosOne.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="XAML Components\EasterEggs\PacMan.xaml.vb">
-      <DependentUpon>PacMan.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="XAML Components\EasterEggs\WOPR.xaml.vb">
-      <DependentUpon>WOPR.xaml</DependentUpon>
     </Compile>
     <Compile Include="XAML Components\Flash\Delegates.xaml.vb">
       <DependentUpon>Delegates.xaml</DependentUpon>
@@ -749,22 +735,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="XAML Components\EasterEggs\ChaosCafeSplash.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="XAML Components\EasterEggs\ChaosOne.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="XAML Components\EasterEggs\PacMan.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="XAML Components\EasterEggs\WOPR.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="XAML Components\Flash\Delegates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1058,12 +1028,6 @@
     <Resource Include="Resources\Commons.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\LeftChef1.png" />
-    <Resource Include="Resources\LeftChef2.png" />
-    <Resource Include="Resources\LeftChef3.png" />
-    <Resource Include="Resources\RightChef1.png" />
-    <Resource Include="Resources\RightChef2.png" />
-    <Resource Include="Resources\RightChef3.png" />
     <Resource Include="Resources\Minus.png" />
     <Resource Include="Resources\Plus.png" />
     <Resource Include="Resources\edit.png" />
@@ -1084,14 +1048,6 @@
     <Resource Include="Resources\NextNotification.png" />
     <Resource Include="Resources\GoToModule.png" />
     <Resource Include="Resources\NotificationDismiss.png" />
-    <Content Include="Resources\Sound Assets\jump.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Resource Include="Resources\fire2.gif" />
-    <Resource Include="Resources\fire.gif" />
-    <Resource Include="Resources\Chef3.png" />
-    <Resource Include="Resources\Chef2.png" />
-    <Resource Include="Resources\Chef1.png" />
     <Resource Include="Resources\map-editing.png" />
     <Resource Include="Resources\MSLogo.png" />
     <Resource Include="Resources\reportcard.png" />
@@ -1103,11 +1059,6 @@
     <Resource Include="Resources\baby.png" />
     <Resource Include="Resources\Yes.png" />
     <Resource Include="Resources\No.png" />
-    <Resource Include="Resources\pacmanup.png" />
-    <Resource Include="Resources\pacmanright.png" />
-    <Resource Include="Resources\pacmanleft.png" />
-    <Resource Include="Resources\pacmandown.png" />
-    <Resource Include="Resources\ghost.png" />
     <Resource Include="AgnesIcon2.ico" />
     <Content Include="Entities\AGNESModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

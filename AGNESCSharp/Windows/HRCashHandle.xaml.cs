@@ -26,6 +26,8 @@ namespace AGNESCSharp
         int NavFromSearch;
         DateTime hireDate;
         DateTime selectedDate;
+        bool previousTry = false;
+
         #endregion
 
         #region Main
@@ -106,7 +108,7 @@ namespace AGNESCSharp
         }
         #endregion
 
-        #region Prvate Methods
+        #region Private Methods
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             CashHandle ch = new CashHandle();
@@ -131,9 +133,26 @@ namespace AGNESCSharp
                 }
                 return;
             }
+
             MainWindow.agnesdb.CashHandles.Add(ch);
-            MainWindow.agnesdb.SaveChanges();
-            MessageBox.Show("The Cash Handling Occurrence for " + firstName + " has been added");
+
+            var query = from table in MainWindow.agnesdb.CashHandles
+                        where table.PersNumber == empID && table.Date == CHOccurrenceDP.SelectedDate
+                        select table;
+
+            int anyPriorOnThisDate = query.Count();
+
+            if (anyPriorOnThisDate != 0)
+            {
+                MessageBox.Show("There Is Already A Record For This Date, There Cannot Be 2 Records With The Same Date");
+                MainWindow.agnesdb.CashHandles.Remove(ch);
+                return;
+            }
+            else
+            {
+                MainWindow.agnesdb.SaveChanges();
+                MessageBox.Show("The Cash Handling Occurrence for " + firstName + " has been added");
+            }
 
             selectedDate = Convert.ToDateTime(CHOccurrenceDP.SelectedDate);
             cutOffDate = selectedDate.AddYears(-1);
@@ -145,7 +164,7 @@ namespace AGNESCSharp
             FileInfo myFile = new FileInfo(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
             bool exists = myFile.Exists;
 
-            HRSearch.Report(firstName, null, null, empInProbation, earlyDate, type, empID);
+            HRSearch.Report(firstName, null, null, null, empInProbation, earlyDate, type, empID, null);
 
             CashCB.SelectedItem = null;
             CHOccurrenceDP.SelectedDate = null;
@@ -228,55 +247,74 @@ namespace AGNESCSharp
                     DateTime date = (DateTime)CHOccurrenceDP.SelectedDate;
                     (DateTime earlyDate, double? occPoints) = HROccurrence.CountOccurrences(date, empID, 1);
 
-                    if (type < oldType && type == 0)
-                    {
-                        var messageBoxResult = BIMessageBox.Show("Cash Handle Reduction", "This Change Will Require the Removal of A Written Counseling, Do You Wish To Continue?", MessageBoxButton.YesNo);
-                        if (messageBoxResult != MessageBoxResult.Yes) return;
-                        db.SaveChanges();
-                        MessageBox.Show("Occurrence Record Has Been Updated.");
-                        (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, empID, 1);
-                        HRSearch.Report(firstName, violationNotes, occPoints, empInProbation, earlyDate, type, empID);
-                    }
+                    //need to query DB to make sure that we are not updating the occurrence to a date that already has a record, you are not allowed to have 2 occurrences on same date
+                    var query = from table in MainWindow.agnesdb.CashHandles
+                                where table.PersNumber == empID && table.Date == CHOccurrenceDP.SelectedDate
+                                select table;
+                    int anyPriorOnThisDate = query.Count();
 
-                    else if (type < oldType)
+                    //there is an occurrence on this date, and the type has not been changed
+                    if (anyPriorOnThisDate != 0 && oldType == result.Type)
                     {
-                        decimal compareOccPoints = (decimal)occPoints;
-                        decimal compareType = (decimal)type;
-                        decimal quotientOldType = (decimal)oldType / 2;
-                        decimal quotientCompareType = (decimal)compareType / 2;
-                        var messageBoxResult = BIMessageBox.Show("Occurrence Point Reduction Dialog", "The Selected Violation Will Result In A Reduction Of Occurrence Points From " + occPoints +
-                           " To " + (compareOccPoints - (quotientOldType - quotientCompareType)) + " For " + firstName + " and May Require Removal of A Written Counseling, Do You Wish To Continue?", MessageBoxButton.YesNo);
-
-                        if (messageBoxResult != MessageBoxResult.Yes) return;
-                        db.SaveChanges();
-                        MessageBox.Show("Occurrence Record Has Been Updated.");
-                        (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, empID, 1);
-                        HRSearch.Report(firstName, violationNotes, occPoints, empInProbation, earlyDate, type, empID);
+                        MessageBox.Show("There Is Already A Record For This Date, There Cannot Be 2 Records With The Same Date");
+                        previousTry = true;
+                        return;
                     }
+                    //We can update the type of Cash Handling occurrence on a date that already exists
                     else
                     {
-                        try
+                        //Checks to see if a write up needs to be removed because violation is less severe
+                        if (type < oldType && type == 0 )
                         {
+                            var messageBoxResult = BIMessageBox.Show("Cash Handle Reduction", "This Change Will Require the Removal of A Written Counseling, Do You Wish To Continue?", MessageBoxButton.YesNo);
+                            if (messageBoxResult != MessageBoxResult.Yes) return;
                             db.SaveChanges();
                             MessageBox.Show("Cash Handling Record Has Been Updated.");
-                            if (type == 1)
-                            {
-                                BIMessageBox.Show("Counseling Form Dialog", firstName + "'s Variance Type Was Changed To Between $3.00 and $20.00, This is an Automatic Progressive Counseling" +
-                                                    " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
-                                Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
-                            }
-                            else
-                            {
-                                BIMessageBox.Show("Contact HRBP Dialong", "This Type of Cash Handling Violation Requires Notification of Your DM AND HRBP, Please Contact Them", MessageBoxButton.OK);
-
-                                BIMessageBox.Show("Counseling Form Dialog", firstName + " Has a Variance Greater Than $20.00 This is an Automatic Progressive Counseling" +
-                                    " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
-                                Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
-                            }
+                            (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, empID, 1);
+                            HRSearch.Report(firstName, violationNotes, null, occPoints, empInProbation, earlyDate, type, empID, null);
                         }
-                        catch (Exception ex)
+
+                        else if (type < oldType )
                         {
-                            MessageBox.Show("There was a problem updating the CASH HANDLING record in the database please contact Business Intelligence " + ex);
+                            decimal compareOccPoints = (decimal)occPoints;
+                            decimal compareType = (decimal)type;
+                            decimal quotientOldType = (decimal)oldType / 2;
+                            decimal quotientCompareType = (decimal)compareType / 2;
+                            var messageBoxResult = BIMessageBox.Show("Occurrence Point Reduction Dialog", "The Selected Violation Will Result In A Reduction Of Occurrence Points From " + occPoints +
+                               " To " + (compareOccPoints - (quotientOldType - quotientCompareType)) + " For " + firstName + " and May Require Removal of A Written Counseling, Do You Wish To Continue?", MessageBoxButton.YesNo);
+
+                            if (messageBoxResult != MessageBoxResult.Yes) return;
+                            db.SaveChanges();
+                            MessageBox.Show("Cash Handling Record Has Been Updated.");
+                            (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, empID, 1);
+                            HRSearch.Report(firstName, violationNotes, null, occPoints, empInProbation, earlyDate, type, empID, null);
+                        }
+                        //the type of cash handling occurrence has been updated and is not on a date that already exists in the database
+                        else
+                        {
+                            try
+                            {
+                                db.SaveChanges();
+                                MessageBox.Show("Cash Handling Record Has Been Updated.");
+                                if (type == 1 && previousTry == false )
+                                {
+                                    BIMessageBox.Show("Counseling Form Dialog", firstName + "'s Variance Type Was Changed To Between $3.00 and $20.00, This is an Automatic Progressive Counseling" +
+                                                        " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
+                                    Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
+                                }
+                                else if (previousTry == false)
+                                {
+                                    BIMessageBox.Show("Contact HRBP Dialong", "This Type of Cash Handling Violation Requires Notification of Your DM AND HRBP, Please Contact Them", MessageBoxButton.OK);
+
+                                    BIMessageBox.Show("Counseling Form Dialog", firstName + " Has a Variance Greater Than $20.00 This is an Automatic Progressive Counseling" +
+                                        " Please Fill Out and Print This Form I Will Open For You", MessageBoxButton.OK);
+                                    Process.Start(@"\\compasspowerbi\compassbiapplications\occurrencetracker\ProgressiveCounselingForm.docx");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("There was a problem updating the CASH HANDLING record in the database please contact Business Intelligence " + ex);
+                            }
                         }
                     }
                 }

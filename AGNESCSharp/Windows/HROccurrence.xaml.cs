@@ -36,6 +36,7 @@ namespace AGNESCSharp
         private DateTime cutOffDate;
         private DateTime? date;
         Dictionary<string, int> cbDictionary = new Dictionary<string, int>();
+        bool previousTry = false;
         #endregion
 
         #region Main
@@ -213,7 +214,7 @@ namespace AGNESCSharp
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             Occurrence oc = new Occurrence();
-            
+
             selectedDate = AOccurrenceDP.SelectedDate;
             if (AttendanceType.SelectedIndex == -1)
             {
@@ -239,9 +240,24 @@ namespace AGNESCSharp
             oc.AttendanceViolation = AttType;
 
             MainWindow.agnesdb.Occurrences.Add(oc);
-            MainWindow.agnesdb.SaveChanges();
-            MessageBox.Show("The Occurrence for " + firstName + " has been added");
 
+            var query = from table in MainWindow.agnesdb.Occurrences
+                        where table.PersNumber == empID && table.Date == selectedDate
+                        select table;
+
+            int anyPriorOnThisDate = query.Count();
+
+            if (anyPriorOnThisDate != 0)
+            {
+                MessageBox.Show("There Is Already A Record For This Date, There Cannot Be 2 Records With The Same Date");
+                MainWindow.agnesdb.Occurrences.Remove(oc);
+                return;
+            }
+            else
+            {
+                MainWindow.agnesdb.SaveChanges();
+                MessageBox.Show("The Occurrence for " + firstName + " has been added");
+            }
             fDate = DateTime.Parse(selectedDate.ToString());
             //TODO: THIS CUTOFFDATE CALCULATION MAY CHANGE, RIGHT NOW IT IS 1 YEAR PRIOR TO SELECTED DATE OF WRITE UP
             cutOffDate = fDate.AddYears(-1);
@@ -256,8 +272,35 @@ namespace AGNESCSharp
                                    table.AttendanceViolation,
                                    table.Date
                                };
-
             int ncnsCount = (NoCallFromDB.ToList()).Count;
+
+            //Count number of prior consecutive unexcused absences for possible LOA reasons
+            DayOfWeek day = fDate.DayOfWeek;
+            DateTime currentDate = fDate;
+            DateTime checkDate;
+
+            if (day == DayOfWeek.Monday || day == DayOfWeek.Tuesday)
+            {
+                checkDate = fDate.AddDays(-4);
+            }
+            else
+            {
+                checkDate = fDate.AddDays(-2);
+            }
+
+            var UnexcusedAbsences = from newTable in MainWindow.agnesdb.Occurrences
+                                    where newTable.PersNumber == empID && newTable.AttendanceViolation == "Consecutive Unexcused Absence" && newTable.Date >= checkDate && newTable.Date <= fDate
+                                    orderby newTable.Date descending
+                                    select newTable.Date;
+
+            int UnexcusedAbsenceCount = UnexcusedAbsences.ToList().Count();
+
+            if (UnexcusedAbsenceCount >= 3)
+            {
+                BIMessageBox.Show("Contact HRBP Dialog", firstName + " Has At Least Three Consecutive Unexcused Absences, Please Contact HRBP To Determine If This Requires Leave Of Absence Protocol.");
+                this.Close();
+                return;
+            }
 
             //get Write up form ready
             FileInfo myFileTerm = new FileInfo(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
@@ -284,7 +327,7 @@ namespace AGNESCSharp
                 this.Close();
             }
 
-            HRSearch.Report(firstName, AttType, occPoints, empInProbation, earlyDate, null, empID);
+            HRSearch.Report(firstName, AttType, type, occPoints, empInProbation, earlyDate, null, empID, ncnsCount);
 
             DescriptionTb.Clear();
             AOccurrenceDP.SelectedDate = null;
@@ -301,6 +344,24 @@ namespace AGNESCSharp
 
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
+            int ncnsCount = 0;
+            fDate = (DateTime)AOccurrenceDP.SelectedDate; //DateTime.Parse(selectedDate.ToString());
+            //TODO: THIS CUTOFFDATE CALCULATION MAY CHANGE, RIGHT NOW IT IS 1 YEAR PRIOR TO SELECTED DATE OF WRITE UP
+            cutOffDate = fDate.AddYears(-1);
+            //TODO: THIS CUTOFFDATE MAY CHANGE, RIGHT NOW IT IS 1 YEAR PRIOR TO SELECTED DATE OF WRITE UP
+
+            //Need to Check is Associate has a previous No Call No Show in the previous year
+            var NoCallFromDB = from table in MainWindow.agnesdb.Occurrences
+                               where table.PersNumber == empID && table.AttendanceViolation == "No Call No Show" && table.Date >= cutOffDate
+                               orderby table.Date ascending
+                               select new
+                               {
+                                   table.AttendanceViolation,
+                                   table.Date
+                               };
+
+            ncnsCount = (NoCallFromDB.ToList()).Count;
+
             if (NavFromSearch == 1)
             {
                 string selectOccurrence = HRSearch.OccNumberV;
@@ -317,6 +378,7 @@ namespace AGNESCSharp
                 if (result != null)
                 {
                     byte? oldType = result.Type;
+                    string oldViolation = result.AttendanceViolation;
                     ComboBoxItem cbi = new ComboBoxItem();
                     cbi = (ComboBoxItem)AttendanceType.SelectedItem;
                     type = Convert.ToByte(cbi.Tag);
@@ -329,64 +391,91 @@ namespace AGNESCSharp
                     DateTime date = (DateTime)AOccurrenceDP.SelectedDate;
                     (DateTime earlyDate, double? occPoints) = HROccurrence.CountOccurrences(date, empID, 0);
 
-                    if (type < violationAmount)
-                    {
-                        decimal compareOccPoints = (decimal)occPoints;
-                        decimal compareType = (decimal)type;
-                        decimal quotientOldType = (decimal)oldType / 2;
-                        decimal quotientCompareType = (decimal)compareType / 2;
-                        var messageBoxResult = BIMessageBox.Show("Occurrence Point Reduction Dialog", "The Selected Violation Will Result In A Reduction Of Occurrence Points From " + occPoints +
-                           " To " + (compareOccPoints - (quotientOldType - quotientCompareType)) + " For " + firstName + " and May Require Removal of A Written Counseling, Do You Wish To Continue?", MessageBoxButton.YesNo);
+                    //need to query DB to make sure that we are not updating the occurrence to a date that already has a record, you are not allowed to have 2 occurrences on same date
+                    var query = from table in MainWindow.agnesdb.Occurrences
+                                where table.PersNumber == empID && table.Date == AOccurrenceDP.SelectedDate
+                                select table;
+                    int anyPriorOnThisDate = query.Count();
 
-                        if (messageBoxResult != MessageBoxResult.Yes) return;
-                        db.SaveChanges();
-                        MessageBox.Show("Occurrence Record Has Been Updated.");
-                        (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, empID, 0);
-                        HRSearch.Report(firstName, violationText, occPoints, empInProbation, earlyDate, null, empID);
+                    //there is an occurrence on this date, and the type has not been changed
+                    if (anyPriorOnThisDate != 0 && oldViolation == result.AttendanceViolation)
+                    {
+                        MessageBox.Show("There Is Already A Record For This Date, There Cannot Be 2 Records With The Same Date");
+                        previousTry = true;
+                        return;
                     }
+                    //We can update the Occurrence on a date that already exists
                     else
                     {
-                        try
+                        //Count number of prior consecutive unexcused absences for possible LOA reasons
+                        DayOfWeek day = fDate.DayOfWeek;
+                        DateTime currentDate = fDate;
+                        DateTime checkDate;
+
+                        if (day == DayOfWeek.Monday || day == DayOfWeek.Tuesday)
                         {
+                            checkDate = fDate.AddDays(-4);
+                        }
+                        else
+                        {
+                            checkDate = fDate.AddDays(-2);
+                        }
+                        
+
+                        if (type < violationAmount && previousTry == false)
+                        {
+                            decimal compareOccPoints = (decimal)occPoints;
+                            decimal compareType = (decimal)type;
+                            decimal quotientOldType = (decimal)oldType / 2;
+                            decimal quotientCompareType = (decimal)compareType / 2;
+                            var messageBoxResult = BIMessageBox.Show("Occurrence Point Reduction Dialog", "The Selected Violation Will Result In A Reduction Of Occurrence Points From " + occPoints +
+                               " To " + (compareOccPoints - (quotientOldType - quotientCompareType)) + " For " + firstName + " and May Require Removal of A Written Counseling, Do You Wish To Continue?", MessageBoxButton.YesNo);
+
+                            if (messageBoxResult != MessageBoxResult.Yes) return;
                             db.SaveChanges();
                             MessageBox.Show("Occurrence Record Has Been Updated.");
                             (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, empID, 0);
-                            HRSearch.Report(firstName, violationText, occPoints, empInProbation, earlyDate, null, empID);
+                            HRSearch.Report(firstName, violationText, type, occPoints, empInProbation, earlyDate, null, empID, ncnsCount);
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            MessageBox.Show("There was a problem updating the OCCURRENCE record in the database please contact Business Intelligence " + ex);
+                            try
+                            {
+                                db.SaveChanges();
+                                MessageBox.Show("Occurrence Record Has Been Updated.");
+                                (earlyDate, occPoints) = HROccurrence.CountOccurrences(date, empID, 0);
+                                HRSearch.Report(firstName, violationText, type, occPoints, empInProbation, earlyDate, null, empID, ncnsCount);
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show("There was a problem updating the OCCURRENCE record in the database please contact Business Intelligence " + ex);
+                            }
+                        }
+                        var UnexcusedAbsences = from newTable in MainWindow.agnesdb.Occurrences
+                                                where newTable.PersNumber == empID && newTable.AttendanceViolation == "Consecutive Unexcused Absence" && newTable.Date >= checkDate && newTable.Date <= fDate
+                                                orderby newTable.Date descending
+                                                select newTable.Date;
+
+                        int UnexcusedAbsenceCount = UnexcusedAbsences.ToList().Count();
+
+                        if (UnexcusedAbsenceCount >= 3)
+                        {
+                            BIMessageBox.Show("Contact HRBP Dialog", firstName + " Has At Least Three Consecutive Unexcused Absences, Please Contact HRBP To Determine If This Requires Leave Of Absence Protocol.");
+                            this.Close();
+                            return;
                         }
                     }
                 }
             }
-
-            fDate = (DateTime)AOccurrenceDP.SelectedDate; //DateTime.Parse(selectedDate.ToString());
-            //TODO: THIS CUTOFFDATE CALCULATION MAY CHANGE, RIGHT NOW IT IS 1 YEAR PRIOR TO SELECTED DATE OF WRITE UP
-            cutOffDate = fDate.AddYears(-1);
-            //TODO: THIS CUTOFFDATE MAY CHANGE, RIGHT NOW IT IS 1 YEAR PRIOR TO SELECTED DATE OF WRITE UP
-
-            //Need to Check is Associate has a previous No Call No Show in the previous year
-            var NoCallFromDB = from table in MainWindow.agnesdb.Occurrences
-                               where table.PersNumber == empID && table.AttendanceViolation == "No Call No Show" && table.Date >= cutOffDate
-                               orderby table.Date ascending
-                               select new
-                               {
-                                   table.AttendanceViolation,
-                                   table.Date
-                               };
-            
-            int ncnsCount = (NoCallFromDB.ToList()).Count;
-
             //check ot see if NO Call No Show is Involved
-            if (ncnsCount >= 2 && AttType == "No Call No Show")// && date != new DateTime(1001, 1, 1))
+            if (ncnsCount >= 1 && AttType == "No Call No Show")// && date != new DateTime(1001, 1, 1))
             {
                 BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show is " + firstName + "'s Second In Less Than a Year And Requires Termination.  Please Fill Out And Print This Progressive Counseling and Separation Form", MessageBoxButton.OK);
                 Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
                 Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\TermLetter.docx");
                 this.Close();
             }
-            else if (ncnsCount == 1 && AttType == "No Call No Show")//violationText == "No Call No Show")
+            else if (AttType == "No Call No Show")//violationText == "No Call No Show")
             {
                 BIMessageBox.Show("No Call No Show Dialog", "This No Call No Show Requires An Automatic Written Progressive Counseling, Please Fill Out And Print This Form", MessageBoxButton.OK);
                 Process.Start(@"\\compasspowerbi\compassbiapplications\AGNES\Docs\ProgressiveCounselingForm.docx");
